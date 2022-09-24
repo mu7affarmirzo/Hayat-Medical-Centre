@@ -1,7 +1,7 @@
 Django==3.2
 psycopg2>=2.8
 python-decouple==3.6
-djangorestframework
+djangorestframework==3.13
 djangorestframework-simplejwt
 drf-yasg
 django-cors-headers
