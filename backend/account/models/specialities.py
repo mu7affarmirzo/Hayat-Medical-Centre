@@ -1,6 +1,7 @@
 from django.db import models
 
-from account.models import Account, OrganizationModel, BranchModel
+from account.models.accounts import Account
+from account.models.organizations import OrganizationModel, BranchModel
 
 
 class SpecialityModel(models.Model):
@@ -28,3 +29,4 @@ class DoctorSpecialityModel(models.Model):
 
     def __str__(self):
         return str(self.doctor) + " - " + str(self.speciality)
+
