@@ -1,0 +1,76 @@
+.calendar{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 90px;
+    border-bottom: var(--borderStyle);
+    border-left: var(--borderStyle);
+
+    .left_side{
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        .tools{
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+
+            .tools_item{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                height: 100%;
+                width: 90px;
+
+                &.border{
+                    border-left: var(--borderStyle);
+                    border-right: var(--borderStyle);
+                }
+
+                span{
+                    margin-top: 10px;
+                    font-size: 12px;
+                    line-height: 14px;
+                    letter-spacing: 0.4px;
+                    color: rgba(0, 0, 0, 0.87);
+                    text-align: center;
+                }
+            }
+        }
+
+        .calendar_block{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 16.5px 20px;
+
+            .calendar_wrapper{
+                border: 1px solid rgba(0, 0, 0, 0.42);
+                border-radius: 4px;
+                width: 250px;
+                padding: 10px 16px;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .left{
+                    .name{
+                        font-size: 12px;
+                        line-height: 12px;
+                        color: rgba(0, 0, 0, 0.87);
+                        margin-bottom: 7px;
+                    }
+                    .days{
+                        font-size: 16px;
+                        line-height: 18px;
+                        color: rgba(0, 0, 0, 0.87);
+                    }
+                }
+            }
+        }
+    }
+}
