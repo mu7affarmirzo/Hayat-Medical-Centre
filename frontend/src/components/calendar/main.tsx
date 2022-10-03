@@ -1,11 +1,13 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Calendar, momentLocalizer, Views} from 'react-big-calendar'
 import moment from "moment";
+import {observer} from "mobx-react-lite";
 import {calendarComponent} from "./customComponents";
+import CalendarEvents from "../../store/calendarEvents";
 
 
 
-const CalendarMain = () => {
+const CalendarMain = observer(() => {
     moment.locale("es-es", {
         week: {
             dow: 1 //Monday is the first day of the week.
@@ -14,7 +16,7 @@ const CalendarMain = () => {
 
     const mLocalizer = momentLocalizer(moment);
 
-    const {components, views, messages} = useMemo(() => ({
+    const {components, views, messages, events} = useMemo(() => ({
         components: calendarComponent,
         views: { month: true, week: true, day: true},
         messages: {
@@ -22,38 +24,27 @@ const CalendarMain = () => {
             month: 'месяц',
             week: 'неделя',
             day: 'день',
-        }
+        },
+
+        events: CalendarEvents.events
     }),[]);
-
-    // const formats = useMemo(() => ({
-    //     // dateFormat: 'dd',
-    //
-    //     dayFormat: (date:any, localizer) =>
-    //         localizer.format(date, 'DDD', "ru"),
-    //     //
-    //     dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>
-    //         localizer.format(start, { date: 'short' }, culture) + ' — ' +
-    //         localizer.format(end, { date: 'short' }, culture)
-    // }), [])
-
     return (
         <>
 
             <Calendar
                 // @ts-ignore
                 components={components}
-                events={[]}
+                events={events}
                 localizer={mLocalizer}
                 startAccessor="end"
                 endAccessor="end"
                 views={views}
                 className="calendar_block"
                 messages={messages}
-                // formats={formats}
 
             />
         </>
     );
-};
+});
 
 export default CalendarMain;

@@ -66,6 +66,7 @@ code {
 }
 
 .calendar_block .rbc-time-header.rbc-overflowing{
+    padding-right: 15px;
     margin-right: 0 !important;
     background-color: #64B6F7;
 }
@@ -104,13 +105,46 @@ code {
     border-width: 1px;
 }
 
+.calendar_block .rbc-time-view .rbc-time-content::-webkit-scrollbar{
+    width: 14px;
+}
+
+.calendar_block .rbc-time-view .rbc-time-content::-webkit-scrollbar-thumb{
+    background: #BDBDBD;
+    border-radius: 20px;
+    border-left: 2px solid #F5F5F5;
+    border-right: 2px solid #F5F5F5;
+    background-clip: padding-box;
+}
+
+.calendar_block .rbc-time-view .rbc-time-content::-webkit-scrollbar-track{
+    background: #F5F5F5;
+}
+
 .calendar_block .rbc-time-view .rbc-time-content .rbc-time-gutter.rbc-time-column .week_time_block + div{
     display: none;
 }
+
+.calendar_block .rbc-time-view .rbc-time-content .rbc-time-gutter.rbc-time-column .week_time_block.active_time{
+    background-color: rgba(255, 180, 0, 0.4);
+}
+
 .calendar_block .rbc-time-view .rbc-time-content .rbc-day-slot .rbc-timeslot-group .week_days_box:last-child{
     border-bottom: none;
 }
 
 .calendar_block .rbc-time-view .rbc-time-content .rbc-day-slot.rbc-today{
     background-color: #EEEEEE;
+}
+
+.calendar_block .rbc-time-view .rbc-time-content .rbc-day-slot .rbc-events-container{
+    margin-right: 0;
+}
+
+.calendar_block .rbc-time-view .rbc-time-content .rbc-day-slot.rbc-today.day_view_mode{
+    background-color: #fff;
+}
+
+.calendar_block .rbc-time-view .rbc-time-content .rbc-day-slot .rbc-current-time-indicator{
+    display: none;
 }

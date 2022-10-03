@@ -1,8 +1,4 @@
-import Login from "../views/registaration/Login";
-import Test2 from "../views/registaration/test2";
-import Test from "../views/registaration/test";
-import React, {ReactElement} from "react";
-import MainIndex from "../views/main";
+import React from "react";
 import {ReactComponent as CalendarEdit} from "../assets/img/header_icons/calendar-edit.svg";
 import {ReactComponent as FolderAdd} from "../assets/img/header_icons/folder-add.svg";
 import {ReactComponent as Note} from "../assets/img/header_icons/note.svg";
@@ -18,16 +14,6 @@ import {ReactComponent as Clients} from "../assets/img/header_icons/clients.svg"
 import {ReactComponent as UserSquare} from "../assets/img/header_icons/user-square.svg";
 import {ReactComponent as ScanBarcode} from "../assets/img/header_icons/scan-barcode.svg";
 
-type IRouting = {
-    path: string;
-    component: ReactElement,
-    global?: boolean
-}
-
-type MyGroupType = {
-    [key:string]: Array<IRouting>;
-}
-
 interface INav {
     button: string;
     title?: string;
@@ -38,31 +24,6 @@ interface INav {
         sideBarText?: string;
     }>
 }
-
-export const RoutingData: MyGroupType = {
-    "NoAuth": [
-        {
-            "path": "/login",
-            "component": <Login />,
-            "global": true,
-        },
-        {
-            "path": "/test2",
-            "component": <Test2 />,
-        }
-    ],
-    "test": [
-        {
-            "path": "/test",
-            "component": <MainIndex />,
-            "global": true,
-        },
-        {
-            "path": "/test2",
-            "component": <Test2 />,
-        }
-    ]
-};
 
 export const NavBarDropdowns:Array<INav> = [
     {
