@@ -7,23 +7,31 @@ import {Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select} fro
 import {ReactComponent as SearchNormal} from "../../assets/img/search-normal.svg"
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalendarMain from "../../components/calendar/main";
+import {IDoctors, ISpecialities} from "../../consts/types";
 
 
 const MainView = (
     {
         selectData,
-        setSelectData
+        setSelectData,
+        specialities,
+        doctors,
+        changeSpecialty,
+        selectDoctor,
+        selectedDoctor
     }:{
         selectData: string
         setSelectData: (str: string) => void
+        specialities: Array<ISpecialities>
+        doctors: Array<IDoctors>
+        changeSpecialty: (id: string) => void
+        selectDoctor: (e: React.MouseEvent<HTMLElement>, data: IDoctors) => void
+        selectedDoctor: Array<string>
     }
 ) => {
     return (
-        <div>
-            <Headers/>
-            <div className={styles.main_wrapper}>
-                <SideBar />
-                <div className={styles.main_block}>
+        <>
+            <div className={styles.main_block}>
                     <div className={styles.top}>
                         <ToolBoxTop />
                     </div>
@@ -81,32 +89,56 @@ const MainView = (
 
                             <div className={styles.table_block}>
                                 <div className={`${styles.table_medical} ${styles.custom_scrollbar}`}>
-                                    <div className={styles.table_item}>Все</div>
-                                    <div className={styles.table_item}>Акушер-гинекоasdasd</div>
-                                    <div className={styles.table_item}>Андролог</div>
+                                    <div onClick={() => changeSpecialty("all")} className={styles.table_item}>Все</div>
+                                    {
+                                        specialities.map(item => (
+                                            <div
+                                                onClick={() => changeSpecialty(item.id)}
+                                                // style={{backgroundColor: item.color}}
+                                                className={styles.table_item}
+                                                key={item.id}
+                                            >
+                                                {item.name}
+                                            </div>
+                                        ))
+                                    }
                                 </div>
 
                                 <div className={`${styles.table_doctors} ${styles.custom_scrollbar}`}>
-                                    <div className={styles.row}>
-                                        <div className={styles.cell}>
-                                            <label className={styles.checkbox_block}>
-                                                <input type="checkbox"/>
-                                                <div className={styles.box}></div>
-                                            </label>
-                                        </div>
-                                        <div className={styles.cell}>
-                                            Михаил Романов
-                                        </div>
-                                        <div className={styles.cell}>
-                                            Педиатр
-                                        </div>
-                                        <div className={styles.cell}>
-                                            (210) 727-9289
-                                        </div>
-                                        <div className={styles.cell}>
-                                            <div className={styles.status_block}></div>
-                                        </div>
-                                    </div>
+                                    {
+                                        doctors.map((item: IDoctors) => (
+                                            <div
+                                                onClick={(e) => selectDoctor(e, item)}
+                                                key={item.id}
+                                                className={`doctors_table_row ${styles.row} ${selectedDoctor.includes(item.id) ? styles.selected : ""}`}
+                                                // style={{backgroundColor: item.color}}
+                                            >
+                                                <div className={styles.cell}>
+                                                    <label className={styles.checkbox_block}>
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={selectedDoctor.includes(item.id)}
+                                                            onChange={() => {}}
+                                                        />
+                                                        <div className={styles.box}></div>
+                                                    </label>
+                                                </div>
+                                                <div className={styles.cell}>
+                                                    {item.full_name}
+                                                </div>
+                                                <div className={styles.cell}>
+                                                    {item.speciality.name}
+                                                </div>
+                                                <div className={styles.cell}>
+                                                    {item.number}
+                                                </div>
+                                                <div className={styles.cell}>
+                                                    <div className={`${styles.status_block} ${item.active ? "" : styles.not_active}`}></div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -115,8 +147,7 @@ const MainView = (
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+        </>
     );
 };
 

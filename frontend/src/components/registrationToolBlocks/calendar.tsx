@@ -2,7 +2,7 @@ import React from 'react';
 import {ReactComponent as CalendarEdit} from "../../assets/img/header_icons/calendar-edit.svg";
 import styles from "./toolboxs.module.scss";
 import parse from 'html-react-parser';
-import {Typography} from "@mui/material";
+import {Button, Typography} from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const Calendar = () => {
@@ -68,7 +68,9 @@ const Calendar = () => {
                 </div>
             </div>
 
-            <div className={styles.create_entry}></div>
+            <Button variant="contained" className={styles.create_btn} startIcon={<CalendarEdit />}>
+                Создать запись
+            </Button>
         </div>
     );
 };

@@ -76,7 +76,7 @@
 
 .main_wrapper{
     display: flex;
-    height: calc(100vh - 76px);
+    height: calc(1080px - 76px);
 
     .sideBar{
         width: 116px;
@@ -132,16 +132,18 @@
             padding-bottom: 13px;
             display: flex;
             align-items: flex-start;
+            height: 891px;
 
 
             .table{
                 width: 625px;
                 margin-right: 10px;
+                height: 100%;
 
                 .table_block{
                     width: 100%;
                     display: flex;
-                    height: calc(100vh - 322px);
+                    height: calc(100% - 133px);
 
                     .table_medical{
                         width: 150px;
@@ -163,6 +165,8 @@
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
+                            cursor: pointer;
+                            user-select: none;
 
 
                             &:first-child{
@@ -185,6 +189,14 @@
                             width: 100%;
                             display: flex;
                             border-top: 1px solid #616161;
+                            cursor: pointer;
+                            user-select: none;
+
+                            &.selected{
+                                .cell{
+                                    color: #2196F3;
+                                }
+                            }
 
                             &:first-child{
                                 border-top: none;
@@ -201,6 +213,9 @@
                                 line-height: 20px;
                                 letter-spacing: 0.15px;
                                 color: #616161;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
 
                                 &:nth-child(1){
                                     border-left: none;
@@ -275,6 +290,10 @@
                                     height: 20px;
                                     border-radius: 50%;
                                     background-color: #4CAF50;
+
+                                    &.not_active{
+                                        background-color: #F44336;
+                                    }
                                 }
                             }
                         }
@@ -286,7 +305,7 @@
         }
 
         .calendar{
-            height: calc(100vh - 190px);
+            height: 100%;
             width: calc(100% - 635px);
         }
     }

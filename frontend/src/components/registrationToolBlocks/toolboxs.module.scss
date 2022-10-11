@@ -2,6 +2,7 @@
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 90px;
     border-bottom: var(--borderStyle);
     border-left: var(--borderStyle);
@@ -70,6 +71,20 @@
                         color: rgba(0, 0, 0, 0.87);
                     }
                 }
+            }
+        }
+    }
+
+    .create_btn{
+        background-color: #64B6F7;
+        height: 42px;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 14px;
+
+        svg{
+            path{
+                stroke: #fff;
             }
         }
     }

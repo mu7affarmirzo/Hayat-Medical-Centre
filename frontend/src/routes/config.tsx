@@ -1,5 +1,6 @@
 import {LoginContainer, MainContainer} from "../containers/index";
 import React, {ReactElement} from "react";
+import CreateNote from "../views/createNote/createNote";
 
 type IRouting = {
     path: string;
@@ -24,6 +25,10 @@ export const RoutingData: MyGroupType = {
             "path": "/test",
             "component": <MainContainer />,
             "global": true,
+        },
+        {
+            "path": "/createNote",
+            "component": <CreateNote />,
         }
     ]
 };

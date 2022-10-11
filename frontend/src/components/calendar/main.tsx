@@ -16,6 +16,8 @@ const CalendarMain = observer(() => {
 
     const mLocalizer = momentLocalizer(moment);
 
+    console.log(CalendarEvents.eventsCopy)
+
     const {components, views, messages, events} = useMemo(() => ({
         components: calendarComponent,
         views: { month: true, week: true, day: true},
@@ -26,7 +28,7 @@ const CalendarMain = observer(() => {
             day: 'день',
         },
 
-        events: CalendarEvents.events
+        events: CalendarEvents.eventsCopy
     }),[]);
     return (
         <>
