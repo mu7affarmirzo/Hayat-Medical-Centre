@@ -1,18 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Navigate, Route, Routes} from "react-router";
 import {RoutingData} from "./config";
-import {observer} from 'mobx-react-lite';
-import AuthorizationStore from "../store/authorization";
+import {observer, useLocalObservable} from 'mobx-react-lite';
 import Headers from "../components/headers";
 import styles from "../views/main/index.module.scss";
 import SideBar from "../components/sideBar";
+import {AuthorizationStateKeeper} from "../store";
 
 const AppRouting = observer(() => {
-    let role = AuthorizationStore.role;
 
-    if(!RoutingData[role]){
-        throw new Error(`This type "${role}" of role is not defined `);
-    }
+    const authorizationStateKeeper = useLocalObservable(() => AuthorizationStateKeeper.instance);
+    const {role} = authorizationStateKeeper;
+
+    useEffect(() => {
+        if (!RoutingData[role]) {
+            throw new Error(`This type "${role}" of role is not defined `);
+        }
+    }, [role]);
 
     return (
         <>
@@ -20,21 +24,22 @@ const AppRouting = observer(() => {
 
             {
                 role !== "NoAuth"
-                ?
+                    ?
                     <>
                         <Headers/>
                         <div className={styles.main_wrapper}>
-                            <SideBar />
+                            <SideBar/>
 
                             <Routes>
                                 {
                                     RoutingData[role].map((item, i) => {
                                         return (
                                             <>
-                                                <Route key={i} path={item.path} element={item.component} />
+                                                <Route key={i} path={item.path} element={item.component}/>
 
                                                 {
-                                                    item.global && <Route path="*" element={<Navigate to={item.path} replace />} />
+                                                    item.global &&
+                                                    <Route path="*" element={<Navigate to={item.path} replace/>}/>
                                                 }
                                             </>
                                         );
@@ -44,16 +49,17 @@ const AppRouting = observer(() => {
                         </div>
 
                     </>
-                :
+                    :
                     <Routes>
                         {
                             RoutingData[role].map((item, i) => {
                                 return (
                                     <>
-                                        <Route key={i} path={item.path} element={item.component} />
+                                        <Route key={i} path={item.path} element={item.component}/>
 
                                         {
-                                            item.global && <Route path="*" element={<Navigate to={item.path} replace />} />
+                                            item.global &&
+                                            <Route path="*" element={<Navigate to={item.path} replace/>}/>
                                         }
                                     </>
                                 );

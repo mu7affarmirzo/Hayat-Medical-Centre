@@ -4,7 +4,7 @@ import Calendar from "./calendar";
 const ToolBoxTop = () => {
     return (
         <>
-            <Calendar />
+            <Calendar/>
         </>
     );
 };

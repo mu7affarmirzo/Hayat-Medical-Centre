@@ -7,17 +7,35 @@ export interface ILoginState {
     rememberMe: boolean;
 }
 
-export interface ISpecialities {
+export interface ISpeciality {
     id: string;
     name: string;
     color: string
 }
 
-export interface IDoctors {
+export interface IDoctor {
     id: string;
     full_name: string;
-    speciality: ISpecialities;
+    speciality: ISpeciality;
     number: string;
     color: string;
     active: boolean;
+}
+
+export interface IEvent {
+    end: Date;
+    start: Date;
+    title: string;
+    id: number;
+    allDay?: boolean;
+    resource?: any;
+    doctorsId?: string;
+}
+
+export interface IAppointment {
+    "id": number,
+    "title": string,
+    "doctorsId": string,
+    "start": string,
+    "end": string
 }

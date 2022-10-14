@@ -1,17 +1,22 @@
 import React from 'react';
 import {
-    Box, Button, Checkbox,
+    Box,
+    Button,
+    Checkbox,
     Container,
-    FormControl, FormControlLabel,
-    FormGroup, FormHelperText,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormHelperText,
     Grid,
-    IconButton, InputAdornment,
+    IconButton,
+    InputAdornment,
     InputLabel,
     Link,
     OutlinedInput,
     Typography
 } from "@mui/material"
-import {Visibility, VisibilityOff, ErrorOutlineOutlined, CloseOutlined} from '@mui/icons-material';
+import {CloseOutlined, ErrorOutlineOutlined, Visibility, VisibilityOff} from '@mui/icons-material';
 import loginPhoto from "../../assets/img/login_foto.png";
 import styles from "./index.module.scss"
 import {Item} from "../../themes/customItems";
@@ -19,13 +24,13 @@ import {ILoginState} from "../../consts/types";
 
 
 const LoginView = ({
-   values,
-   handleChange,
-   checkInput,
-   handleClickShowPassword,
-   handleMouseDownPassword,
-   setValues,
-}: {
+                       values,
+                       handleChange,
+                       checkInput,
+                       handleClickShowPassword,
+                       handleMouseDownPassword,
+                       setValues,
+                   }: {
     values: ILoginState,
     setValues: (obj: ILoginState) => void,
     handleChange: (prop: keyof ILoginState) => (event: React.ChangeEvent<HTMLInputElement>) => undefined | void,
@@ -53,7 +58,8 @@ const LoginView = ({
                             {/*<FormControl control={<TextField label="Логин" variant="outlined" className={styles.input} size="medium"/>} />*/}
 
                             <FormGroup>
-                                <FormControl error={values.isLoginValid === false} className={styles.input} variant="outlined">
+                                <FormControl error={values.isLoginValid === false} className={styles.input}
+                                             variant="outlined">
                                     <InputLabel>Логин</InputLabel>
 
                                     <OutlinedInput
@@ -65,13 +71,14 @@ const LoginView = ({
                                     />
 
                                     {values.isLoginValid === false &&
-										<FormHelperText error>
-											Incorrect entry.
-										</FormHelperText>
+                                        <FormHelperText error>
+                                            Incorrect entry.
+                                        </FormHelperText>
                                     }
                                 </FormControl>
 
-                                <FormControl error={values.isPasswordValid === false} className={styles.input} variant="outlined">
+                                <FormControl error={values.isPasswordValid === false} className={styles.input}
+                                             variant="outlined">
                                     <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
                                     <OutlinedInput
                                         id="outlined-adornment-password"
@@ -87,7 +94,7 @@ const LoginView = ({
                                                     onMouseDown={handleMouseDownPassword}
                                                     edge="end"
                                                 >
-                                                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    {values.showPassword ? <VisibilityOff/> : <Visibility/>}
                                                 </IconButton>
                                             </InputAdornment>
                                         }
@@ -111,12 +118,16 @@ const LoginView = ({
                                     <CloseOutlined sx={{color: "#fff"}}/>
                                 </Box>}
 
-                                <Item sx={{justifyContent: "space-between", paddingRight: "16px", marginBottom: "30px"}}>
+                                <Item
+                                    sx={{justifyContent: "space-between", paddingRight: "16px", marginBottom: "30px"}}>
                                     <FormControlLabel
                                         control={
                                             <Checkbox
                                                 sx={{height: "40px"}}
-                                                onChange={(event: any) => setValues({...values, rememberMe: event.target.checked})}
+                                                onChange={(event: any) => setValues({
+                                                    ...values,
+                                                    rememberMe: event.target.checked
+                                                })}
                                             />
                                         }
                                         label="Запомните пароль"
@@ -137,7 +148,6 @@ const LoginView = ({
                                     Вход в систему
                                 </Button>
                             </FormGroup>
-
 
 
                         </Box>

@@ -6,7 +6,10 @@ import {NavBarDropdowns} from "../consts/main";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const Headers = () => {
-    const [anchorEl, setAnchorEl] = React.useState<{index: string, elem: null | HTMLElement}>({index: "", elem: null});
+    const [anchorEl, setAnchorEl] = React.useState<{ index: string, elem: null | HTMLElement }>({
+        index: "",
+        elem: null
+    });
     const [profileOpen, setProfileOpen] = React.useState<null | HTMLElement>(null);
 
     const handleClick = (index: string, event: React.MouseEvent<HTMLButtonElement>) => {
@@ -25,7 +28,7 @@ const Headers = () => {
                 <nav className={styles.nav}>
 
                     {NavBarDropdowns.map((item, i) => {
-                        if(!item.dropdown){
+                        if (!item.dropdown) {
                             return (
                                 <div className={styles.nav_item}>
                                     {item.button}
@@ -93,7 +96,7 @@ const Headers = () => {
                         <Typography variant="h6" className={styles.profile_text}>
                             Вадим Александров
                         </Typography>
-                        <ArrowDropDownIcon sx={{fill: "rgba(0, 0, 0, 0.54)"}} />
+                        <ArrowDropDownIcon sx={{fill: "rgba(0, 0, 0, 0.54)"}}/>
                     </Button>
                     <Menu
                         id="fade-menu"

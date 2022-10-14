@@ -1,0 +1,578 @@
+[
+  {
+    "full_name": "Leanne Graham",
+    "number": "1-770-736-8031",
+    "id": "111",
+    "speciality": {
+      "id": "17",
+      "name": "Ортопед",
+      "color": "#3625bf"
+    },
+    "color": "#3625bf",
+    "active": true
+  },
+  {
+    "full_name": "Ervin Howell",
+    "number": "010-692-6593",
+    "id": "112",
+    "speciality": {
+      "id": "23",
+      "name": "Пульмонолог",
+      "color": "#ca3c1d"
+    },
+    "color": "#ca3c1d",
+    "active": false
+  },
+  {
+    "full_name": "Clementine Bauch",
+    "number": "1-463-123-4447",
+    "id": "113",
+    "speciality": {
+      "id": "16",
+      "name": "Онколог ",
+      "color": "#8021b9"
+    },
+    "color": "#8021b9",
+    "active": true
+  },
+  {
+    "full_name": "Patricia Lebsack",
+    "number": "493-170-9623",
+    "id": "114",
+    "speciality": {
+      "id": "5",
+      "name": "Гастроэнтеролог",
+      "color": "#686b35"
+    },
+    "color": "#686b35",
+    "active": true
+  },
+  {
+    "full_name": "Chelsey Dietrich",
+    "number": "(254)954-1289",
+    "id": "115",
+    "speciality": {
+      "id": "10",
+      "name": "Кардиохирург",
+      "color": "#8d3667"
+    },
+    "color": "#8d3667",
+    "active": true
+  },
+  {
+    "full_name": "Mrs. Dennis Schulist",
+    "number": "1-477-935-8478",
+    "id": "116",
+    "speciality": {
+      "id": "18",
+      "name": "Подолог",
+      "color": "#f49fb6"
+    },
+    "color": "#f49fb6",
+    "active": false
+  },
+  {
+    "full_name": "Kurtis Weissnat",
+    "number": "210.067.6132",
+    "id": "117",
+    "speciality": {
+      "id": "15",
+      "name": "Неонатолог",
+      "color": "#119051"
+    },
+    "color": "#119051",
+    "active": false
+  },
+  {
+    "full_name": "Nicholas Runolfsdottir V",
+    "number": "586.493.6943",
+    "id": "118",
+    "speciality": {
+      "id": "20",
+      "name": "Проктолог",
+      "color": "#064118"
+    },
+    "color": "#064118",
+    "active": true
+  },
+  {
+    "full_name": "Glenna Reichert",
+    "number": "(775)976-6794",
+    "id": "119",
+    "speciality": {
+      "id": "9",
+      "name": "Кардиолог",
+      "color": "#d943d2"
+    },
+    "color": "#d943d2",
+    "active": true
+  },
+  {
+    "full_name": "Clementina DuBuque",
+    "number": "024-648-3804",
+    "id": "120",
+    "speciality": {
+      "id": "12",
+      "name": "Миколог",
+      "color": "#3e9227"
+    },
+    "color": "#3e9227",
+    "active": true
+  },
+  {
+    "full_name": "Leanne Graham2",
+    "number": "1-770-736-8031",
+    "id": "121",
+    "speciality": {
+      "id": "21",
+      "name": "Психиатр",
+      "color": "#6168e6"
+    },
+    "color": "#6168e6",
+    "active": false
+  },
+  {
+    "full_name": "Ervin Howell2",
+    "number": "010-692-6593",
+    "id": "122",
+    "speciality": {
+      "id": "3",
+      "name": "Венеролог",
+      "color": "#65b4b7"
+    },
+    "color": "#65b4b7",
+    "active": false
+  },
+  {
+    "full_name": "Clementine Bauch2",
+    "number": "1-463-123-4447",
+    "id": "123",
+    "speciality": {
+      "id": "14",
+      "name": "Нейрохирург",
+      "color": "#5ae391"
+    },
+    "color": "#5ae391",
+    "active": false
+  },
+  {
+    "full_name": "Patricia Lebsack2",
+    "number": "493-170-9623",
+    "id": "124",
+    "speciality": {
+      "id": "7",
+      "name": "Дерматолог",
+      "color": "#37d57e"
+    },
+    "color": "#37d57e",
+    "active": true
+  },
+  {
+    "full_name": "Chelsey Dietrich2",
+    "number": "(254)954-1289",
+    "id": "125",
+    "speciality": {
+      "id": "19",
+      "name": "Педиатр",
+      "color": "#426280"
+    },
+    "color": "#426280",
+    "active": true
+  },
+  {
+    "full_name": "Mrs. Dennis Schulist2",
+    "number": "1-477-935-8478",
+    "id": "126",
+    "speciality": {
+      "id": "6",
+      "name": "Гематолог",
+      "color": "#ce11b6"
+    },
+    "color": "#ce11b6",
+    "active": true
+  },
+  {
+    "full_name": "Kurtis Weissnat2",
+    "number": "210.067.6132",
+    "id": "127",
+    "speciality": {
+      "id": "2",
+      "name": "Андролог",
+      "color": "#46d021"
+    },
+    "color": "#46d021",
+    "active": true
+  },
+  {
+    "full_name": "Nicholas Runolfsdottir V2",
+    "number": "586.493.6943",
+    "id": "128",
+    "speciality": {
+      "id": "4",
+      "name": "ЛОР",
+      "color": "#1e7d26"
+    },
+    "color": "#1e7d26",
+    "active": true
+  },
+  {
+    "full_name": "Glenna Reichert2",
+    "number": "(775)976-6794",
+    "id": "129",
+    "speciality": {
+      "id": "13",
+      "name": "Нарколог",
+      "color": "#7916a5"
+    },
+    "color": "#7916a5",
+    "active": true
+  },
+  {
+    "full_name": "Clementina DuBuque2",
+    "number": "024-648-3804",
+    "id": "130",
+    "speciality": {
+      "id": "22",
+      "name": "Психотерапевт",
+      "color": "#b6d515"
+    },
+    "color": "#b6d515",
+    "active": false
+  },
+  {
+    "full_name": "Leanne Graham3",
+    "number": "1-770-736-8031",
+    "id": "131",
+    "speciality": {
+      "id": "11",
+      "name": "Косметолог",
+      "color": "#3aedc5"
+    },
+    "color": "#3aedc5",
+    "active": false
+  },
+  {
+    "full_name": "Ervin Howell3",
+    "number": "010-692-6593",
+    "id": "132",
+    "speciality": {
+      "id": "8",
+      "name": "Диетолог",
+      "color": "#cae8a8"
+    },
+    "color": "#cae8a8",
+    "active": false
+  },
+  {
+    "full_name": "Clementine Bauch3",
+    "number": "1-463-123-4447",
+    "id": "133",
+    "speciality": {
+      "id": "24",
+      "name": "Терапевт",
+      "color": "#b3a4a0"
+    },
+    "color": "#b3a4a0",
+    "active": false
+  },
+  {
+    "full_name": "Patricia Lebsack3",
+    "number": "493-170-9623",
+    "id": "134",
+    "speciality": {
+      "id": "1",
+      "name": "Акушер-гинеколог",
+      "color": "#9b618f"
+    },
+    "color": "#9b618f",
+    "active": false
+  },
+  {
+    "full_name": "Chelsey Dietrich3",
+    "number": "(254)954-1289",
+    "id": "135",
+    "speciality": {
+      "id": "2",
+      "name": "Андролог",
+      "color": "#46d021"
+    },
+    "color": "#46d021",
+    "active": false
+  },
+  {
+    "full_name": "Mrs. Dennis Schulist3",
+    "number": "1-477-935-8478",
+    "id": "136",
+    "speciality": {
+      "id": "18",
+      "name": "Подолог",
+      "color": "#f49fb6"
+    },
+    "color": "#f49fb6",
+    "active": false
+  },
+  {
+    "full_name": "Kurtis Weissnat3",
+    "number": "210.067.6132",
+    "id": "137",
+    "speciality": {
+      "id": "16",
+      "name": "Онколог ",
+      "color": "#8021b9"
+    },
+    "color": "#8021b9",
+    "active": false
+  },
+  {
+    "full_name": "Nicholas Runolfsdottir V3",
+    "number": "586.493.6943",
+    "id": "138",
+    "speciality": {
+      "id": "3",
+      "name": "Венеролог",
+      "color": "#65b4b7"
+    },
+    "color": "#65b4b7",
+    "active": true
+  },
+  {
+    "full_name": "Glenna Reichert3",
+    "number": "(775)976-6794",
+    "id": "139",
+    "speciality": {
+      "id": "5",
+      "name": "Гастроэнтеролог",
+      "color": "#686b35"
+    },
+    "color": "#686b35",
+    "active": false
+  },
+  {
+    "full_name": "Clementina DuBuque3",
+    "number": "024-648-3804",
+    "id": "140",
+    "speciality": {
+      "id": "14",
+      "name": "Нейрохирург",
+      "color": "#5ae391"
+    },
+    "color": "#5ae391",
+    "active": false
+  },
+  {
+    "full_name": "Leanne Graham4",
+    "number": "1-770-736-8031",
+    "id": "141",
+    "speciality": {
+      "id": "13",
+      "name": "Нарколог",
+      "color": "#7916a5"
+    },
+    "color": "#7916a5",
+    "active": false
+  },
+  {
+    "full_name": "Ervin Howell4",
+    "number": "010-692-6593",
+    "id": "142",
+    "speciality": {
+      "id": "6",
+      "name": "Гематолог",
+      "color": "#ce11b6"
+    },
+    "color": "#ce11b6",
+    "active": false
+  },
+  {
+    "full_name": "Clementine Bauch4",
+    "number": "1-463-123-4447",
+    "id": "143",
+    "speciality": {
+      "id": "20",
+      "name": "Проктолог",
+      "color": "#064118"
+    },
+    "color": "#064118",
+    "active": true
+  },
+  {
+    "full_name": "Patricia Lebsack4",
+    "number": "493-170-9623",
+    "id": "144",
+    "speciality": {
+      "id": "11",
+      "name": "Косметолог",
+      "color": "#3aedc5"
+    },
+    "color": "#3aedc5",
+    "active": true
+  },
+  {
+    "full_name": "Chelsey Dietrich4",
+    "number": "(254)954-1289",
+    "id": "145",
+    "speciality": {
+      "id": "23",
+      "name": "Пульмонолог",
+      "color": "#ca3c1d"
+    },
+    "color": "#ca3c1d",
+    "active": true
+  },
+  {
+    "full_name": "Mrs. Dennis Schulist4",
+    "number": "1-477-935-8478",
+    "id": "146",
+    "speciality": {
+      "id": "22",
+      "name": "Психотерапевт",
+      "color": "#b6d515"
+    },
+    "color": "#b6d515",
+    "active": true
+  },
+  {
+    "full_name": "Kurtis Weissnat4",
+    "number": "210.067.6132",
+    "id": "147",
+    "speciality": {
+      "id": "9",
+      "name": "Кардиолог",
+      "color": "#d943d2"
+    },
+    "color": "#d943d2",
+    "active": false
+  },
+  {
+    "full_name": "Nicholas Runolfsdottir V4",
+    "number": "586.493.6943",
+    "id": "148",
+    "speciality": {
+      "id": "4",
+      "name": "ЛОР",
+      "color": "#1e7d26"
+    },
+    "color": "#1e7d26",
+    "active": false
+  },
+  {
+    "full_name": "Glenna Reichert4",
+    "number": "(775)976-6794",
+    "id": "149",
+    "speciality": {
+      "id": "8",
+      "name": "Диетолог",
+      "color": "#cae8a8"
+    },
+    "color": "#cae8a8",
+    "active": true
+  },
+  {
+    "full_name": "Clementina DuBuque4",
+    "number": "024-648-3804",
+    "id": "150",
+    "speciality": {
+      "id": "21",
+      "name": "Психиатр",
+      "color": "#6168e6"
+    },
+    "color": "#6168e6",
+    "active": true
+  },
+  {
+    "full_name": "Leanne Graham5",
+    "number": "1-770-736-8031",
+    "id": "151",
+    "speciality": {
+      "id": "17",
+      "name": "Ортопед",
+      "color": "#3625bf"
+    },
+    "color": "#3625bf",
+    "active": true
+  },
+  {
+    "full_name": "Ervin Howell5",
+    "number": "010-692-6593",
+    "id": "152",
+    "speciality": {
+      "id": "7",
+      "name": "Дерматолог",
+      "color": "#37d57e"
+    },
+    "color": "#37d57e",
+    "active": true
+  },
+  {
+    "full_name": "Clementine Bauch5",
+    "number": "1-463-123-4447",
+    "id": "153",
+    "speciality": {
+      "id": "10",
+      "name": "Кардиохирург",
+      "color": "#8d3667"
+    },
+    "color": "#8d3667",
+    "active": true
+  },
+  {
+    "full_name": "Patricia Lebsack5",
+    "number": "493-170-9623",
+    "id": "154",
+    "speciality": {
+      "id": "12",
+      "name": "Миколог",
+      "color": "#3e9227"
+    },
+    "color": "#3e9227",
+    "active": false
+  },
+  {
+    "full_name": "Chelsey Dietrich5",
+    "number": "(254)954-1289",
+    "id": "155",
+    "speciality": {
+      "id": "15",
+      "name": "Неонатолог",
+      "color": "#119051"
+    },
+    "color": "#119051",
+    "active": false
+  },
+  {
+    "full_name": "Mrs. Dennis Schulist5",
+    "number": "1-477-935-8478",
+    "id": "156",
+    "speciality": {
+      "id": "19",
+      "name": "Педиатр",
+      "color": "#426280"
+    },
+    "color": "#426280",
+    "active": false
+  },
+  {
+    "full_name": "Kurtis Weissnat5",
+    "number": "210.067.6132",
+    "id": "157",
+    "speciality": {
+      "id": "24",
+      "name": "Терапевт",
+      "color": "#b3a4a0"
+    },
+    "color": "#b3a4a0",
+    "active": false
+  },
+  {
+    "full_name": "Nicholas Runolfsdottir V5",
+    "number": "586.493.6943",
+    "id": "158",
+    "speciality": {
+      "id": "1",
+      "name": "Акушер-гинеколог",
+      "color": "#9b618f"
+    },
+    "color": "#9b618f",
+    "active": false
+  }
+]

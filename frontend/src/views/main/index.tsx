@@ -1,22 +1,13 @@
-import React, {useMemo, useState} from 'react';
+import React from 'react';
 import Headers from "../../components/headers";
 import styles from "./index.module.scss";
 import SideBar from "../../components/sideBar";
 import ToolBoxTop from "../../components/registrationToolBlocks/main";
-import {
-    Box,
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-    Select
-} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select} from "@mui/material";
 import {ReactComponent as SearchNormal} from "../../assets/img/search-normal.svg"
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 // import 'react-big-calendar/lib/sass/styles';
-import moment from 'moment'
 import CalendarMain from "../../components/calendar/main";
 
 
@@ -24,21 +15,19 @@ const MainIndex = () => {
     const [selectData, setSelectData] = React.useState('');
 
 
-
-
     return (
         <div>
             <Headers/>
             <div className={styles.main_wrapper}>
-                <SideBar />
+                <SideBar/>
                 <div className={styles.main_block}>
                     <div className={styles.top}>
-                        <ToolBoxTop />
+                        <ToolBoxTop/>
                     </div>
 
                     <div className={styles.main_content}>
                         <div className={styles.table}>
-                            <Box sx={{ mb: "10px" }}>
+                            <Box sx={{mb: "10px"}}>
                                 <FormControl fullWidth>
                                     <InputLabel id="demo-simple-select-label">Age</InputLabel>
                                     <Select
@@ -58,28 +47,30 @@ const MainIndex = () => {
 
                             <Grid container mb="10px">
                                 <Grid item xl={6}>
-                                    <FormControl sx={{ width: "301px", height: "100%", marginRight: "20px" }} variant="outlined">
-                                        <InputLabel htmlFor="outlined-adornment-password">Поиск специалности</InputLabel>
+                                    <FormControl sx={{width: "301px", height: "100%", marginRight: "20px"}}
+                                                 variant="outlined">
+                                        <InputLabel htmlFor="outlined-adornment-password">Поиск
+                                            специалности</InputLabel>
                                         <OutlinedInput
                                             id="outlined-adornment-password"
                                             type={'text'}
                                             // value={values.password}
                                             endAdornment={
-                                                <SearchNormal position="end" />
+                                                <SearchNormal position="end"/>
                                             }
                                             label="Поиск специалности"
                                         />
                                     </FormControl>
                                 </Grid>
                                 <Grid item xl={6} sx={{textAlign: "right"}}>
-                                    <FormControl sx={{ width: "301px", height: "100%"}} variant="outlined">
+                                    <FormControl sx={{width: "301px", height: "100%"}} variant="outlined">
                                         <InputLabel htmlFor="outlined-adornment-password">Поиск врачей</InputLabel>
                                         <OutlinedInput
                                             id="outlined-adornment-password"
                                             type={'text'}
                                             // value={values.password}
                                             endAdornment={
-                                                <SearchNormal position="end" />
+                                                <SearchNormal position="end"/>
                                             }
                                             label="Поиск врачей"
                                         />
@@ -117,7 +108,7 @@ const MainIndex = () => {
                             </div>
                         </div>
                         <div className={styles.calendar}>
-                            <CalendarMain />
+                            <CalendarMain/>
                         </div>
                     </div>
                 </div>

@@ -25,28 +25,28 @@ interface INav {
     }>
 }
 
-export const NavBarDropdowns:Array<INav> = [
+export const NavBarDropdowns: Array<INav> = [
     {
         button: "Регистратура",
         title: "Регистратура",
         dropdown: [
             {
-                img: <CalendarEdit />,
+                img: <CalendarEdit/>,
                 text: "Расписания врачей",
                 sideBarText: "Расписания <br> врачей"
             },
             {
-                img: <FolderAdd />,
+                img: <FolderAdd/>,
                 text: "Добавить пакет",
                 sideBarText: "Добавить <br> пакет"
             },
             {
-                img: <Note />,
+                img: <Note/>,
                 text: "Добавить группу приемов",
                 sideBarText: "Добавить <br> группу приемов"
             },
             {
-                img: <ProfileUser />,
+                img: <ProfileUser/>,
                 text: "Справочник пациентов",
                 sideBarText: "Справочник <br> пациентов"
             },
@@ -57,27 +57,27 @@ export const NavBarDropdowns:Array<INav> = [
         title: "Касса",
         dropdown: [
             {
-                img: <Moneys />,
+                img: <Moneys/>,
                 text: "Касса"
             },
             {
-                img: <ProfileMoney />,
+                img: <ProfileMoney/>,
                 text: "Оплаты по пациентам"
             },
             {
-                img: <LockArrow />,
+                img: <LockArrow/>,
                 text: "История закрытий"
             },
             {
-                img: <Bill />,
+                img: <Bill/>,
                 text: "Мемордера"
             },
             {
-                img: <MoneyTime />,
+                img: <MoneyTime/>,
                 text: "Должники"
             },
             {
-                img: <ClipboardClose />,
+                img: <ClipboardClose/>,
                 text: "Быстрая запись"
             },
         ]
@@ -90,15 +90,15 @@ export const NavBarDropdowns:Array<INav> = [
         title: "Справочники",
         dropdown: [
             {
-                img: <Clients />,
+                img: <Clients/>,
                 text: "Клиенты"
             },
             {
-                img: <UserSquare />,
+                img: <UserSquare/>,
                 text: "Группа клиентов"
             },
             {
-                img: <ScanBarcode />,
+                img: <ScanBarcode/>,
                 text: "Промокоды"
             }
         ]
@@ -108,7 +108,7 @@ export const NavBarDropdowns:Array<INav> = [
         title: "Утилиты",
         dropdown: [
             {
-                img: <People />,
+                img: <People/>,
                 text: "Слияние пациентов"
             }
         ]

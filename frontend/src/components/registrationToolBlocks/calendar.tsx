@@ -2,7 +2,7 @@ import React from 'react';
 import {ReactComponent as CalendarEdit} from "../../assets/img/header_icons/calendar-edit.svg";
 import styles from "./toolboxs.module.scss";
 import parse from 'html-react-parser';
-import {Button, Typography} from "@mui/material";
+import {Button} from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const Calendar = () => {
@@ -15,32 +15,32 @@ const Calendar = () => {
 
     const calendarData: Array<ICalendar> = [
         {
-            img: <CalendarEdit />,
+            img: <CalendarEdit/>,
             text: "Создать <br> запись"
         },
         {
-            img: <CalendarEdit />,
+            img: <CalendarEdit/>,
             text: "Создать <br> событие"
         },
         {
-            img: <CalendarEdit />,
+            img: <CalendarEdit/>,
             text: "Автозапись"
         },
         {
-            img: <CalendarEdit />,
+            img: <CalendarEdit/>,
             text: "Найти <br> время"
         },
         {
-            img: <CalendarEdit />,
+            img: <CalendarEdit/>,
             text: "Выдать <br> счет"
         },
         {
-            img: <CalendarEdit />,
+            img: <CalendarEdit/>,
             text: "Печать",
             border: true
         },
         {
-            img: <CalendarEdit />,
+            img: <CalendarEdit/>,
             text: "Отмененные"
         },
     ]
@@ -63,12 +63,12 @@ const Calendar = () => {
                             <p className={styles.days}>20.06.2022 - 05.08.2022</p>
                         </div>
 
-                        <ArrowDropDownIcon sx={{fill: "rgba(0, 0, 0, 0.54)"}} />
+                        <ArrowDropDownIcon sx={{fill: "rgba(0, 0, 0, 0.54)"}}/>
                     </div>
                 </div>
             </div>
 
-            <Button variant="contained" className={styles.create_btn} startIcon={<CalendarEdit />}>
+            <Button variant="contained" className={styles.create_btn} startIcon={<CalendarEdit/>}>
                 Создать запись
             </Button>
         </div>

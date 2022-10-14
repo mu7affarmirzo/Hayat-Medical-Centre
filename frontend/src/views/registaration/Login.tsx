@@ -1,23 +1,27 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
-    Box, Button, Checkbox,
+    Box,
+    Button,
+    Checkbox,
     Container,
-    FormControl, FormControlLabel,
-    FormGroup, FormHelperText,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormHelperText,
     Grid,
-    IconButton, InputAdornment,
+    IconButton,
+    InputAdornment,
     InputLabel,
     Link,
     OutlinedInput,
-    TextField,
     Typography
 } from "@mui/material"
-import {Visibility, VisibilityOff, ErrorOutlineOutlined, CloseOutlined} from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import {CloseOutlined, ErrorOutlineOutlined, Visibility, VisibilityOff} from '@mui/icons-material';
+import {styled} from '@mui/material/styles';
 import loginPhoto from "../../assets/img/login_foto.png";
 import styles from "./index.module.scss"
 
-const Item = styled(Box)(({ theme }) => ({
+const Item = styled(Box)(({theme}) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
@@ -56,12 +60,12 @@ const Login = () => {
     //     console.log(values)
     // }, [values])
 
-    const checkInput = (event:  React.ChangeEvent<HTMLInputElement>, type: string) => {
-        let value:string = event.target.value;
+    const checkInput = (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
+        let value: string = event.target.value;
 
-        if(type === "login"){
+        if (type === "login") {
             setValues({...values, isLoginValid: value.length > 3})
-        }else if(type === "password"){
+        } else if (type === "password") {
             setValues({...values, isPasswordValid: value.length > 3})
         }
 
@@ -97,7 +101,8 @@ const Login = () => {
                             {/*<FormControl control={<TextField label="Логин" variant="outlined" className={styles.input} size="medium"/>} />*/}
 
                             <FormGroup>
-                                <FormControl error={values.isLoginValid === false} className={styles.input} variant="outlined">
+                                <FormControl error={values.isLoginValid === false} className={styles.input}
+                                             variant="outlined">
                                     <InputLabel>Логин</InputLabel>
 
                                     <OutlinedInput
@@ -109,13 +114,14 @@ const Login = () => {
                                     />
 
                                     {values.isLoginValid === false &&
-										<FormHelperText error>
-											Incorrect entry.
-										</FormHelperText>
+                                        <FormHelperText error>
+                                            Incorrect entry.
+                                        </FormHelperText>
                                     }
                                 </FormControl>
 
-                                <FormControl error={values.isPasswordValid === false} className={styles.input} variant="outlined">
+                                <FormControl error={values.isPasswordValid === false} className={styles.input}
+                                             variant="outlined">
                                     <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
                                     <OutlinedInput
                                         id="outlined-adornment-password"
@@ -131,7 +137,7 @@ const Login = () => {
                                                     onMouseDown={handleMouseDownPassword}
                                                     edge="end"
                                                 >
-                                                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    {values.showPassword ? <VisibilityOff/> : <Visibility/>}
                                                 </IconButton>
                                             </InputAdornment>
                                         }
@@ -155,12 +161,16 @@ const Login = () => {
                                     <CloseOutlined sx={{color: "#fff"}}/>
                                 </Box>}
 
-                                <Item sx={{justifyContent: "space-between", paddingRight: "16px", marginBottom: "30px"}}>
+                                <Item
+                                    sx={{justifyContent: "space-between", paddingRight: "16px", marginBottom: "30px"}}>
                                     <FormControlLabel
                                         control={
                                             <Checkbox
                                                 sx={{height: "40px"}}
-                                                onChange={(event: any) => setValues({...values, rememberMe: event.target.checked})}
+                                                onChange={(event: any) => setValues({
+                                                    ...values,
+                                                    rememberMe: event.target.checked
+                                                })}
                                             />
                                         }
                                         label="Запомните пароль"
@@ -181,7 +191,6 @@ const Login = () => {
                                     Вход в систему
                                 </Button>
                             </FormGroup>
-
 
 
                         </Box>

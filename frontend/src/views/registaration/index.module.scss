@@ -1,56 +1,56 @@
-.form_title{
-    text-align: center;
-    font-weight: 300;
-    font-size: 36px;
-    line-height: 150%;
-    color: #000000;
-    margin-bottom: 30px !important;
+.form_title {
+  text-align: center;
+  font-weight: 300;
+  font-size: 36px;
+  line-height: 150%;
+  color: #000000;
+  margin-bottom: 30px !important;
 
-    .subtitle{
-        display: block;
-        color: #F1141E;
-        font-size: 28px;
-        font-weight: 800;
-        line-height: 42px;
-        text-transform: uppercase;
-    }
+  .subtitle {
+    display: block;
+    color: #F1141E;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 42px;
+    text-transform: uppercase;
+  }
 }
 
-.input{
-    width: 100%;
-    margin-bottom: 30px !important;
-    font-family: "inter", sans-serif;
+.input {
+  width: 100%;
+  margin-bottom: 30px !important;
+  font-family: "inter", sans-serif;
 }
 
-.login_photo{
-    height: 100%;
-    width: 100%;
-    vertical-align: middle;
+.login_photo {
+  height: 100%;
+  width: 100%;
+  vertical-align: middle;
 }
 
-.error_block{
-    width: 100%;
+.error_block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #F44336;
+  height: 40px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 4px;
+  margin-bottom: 30px;
+
+  .left_side {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background-color: #F44336;
-    height: 40px;
-    padding-left: 16px;
-    padding-right: 16px;
-    border-radius: 4px;
-    margin-bottom: 30px;
 
-    .left_side{
-        display: flex;
-        align-items: center;
-
-        span{
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 40px;
-            letter-spacing: 0.25px;
-            color: #FFFFFF;
-            margin-left: 10px;
-        }
+    span {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 40px;
+      letter-spacing: 0.25px;
+      color: #FFFFFF;
+      margin-left: 10px;
     }
+  }
 }

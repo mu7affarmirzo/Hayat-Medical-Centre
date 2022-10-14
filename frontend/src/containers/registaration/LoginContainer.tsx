@@ -16,12 +16,12 @@ const LoginContainer = () => {
         setValues({...values, [prop]: event.target.value});
     };
 
-    const checkInput = (event:  React.ChangeEvent<HTMLInputElement>, type: string) => {
-        let value:string = event.target.value;
+    const checkInput = (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
+        let value: string = event.target.value;
 
-        if(type === "login"){
+        if (type === "login") {
             setValues({...values, isLoginValid: value.length > 3})
-        }else if(type === "password"){
+        } else if (type === "password") {
             setValues({...values, isPasswordValid: value.length > 3})
         }
 

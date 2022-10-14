@@ -9,26 +9,26 @@ type IRouting = {
 }
 
 type MyGroupType = {
-    [key:string]: Array<IRouting>;
+    [key: string]: Array<IRouting>;
 }
 
 export const RoutingData: MyGroupType = {
     "NoAuth": [
         {
             "path": "/login",
-            "component": <LoginContainer />,
+            "component": <LoginContainer/>,
             "global": true,
         },
     ],
     "test": [
         {
             "path": "/test",
-            "component": <MainContainer />,
+            "component": <MainContainer/>,
             "global": true,
         },
         {
             "path": "/createNote",
-            "component": <CreateNote />,
+            "component": <CreateNote/>,
         }
     ]
 };

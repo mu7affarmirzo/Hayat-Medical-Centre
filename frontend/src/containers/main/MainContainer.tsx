@@ -1,36 +1,57 @@
-import React, {useState} from 'react';
-import { MainView } from "../../views";
-import DoctorsList from "../../repositories/doctors.json"
-import SpecialitiesList from "../../repositories/specialities.json"
-import {IDoctors} from "../../consts/types";
+import React, {useEffect, useState} from 'react';
+import {MainView} from "../../views";
+import {IDoctor} from "../../consts/types";
 import styles from "../../views/main/index.module.scss"
-import CalendarEvents from "../../store/calendarEvents";
+import {CalendarEventStateKeeper} from "../../store";
+import {observer, useLocalObservable} from "mobx-react-lite";
+import DoctorStateKeeper from "../../store/DoctorStateKeeper";
+import SpecialityStateKeeper from "../../store/SpecialityStateKeeper";
 
-const MainContainer = () => {
+const MainContainer = observer(() => {
+
+    const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
+    const specialityStateKeeper = useLocalObservable(() => SpecialityStateKeeper.instance);
+    const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
+
+    const {filterEventById} = calendarEventsStateKeeper;
+    const {specialities, findAllSpecialties} = specialityStateKeeper;
+    const {doctors, findAllDoctors} = doctorStateKeeper;
+
     const [selectData, setSelectData] = useState<string>('');
-    const [doctorsData, setDoctorsData] = useState<Array<IDoctors>>(DoctorsList);
+    const [doctorsData, setDoctorsData] = useState<Array<IDoctor>>(doctors);
     const [selectedDoctor, setSelectedDoctor] = useState<Array<string>>([]);
+
+    useEffect(() => {
+        findAllSpecialties()
+            .then(() => {
+            findAllDoctors()
+                .then((items) => {
+                    setDoctorsData(items);
+
+                });
+        });
+    }, [findAllSpecialties, findAllDoctors]);
 
     const changeSpecialty = (id: string) => {
         let filteredData;
 
-        if(id === "all"){
-            filteredData = DoctorsList;
-        }else{
-            filteredData = DoctorsList.filter(item => item.speciality.id === id);
+        if (id === "all") {
+            filteredData = doctors;
+        } else {
+            filteredData = doctors.filter(item => item.speciality.id === id);
         }
 
         setDoctorsData(filteredData);
     }
 
-    const selectDoctor = (e: React.MouseEvent<HTMLElement>, data: IDoctors) => {
+    const handleSelectDoctor = (e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>, data: IDoctor) => {
         let parentElem = e.currentTarget.closest(".doctors_table_row");
 
-        CalendarEvents.filterEventById(data.id);
+        filterEventById(data.id);
 
-        if(parentElem && parentElem.classList.contains(styles.selected)){
+        if (parentElem && parentElem.classList.contains(styles.selected)) {
             setSelectedDoctor(prev => prev.filter(item => item !== data.id))
-        }else{
+        } else {
             setSelectedDoctor(prev => [...prev, data.id])
         }
     }
@@ -41,13 +62,13 @@ const MainContainer = () => {
                 selectData={selectData}
                 setSelectData={setSelectData}
                 doctors={doctorsData}
-                specialities={SpecialitiesList}
+                specialities={specialities}
                 changeSpecialty={changeSpecialty}
-                selectDoctor={selectDoctor}
+                onSelectDoctor={handleSelectDoctor}
                 selectedDoctor={selectedDoctor}
             />
         </>
     );
-};
+});
 
 export default MainContainer;
