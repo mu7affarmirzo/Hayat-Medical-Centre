@@ -1,6 +1,6 @@
 import {makeAutoObservable, runInAction} from "mobx";
 import {CalendarEventApiStub} from "../repositories";
-import {IAppointment, IEvent} from "../consts/types";
+import {IEvent} from "../consts/types";
 
 class CalendarEventStateKeeper {
 
@@ -29,8 +29,8 @@ class CalendarEventStateKeeper {
         this.events.push(data)
     }
 
-    filterEventById (id: string) {
-        this.eventsCopy = this.events.filter(item => item.doctorsId === id);
+    filterEventByIds (ids: string[]) {
+        this.eventsCopy = this.events.filter(item => ids.includes(item.doctorId || ''));
     }
 
     async findAllAppointments(): Promise<IEvent[]> {
@@ -40,7 +40,7 @@ class CalendarEventStateKeeper {
                 return {
                     id: appointment.id,
                     title: appointment.title,
-                    doctorsId: appointment.doctorsId,
+                    doctorId: appointment.doctorId,
                     start: new Date(appointment.start),
                     end: new Date(appointment.end)
                 }

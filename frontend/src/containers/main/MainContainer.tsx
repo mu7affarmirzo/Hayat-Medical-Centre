@@ -13,13 +13,17 @@ const MainContainer = observer(() => {
     const specialityStateKeeper = useLocalObservable(() => SpecialityStateKeeper.instance);
     const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
 
-    const {filterEventById} = calendarEventsStateKeeper;
+    const {filterEventByIds} = calendarEventsStateKeeper;
     const {specialities, findAllSpecialties} = specialityStateKeeper;
     const {doctors, findAllDoctors} = doctorStateKeeper;
 
     const [selectData, setSelectData] = useState<string>('');
     const [doctorsData, setDoctorsData] = useState<Array<IDoctor>>(doctors);
     const [selectedDoctor, setSelectedDoctor] = useState<Array<string>>([]);
+
+    useEffect(() => {
+        filterEventByIds(selectedDoctor);
+    }, [selectedDoctor]);
 
     useEffect(() => {
         findAllSpecialties()
@@ -46,8 +50,6 @@ const MainContainer = observer(() => {
 
     const handleSelectDoctor = (e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>, data: IDoctor) => {
         let parentElem = e.currentTarget.closest(".doctors_table_row");
-
-        filterEventById(data.id);
 
         if (parentElem && parentElem.classList.contains(styles.selected)) {
             setSelectedDoctor(prev => prev.filter(item => item !== data.id))

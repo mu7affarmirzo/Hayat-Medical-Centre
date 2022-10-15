@@ -29,13 +29,13 @@ export interface IEvent {
     id: number;
     allDay?: boolean;
     resource?: any;
-    doctorsId?: string;
+    doctorId?: string;
 }
 
 export interface IAppointment {
     "id": number,
     "title": string,
-    "doctorsId": string,
+    "doctorId": string,
     "start": string,
     "end": string
 }
