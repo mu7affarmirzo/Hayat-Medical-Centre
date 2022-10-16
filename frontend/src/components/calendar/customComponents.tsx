@@ -162,7 +162,6 @@ const TimeSlotView = (data) => {
 }
 
 const EventWrapperView = observer((data: any) => {
-
     const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
     const {eventsCopy} = calendarEventsStateKeeper;
 
@@ -211,7 +210,7 @@ const EventWrapperView = observer((data: any) => {
             })
         } else if (viewMode === "month") {
             let eventsList: Array<Element> = Array.from(document.querySelectorAll(".rbc-row-content .rbc-row")).filter(item => Boolean(item.querySelector(".rbc-row-segment")));
-            console.log(eventsList)
+            // console.log(eventsList)
             const getNumber = (str: string | null): string => {
                 console.log(str)
                 if (str) {
@@ -286,9 +285,9 @@ const EventWrapperView = observer((data: any) => {
             })
         }
 
-        let block: any = hourBlock?.querySelector(".calendar_minutes")?.children[data.event.start.getMinutes() >= 30 ? 1 : 0]
-        setOffsetTop(block?.offsetTop)
-    }, [data, eventsCopy]);
+        let block: any = hourBlock?.querySelector(".calendar_minutes")?.children[data.event.start.getMinutes() >= 30 ? 1 : 0];
+        setOffsetTop(block?.offsetTop);
+    }, [data, eventsCopy, viewMode]);
 
     return (
         <div

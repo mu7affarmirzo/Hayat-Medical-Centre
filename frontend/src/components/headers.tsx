@@ -96,7 +96,7 @@ const Headers = () => {
                         <Typography variant="h6" className={styles.profile_text}>
                             Вадим Александров
                         </Typography>
-                        <ArrowDropDownIcon sx={{fill: "rgba(0, 0, 0, 0.54)"}}/>
+                        <ArrowDropDownIcon sx={{fill: "rgba(0, 0, 0, 0.54)"}} />
                     </Button>
                     <Menu
                         id="fade-menu"

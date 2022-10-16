@@ -19,9 +19,17 @@ code {
     monospace;
 }
 
+a{
+    text-decoration: none;
+}
+
 #root.main_root {
     max-width: 1920px;
     margin: 0 auto;
+}
+
+.svg_stroke_white path{
+    stroke: #fff;
 }
 
 .header_dropdown_hidden .title {
