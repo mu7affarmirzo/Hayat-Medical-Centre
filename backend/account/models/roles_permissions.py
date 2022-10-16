@@ -4,7 +4,7 @@ from account.models import Account
 
 
 class RolesModel(models.Model):
-    code = models.IntegerField()
+    code = models.IntegerField(unique=True)
     name = models.CharField(max_length=255)
     date_created = models.DateTimeField(auto_now_add=True)
 

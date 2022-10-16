@@ -12,6 +12,7 @@ class SpecialityModel(models.Model):
     modified_by = models.ForeignKey(Account, related_name="modf_spec_by_user", on_delete=models.SET_NULL, null=True)
     organization = models.ForeignKey(OrganizationModel, related_name="speciality", on_delete=models.SET_NULL, null=True)
     branch = models.ForeignKey(BranchModel, related_name="speciality", on_delete=models.SET_NULL, null=True)
+    color = models.CharField(max_length=255, null=True)
 
     def __str__(self):
         return str(self.name)
