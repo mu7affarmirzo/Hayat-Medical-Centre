@@ -31,6 +31,23 @@
     }
 }
 
+$pationsTable2: 329px 91px 70px 78px 64px;
+
+$pationsTableRight2: 40px 531px 62px;
+
+@mixin tableWidth ($tableList) {
+    @each $width in $tableList {
+        $i: index($tableList, $width);
+        &:nth-child(#{$i}){
+            @if $i == 1{
+                border-left: none;
+            }
+            width: $width;
+        }
+    }
+}
+
+
 .create_note{
     margin-top: 20px;
     margin-left: 20px;
@@ -214,6 +231,15 @@
         margin-top: 10px;
         border-top: 1px solid rgba(0, 0, 0, 0.23);
 
+        .table_title{
+            width: 100%;
+            padding: 5px 10px;
+            font-size: 16px;
+            line-height: 28px;
+            letter-spacing: 0.15px;
+            color: rgba(0, 0, 0, 0.87);
+            background-color: #64B6F7;
+        }
 
         .left_table{
             width: 488px;
@@ -222,12 +248,23 @@
             .table_wrapper{
                 border: 1px solid rgba(0, 0, 0, 0.1);
                 border-top: none;
+                padding-bottom: 10px;
+
+                .table_row{
+                    padding-left: 10px;
+                    padding-right: 10px;
+                }
+            }
+
+            .table_wrapper_block{
+                padding-bottom: 10px;
+                border-bottom: 1px solid #E0E0E0;
             }
 
             .table_row{
                 display: flex;
                 align-items: center;
-                padding-left: 10px;
+                justify-content: space-between;
                 padding-top: 10px;
 
                 .row_title{
@@ -242,17 +279,233 @@
                     height: 32px;
                     width: 391px;
                 }
+
+                .input_block{
+                    height: 32px;
+
+                    div[class~="MuiInputBase-root"]{
+                        padding: 0;
+                    }
+
+                    input{
+                        padding: 5px 5px 5px 16px;
+
+                    }
+
+                    button[class~="MuiButtonBase-root"]{
+                        padding: 0;
+                        margin-right: 7px;
+
+                        svg{
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+                }
+
+                .currency_input{
+                    width: calc(100% - 40px);
+                    height: 32px;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: 0.15px;
+                    color: rgba(0, 0, 0, 0.87);
+                    padding-left: 16px;
+                    border: 1px solid rgba(0, 0, 0, 0.23);
+                    border-radius: 4px;
+
+                }
+
+                .button_white{
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: 0.15px;
+                    color: rgba(0, 0, 0, 0.87);
+                    border: 1px solid rgba(0, 0, 0, 0.23);
+                    width: 182px;
+                    height: 32px;
+                    font-weight: 400;
+                    text-transform: capitalize;
+                }
+
+                .checkbox_block{
+                    margin-right: 0;
+
+                    span[class~="MuiFormControlLabel-label"]{
+                        font-size: 14px;
+                        color: rgba(0, 0, 0, 0.87);
+                        line-height: 20px;
+                        letter-spacing: 0.15px;
+                    }
+                }
             }
+
+
         }
 
-        .table_title{
-            width: 100%;
-            padding: 5px 10px;
-            font-size: 16px;
-            line-height: 28px;
-            letter-spacing: 0.15px;
-            color: rgba(0, 0, 0, 0.87);
-            background-color: #64B6F7;
+        .right_table{
+            width: calc(100% - 498px);
+
+            .table_wrapper{
+                display: flex;
+                align-items: flex-start;
+                height: calc(100% - 38px);
+                border: 1px solid #E0E0E0 {
+                    top: none;
+                    right: none;
+                    bottom: none;
+                }
+
+
+                .top_box{
+                    width: 100%;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    padding-left: 10px;
+                    background-color: #F5F5F5;
+                    border-bottom: 1px solid #E0E0E0;
+
+                    p{
+                        font-size: 12px;
+                        line-height: 20px;
+                        letter-spacing: 0.4px;
+                        color: #000000;
+                    }
+
+                    .input_top_block{
+                        width: 506px;
+                        height: 30px;
+                        background: #FFFFFF;
+                        border: 1px solid rgba(0, 0, 0, 0.23);
+                        border-radius: 2px;
+                        margin-left: 30px;
+                        outline: none;
+                        padding-left: 8px;
+                    }
+                }
+
+                .left_side{
+                    width: 628px;
+                    margin-right: 10px;
+                    border-right: 1px solid #E0E0E0;
+                    height: 100%;
+                    border-bottom: 1px solid #E0E0E0;
+
+
+                    .list_top{
+                        .list_top_item{
+                            @include tableWidth($pationsTable2);
+                        }
+                    }
+
+                    .list_wrapper{
+                        table tr td{
+                            @include tableWidth($pationsTable2);
+                        }
+                    }
+                }
+
+                .right_side{
+                    width: calc(100% - 658px);
+                    height: 100%;
+                    border: 1px solid #E0E0E0 {
+                        top: none;
+                    }
+
+                    .list_top{
+                        .list_top_item{
+                            @include tableWidth($pationsTableRight2);
+                        }
+                    }
+
+                    .list_wrapper{
+                        table tr td{
+                            @include tableWidth($pationsTableRight2);
+                        }
+                    }
+                }
+
+                .list_block{
+                    width: 100%;
+
+                    .list_top{
+                        width: 100%;
+                        display: flex;
+                        align-items: flex-start;
+
+                        .list_top_item{
+                            background: #F5F5F5;
+                            border: 1px solid rgba(0, 0, 0, 0.1) {
+                                top: none;
+                                right: none;
+                            }
+
+                            display: flex;
+                            align-items: center;
+                            height: 30px;
+                            padding-left: 10px;
+                            font-size: 12px;
+                            line-height: 20px;
+                            text-align: center;
+                            letter-spacing: 0.4px;
+                            color: #000000;
+                        }
+                    }
+
+                    .list_wrapper{
+                        max-height: 690px;
+                        overflow-y: auto;
+
+                        &::-webkit-scrollbar {
+                            width: 0;
+                            display: none;
+                        }
+
+                        table{
+                            width: 100%;
+                            border-collapse: collapse;
+
+                            tr{
+                                td{
+                                    border: 1px solid rgba(0, 0, 0, 0.1) {
+                                        top: none;
+                                        right: none;
+                                    }
+                                    padding: 5px 10px;
+                                    font-size: 12px;
+                                    line-height: 20px;
+                                    letter-spacing: 0.4px;
+                                    color: #000000;
+
+
+                                    &.center_cel{
+                                        text-align: center;
+                                        padding-left: 0;
+                                    }
+
+                                    .icon_cell{
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        padding-left: 0;
+
+                                        &.green{
+                                            svg path {
+                                                stroke: #4CAF50;
+                                            }
+                                        }
+
+                                        svg path {
+                                            stroke: #E31B0C;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -1,18 +1,7 @@
 import React, {useState} from 'react';
 import {FlexSpaceBetween} from "../../themes/customItems";
 import {Link} from "react-router-dom";
-import {
-    Backdrop,
-    Box,
-    Button, Checkbox,
-    Drawer,
-    FormControl, FormControlLabel,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-    Typography
-} from "@mui/material";
+import {Backdrop, Box, Button, TextField, Typography} from "@mui/material";
 import styles from "./index.module.scss"
 import {ReactComponent as NoteAdd} from "../../assets/img/note-add.svg";
 import {ReactComponent as CloseCircle} from "../../assets/img/close-circle.svg";
@@ -20,10 +9,27 @@ import {ReactComponent as UserAdd} from "../../assets/img/user-add.svg";
 import Edit from "../../assets/img/edit.svg";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowCircle from "../../assets/img/arrow-circle-left.svg"
+import moment from "moment"
+import PatientsTable from "./patientsTable";
 
 const CreateNote = () => {
+    interface IDateValue {
+        from: moment.Moment | null
+        to: moment.Moment | null
+    }
+
     const [openPatientsPopup, setOpenPatients] = useState<boolean | string>(false);
     const [selectData, setSelectData] = useState<string>("");
+    const [timeValue, setTimeValue] = React.useState<IDateValue>({
+        from: moment(),
+        to: moment().add(5, 'minutes')
+    });
+
+    const [dateValue, setDateValue] = React.useState<moment.Moment | null>(moment());
+
+    const timeChangeHandler = (time, type) => {
+        setTimeValue({...timeValue, [type]: time})
+    }
 
     return (
         <div className={styles.create_note}>
@@ -148,49 +154,14 @@ const CreateNote = () => {
             </FlexSpaceBetween>
 
 
-            <div className={styles.patients_main_table}>
-                <div className={styles.left_table}>
-                    <div className={styles.table_title}>Детали</div>
-                    <div className={styles.table_wrapper}>
-                        <div className={styles.table_row} style={{paddingBottom: "10px", borderBottom: "1px solid #E0E0E0"}}>
-                            <p className={styles.row_title} style={{marginRight: "30px"}}>Льгота</p>
-
-                            <FormControl className={styles.table_dropdown} >
-                                <InputLabel id="demo-simple-select-label" sx={{top: "-12px"}}>Без скидок</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={selectData}
-                                    label="Филиал"
-                                    onChange={(e) => setSelectData(e.target.value)}
-                                    sx={{height: "32px"}}
-                                >
-                                    <MenuItem value={"head1"}>Головной1</MenuItem>
-                                    <MenuItem value={"head2"}>Головной2</MenuItem>
-                                    <MenuItem value={"head3"}>Головной3</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-
-                        <div className={styles.table_row}>
-                            <p className={styles.row_title} style={{marginRight: "17px"}}>Дата приема</p>
-
-                            <div style={{width: "275px", height: "32px", marginRight: "17px"}}></div>
-
-                            <FormControlLabel control={<Checkbox />} label="Авто" sx={{marginRight: "10px"}}/>
-                        </div>
-
-                        <div className={styles.table_row}>
-                            <p className={styles.row_title} style={{marginRight: "17px"}}>Время начала</p>
-
-                            <div style={{width: "275px", height: "32px", marginRight: "17px"}}></div>
-
-                            <FormControlLabel control={<Checkbox />} label="Авто" />
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.right_table}></div>
-            </div>
+            <PatientsTable
+                selectData={selectData}
+                setSelectData={setSelectData}
+                timeValue={timeValue}
+                dateValue={dateValue}
+                setDateValue={setDateValue}
+                timeChangeHandler={timeChangeHandler}
+            />
         </div>
     );
 };
