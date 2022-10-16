@@ -8,6 +8,8 @@ class DoctorStateKeeper {
     private readonly doctorApiStub: DoctorApiStub;
 
     doctors: IDoctor[] = [];
+    selectedDoctor: IDoctor | null = null;
+    selectedDoctors: IDoctor[] = [];
 
     static get instance() {
         if (!DoctorStateKeeper._instance) {
@@ -31,6 +33,13 @@ class DoctorStateKeeper {
         return doctors;
     }
 
+    setSelectedDoctor(doctor: IDoctor) {
+        this.selectedDoctor = doctor;
+    }
+
+    setSelectedDoctors(doctors: IDoctor[]) {
+        this.selectedDoctors = doctors;
+    }
 }
 
 export default DoctorStateKeeper;

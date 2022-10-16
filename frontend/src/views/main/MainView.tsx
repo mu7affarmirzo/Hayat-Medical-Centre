@@ -17,7 +17,7 @@ const MainView = observer((
         doctors,
         changeSpecialty,
         onSelectDoctor,
-        selectedDoctor,
+        selectedDoctors,
     }: {
         selectData: string
         setSelectData: (str: string) => void
@@ -25,7 +25,7 @@ const MainView = observer((
         doctors: Array<IDoctor>
         changeSpecialty: (id: string) => void
         onSelectDoctor: (e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>, data: IDoctor) => void
-        selectedDoctor: Array<string>
+        selectedDoctors: Array<IDoctor>
     }
 ) => {
     return (
@@ -39,7 +39,7 @@ const MainView = observer((
                     <div className={styles.table}>
                         <Box sx={{mb: "10px"}}>
                             <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                                <InputLabel id="demo-simple-select-label">Филиал</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
@@ -110,14 +110,14 @@ const MainView = observer((
                                         <div
                                             onClick={(e) => onSelectDoctor(e, item)}
                                             key={item.id}
-                                            className={`doctors_table_row ${styles.row} ${selectedDoctor.includes(item.id) ? styles.selected : ""}`}
+                                            className={`doctors_table_row ${styles.row} ${selectedDoctors.map((doctor) => doctor.id).includes(item.id) ? styles.selected : ""}`}
                                             // style={{backgroundColor: item.color}}
                                         >
                                             <div className={styles.cell}>
                                                 <label className={styles.checkbox_block}>
                                                     <input
                                                         type="checkbox"
-                                                        checked={selectedDoctor.includes(item.id)}
+                                                        checked={selectedDoctors.map((doctor) => doctor.id).includes(item.id)}
                                                         onChange={(e) => onSelectDoctor(e, item)}
                                                     />
                                                     <div className={styles.box}></div>

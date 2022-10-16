@@ -29,6 +29,10 @@ class CalendarEventStateKeeper {
         this.events.push(data)
     }
 
+    filterEventByDoctorId (id: string) {
+        return this.events.filter(item => item.doctorId === id);
+    }
+
     filterEventByIds (ids: string[]) {
         this.eventsCopy = this.events.filter(item => ids.includes(item.doctorId || ''));
     }

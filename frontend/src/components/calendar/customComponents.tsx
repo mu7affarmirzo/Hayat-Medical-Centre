@@ -2,8 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import styles from "./calendar.module.scss"
 import moment from "moment";
 import 'moment/locale/ru'
-import {observer, useLocalObservable} from "mobx-react-lite";
-import {CalendarEventStateKeeper} from "../../store";
+import {observer} from "mobx-react-lite";
 
 const ToolBarView = (data) => {
     const changeButtons: Array<{ text: string, type: string }> = [
@@ -112,7 +111,7 @@ const ToolBarView = (data) => {
 const MonthHeaderView = (data) => (
     <>
         <div
-            className={`month_name_block ${styles.month_name}`}>{new Date(data.date).toLocaleDateString("ru", {weekday: 'long'})}</div>
+            className={`month_name_block ${styles.month_name}`}>{new Date(data.date).toLocaleDateString("ru", {weekday: 'short'})}</div>
     </>
 );
 
@@ -125,7 +124,7 @@ const MonthNumberView = (data) => (
 const WeekHeaderView = (data) => {
     const converDate = () => {
         let _date = new Date(data.date);
-        let [month, weekDay] = _date.toLocaleDateString("ru", {month: 'short', weekday: 'long'}).split(" ");
+        let [month, weekDay] = _date.toLocaleDateString("ru", {month: 'short', weekday: 'short'}).split(" ");
         return `${weekDay} | ${_date.getDate()} ${month}`
     }
 
@@ -162,8 +161,6 @@ const TimeSlotView = (data) => {
 }
 
 const EventWrapperView = observer((data: any) => {
-    const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
-    const {eventsCopy} = calendarEventsStateKeeper;
 
     const [offsetTop, setOffsetTop] = useState<number>(0);
     const [viewMode, setViewMode] = useState<any>("");
@@ -287,7 +284,7 @@ const EventWrapperView = observer((data: any) => {
 
         let block: any = hourBlock?.querySelector(".calendar_minutes")?.children[data.event.start.getMinutes() >= 30 ? 1 : 0];
         setOffsetTop(block?.offsetTop);
-    }, [data, eventsCopy, viewMode]);
+    }, [data, viewMode]);
 
     return (
         <div
@@ -298,7 +295,7 @@ const EventWrapperView = observer((data: any) => {
         >
             <p className={styles.event_text}>{data.event.title}</p>
         </div>
-    )
+    );
 })
 
 
