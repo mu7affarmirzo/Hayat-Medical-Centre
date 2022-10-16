@@ -15,15 +15,14 @@ const MainContainer = observer(() => {
 
     const {filterEventByIds} = calendarEventsStateKeeper;
     const {specialities, findAllSpecialties} = specialityStateKeeper;
-    const {doctors, findAllDoctors} = doctorStateKeeper;
+    const {doctors, findAllDoctors, selectedDoctors, setSelectedDoctors} = doctorStateKeeper;
 
     const [selectData, setSelectData] = useState<string>('');
     const [doctorsData, setDoctorsData] = useState<Array<IDoctor>>(doctors);
-    const [selectedDoctor, setSelectedDoctor] = useState<Array<string>>([]);
 
     useEffect(() => {
-        filterEventByIds(selectedDoctor);
-    }, [selectedDoctor]);
+        filterEventByIds(selectedDoctors.map((doctor) => doctor.id));
+    }, [selectedDoctors]);
 
     useEffect(() => {
         findAllSpecialties()
@@ -52,9 +51,9 @@ const MainContainer = observer(() => {
         let parentElem = e.currentTarget.closest(".doctors_table_row");
 
         if (parentElem && parentElem.classList.contains(styles.selected)) {
-            setSelectedDoctor(prev => prev.filter(item => item !== data.id))
+            setSelectedDoctors(selectedDoctors.filter(item => item.id !== data.id))
         } else {
-            setSelectedDoctor(prev => [...prev, data.id])
+            setSelectedDoctors([...selectedDoctors, data])
         }
     }
 
@@ -67,7 +66,7 @@ const MainContainer = observer(() => {
                 specialities={specialities}
                 changeSpecialty={changeSpecialty}
                 onSelectDoctor={handleSelectDoctor}
-                selectedDoctor={selectedDoctor}
+                selectedDoctors={selectedDoctors}
             />
         </>
     );

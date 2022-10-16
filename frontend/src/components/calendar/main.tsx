@@ -4,12 +4,13 @@ import moment from "moment";
 import {observer, useLocalObservable} from "mobx-react-lite";
 import {calendarComponent} from "./customComponents";
 import {CalendarEventStateKeeper} from "../../store";
-
+import CustomWeekView from "./customWeekView";
+import CustomMonthView from "./customMonthView";
+import CustomDayView from "./customDayView";
 
 const CalendarMain = observer(() => {
 
     const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
-
     const {eventsCopy, findAllAppointments} = calendarEventsStateKeeper;
 
     moment.locale("es-es", {
@@ -22,7 +23,11 @@ const CalendarMain = observer(() => {
 
     const {components, views, messages} = useMemo(() => ({
         components: calendarComponent,
-        views: {month: true, week: true, day: true},
+        views: {
+            month: CustomMonthView,
+            week: CustomWeekView,
+            day: CustomDayView
+        },
         messages: {
             today: 'Сегодня',
             month: 'месяц',
@@ -37,7 +42,6 @@ const CalendarMain = observer(() => {
 
     return (
         <>
-
             <Calendar
                 // @ts-ignore
                 components={components}
@@ -45,10 +49,10 @@ const CalendarMain = observer(() => {
                 localizer={mLocalizer}
                 startAccessor="end"
                 endAccessor="end"
+                // @ts-ignore
                 views={views}
                 className="calendar_block"
                 messages={messages}
-
             />
         </>
     );
