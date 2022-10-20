@@ -25,7 +25,7 @@ export default function CustomMonthView({
             width: '100%',
             height: '100%',
             display: "flex",
-            overflow: 'scroll',
+            overflow: 'auto',
         }}>
             {
                 selectedDoctors
@@ -34,6 +34,8 @@ export default function CustomMonthView({
                         return (
                                 <div
                                     key={doctor.id}
+                                    id="container"
+                                    data-doctorid={doctor.id}
                                     style={{
                                         width: '100%',
                                         borderLeft: 1,

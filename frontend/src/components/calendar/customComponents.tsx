@@ -2,7 +2,9 @@ import React, {useCallback, useEffect, useState} from "react";
 import styles from "./calendar.module.scss"
 import moment from "moment";
 import 'moment/locale/ru'
-import {observer} from "mobx-react-lite";
+import {observer, useLocalObservable} from "mobx-react-lite";
+import DoctorStateKeeper from "../../store/DoctorStateKeeper";
+import {CalendarEventStateKeeper} from "../../store";
 
 const ToolBarView = (data) => {
     const changeButtons: Array<{ text: string, type: string }> = [
@@ -108,12 +110,15 @@ const ToolBarView = (data) => {
     );
 }
 
-const MonthHeaderView = (data) => (
-    <>
-        <div
-            className={`month_name_block ${styles.month_name}`}>{new Date(data.date).toLocaleDateString("ru", {weekday: 'short'})}</div>
-    </>
-);
+const MonthHeaderView = (data) => {
+    console.log(data, "MonthHeaderView")
+    return (
+        <>
+            <div
+                className={`month_name_block ${styles.month_name}`}>{new Date(data.date).toLocaleDateString("ru", {weekday: 'short'})}</div>
+        </>
+    )
+};
 
 const MonthNumberView = (data) => (
     <>
@@ -161,9 +166,17 @@ const TimeSlotView = (data) => {
 }
 
 const EventWrapperView = observer((data: any) => {
+    console.log(data, "EventWrapperView")
 
     const [offsetTop, setOffsetTop] = useState<number>(0);
+    const [test, setTest] = useState<number>(0);
     const [viewMode, setViewMode] = useState<any>("");
+
+
+    const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
+    const {filterEventByDoctorId} = calendarEventsStateKeeper;
+    const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
+    const {selectedDoctors} = doctorStateKeeper;
 
     useEffect(() => {
         let hourBlock = document.querySelector(`.rbc-timeslot-group .week_time_block[data-timehour="${data.event.start.getHours()}"]`);
@@ -207,13 +220,13 @@ const EventWrapperView = observer((data: any) => {
             })
         } else if (viewMode === "month") {
             let eventsList: Array<Element> = Array.from(document.querySelectorAll(".rbc-row-content .rbc-row")).filter(item => Boolean(item.querySelector(".rbc-row-segment")));
-            // console.log(eventsList)
+            console.log(eventsList, "eventsList23")
             const getNumber = (str: string | null): string => {
-                console.log(str)
+                // console.log(str)
                 if (str) {
                     const regExp: RegExp = /\d/g;
                     let matchedSymbols = str.match(regExp);
-                    console.log(matchedSymbols, matchedSymbols?.length)
+                    // console.log(matchedSymbols, matchedSymbols?.length)
                     if (matchedSymbols && matchedSymbols.length >= 1) {
                         return matchedSymbols.join("");
                     }
@@ -225,8 +238,11 @@ const EventWrapperView = observer((data: any) => {
             eventsList.forEach(item => {
                 let rowSegment = item.querySelector(".rbc-row-segment:last-child");
                 let segmentButton = rowSegment?.querySelector("button.rbc-button-link.rbc-show-more");
+                let date = rowSegment?.parentElement?.previousElementSibling?.querySelector(".event_wrapper_block")?.getAttribute("data-date")
                 if (segmentButton && rowSegment) {
-                    rowSegment.innerHTML = `<div class="${styles.event_wrapper}">${getNumber(segmentButton?.textContent)}+ записей</div>`
+                    rowSegment.innerHTML = `<div  data-date=${date} class="event_wrapper_block  event_block_couter ${styles.event_wrapper}">
+                                                <span id="events_number">${getNumber(segmentButton?.textContent)}</span>
+                                            + записей</div>`
                 }
             })
         } else if (viewMode === "week") {
@@ -284,7 +300,48 @@ const EventWrapperView = observer((data: any) => {
 
         let block: any = hourBlock?.querySelector(".calendar_minutes")?.children[data.event.start.getMinutes() >= 30 ? 1 : 0];
         setOffsetTop(block?.offsetTop);
+
+        setTest(prevState => prevState += 1)
     }, [data, viewMode]);
+
+    useEffect(() => {
+        if(selectedDoctors.length > 1){
+            console.log(selectedDoctors, "selectedDoctors")
+            document.querySelectorAll("#container").forEach(item => {
+                let eventList = Array.from(item.querySelectorAll(".event_wrapper_block"));
+                console.log(eventList, "eventList")
+                let filteredEvents = filterEventByDoctorId(item.getAttribute("data-doctorid") || "");
+                let filteredEventsId = filteredEvents.map(eventData => String(eventData.id));
+                console.log(filteredEvents, 'filteredEvents')
+                eventList.forEach((event: any) => {
+                    let eventId = event.getAttribute("data-eventid") || "";
+                    if(event.classList.contains("event_block_couter")){
+                        console.log(filteredEvents.length, "length")
+                        if(filteredEvents.length > 3){
+                            let date = event.getAttribute("data-date");
+                            let filteredEventsDate = filteredEvents.filter(eventData => String(new Date(eventData.start).getDate()) === date)
+                            if(filteredEventsDate.length > 0){
+                                let numberBlock = event.querySelector(".events_number");
+                                if(numberBlock){
+                                    if(Number(numberBlock.textContent) !== filteredEventsDate.length){
+                                        numberBlock.textContent = String(filteredEventsDate.length);
+                                    }
+                                }
+
+                                return true;
+                            }
+                        }
+
+                        event.style.display = "none";
+                    }else{
+                        if(!(filteredEventsId.includes(eventId))){
+                            event.style.display = "none";
+                        }
+                    }
+                })
+            })
+        }
+    }, [test])
 
     return (
         <div
@@ -292,6 +349,7 @@ const EventWrapperView = observer((data: any) => {
             data-date={new Date(data.event.start).getDate()}
             className={`event_wrapper_block ${styles.event_wrapper} ${viewMode === "day" ? styles.day : ""}`}
             style={viewMode !== "month" ? {top: offsetTop + "px", position: "absolute"} : undefined}
+            data-eventid={data.event.id}
         >
             <p className={styles.event_text}>{data.event.title}</p>
         </div>
