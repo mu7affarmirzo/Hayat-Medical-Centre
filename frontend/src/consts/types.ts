@@ -1,3 +1,5 @@
+import moment from "moment/moment";
+
 export interface ILoginState {
     login: string;
     password: string;
@@ -40,8 +42,6 @@ export interface IAppointment {
     "end": string
 }
 
-
-
 interface IEMC {
     name: string;
     createdAt: string;
@@ -61,4 +61,16 @@ export interface IPatient {
     inn: string;
     lastVisitAt: string;
     emc: IEMC;
+}
+
+export interface IMedicalService {
+    id: number
+    name: string;
+    cost: number;
+    doctorId: number;
+}
+
+export interface IDateValue {
+    from: moment.Moment | null
+    to: moment.Moment | null
 }

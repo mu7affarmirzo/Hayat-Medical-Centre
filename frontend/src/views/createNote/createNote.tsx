@@ -1,6 +1,6 @@
-import React, {useEffect, useState, ChangeEvent} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {FlexSpaceBetween} from "../../themes/customItems";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Backdrop, Box, Button, TextField, Typography} from "@mui/material";
 import styles from "./index.module.scss"
 import {ReactComponent as NoteAdd} from "../../assets/img/note-add.svg";
@@ -9,34 +9,19 @@ import {ReactComponent as UserAdd} from "../../assets/img/user-add.svg";
 import Edit from "../../assets/img/edit.svg";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowCircle from "../../assets/img/arrow-circle-left.svg"
-import moment from "moment"
 import PatientsTable from "./patientsTable";
-import {useLocalObservable} from "mobx-react-lite";
-import {PatientStateKeeper} from "../../store";
-import {IPatient} from "../../consts/types";
+import {observer, useLocalObservable} from "mobx-react-lite";
+import {CalendarEventStateKeeper, DoctorStateKeeper, MedicalServiceStateKeeper, PatientStateKeeper} from "../../store";
+import {IDateValue, IMedicalService, IPatient} from "../../consts/types";
+import moment from "moment";
 
-const CreateNote = () => {
+const CreateNote = observer(() => {
     //
-    interface IDateValue {
-        from: moment.Moment | null
-        to: moment.Moment | null
-    }
-
+    const navigator = useNavigate();
     const [openPatientsPopup, setOpenPatients] = useState<boolean | string>(false);
-    const [selectData, setSelectData] = useState<string>("");
-    const [timeValue, setTimeValue] = React.useState<IDateValue>({
-        from: moment(),
-        to: moment().add(5, 'minutes')
-    });
-
-    const [dateValue, setDateValue] = React.useState<moment.Moment | null>(moment());
-
-    const timeChangeHandler = (time, type) => {
-        //
-        setTimeValue({...timeValue, [type]: time})
-    }
 
     const patientStateKeeper = useLocalObservable(() => PatientStateKeeper.instance);
+    const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
     const [patients, setPatients] = useState<IPatient[]>([]);
 
     useEffect(() => {
@@ -129,22 +114,87 @@ const CreateNote = () => {
         );
     }, [searchFields]);
 
+    const [discount, setDiscount] = useState<number>(0);
+
+    const [timeValue, setTimeValue] = React.useState<IDateValue>({
+        from: moment(),
+        to: moment().add(5, 'minutes')
+    });
+
+    const [dateValue, setDateValue] = React.useState<moment.Moment | null>(moment());
+
+    const timeChangeHandler = (time, type) => {
+        //
+        setTimeValue({...timeValue, [type]: time})
+    }
+
+    const medicalServiceStateKeeper = useLocalObservable(() => MedicalServiceStateKeeper.instance);
+    const [services, setServices] = useState<IMedicalService[]>([]);
+    const [appointedServices, setAppointedServices] = useState<{
+        quantity: number,
+        service: IMedicalService
+    }[]>([]);
+
+    useEffect(() => {
+        medicalServiceStateKeeper.findAllServices().then();
+    }, []);
+
+    useEffect(() => {
+        if (doctorStateKeeper.selectedDoctors.length) {
+            setServices([...medicalServiceStateKeeper.services.filter((service) => service.doctorId.toString() === doctorStateKeeper.selectedDoctors.at(0)!.id)]);
+        }
+    }, [medicalServiceStateKeeper.services, doctorStateKeeper.selectedDoctors.at(0)]);
+
+    const calendarEventStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
+
+    const handleCreateAppointmentClick = () => {
+        if (doctorStateKeeper.selectedDoctors.length) {
+            calendarEventStateKeeper.addEvent({
+                end: timeValue.from!.toDate(),
+                start: timeValue.to!.toDate(),
+                title: '',
+                id: Math.max(...calendarEventStateKeeper.events.map((event) => event.id)),
+                doctorId: doctorStateKeeper.selectedDoctors.at(0)!.id,
+            });
+            doctorStateKeeper.selectedDoctors.shift();
+            doctorStateKeeper.setSelectedDoctors([...doctorStateKeeper.selectedDoctors]);
+            setServices([]);
+            setAppointedServices([]);
+            setDiscount(0);
+        }
+    }
+
+    useEffect(() => {
+        if (doctorStateKeeper.selectedDoctors.length === 0) {
+            navigator(-1);
+        }
+    }, [doctorStateKeeper.selectedDoctors]);
+
     return (
         <div className={styles.create_note}>
             <FlexSpaceBetween className={styles.top_block}>
                 <Link to="/test" className={styles.return_back}>
                     <img src={ArrowCircle} alt="ArrowCircle"/>
-                    <p>Запись на прием - ЛОР</p>
+                    <p>Запись на прием - {doctorStateKeeper.selectedDoctors.at(0)?.fullName}</p>
                 </Link>
 
                 <div className={styles.buttons}>
-                    <Button sx={{backgroundColor: "#64B6F7"}} variant="contained" className={styles.create_btn}
-                            startIcon={<NoteAdd/>}>
+                    <Button
+                        sx={{backgroundColor: "#64B6F7"}}
+                        variant="contained"
+                        className={styles.create_btn}
+                        startIcon={<NoteAdd/>}
+                        onClick={handleCreateAppointmentClick}
+                    >
                         Создать
                     </Button>
                     <Link to="/test">
-                        <Button sx={{backgroundColor: "#BDBDBD", marginLeft: "10px"}} variant="contained"
-                                className={styles.create_btn} startIcon={<CloseCircle/>}>
+                        <Button
+                            sx={{backgroundColor: "#BDBDBD", marginLeft: "10px"}}
+                            variant="contained"
+                            className={styles.create_btn}
+                            startIcon={<CloseCircle/>}
+                        >
                             Отмена
                         </Button>
                     </Link>
@@ -323,17 +373,21 @@ const CreateNote = () => {
                 </Button>
             </FlexSpaceBetween>
 
-
-            <PatientsTable
-                selectData={selectData}
-                setSelectData={setSelectData}
-                timeValue={timeValue}
-                dateValue={dateValue}
-                setDateValue={setDateValue}
-                timeChangeHandler={timeChangeHandler}
-            />
+            {patientStateKeeper.selectedPatient &&
+                <PatientsTable
+                    discount={discount}
+                    setDiscount={setDiscount}
+                    dateValue={dateValue}
+                    setDateValue={setDateValue}
+                    timeValue={timeValue}
+                    timeChangeHandler={timeChangeHandler}
+                    services={services}
+                    appointedServices={appointedServices}
+                    setAppointedServices={setAppointedServices}
+                />
+            }
         </div>
     );
-};
+});
 
 export default CreateNote;

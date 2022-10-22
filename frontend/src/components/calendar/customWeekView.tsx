@@ -1,6 +1,6 @@
 import React, {useMemo} from "react";
 import {useLocalObservable} from "mobx-react-lite";
-import DoctorStateKeeper from "../../store/DoctorStateKeeper";
+import {DoctorStateKeeper} from "../../store";
 import Week from "react-big-calendar/lib/Week";
 import PropTypes from "prop-types";
 import {Navigate} from "react-big-calendar";

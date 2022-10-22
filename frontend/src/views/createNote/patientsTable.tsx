@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from "./index.module.scss";
 import {
-    Autocomplete, Button,
+    Autocomplete,
+    Button,
     Checkbox,
     FormControl,
     FormControlLabel,
     InputLabel,
-    MenuItem, OutlinedInput,
+    MenuItem,
+    OutlinedInput,
     Select,
     TextField
 } from "@mui/material";
@@ -15,15 +17,42 @@ import CurrencyInput from "react-currency-input-field";
 import {FlexSpaceBetween} from "../../themes/customItems";
 import {ReactComponent as CloseCircle} from "../../assets/img/close-circle.svg";
 import {ReactComponent as AddCircle} from "../../assets/img/add-circle.svg";
+import moment from "moment/moment";
+import {IDateValue, IMedicalService} from "../../consts/types";
+import {observer} from "mobx-react-lite";
 
-const PatientsTable = ({
-                           selectData,
-                           setSelectData,
-                           timeValue,
-                           dateValue,
-                           setDateValue,
-                           timeChangeHandler
-                       }) => {
+const PatientsTable = observer((
+    {
+        discount,
+        setDiscount,
+        dateValue,
+        setDateValue,
+        timeValue,
+        timeChangeHandler,
+        services,
+        appointedServices,
+        setAppointedServices,
+    }: {
+        discount: number,
+        setDiscount: React.Dispatch<React.SetStateAction<number>>,
+        dateValue: moment.Moment | null,
+        setDateValue: React.Dispatch<React.SetStateAction<moment.Moment | null>>,
+        timeValue: IDateValue,
+        timeChangeHandler: (time, type) => void,
+        services: IMedicalService[],
+        appointedServices: {
+            quantity: number,
+            service: IMedicalService
+        }[],
+        setAppointedServices: React.Dispatch<React.SetStateAction<{
+            quantity: number,
+            service: IMedicalService
+        }[]>>,
+    }) => {
+    //
+
+    const [serviceSearchText, setServiceSearchText] = useState<string>('');
+
     return (
         <>
             <div className={styles.patients_main_table}>
@@ -35,7 +64,7 @@ const PatientsTable = ({
                             <div className={styles.table_row}>
                                 <p className={styles.row_title}>Льгота</p>
 
-                                <FormControl className={styles.table_dropdown} >
+                                <FormControl className={styles.table_dropdown}>
                                     <InputLabel
                                         id="demo-simple-select-label"
                                         sx={[
@@ -55,14 +84,16 @@ const PatientsTable = ({
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        value={selectData}
+                                        value={discount}
                                         label="Без скидок"
-                                        onChange={(e) => setSelectData(e.target.value)}
+                                        onChange={(e) => setDiscount(e.target.value as number)}
                                         sx={{height: "32px"}}
                                     >
-                                        <MenuItem value={"head1"}>Головной1</MenuItem>
-                                        <MenuItem value={"head2"}>Головной2</MenuItem>
-                                        <MenuItem value={"head3"}>Головной3</MenuItem>
+                                        {
+                                            Array(22).fill(1).map((_, index) => index * 5).map((discount) => (
+                                                <MenuItem value={discount}>{discount}%</MenuItem>
+                                            ))
+                                        }
                                     </Select>
                                 </FormControl>
                             </div>
@@ -78,10 +109,11 @@ const PatientsTable = ({
                                     className={styles.input_block}
                                     value={dateValue}
                                     onChange={setDateValue}
-                                    renderInput={(params) => <TextField {...params} sx={{width: "270px", marginRight: "25px"}} />}
+                                    renderInput={(params) => <TextField {...params}
+                                                                        sx={{width: "270px", marginRight: "25px"}}/>}
                                 />
 
-                                <FormControlLabel control={<Checkbox />} label="Авто" className={styles.checkbox_block}/>
+                                <FormControlLabel control={<Checkbox/>} label="Авто" className={styles.checkbox_block}/>
                             </div>
 
                             <div className={styles.table_row}>
@@ -92,7 +124,8 @@ const PatientsTable = ({
                                     value={timeValue.from}
                                     className={styles.input_block}
                                     onChange={(newValue) => timeChangeHandler(newValue, "from")}
-                                    renderInput={(params) => <TextField {...params}  sx={{width: "103px", marginRight: "15px"}} />}
+                                    renderInput={(params) => <TextField {...params}
+                                                                        sx={{width: "103px", marginRight: "15px"}}/>}
                                 />
 
                                 <p className={styles.row_title} style={{marginRight: "10px"}}>Время завершения</p>
@@ -102,7 +135,7 @@ const PatientsTable = ({
                                     value={timeValue.to}
                                     className={styles.input_block}
                                     onChange={(newValue) => timeChangeHandler(newValue, "to")}
-                                    renderInput={(params) => <TextField {...params}  sx={{width: "103px"}} />}
+                                    renderInput={(params) => <TextField {...params} sx={{width: "103px"}}/>}
                                 />
                             </div>
                         </div>
@@ -115,7 +148,12 @@ const PatientsTable = ({
                                     id="input-example"
                                     name="input-name"
                                     placeholder="Please enter a number"
-                                    defaultValue="0"
+                                    value={appointedServices
+                                        .map((appointedService) => appointedService.service.cost * appointedService.quantity * (1 - discount / 100))
+                                        .reduce((prev, curr) => {
+                                            return prev + curr;
+                                        }, 0)
+                                    }
                                     allowDecimals={true}
                                     allowNegativeValue={false}
                                     prefix="UZS "
@@ -131,7 +169,12 @@ const PatientsTable = ({
                                     id="input-example"
                                     name="input-name"
                                     placeholder="Please enter a number"
-                                    defaultValue="0"
+                                    value={appointedServices
+                                        .map((appointedService) => appointedService.service.cost * appointedService.quantity * (1 - discount / 100))
+                                        .reduce((prev, curr) => {
+                                            return prev + curr;
+                                        }, 0)
+                                    }
                                     allowDecimals={true}
                                     allowNegativeValue={false}
                                     prefix="UZS "
@@ -140,7 +183,8 @@ const PatientsTable = ({
                                     style={{marginRight: "35px"}}
                                 />
 
-                                <FormControlLabel control={<Checkbox />} label="Вручную" className={styles.checkbox_block}/>
+                                <FormControlLabel control={<Checkbox/>} label="Вручную"
+                                                  className={styles.checkbox_block}/>
                             </div>
                         </div>
 
@@ -164,19 +208,20 @@ const PatientsTable = ({
                                 ]}
                                 className={styles.input_block}
                                 noOptionsText={'Направление не найдено'}
-                                renderInput={(params) => <TextField {...params} label="Выберите направление" InputLabelProps={{
-                                    sx: [
-                                        {
-                                            top: "-12px",
-                                            fontSize: "14px",
-                                        },
-                                        {
-                                            "&.Mui-focused": {
-                                                top: 0
-                                            }
-                                        }
-                                    ]
-                                }} />}
+                                renderInput={(params) => <TextField {...params} label="Выберите направление"
+                                                                    InputLabelProps={{
+                                                                        sx: [
+                                                                            {
+                                                                                top: "-12px",
+                                                                                fontSize: "14px",
+                                                                            },
+                                                                            {
+                                                                                "&.Mui-focused": {
+                                                                                    top: 0
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }}/>}
                             />
                         </div>
 
@@ -200,19 +245,20 @@ const PatientsTable = ({
                                 ]}
                                 className={styles.input_block}
                                 noOptionsText={'Источник не найдено'}
-                                renderInput={(params) => <TextField {...params} label="Выберите источники" InputLabelProps={{
-                                    sx: [
-                                        {
-                                            top: "-12px",
-                                            fontSize: "14px",
-                                        },
-                                        {
-                                            "&.Mui-focused": {
-                                                top: 0
-                                            }
-                                        }
-                                    ]
-                                }} />}
+                                renderInput={(params) => <TextField {...params} label="Выберите источники"
+                                                                    InputLabelProps={{
+                                                                        sx: [
+                                                                            {
+                                                                                top: "-12px",
+                                                                                fontSize: "14px",
+                                                                            },
+                                                                            {
+                                                                                "&.Mui-focused": {
+                                                                                    top: 0
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }}/>}
                             />
                         </div>
 
@@ -239,7 +285,7 @@ const PatientsTable = ({
                     <div className={styles.table_row}>
                         <Button variant="outlined" className={styles.button_white}>Допольнительно</Button>
                         <Button variant="outlined" className={styles.button_white}>Аптека</Button>
-                        <FormControlLabel control={<Checkbox />} label="Контракты" className={styles.checkbox_block}/>
+                        <FormControlLabel control={<Checkbox/>} label="Контракты" className={styles.checkbox_block}/>
                     </div>
 
                     <div className={styles.table_title}>Дополнительно</div>
@@ -265,22 +311,24 @@ const PatientsTable = ({
                                     ]}
                                     className={styles.input_block}
                                     noOptionsText={'Контракт не найдено'}
-                                    renderInput={(params) => <TextField {...params} label="Виберите номер контракта" InputLabelProps={{
-                                        sx: [
-                                            {
-                                                top: "-12px",
-                                                fontSize: "14px",
-                                            },
-                                            {
-                                                "&.Mui-focused": {
-                                                    top: 0
-                                                }
-                                            }
-                                        ]
-                                    }} />}
+                                    renderInput={(params) => <TextField {...params} label="Виберите номер контракта"
+                                                                        InputLabelProps={{
+                                                                            sx: [
+                                                                                {
+                                                                                    top: "-12px",
+                                                                                    fontSize: "14px",
+                                                                                },
+                                                                                {
+                                                                                    "&.Mui-focused": {
+                                                                                        top: 0
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        }}/>}
                                 />
 
-                                <Button variant="outlined" className={styles.button_white} sx={{width: "87px !important"}}>Лимиты</Button>
+                                <Button variant="outlined" className={styles.button_white}
+                                        sx={{width: "87px !important"}}>Лимиты</Button>
                             </FlexSpaceBetween>
                         </div>
 
@@ -321,13 +369,15 @@ const PatientsTable = ({
                                             }
                                         }
                                     ]
-                                }} />}
+                                }}/>}
                             />
                         </div>
 
                         <div className={styles.table_row}>
-                            <FormControlLabel control={<Checkbox />} label="Поставить вне очереди" className={styles.checkbox_block}/>
-                            <FormControlLabel control={<Checkbox />} label="Отправить смс оповещение" className={styles.checkbox_block}/>
+                            <FormControlLabel control={<Checkbox/>} label="Поставить вне очереди"
+                                              className={styles.checkbox_block}/>
+                            <FormControlLabel control={<Checkbox/>} label="Отправить смс оповещение"
+                                              className={styles.checkbox_block}/>
                         </div>
                     </div>
                 </div>
@@ -349,39 +399,28 @@ const PatientsTable = ({
                                 <div className={styles.list_wrapper}>
                                     <table>
                                         <tbody>
-                                            <tr>
-                                                <td>И по сей день в центральных регионах звучит перекатами звон колоколов</td>
-                                                <td className={styles.center_cel}>1</td>
-                                                <td>
-                                                    <div className={styles.icon_cell}>
-                                                        <CloseCircle />
-                                                    </div>
-                                                </td>
-                                                <td className={styles.center_cel}>69 647</td>
-                                                <td className={styles.center_cel}>0.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Прототип нового сервиса — это как треск разлетающихся скреп</td>
-                                                <td className={styles.center_cel}>1</td>
-                                                <td>
-                                                    <div className={styles.icon_cell}>
-                                                        <CloseCircle />
-                                                    </div>
-                                                </td>
-                                                <td className={styles.center_cel}>76 602</td>
-                                                <td className={styles.center_cel}>0.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Зима близко</td>
-                                                <td className={styles.center_cel}>1</td>
-                                                <td>
-                                                    <div className={styles.icon_cell}>
-                                                        <CloseCircle />
-                                                    </div>
-                                                </td>
-                                                <td className={styles.center_cel}>96 465</td>
-                                                <td className={styles.center_cel}>0.00</td>
-                                            </tr>
+                                        {
+                                            appointedServices.map((appointedService) => (
+                                                <tr>
+                                                    <td>{appointedService.service.name}</td>
+                                                    <td className={styles.center_cel}>{appointedService.quantity}</td>
+                                                    <td>
+                                                        <div className={styles.icon_cell} onClick={() => {
+                                                            appointedService.quantity--;
+                                                            if (appointedService.quantity) {
+                                                                setAppointedServices([...appointedServices]);
+                                                            } else {
+                                                                setAppointedServices(prevState => [...prevState.filter(prev => prev.service.id !== appointedService.service.id)]);
+                                                            }
+                                                        }}>
+                                                            <CloseCircle/>
+                                                        </div>
+                                                    </td>
+                                                    <td className={styles.center_cel}>{new Intl.NumberFormat().format(appointedService.service.cost * appointedService.quantity * (1 - discount / 100))} UZS</td>
+                                                    <td className={styles.center_cel}>{discount} %</td>
+                                                </tr>
+                                            ))
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
@@ -391,7 +430,7 @@ const PatientsTable = ({
                             <div className={styles.top_box}>
                                 <p>Поиск услуг</p>
 
-                                <input type="text" className={styles.input_top_block}/>
+                                <input type="text" className={styles.input_top_block} value={serviceSearchText} onChange={(event) => setServiceSearchText(event.target.value)}/>
                             </div>
 
                             <div className={styles.list_block}>
@@ -404,33 +443,40 @@ const PatientsTable = ({
                                 <div className={styles.list_wrapper}>
                                     <table>
                                         <tbody>
-                                            <tr>
-                                                <td style={{padding: 0}}>
-                                                    <div className={`${styles.icon_cell} ${styles.green}`}>
-                                                        <AddCircle />
-                                                    </div>
-                                                </td>
-                                                <td>И по сей день в центральных регионах звучит перекатами звон колоколов</td>
-                                                <td>69 647</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={{padding: 0}}>
-                                                    <div className={`${styles.icon_cell} ${styles.green}`}>
-                                                        <AddCircle />
-                                                    </div>
-                                                </td>
-                                                <td>И по сей день в центральных регионах звучит перекатами звон колоколов</td>
-                                                <td>69 647</td>
-                                            </tr>
-                                            <tr>
-                                                <td style={{padding: 0}}>
-                                                    <div className={`${styles.icon_cell} ${styles.green}`}>
-                                                        <AddCircle />
-                                                    </div>
-                                                </td>
-                                                <td>И по сей день в центральных регионах звучит перекатами звон колоколов</td>
-                                                <td>69 647</td>
-                                            </tr>
+                                        {
+                                            services
+                                                .filter((service) => service.name.toLowerCase().includes(serviceSearchText.toLowerCase()))
+                                                .map((service) => (
+                                                <tr>
+                                                    <td style={{padding: 0}}>
+                                                        <div
+                                                            className={`${styles.icon_cell} ${styles.green}`}
+                                                            onClick={() => {
+                                                                let found = false;
+                                                                appointedServices.forEach((appointedService) => {
+                                                                    if (appointedService.service.id === service.id) {
+                                                                        found = true;
+                                                                        appointedService.quantity++;
+                                                                    }
+                                                                });
+                                                                if (found) {
+                                                                    setAppointedServices([...appointedServices]);
+                                                                } else {
+                                                                    setAppointedServices(prevState => [...prevState, {
+                                                                        quantity: 1,
+                                                                        service: service,
+                                                                        discount: discount
+                                                                    }]);
+                                                                }
+                                                            }}>
+                                                            <AddCircle/>
+                                                        </div>
+                                                    </td>
+                                                    <td>{service.name}</td>
+                                                    <td>{new Intl.NumberFormat().format(service.cost)} UZS</td>
+                                                </tr>
+                                            ))
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
@@ -441,6 +487,6 @@ const PatientsTable = ({
             </div>
         </>
     );
-};
+});
 
 export default PatientsTable;

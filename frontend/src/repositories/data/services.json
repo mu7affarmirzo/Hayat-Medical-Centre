@@ -1,0 +1,602 @@
+[
+  {
+    "id": 1,
+    "name": "Bilat ing hernia rep NOS",
+    "cost": 342227,
+    "doctorId": 154
+  },
+  {
+    "id": 2,
+    "name": "Perianal incision NEC",
+    "cost": 185936,
+    "doctorId": 138
+  },
+  {
+    "id": 3,
+    "name": "Unspec op-bone inj NEC",
+    "cost": 384541,
+    "doctorId": 132
+  },
+  {
+    "id": 4,
+    "name": "Inject/infuse NEC",
+    "cost": 435168,
+    "doctorId": 147
+  },
+  {
+    "id": 5,
+    "name": "Gastric freezing",
+    "cost": 83274,
+    "doctorId": 152
+  },
+  {
+    "id": 6,
+    "name": "Puncture of lung",
+    "cost": 256785,
+    "doctorId": 120
+  },
+  {
+    "id": 7,
+    "name": "Local excis rectal les",
+    "cost": 182320,
+    "doctorId": 120
+  },
+  {
+    "id": 8,
+    "name": "Other heart septa ops",
+    "cost": 86732,
+    "doctorId": 114
+  },
+  {
+    "id": 9,
+    "name": "Control anal hemorrhage",
+    "cost": 53549,
+    "doctorId": 158
+  },
+  {
+    "id": 10,
+    "name": "Retrogr cystourethrogram",
+    "cost": 435816,
+    "doctorId": 156
+  },
+  {
+    "id": 11,
+    "name": "Refusion of atlas-axis",
+    "cost": 120517,
+    "doctorId": 121
+  },
+  {
+    "id": 12,
+    "name": "Op red-int fix rad/ulna",
+    "cost": 13819,
+    "doctorId": 119
+  },
+  {
+    "id": 13,
+    "name": "Penile operation NEC",
+    "cost": 251733,
+    "doctorId": 134
+  },
+  {
+    "id": 14,
+    "name": "Bact smear-lower GI",
+    "cost": 81613,
+    "doctorId": 136
+  },
+  {
+    "id": 15,
+    "name": "Facial bone sequestrect",
+    "cost": 65092,
+    "doctorId": 154
+  },
+  {
+    "id": 16,
+    "name": "Lower limb vein incision",
+    "cost": 13320,
+    "doctorId": 120
+  },
+  {
+    "id": 17,
+    "name": "Intracapsul lens ext NEC",
+    "cost": 456839,
+    "doctorId": 129
+  },
+  {
+    "id": 18,
+    "name": "Adjust lid position NEC",
+    "cost": 162440,
+    "doctorId": 112
+  },
+  {
+    "id": 19,
+    "name": "Aorta resection & anast",
+    "cost": 363851,
+    "doctorId": 134
+  },
+  {
+    "id": 20,
+    "name": "Tonsil/adenoid ops NEC",
+    "cost": 320192,
+    "doctorId": 140
+  },
+  {
+    "id": 21,
+    "name": "Ins totl disc pros lumb",
+    "cost": 318731,
+    "doctorId": 118
+  },
+  {
+    "id": 22,
+    "name": "Part breech extract NEC",
+    "cost": 160137,
+    "doctorId": 128
+  },
+  {
+    "id": 23,
+    "name": "Ptosis rep-front mus sut",
+    "cost": 310887,
+    "doctorId": 129
+  },
+  {
+    "id": 24,
+    "name": "Lower limb artery incis",
+    "cost": 314968,
+    "doctorId": 137
+  },
+  {
+    "id": 25,
+    "name": "Intravascul imaging NOS",
+    "cost": 348348,
+    "doctorId": 153
+  },
+  {
+    "id": 26,
+    "name": "Epikeratophakia",
+    "cost": 112591,
+    "doctorId": 149
+  },
+  {
+    "id": 27,
+    "name": "Excision of tonsil tag",
+    "cost": 397214,
+    "doctorId": 126
+  },
+  {
+    "id": 28,
+    "name": "High forceps w episiot",
+    "cost": 112716,
+    "doctorId": 128
+  },
+  {
+    "id": 29,
+    "name": "Vasc proc revision NEC",
+    "cost": 435135,
+    "doctorId": 118
+  },
+  {
+    "id": 30,
+    "name": "Tooth restor by filling",
+    "cost": 226212,
+    "doctorId": 131
+  },
+  {
+    "id": 31,
+    "name": "Exc/dest hrt les, thrspc",
+    "cost": 352902,
+    "doctorId": 140
+  },
+  {
+    "id": 32,
+    "name": "Closed fx reduct humerus",
+    "cost": 385695,
+    "doctorId": 118
+  },
+  {
+    "id": 33,
+    "name": "Clos endosc ureteral bx",
+    "cost": 320388,
+    "doctorId": 157
+  },
+  {
+    "id": 34,
+    "name": "Endosc sphincterotomy",
+    "cost": 434558,
+    "doctorId": 122
+  },
+  {
+    "id": 35,
+    "name": "Procedure-two vessels",
+    "cost": 235374,
+    "doctorId": 114
+  },
+  {
+    "id": 36,
+    "name": "Perc robotic assist proc",
+    "cost": 492811,
+    "doctorId": 158
+  },
+  {
+    "id": 37,
+    "name": "Ocular prosthetics",
+    "cost": 346256,
+    "doctorId": 145
+  },
+  {
+    "id": 38,
+    "name": "Vag diaphragm insertion",
+    "cost": 200013,
+    "doctorId": 132
+  },
+  {
+    "id": 39,
+    "name": "Electro-oculogram",
+    "cost": 77384,
+    "doctorId": 118
+  },
+  {
+    "id": 40,
+    "name": "Vagin/cul-de-sac dx NEC",
+    "cost": 270070,
+    "doctorId": 151
+  },
+  {
+    "id": 41,
+    "name": "Hepatotomy",
+    "cost": 67967,
+    "doctorId": 141
+  },
+  {
+    "id": 42,
+    "name": "Stern esophag anast NEC",
+    "cost": 11044,
+    "doctorId": 125
+  },
+  {
+    "id": 43,
+    "name": "Perianal incision NEC",
+    "cost": 28891,
+    "doctorId": 135
+  },
+  {
+    "id": 44,
+    "name": "Oth metatars/tars incis",
+    "cost": 283871,
+    "doctorId": 129
+  },
+  {
+    "id": 45,
+    "name": "Excis ampulla of vater",
+    "cost": 234209,
+    "doctorId": 134
+  },
+  {
+    "id": 46,
+    "name": "Imp/rep mchan cochl pros",
+    "cost": 163788,
+    "doctorId": 156
+  },
+  {
+    "id": 47,
+    "name": "Bronch/trach lavage NEC",
+    "cost": 209429,
+    "doctorId": 129
+  },
+  {
+    "id": 48,
+    "name": "One extraoc mus recess",
+    "cost": 411401,
+    "doctorId": 133
+  },
+  {
+    "id": 49,
+    "name": "Vent shunt extracran NEC",
+    "cost": 365225,
+    "doctorId": 113
+  },
+  {
+    "id": 50,
+    "name": "Open bladder biopsy",
+    "cost": 41468,
+    "doctorId": 129
+  },
+  {
+    "id": 51,
+    "name": "Other destru pancrea les",
+    "cost": 63565,
+    "doctorId": 117
+  },
+  {
+    "id": 52,
+    "name": "Aquapheresis",
+    "cost": 489528,
+    "doctorId": 124
+  },
+  {
+    "id": 53,
+    "name": "Imp/rep CRT defib genat",
+    "cost": 472675,
+    "doctorId": 129
+  },
+  {
+    "id": 54,
+    "name": "Vulvar adhesiolysis",
+    "cost": 425321,
+    "doctorId": 124
+  },
+  {
+    "id": 55,
+    "name": "Tu adhesiolysis bladder",
+    "cost": 316216,
+    "doctorId": 125
+  },
+  {
+    "id": 56,
+    "name": "Vaginal biopsy",
+    "cost": 402592,
+    "doctorId": 151
+  },
+  {
+    "id": 57,
+    "name": "Pancreat sphincteroplas",
+    "cost": 459744,
+    "doctorId": 113
+  },
+  {
+    "id": 58,
+    "name": "Comprehensive eye exam",
+    "cost": 278573,
+    "doctorId": 128
+  },
+  {
+    "id": 59,
+    "name": "Inser bone stim-rad/ulna",
+    "cost": 306937,
+    "doctorId": 124
+  },
+  {
+    "id": 60,
+    "name": "Exc of dental les of jaw",
+    "cost": 251867,
+    "doctorId": 129
+  },
+  {
+    "id": 61,
+    "name": "Implanted lens removal",
+    "cost": 390897,
+    "doctorId": 131
+  },
+  {
+    "id": 62,
+    "name": "Other tracheal repair",
+    "cost": 182371,
+    "doctorId": 125
+  },
+  {
+    "id": 63,
+    "name": "Partial splenectomy",
+    "cost": 323888,
+    "doctorId": 144
+  },
+  {
+    "id": 64,
+    "name": "Rect/perirect dx op NEC",
+    "cost": 302556,
+    "doctorId": 112
+  },
+  {
+    "id": 65,
+    "name": "Repair ob lacerat cervix",
+    "cost": 191625,
+    "doctorId": 120
+  },
+  {
+    "id": 66,
+    "name": "Intralum urete adhesioly",
+    "cost": 197702,
+    "doctorId": 155
+  },
+  {
+    "id": 67,
+    "name": "Tot brch extrac w forcep",
+    "cost": 488451,
+    "doctorId": 122
+  },
+  {
+    "id": 68,
+    "name": "Crisis intervention",
+    "cost": 327527,
+    "doctorId": 115
+  },
+  {
+    "id": 69,
+    "name": "Close nephrost & pyelost",
+    "cost": 60472,
+    "doctorId": 128
+  },
+  {
+    "id": 70,
+    "name": "Dilate pylorus, incision",
+    "cost": 331802,
+    "doctorId": 114
+  },
+  {
+    "id": 71,
+    "name": "Unilat radical mastectom",
+    "cost": 282165,
+    "doctorId": 151
+  },
+  {
+    "id": 72,
+    "name": "Implant leg prosthesis",
+    "cost": 185620,
+    "doctorId": 126
+  },
+  {
+    "id": 73,
+    "name": "Vital capacity determin",
+    "cost": 222665,
+    "doctorId": 130
+  },
+  {
+    "id": 74,
+    "name": "Adenoidectomy",
+    "cost": 115415,
+    "doctorId": 148
+  },
+  {
+    "id": 75,
+    "name": "Fit ext penile prosthes",
+    "cost": 246403,
+    "doctorId": 149
+  },
+  {
+    "id": 76,
+    "name": "GAP flap, free",
+    "cost": 218731,
+    "doctorId": 130
+  },
+  {
+    "id": 77,
+    "name": "Spine meningocele repair",
+    "cost": 123232,
+    "doctorId": 135
+  },
+  {
+    "id": 78,
+    "name": "Opn/oth rep aortic valve",
+    "cost": 366358,
+    "doctorId": 137
+  },
+  {
+    "id": 79,
+    "name": "BBBD via infusion",
+    "cost": 260405,
+    "doctorId": 155
+  },
+  {
+    "id": 80,
+    "name": "Int fixation-radius/ulna",
+    "cost": 260827,
+    "doctorId": 111
+  },
+  {
+    "id": 81,
+    "name": "Cranial puncture NEC",
+    "cost": 27988,
+    "doctorId": 138
+  },
+  {
+    "id": 82,
+    "name": "Chorioret les laser coag",
+    "cost": 382387,
+    "doctorId": 128
+  },
+  {
+    "id": 83,
+    "name": "Manual rupt ovarian cyst",
+    "cost": 399299,
+    "doctorId": 134
+  },
+  {
+    "id": 84,
+    "name": "Retropubic ureth suspens",
+    "cost": 142031,
+    "doctorId": 146
+  },
+  {
+    "id": 85,
+    "name": "Intraven cholangiogram",
+    "cost": 181415,
+    "doctorId": 148
+  },
+  {
+    "id": 86,
+    "name": "Open red-int fix humerus",
+    "cost": 360133,
+    "doctorId": 145
+  },
+  {
+    "id": 87,
+    "name": "Skin chemosurgery",
+    "cost": 464904,
+    "doctorId": 138
+  },
+  {
+    "id": 88,
+    "name": "Cell block/pap-endocrine",
+    "cost": 261453,
+    "doctorId": 143
+  },
+  {
+    "id": 89,
+    "name": "Prt lg intes exc NEC/NOS",
+    "cost": 367189,
+    "doctorId": 134
+  },
+  {
+    "id": 90,
+    "name": "Epididymectomy",
+    "cost": 488525,
+    "doctorId": 156
+  },
+  {
+    "id": 91,
+    "name": "Cell blk/pap NOS",
+    "cost": 378185,
+    "doctorId": 136
+  },
+  {
+    "id": 92,
+    "name": "Hindquarter amputation",
+    "cost": 278140,
+    "doctorId": 151
+  },
+  {
+    "id": 93,
+    "name": "Cl reduct mandible fx",
+    "cost": 205578,
+    "doctorId": 145
+  },
+  {
+    "id": 94,
+    "name": "Epididymis/vas x-ray NEC",
+    "cost": 196731,
+    "doctorId": 136
+  },
+  {
+    "id": 95,
+    "name": "Myotomy",
+    "cost": 78942,
+    "doctorId": 144
+  },
+  {
+    "id": 96,
+    "name": "Pancreat cyst marsupiali",
+    "cost": 338481,
+    "doctorId": 151
+  },
+  {
+    "id": 97,
+    "name": "Remov ext immobilization",
+    "cost": 381198,
+    "doctorId": 154
+  },
+  {
+    "id": 98,
+    "name": "Ext audit canal reconstr",
+    "cost": 319515,
+    "doctorId": 158
+  },
+  {
+    "id": 99,
+    "name": "Head/neck ves incis NEC",
+    "cost": 388253,
+    "doctorId": 117
+  },
+  {
+    "id": 100,
+    "name": "Aorta-iliac-femor bypass",
+    "cost": 339654,
+    "doctorId": 128
+  }
+]
