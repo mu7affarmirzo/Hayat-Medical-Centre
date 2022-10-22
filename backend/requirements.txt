@@ -1,4 +1,4 @@
-Django==3.2
+Django>=3.2.16
 psycopg2>=2.8
 python-decouple==3.6
 djangorestframework==3.13
@@ -6,4 +6,4 @@ djangorestframework-simplejwt
 drf-yasg
 django-cors-headers
 Pillow
-PyJWT==1.7.1
+pyjwt>=2.4.0
