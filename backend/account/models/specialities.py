@@ -31,3 +31,5 @@ class DoctorSpecialityModel(models.Model):
     def __str__(self):
         return str(self.doctor) + " - " + str(self.speciality)
 
+
+

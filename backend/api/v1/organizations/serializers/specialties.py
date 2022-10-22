@@ -11,3 +11,10 @@ class SpecialtiesListSerializer(serializers.ModelSerializer):
             "name",
             "color"
         ]
+
+
+class SpecialtiesCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpecialityModel
+        fields = "__all__"
+

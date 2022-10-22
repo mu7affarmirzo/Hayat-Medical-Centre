@@ -65,7 +65,7 @@ class AppointmentServiceModel(models.Model):
 
 class EMCDocumentModel(models.Model):
     name = models.CharField(max_length=255)
-    patient = models.ForeignKey(PatientModel, blank=True, null=True, on_delete=models.SET_NULL)
+    patient = models.ForeignKey(PatientModel, blank=True, null=True, on_delete=models.SET_NULL) #OneToOne ?
     service = models.ForeignKey(AppointmentServiceModel, on_delete=models.SET_NULL, null=True)
     appointment = models.ForeignKey(AppointmentsModel, on_delete=models.SET_NULL, null=True)
     created_by = models.ForeignKey(Account, related_name='emc_doc_created', on_delete=models.SET_NULL, null=True)

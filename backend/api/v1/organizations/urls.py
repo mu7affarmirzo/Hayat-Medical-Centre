@@ -7,6 +7,6 @@ urlpatterns = [
     # path('account/', include('api.v1.account.urls')),
     path('', OrganizationsListCreateView.as_view(), name='organizations'),
     path('branches/', BranchesListCreateView.as_view(), name='branches'),
-    path('specialites/', SpecialtiesView.as_view(), name='specialites'),
+    path('specialites/', SpecialtiesView.as_view(), name='specialties'),
 
 ]

@@ -12,3 +12,4 @@ class DoctorsListCreateView(APIView):
         branches = Account.objects.all()
         serializer = BranchListSerializer(branches, many=True)
         return Response(serializer.data)
+
