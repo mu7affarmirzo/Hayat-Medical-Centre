@@ -1,4 +1,6 @@
 from django.urls import path, include
+
+from api.v1.organizations.views.doctors import DoctorsListCreateView
 from api.v1.organizations.views.patient import PatientView, PatientRetrieveView
 from api.v1.organizations.views.organizations import OrganizationsListCreateView, BranchesListCreateView
 from api.v1.organizations.views.specialties import SpecialtiesView
@@ -10,5 +12,7 @@ urlpatterns = [
     path('specialites/', SpecialtiesView.as_view(), name='specialites'),
     path('patients/', PatientView.as_view(), name='patients'),
     path('patients/<int:pk>', PatientRetrieveView.as_view(), name='patients'),
+    path('doctors/', DoctorsListCreateView.as_view(), name='doctors'),
+    path('doctors/', DoctorsListCreateView.as_view(), name='doctors'),
 
 ]

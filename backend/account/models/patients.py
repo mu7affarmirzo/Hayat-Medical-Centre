@@ -35,6 +35,7 @@ class PatientModel(models.Model):
     mid_name = models.CharField(max_length=255, null=True, blank=True)
     l_name = models.CharField(max_length=255)
     email = models.EmailField(null=True, blank=True)
+    date_of_birth = models.DateTimeField(auto_now=False)
     home_phone_number = models.CharField(max_length=255, blank=True, null=True)
     mobile_phone_number = models.CharField(max_length=255, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
@@ -49,6 +50,7 @@ class PatientModel(models.Model):
     country = models.CharField(max_length=255, blank=True, null=True)
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    last_visit_at = models.DateTimeField(auto_now=True)
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_patient_by_user", on_delete=models.SET_NULL, null=True)
     organization = models.ForeignKey(OrganizationModel, on_delete=models.SET_NULL, null=True)
@@ -64,4 +66,3 @@ class PatientModel(models.Model):
 
     class Meta:
         ordering = ('f_name', '-created_at')
-

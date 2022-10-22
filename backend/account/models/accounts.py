@@ -33,7 +33,11 @@ class MyAccountManager(BaseUserManager):
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True)
+    f_name = models.CharField(max_length=50, null=True)
+    l_name = models.CharField(max_length=50, null=True)
+    m_name = models.CharField(max_length=50, null=True)
     phone_number = models.CharField(max_length=30, null=True)
+    sex = models.BooleanField(default=True)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
     organization_id = models.IntegerField(null=True)
