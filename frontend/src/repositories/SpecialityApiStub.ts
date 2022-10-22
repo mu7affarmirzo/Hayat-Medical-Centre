@@ -20,6 +20,6 @@ export default class SpecialityApiStub {
 
     async findAllSpecialties(): Promise<ISpeciality[]> {
         /* Gen by NARA Studio */
-        return specialitiesList ? specialitiesList : this.client.getArray<ISpeciality>('/');
+        return specialitiesList ? specialitiesList as unknown as ISpeciality[] : this.client.getArray<ISpeciality>('/');
     }
 }

@@ -124,7 +124,7 @@ const MainView = observer((
                                                 </label>
                                             </div>
                                             <div className={styles.cell}>
-                                                {item.full_name}
+                                                {item.fullName}
                                             </div>
                                             <div className={styles.cell}>
                                                 {item.speciality.name}

@@ -50,7 +50,7 @@ export default function CustomWeekView({
                                     background: '#64B6F7',
                                 }}
                             >
-                                {doctor.full_name}
+                                {doctor.fullName}
                             </Typography>
                             <Week
                                 date={date}

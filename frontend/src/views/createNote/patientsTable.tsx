@@ -4,7 +4,7 @@ import {
     Autocomplete, Button,
     Checkbox,
     FormControl,
-    FormControlLabel, Input,
+    FormControlLabel,
     InputLabel,
     MenuItem, OutlinedInput,
     Select,
@@ -327,7 +327,7 @@ const PatientsTable = ({
 
                         <div className={styles.table_row}>
                             <FormControlLabel control={<Checkbox />} label="Поставить вне очереди" className={styles.checkbox_block}/>
-                            <FormControlLabel control={<Checkbox />} label="Отправить смс оповещение"className={styles.checkbox_block}/>
+                            <FormControlLabel control={<Checkbox />} label="Отправить смс оповещение" className={styles.checkbox_block}/>
                         </div>
                     </div>
                 </div>

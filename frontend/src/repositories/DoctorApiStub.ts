@@ -19,6 +19,6 @@ export default class DoctorApiStub {
 
     async findAllDoctors(): Promise<IDoctor[]> {
         /* Gen by NARA Studio */
-        return doctorsList ? doctorsList : this.client.getArray<IDoctor>('/');
+        return doctorsList ? doctorsList as unknown as IDoctor[] : this.client.getArray<IDoctor>('/');
     }
 }

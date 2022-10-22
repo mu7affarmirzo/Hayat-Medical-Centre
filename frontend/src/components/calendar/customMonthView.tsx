@@ -52,7 +52,7 @@ export default function CustomMonthView({
                                             background: '#64B6F7',
                                         }}
                                     >
-                                        {doctor.full_name}
+                                        {doctor.fullName}
                                     </Typography>
                                     <Month
                                         date={date}

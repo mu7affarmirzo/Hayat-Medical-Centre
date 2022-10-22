@@ -49,7 +49,7 @@ export default function CustomDayView({
                                     background: '#64B6F7',
                                 }}
                             >
-                                {doctor.full_name}
+                                {doctor.fullName}
                             </Typography>
                             <Day
                                 date={date}

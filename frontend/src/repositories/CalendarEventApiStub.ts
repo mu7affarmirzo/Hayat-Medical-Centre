@@ -19,6 +19,6 @@ export default class CalendarEventApiStub {
 
     async findAllAppointments(): Promise<IAppointment[]> {
         /* Gen by NARA Studio */
-        return appointmentsList ? appointmentsList : this.client.getArray<IAppointment>('/');
+        return appointmentsList ? appointmentsList as unknown as IAppointment[] : this.client.getArray<IAppointment>('/');
     }
 }
