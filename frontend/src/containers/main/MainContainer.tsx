@@ -14,11 +14,12 @@ const MainContainer = observer(() => {
     const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
 
     const {filterEventByIds} = calendarEventsStateKeeper;
-    const {specialities, findAllSpecialties} = specialityStateKeeper;
-    const {doctors, findAllDoctors, selectedDoctors, setSelectedDoctors} = doctorStateKeeper;
+    const {specialitiesCopy, findAllSpecialties, searchByName} = specialityStateKeeper;
+    const {doctorsCopy, findAllDoctors, selectedDoctors, setSelectedDoctors, searchDoctor} = doctorStateKeeper;
 
     const [selectData, setSelectData] = useState<string>('');
-    const [doctorsData, setDoctorsData] = useState<Array<IDoctor>>(doctors);
+    const [doctorsData, setDoctorsData] = useState<Array<IDoctor>>(doctorsCopy);
+    const [searchInputsValue, setSearchInputs] = useState<{specialities: string, doctors: string}>({specialities: "", doctors: ""});
 
     useEffect(() => {
         filterEventByIds(selectedDoctors.map((doctor) => doctor.id));
@@ -39,9 +40,9 @@ const MainContainer = observer(() => {
         let filteredData;
 
         if (id === "all") {
-            filteredData = doctors;
+            filteredData = doctorsCopy;
         } else {
-            filteredData = doctors.filter(item => item.speciality.id === id);
+            filteredData = doctorsCopy.filter(item => item.speciality.id === id);
         }
 
         setDoctorsData(filteredData);
@@ -57,16 +58,27 @@ const MainContainer = observer(() => {
         }
     }
 
+    const searchInputsHandler = (type: string, value: string) => {
+        setSearchInputs(prev => ({...prev, [type]: value}))
+        if(type === "specialities"){
+            searchByName(value)
+        }else if(type === "doctors") {
+            searchDoctor(value)
+        }
+    }
+
     return (
         <>
             <MainView
                 selectData={selectData}
                 setSelectData={setSelectData}
-                doctors={doctorsData}
-                specialities={specialities}
+                doctors={doctorsCopy}
+                specialities={specialitiesCopy}
                 changeSpecialty={changeSpecialty}
                 onSelectDoctor={handleSelectDoctor}
                 selectedDoctors={selectedDoctors}
+                searchInputsValue={searchInputsValue}
+                searchInputsHandler={searchInputsHandler}
             />
         </>
     );

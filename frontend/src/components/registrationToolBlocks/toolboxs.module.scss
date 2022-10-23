@@ -20,7 +20,8 @@
       .tools_item {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        padding-top: 15px;
         flex-direction: column;
         height: 100%;
         width: 90px;

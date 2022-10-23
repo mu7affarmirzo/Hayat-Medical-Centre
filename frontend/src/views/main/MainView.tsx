@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styles from "./index.module.scss";
 import ToolBoxTop from "../../components/registrationToolBlocks/main";
-import {Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select} from "@mui/material";
+import {Alert, Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select, Snackbar} from "@mui/material";
 import {ReactComponent as SearchNormal} from "../../assets/img/search-normal.svg"
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalendarMain from "../../components/calendar/main";
@@ -9,6 +9,8 @@ import {IDoctor, ISpeciality} from "../../consts/types";
 import {observer, useLocalObservable} from "mobx-react-lite";
 import moment from "moment";
 import {CalendarEventStateKeeper} from "../../store";
+import ErrorNotification from "../../store/ErrorNotification";
+import DoctorStateKeeper from "../../store/DoctorStateKeeper";
 
 
 const MainView = observer((
@@ -20,6 +22,8 @@ const MainView = observer((
         changeSpecialty,
         onSelectDoctor,
         selectedDoctors,
+        searchInputsValue,
+        searchInputsHandler
     }: {
         selectData: string
         setSelectData: (str: string) => void
@@ -28,8 +32,11 @@ const MainView = observer((
         changeSpecialty: (id: string) => void
         onSelectDoctor: (e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>, data: IDoctor) => void
         selectedDoctors: Array<IDoctor>
+        searchInputsValue: {specialities: string, doctors: string}
+        searchInputsHandler: (type: string, value: string) => void
     }
 ) => {
+    const {openNotification, changeVisibilityNotification} = useLocalObservable(() => ErrorNotification.instance);
     const changeButtons: Array<{ text: string, type: string }> = [
         {
             text: "месяц",
@@ -105,7 +112,8 @@ const MainView = observer((
                                     <OutlinedInput
                                         id="outlined-adornment-password"
                                         type={'text'}
-                                        // value={values.password}
+                                        value={searchInputsValue.specialities}
+                                        onChange={(e) => searchInputsHandler("specialities", e.target.value)}
                                         endAdornment={
                                             <SearchNormal position="end"/>
                                         }
@@ -119,6 +127,8 @@ const MainView = observer((
                                     <OutlinedInput
                                         id="outlined-adornment-password"
                                         type={'text'}
+                                        value={searchInputsValue.doctors}
+                                        onChange={(e) => searchInputsHandler("doctors", e.target.value)}
                                         endAdornment={
                                             <SearchNormal position="end"/>
                                         }
@@ -186,29 +196,48 @@ const MainView = observer((
                         </div>
                     </div>
                     <div className={styles.calendar}>
-                        <div className={styles.toolbar}>
-                            <div className={styles.button_now}>Сегодня</div>
-                            <p className={styles.now_day}> {convertDate()}</p>
+                        {
+                            selectedDoctors.length > 0 &&
 
-                            <div className={`month_buttons_block ${styles.buttons_change}`}>
-                                {changeButtons.map((item, i) => (
-                                    <div
-                                        key={item.type}
-                                        onClick={(e) => changeView(item.type)}
-                                        className={`month_buttons ${styles.button_item} ${item.type === active ? `month_button_active ${styles.active}` : ""}`}
-                                        data-type={item.type}
-                                    >
-                                        {item.text}
-                                    </div>
-                                ))}
+                            <div className={styles.toolbar}>
+                                <div className={styles.button_now}>Сегодня</div>
+                                <p className={styles.now_day}> {convertDate()}</p>
+
+                                <div className={`month_buttons_block ${styles.buttons_change}`}>
+                                    {changeButtons.map((item, i) => (
+                                        <div
+                                            key={item.type}
+                                            onClick={(e) => changeView(item.type)}
+                                            className={`month_buttons ${styles.button_item} ${item.type === active ? `month_button_active ${styles.active}` : ""}`}
+                                            data-type={item.type}
+                                        >
+                                            {item.text}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        }
                         <div className={styles.calendar_main}>
                             <CalendarMain/>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <Snackbar
+                open={openNotification}
+                autoHideDuration={3000}
+                onClose={() => changeVisibilityNotification(false)}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+                <Alert
+                    onClose={() => changeVisibilityNotification(false)}
+                    severity="error"
+                    sx={{ width: '100%' }}
+                >
+                    Пожалуйста выберете сначала доктора
+                </Alert>
+            </Snackbar>
         </>
     );
 });

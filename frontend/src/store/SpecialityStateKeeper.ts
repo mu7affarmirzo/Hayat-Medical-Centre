@@ -8,6 +8,7 @@ class SpecialityStateKeeper {
     private readonly specialityApiStub: SpecialityApiStub;
 
     specialities: ISpeciality[] = [];
+    specialitiesCopy: ISpeciality[] = [];
 
     static get instance() {
         if (!SpecialityStateKeeper._instance) {
@@ -27,8 +28,18 @@ class SpecialityStateKeeper {
         const specialties = await this.specialityApiStub.findAllSpecialties();
         runInAction(() => {
             this.specialities = specialties;
+            this.specialitiesCopy = specialties;
         });
         return specialties;
+    }
+
+    searchByName (str: string) {
+        if(str === "") {
+            this.specialitiesCopy = this.specialities;
+            return false
+        }
+
+        this.specialitiesCopy =  this.specialities.filter(item => item.name.toLowerCase().includes(str.toLowerCase()))
     }
 
 }

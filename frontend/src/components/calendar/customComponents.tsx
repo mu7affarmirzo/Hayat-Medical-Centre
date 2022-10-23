@@ -74,7 +74,6 @@ const ToolBarView = (data) => {
 }
 
 const MonthHeaderView = (data) => {
-    console.log(data, "MonthHeaderView")
     return (
         <>
             <div
@@ -139,36 +138,40 @@ const EventWrapperView = observer((data: any) => {
         setViewMode(activeButton?.getAttribute("data-type"))
 
         if (viewMode === "day") {
-            let EventsList = Array.from(document.querySelectorAll(".calendar_block .rbc-time-view .rbc-time-content .rbc-day-slot .rbc-events-container .event_wrapper_block"))
-                .map(item => ({
-                    [item?.getAttribute("data-test") || ""]: item
-                }));
-            let store: Array<any> = [];
+            const setOverflowEvents = (parent) => {
+                let EventsList = Array.from(parent.querySelectorAll(".rbc-time-view .rbc-time-content .rbc-day-slot .rbc-events-container .event_wrapper_block"))
+                    .map((item: any) => ({
+                        [item?.getAttribute("data-test") || ""]: item
+                    }));
+                let store: Array<any> = [];
 
-            EventsList.forEach((item, i, array) => {
-                let key = Object.keys(item)[0];
+                EventsList.forEach((item, i, array) => {
+                    let key = Object.keys(item)[0];
 
-                let sameElems = array.filter(item2 => Object.keys(item2)[0] === key)
+                    let sameElems = array.filter(item2 => Object.keys(item2)[0] === key)
 
-                if (sameElems.length > 1) {
-                    store.push(sameElems)
-                }
-
-            });
-            store.forEach(item => {
-                if (item.length > 4) {
-                    document.querySelectorAll(".rbc-time-content .rbc-day-slot.rbc-time-column .rbc-timeslot-group")
-                        .forEach((_item: any) => _item.style.width = (280 * item.length) + "px");
-                }
-
-                item.forEach((item2, i, arr) => {
-                    let eventElem: any = Object.values(item2)[0];
-                    if (eventElem && eventElem?.style) {
-                        eventElem.style.width = `calc(${100 / (arr.length > 4 ? 4 : arr.length)}% - ${(i === 0 || i === (arr.length - 1)) ? "5px" : "10px"})`;
-                        eventElem.style.left = `calc(${(i * (100 / (arr.length > 4 ? 4 : arr.length)))}% + ${i === 0 ? "0" : "5px"})`;
+                    if (sameElems.length > 1) {
+                        store.push(sameElems)
                     }
+
+                });
+                store.forEach(item => {
+                    if (item.length > 4) {
+                        document.querySelectorAll(".rbc-time-content .rbc-day-slot.rbc-time-column .rbc-timeslot-group")
+                            .forEach((_item: any) => _item.style.width = (280 * item.length) + "px");
+                    }
+
+                    item.forEach((item2, i, arr) => {
+                        let eventElem: any = Object.values(item2)[0];
+                        if (eventElem && eventElem?.style) {
+                            eventElem.style.width = `calc(${100 / (arr.length > 4 ? 4 : arr.length)}% - ${(i === 0 || i === (arr.length - 1)) ? "5px" : "10px"})`;
+                            eventElem.style.left = `calc(${(i * (100 / (arr.length > 4 ? 4 : arr.length)))}% + ${i === 0 ? "0" : "5px"})`;
+                        }
+                    })
                 })
-            })
+            }
+
+            document.querySelectorAll("#container_calendar").forEach(item => item && setOverflowEvents(item))
         } else if (viewMode === "month") {
             let eventsList: Array<Element> = Array.from(document.querySelectorAll(".rbc-row-content .rbc-row")).filter(item => Boolean(item.querySelector(".rbc-row-segment")));
             const getNumber = (str: string | null): string => {
@@ -194,56 +197,60 @@ const EventWrapperView = observer((data: any) => {
                 }
             })
         } else if (viewMode === "week") {
-            let EventsList = Array.from(document.querySelectorAll(".calendar_block .rbc-time-view .rbc-time-content .rbc-day-slot .rbc-events-container .event_wrapper_block"))
-                .map(item => ({
-                    [item?.getAttribute("data-test") || ""]: item
-                }));
-            let store: Array<any> = [];
-            let _EventsList = EventsList.concat();
+            const setOverflowEvents = (parent) => {
+                let EventsList = Array.from(parent.querySelectorAll(".rbc-time-view .rbc-time-content .rbc-day-slot .rbc-events-container .event_wrapper_block"))
+                    .map((item: any) => ({
+                        [item?.getAttribute("data-test") || ""]: item
+                    }));
+                let store: Array<any> = [];
+                let _EventsList = EventsList.concat();
 
-            for (let i = 0; i < _EventsList.length; i++) {
-                let key = Object.keys(_EventsList[i])[0];
-                let sameDate = {};
+                for (let i = 0; i < _EventsList.length; i++) {
+                    let key = Object.keys(_EventsList[i])[0];
+                    let sameDate = {};
 
-                let sameElems = _EventsList.filter(item2 => Object.keys(item2)[0] === key);
+                    let sameElems = _EventsList.filter(item2 => Object.keys(item2)[0] === key);
 
-                if (sameElems.length > 1) {
-                    _EventsList = _EventsList.filter(item => Object.keys(item)[0] !== Object.keys(sameElems[0])[0]);
-                    sameElems.forEach((item: any) => {
-                        let elem: any = Object.values(item)[0];
-                        let dateNumber = elem.getAttribute("data-date");
-                        if (dateNumber in sameDate) {
-                            sameDate[dateNumber].push(elem);
-                        } else {
-                            sameDate[dateNumber] = [elem];
-                        }
-                    })
-                    store.push(sameDate);
+                    if (sameElems.length > 1) {
+                        _EventsList = _EventsList.filter(item => Object.keys(item)[0] !== Object.keys(sameElems[0])[0]);
+                        sameElems.forEach((item: any) => {
+                            let elem: any = Object.values(item)[0];
+                            let dateNumber = elem.getAttribute("data-date");
+                            if (dateNumber in sameDate) {
+                                sameDate[dateNumber].push(elem);
+                            } else {
+                                sameDate[dateNumber] = [elem];
+                            }
+                        })
+                        store.push(sameDate);
+                    }
                 }
-            }
 
-            // console.log(store, "store")
+                // console.log(store, "store")
 
-            store.forEach(item => {
-                Object.entries(item).forEach((data, i) => {
-                    const elems: any = data[1];
-                    const date: any = data[0];
+                store.forEach(item => {
+                    Object.entries(item).forEach((data, i) => {
+                        const elems: any = data[1];
+                        const date: any = data[0];
 
-                    if (elems.length > 1) {
-                        elems.forEach((elem, index) => {
-                            if (index === 0) {
-                                let pHTML = elem.querySelector("p").outerHTML
-                                elem.innerHTML = `
+                        if (elems.length > 1) {
+                            elems.forEach((elem, index) => {
+                                if (index === 0) {
+                                    let pHTML = elem.querySelector("p").outerHTML
+                                    elem.innerHTML = `
                                     ${pHTML}
                                     <div style="margin-left: 6px;">+${elems.length - 1}</div>
                                 `;
-                            } else {
-                                elem.style.display = "none";
-                            }
-                        })
-                    }
+                                } else {
+                                    elem.style.display = "none";
+                                }
+                            })
+                        }
+                    })
                 })
-            })
+            }
+
+            document.querySelectorAll("#container_calendar").forEach(item => item && setOverflowEvents(item))
         }
 
         let block: any = hourBlock?.querySelector(".calendar_minutes")?.children[data.event.start.getMinutes() >= 30 ? 1 : 0];

@@ -32,7 +32,7 @@ class PatientStateKeeper {
         return patients;
     }
 
-    setSelectedPatient(patient: IPatient) {
+    setSelectedPatient(patient: IPatient | null) {
         this.selectedPatient = patient;
     }
 }

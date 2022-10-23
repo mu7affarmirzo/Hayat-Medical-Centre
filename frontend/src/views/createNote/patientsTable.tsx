@@ -152,7 +152,7 @@ const PatientsTable = observer((
                                         .map((appointedService) => appointedService.service.cost * appointedService.quantity * (1 - discount / 100))
                                         .reduce((prev, curr) => {
                                             return prev + curr;
-                                        }, 0)
+                                        }, 0).toFixed(1)
                                     }
                                     allowDecimals={true}
                                     allowNegativeValue={false}
@@ -173,7 +173,7 @@ const PatientsTable = observer((
                                         .map((appointedService) => appointedService.service.cost * appointedService.quantity * (1 - discount / 100))
                                         .reduce((prev, curr) => {
                                             return prev + curr;
-                                        }, 0)
+                                        }, 0).toFixed(1)
                                     }
                                     allowDecimals={true}
                                     allowNegativeValue={false}

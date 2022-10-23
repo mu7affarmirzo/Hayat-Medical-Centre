@@ -22,6 +22,7 @@ interface INav {
         img: typeof CalendarEdit;
         text: string;
         sideBarText?: string;
+        active?: boolean
     }>
 }
 
@@ -33,7 +34,8 @@ export const NavBarDropdowns: Array<INav> = [
             {
                 img: <CalendarEdit/>,
                 text: "Расписания врачей",
-                sideBarText: "Расписания <br> врачей"
+                sideBarText: "Расписания <br> врачей",
+                active: true
             },
             {
                 img: <FolderAdd/>,

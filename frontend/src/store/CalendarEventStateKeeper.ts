@@ -47,15 +47,17 @@ class CalendarEventStateKeeper {
     async findAllAppointments(): Promise<IEvent[]> {
         const appointments = await this.calendarEventApiStub.findAllAppointments();
         runInAction(() => {
-            this.events = appointments.map((appointment) => {
-                return {
-                    id: appointment.id,
-                    title: appointment.title,
-                    doctorId: appointment.doctorId,
-                    start: new Date(appointment.start),
-                    end: new Date(appointment.end)
-                }
-            });
+            if(this.events.length < appointments.length){
+                this.events = appointments.map((appointment) => {
+                    return {
+                        id: appointment.id,
+                        title: appointment.title,
+                        doctorId: appointment.doctorId,
+                        start: new Date(appointment.start),
+                        end: new Date(appointment.end)
+                    }
+                });
+            }
             this.eventsCopy = this.events;
         });
         return this.events;

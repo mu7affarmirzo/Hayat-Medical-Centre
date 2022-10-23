@@ -7,7 +7,7 @@ const SideBar = () => {
     return (
         <div className={styles.sideBar}>
             {NavBarDropdowns[0]?.dropdown?.map(item => (
-                <div className={`${styles.sideBar_item}`}>
+                <div className={`${styles.sideBar_item} ${item.active ? styles.active : ""}`}>
                     {item.img}
                     <span>{parse(item.sideBarText || item.text)}</span>
                 </div>

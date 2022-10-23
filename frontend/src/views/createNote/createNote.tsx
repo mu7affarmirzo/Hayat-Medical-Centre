@@ -14,6 +14,7 @@ import {observer, useLocalObservable} from "mobx-react-lite";
 import {CalendarEventStateKeeper, DoctorStateKeeper, MedicalServiceStateKeeper, PatientStateKeeper} from "../../store";
 import {IDateValue, IMedicalService, IPatient} from "../../consts/types";
 import moment from "moment";
+import ErrorNotification from "../../store/ErrorNotification";
 
 const CreateNote = observer(() => {
 
@@ -113,6 +114,7 @@ const CreateNote = observer(() => {
     }, [searchFields]);
 
     const [discount, setDiscount] = useState<number>(0);
+    const {changeVisibilityNotification} = useLocalObservable(() => ErrorNotification.instance);
 
     const [timeValue, setTimeValue] = React.useState<IDateValue>({
         from: moment(),
@@ -149,7 +151,7 @@ const CreateNote = observer(() => {
             calendarEventStateKeeper.addEvent({
                 end: timeValue.from!.toDate(),
                 start: timeValue.to!.toDate(),
-                title: '',
+                title: `${patientStateKeeper.selectedPatient?.lastName} ${patientStateKeeper.selectedPatient?.firstName}`,
                 id: Math.max(...calendarEventStateKeeper.events.map((event) => event.id)),
                 doctorId: doctorStateKeeper.selectedDoctors.at(0)!.id,
             });
@@ -164,6 +166,11 @@ const CreateNote = observer(() => {
     useEffect(() => {
         if (doctorStateKeeper.selectedDoctors.length === 0) {
             navigator(-1);
+            if(!patientStateKeeper.selectedPatient){
+                changeVisibilityNotification(true)
+            }else if(Object.keys(patientStateKeeper.selectedPatient).length > 0){
+                patientStateKeeper.setSelectedPatient(null)
+            }
         }
     }, [doctorStateKeeper.selectedDoctors]);
 

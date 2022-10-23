@@ -51,7 +51,7 @@ $pationsTableRight2: 40px 531px 62px;
 .create_note{
     margin-top: 20px;
     margin-left: 20px;
-    width: 100%;
+    width: calc(100% - 156px);
     height: 100%;
 
     .top_block{
@@ -386,7 +386,7 @@ $pationsTableRight2: 40px 531px 62px;
                 }
 
                 .left_side{
-                    width: 628px;
+                    width: 620px;
                     margin-right: 10px;
                     border-right: 1px solid #E0E0E0;
                     height: 100%;
@@ -407,7 +407,7 @@ $pationsTableRight2: 40px 531px 62px;
                 }
 
                 .right_side{
-                    width: calc(100% - 658px);
+                    width: calc(100% - 637px);
                     height: 100%;
                     border: 1px solid #E0E0E0 {
                         top: none;
