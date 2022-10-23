@@ -29,6 +29,7 @@ class CalendarEventStateKeeper {
 
     addEvent (data: IEvent) {
         this.events.push(data)
+        this.eventsCopy = this.events;
     }
 
     filterEventByDoctorId (id: string) {

@@ -3,7 +3,7 @@ import styles from "./calendar.module.scss"
 import moment from "moment";
 import 'moment/locale/ru'
 import {observer, useLocalObservable} from "mobx-react-lite";
-import DoctorStateKeeper from "../../store/DoctorStateKeeper";
+import {DoctorStateKeeper} from "../../store";
 import {CalendarEventStateKeeper} from "../../store";
 
 const ToolBarView = (data) => {

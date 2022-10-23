@@ -1,10 +1,9 @@
 import React, {useMemo} from "react";
 import {useLocalObservable} from "mobx-react-lite";
-import DoctorStateKeeper from "../../store/DoctorStateKeeper";
+import {DoctorStateKeeper} from "../../store";
 import Month from "react-big-calendar/lib/Month";
 import PropTypes from "prop-types";
 import {Navigate} from "react-big-calendar";
-import {Typography} from "@mui/material";
 import CustomViewWrapper from "./customViewWrapper";
 
 export default function CustomMonthView({

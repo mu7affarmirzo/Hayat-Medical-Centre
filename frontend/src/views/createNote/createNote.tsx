@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {FlexSpaceBetween} from "../../themes/customItems";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Backdrop, Box, Button, TextField, Typography} from "@mui/material";
 import styles from "./index.module.scss"
 import {ReactComponent as NoteAdd} from "../../assets/img/note-add.svg";
@@ -9,17 +9,111 @@ import {ReactComponent as UserAdd} from "../../assets/img/user-add.svg";
 import Edit from "../../assets/img/edit.svg";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowCircle from "../../assets/img/arrow-circle-left.svg"
-import moment from "moment"
 import PatientsTable from "./patientsTable";
+import {observer, useLocalObservable} from "mobx-react-lite";
+import {CalendarEventStateKeeper, DoctorStateKeeper, MedicalServiceStateKeeper, PatientStateKeeper} from "../../store";
+import {IDateValue, IMedicalService, IPatient} from "../../consts/types";
+import moment from "moment";
 
-const CreateNote = () => {
-    interface IDateValue {
-        from: moment.Moment | null
-        to: moment.Moment | null
-    }
+const CreateNote = observer(() => {
 
+    const navigator = useNavigate();
     const [openPatientsPopup, setOpenPatients] = useState<boolean | string>(false);
-    const [selectData, setSelectData] = useState<string>("");
+
+    const patientStateKeeper = useLocalObservable(() => PatientStateKeeper.instance);
+    const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
+    const [patients, setPatients] = useState<IPatient[]>([]);
+
+    useEffect(() => {
+
+        patientStateKeeper.findAllPatients().then();
+    }, []);
+
+    useEffect(() => {
+
+        setPatients([...patientStateKeeper.patients]);
+    }, [patientStateKeeper.patients]);
+
+    const [searchFields, setSearchFields] = useState<{
+        fullName: string;
+        inn: string;
+        emcNumber: string;
+        dob: string;
+        phoneNumber: string;
+        patientID: string;
+        lastVisitAt: string;
+    }>({
+        fullName: '',
+        inn: '',
+        emcNumber: '',
+        dob: '',
+        phoneNumber: '',
+        patientID: '',
+        lastVisitAt: ''
+    });
+
+    const handleSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = event.target;
+        setSearchFields((prevSearchFields) => {
+            return {...prevSearchFields, [name]: value};
+        });
+    };
+
+    useEffect(() => {
+        setPatients(
+            patientStateKeeper.patients
+                .filter((patient) => {
+                        return searchFields.fullName.length ?
+                            searchFields.fullName.toLowerCase().includes(patient.lastName.toLowerCase()) ||
+                            patient.lastName.toLowerCase().includes(searchFields.fullName.toLowerCase()) ||
+                            searchFields.fullName.toLowerCase().includes(patient.firstName.toLowerCase()) ||
+                            patient.firstName.toLowerCase().includes(searchFields.fullName.toLowerCase()) ||
+                            searchFields.fullName.toLowerCase().includes(patient.middleName ? patient.middleName.toLowerCase() : '')
+                            : true;
+                    }
+                )
+                .filter((patient) => {
+                        return searchFields.inn.length ?
+                            searchFields.inn.toLowerCase().includes(patient.inn.toLowerCase()) ||
+                            patient.inn.toLowerCase().includes(searchFields.inn.toLowerCase())
+                            : true;
+                    }
+                )
+                .filter((patient) => {
+                        return searchFields.emcNumber.length ?
+                            searchFields.emcNumber.toLowerCase().includes(patient.emc.name.toLowerCase()) ||
+                            patient.emc.name.toLowerCase().includes(searchFields.emcNumber.toLowerCase())
+                            : true;
+                    }
+                )
+                .filter((patient) => {
+                        return searchFields.phoneNumber.length ?
+                            searchFields.phoneNumber.toLowerCase().includes(patient.homPhoneNumber.toLowerCase()) ||
+                            patient.homPhoneNumber.toLowerCase().includes(searchFields.phoneNumber.toLowerCase()) ||
+                            searchFields.phoneNumber.toLowerCase().includes(patient.mobilePhoneNumber.toLowerCase()) ||
+                            patient.mobilePhoneNumber.toLowerCase().includes(searchFields.phoneNumber.toLowerCase())
+                            : true;
+                    }
+                )
+                .filter((patient) => {
+                        return searchFields.patientID.length ?
+                            searchFields.patientID.toLowerCase().includes(patient.id.toString()) ||
+                            patient.id.toString().includes(searchFields.patientID)
+                            : true;
+                    }
+                )
+                .filter((patient) => {
+                        return searchFields.lastVisitAt.length ?
+                            searchFields.lastVisitAt.toLowerCase().includes(patient.lastVisitAt.toLowerCase()) ||
+                            patient.lastVisitAt.toLowerCase().includes(searchFields.lastVisitAt.toLowerCase())
+                            : true;
+                    }
+                )
+        );
+    }, [searchFields]);
+
+    const [discount, setDiscount] = useState<number>(0);
+
     const [timeValue, setTimeValue] = React.useState<IDateValue>({
         from: moment(),
         to: moment().add(5, 'minutes')
@@ -31,20 +125,74 @@ const CreateNote = () => {
         setTimeValue({...timeValue, [type]: time})
     }
 
+    const medicalServiceStateKeeper = useLocalObservable(() => MedicalServiceStateKeeper.instance);
+    const [services, setServices] = useState<IMedicalService[]>([]);
+    const [appointedServices, setAppointedServices] = useState<{
+        quantity: number,
+        service: IMedicalService
+    }[]>([]);
+
+    useEffect(() => {
+        medicalServiceStateKeeper.findAllServices().then();
+    }, []);
+
+    useEffect(() => {
+        if (doctorStateKeeper.selectedDoctors.length) {
+            setServices([...medicalServiceStateKeeper.services.filter((service) => service.doctorId.toString() === doctorStateKeeper.selectedDoctors.at(0)!.id)]);
+        }
+    }, [medicalServiceStateKeeper.services, doctorStateKeeper.selectedDoctors.at(0)]);
+
+    const calendarEventStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
+
+    const handleCreateAppointmentClick = () => {
+        if (doctorStateKeeper.selectedDoctors.length) {
+            calendarEventStateKeeper.addEvent({
+                end: timeValue.from!.toDate(),
+                start: timeValue.to!.toDate(),
+                title: '',
+                id: Math.max(...calendarEventStateKeeper.events.map((event) => event.id)),
+                doctorId: doctorStateKeeper.selectedDoctors.at(0)!.id,
+            });
+            doctorStateKeeper.selectedDoctors.shift();
+            doctorStateKeeper.setSelectedDoctors([...doctorStateKeeper.selectedDoctors]);
+            setServices([]);
+            setAppointedServices([]);
+            setDiscount(0);
+        }
+    }
+
+    useEffect(() => {
+        if (doctorStateKeeper.selectedDoctors.length === 0) {
+            navigator(-1);
+        }
+    }, [doctorStateKeeper.selectedDoctors]);
+
     return (
         <div className={styles.create_note}>
             <FlexSpaceBetween className={styles.top_block}>
                 <Link to="/main" className={styles.return_back}>
                     <img src={ArrowCircle} alt="ArrowCircle"/>
-                    <p>Запись на прием - ЛОР</p>
+                    <p>Запись на прием - {doctorStateKeeper.selectedDoctors.at(0)?.fullName}</p>
                 </Link>
 
                 <div className={styles.buttons}>
-                    <Button sx={{backgroundColor: "#64B6F7"}} variant="contained" className={styles.create_btn} startIcon={<NoteAdd />}>
+                    <Button
+                        sx={{backgroundColor: "#64B6F7"}}
+                        variant="contained"
+                        className={styles.create_btn}
+                        startIcon={<NoteAdd/>}
+                        onClick={handleCreateAppointmentClick}
+                    >
                         Создать
                     </Button>
+
                     <Link to="/main">
-                        <Button sx={{backgroundColor: "#BDBDBD", marginLeft: "10px"}} variant="contained" className={styles.create_btn} startIcon={<CloseCircle />}>
+                        <Button
+                            sx={{backgroundColor: "#BDBDBD", marginLeft: "10px"}}
+                            variant="contained"
+                            className={styles.create_btn}
+                            startIcon={<CloseCircle/>}
+                        >
                             Отмена
                         </Button>
                     </Link>
@@ -52,11 +200,11 @@ const CreateNote = () => {
             </FlexSpaceBetween>
 
             <FlexSpaceBetween mt="17px">
-                <Box className={styles.choose_block} onClick={() => setOpenPatients(true)} >
+                <Box className={styles.choose_block} onClick={() => setOpenPatients(true)}>
                     <p className={styles.title}>Выберите пациента</p>
                     <FlexSpaceBetween>
-                        <p className={styles.text}>ФИО пациента</p>
-                        <ArrowDropDownIcon />
+                        <p className={styles.text}>{patientStateKeeper.selectedPatient ? `${patientStateKeeper.selectedPatient.lastName} ${patientStateKeeper.selectedPatient.firstName} ${patientStateKeeper.selectedPatient.middleName}`.trim() : 'ФИО пациента'}</p>
+                        <ArrowDropDownIcon/>
                     </FlexSpaceBetween>
                 </Box>
 
@@ -64,7 +212,7 @@ const CreateNote = () => {
                     open={Boolean(openPatientsPopup)}
                     onClick={(e: any) => {
 
-                        if(!e.target.closest(`.${styles.patients_popup}`))
+                        if (!e.target.closest(`.${styles.patients_popup}`))
                             setOpenPatients(false);
                     }}
                     sx={{zIndex: "999"}}
@@ -73,17 +221,73 @@ const CreateNote = () => {
                         <Typography variant="h5" className={styles.title}>Пациенты</Typography>
 
                         <div className={styles.patients_wrapper}>
-                            <TextField id="outlined-basic" label="ФИО пациента" variant="outlined" className={styles.patients_item}/>
-                            <TextField id="outlined-basic" label="ИНН" variant="outlined" className={styles.patients_item}/>
-                            <TextField id="outlined-basic" label="№ мед карты" variant="outlined" className={styles.patients_item}/>
-                            <TextField id="outlined-basic" label="Дата рождения" variant="outlined" className={styles.patients_item}/>
-                            <TextField id="outlined-basic" label="Телефон" variant="outlined" className={styles.patients_item}/>
-                            <TextField id="outlined-basic" label="ID пациента" variant="outlined" className={styles.patients_item}/>
-                            <TextField id="outlined-basic" label="Дата приёма" variant="outlined" className={styles.patients_item}/>
+                            <TextField
+                                name="fullName"
+                                id="outlined-basic"
+                                label="ФИО пациента"
+                                variant="outlined"
+                                className={styles.patients_item}
+                                value={searchFields.fullName}
+                                onChange={handleSearchOnChange}
+                            />
+                            <TextField
+                                name="inn"
+                                id="outlined-basic"
+                                label="ИНН"
+                                variant="outlined"
+                                className={styles.patients_item}
+                                value={searchFields.inn}
+                                onChange={handleSearchOnChange}
+                            />
+                            <TextField
+                                name="emcNumber"
+                                id="outlined-basic"
+                                label="№ мед карты"
+                                variant="outlined"
+                                className={styles.patients_item}
+                                value={searchFields.emcNumber}
+                                onChange={handleSearchOnChange}
+                            />
+                            <TextField
+                                name="dob"
+                                id="outlined-basic"
+                                label="Дата рождения"
+                                variant="outlined"
+                                className={styles.patients_item}
+                                value={searchFields.dob}
+                                onChange={handleSearchOnChange}
+                            />
+                            <TextField
+                                name="phoneNumber"
+                                id="outlined-basic"
+                                label="Телефон"
+                                variant="outlined"
+                                className={styles.patients_item}
+                                value={searchFields.phoneNumber}
+                                onChange={handleSearchOnChange}
+                            />
+                            <TextField
+                                name="patientID"
+                                id="outlined-basic"
+                                label="ID пациента"
+                                variant="outlined"
+                                className={styles.patients_item}
+                                value={searchFields.patientID}
+                                onChange={handleSearchOnChange}
+                            />
+                            <TextField
+                                name="lastVisitedAt"
+                                id="outlined-basic"
+                                label="Дата приёма"
+                                variant="outlined"
+                                className={styles.patients_item}
+                                value={searchFields.lastVisitAt}
+                                onChange={handleSearchOnChange}
+                            />
                             <Button
                                 variant="contained"
                                 className={styles.create_btn}
-                                startIcon={<UserAdd className="svg_stroke_white" />}
+                                startIcon={<UserAdd className="svg_stroke_white"/>}
                                 sx={{backgroundColor: "#64B6F7", height: "56px", width: "244px", marginBottom: "10px"}}
                             >
                                 Добавить Пациента
@@ -105,31 +309,43 @@ const CreateNote = () => {
                             <div className={styles.table}>
                                 <table>
                                     <tbody>
-                                    <tr>
-                                        <td>Лебедев</td>
-                                        <td>Сергей </td>
-                                        <td>Васильевич</td>
-                                        <td>25.07.2022</td>
-                                        <td>(834) 295-1534</td>
-                                        <td></td>
-                                        <td>25.07.2022 14:10</td>
-                                        <td>
-                                            <img src={Edit} alt="edit"/>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Лебедев</td>
-                                        <td>Сергей </td>
-                                        <td>Васильевич</td>
-                                        <td>25.07.2022</td>
-                                        <td>(834) 295-1534</td>
-                                        <td></td>
-                                        <td>25.07.2022 14:10</td>
-                                        <td>
-                                            <img src={Edit} alt="edit"/>
-                                        </td>
-                                    </tr>
+                                    {
+                                        patients.map((patient) => (
+                                            <tr>
+                                                <td onClick={() => {
+                                                    patientStateKeeper.setSelectedPatient(patient);
+                                                    setOpenPatients(false);
+                                                }}>{patient.lastName}</td>
+                                                <td onClick={() => {
+                                                    patientStateKeeper.setSelectedPatient(patient);
+                                                    setOpenPatients(false);
+                                                }}>{patient.firstName}</td>
+                                                <td onClick={() => {
+                                                    patientStateKeeper.setSelectedPatient(patient);
+                                                    setOpenPatients(false);
+                                                }}>{patient.middleName}</td>
+                                                <td onClick={() => {
+                                                    patientStateKeeper.setSelectedPatient(patient);
+                                                    setOpenPatients(false);
+                                                }}>{patient.dob}</td>
+                                                <td onClick={() => {
+                                                    patientStateKeeper.setSelectedPatient(patient);
+                                                    setOpenPatients(false);
+                                                }}>{patient.mobilePhoneNumber}</td>
+                                                <td onClick={() => {
+                                                    patientStateKeeper.setSelectedPatient(patient);
+                                                    setOpenPatients(false);
+                                                }}>{patient.id}</td>
+                                                <td onClick={() => {
+                                                    patientStateKeeper.setSelectedPatient(patient);
+                                                    setOpenPatients(false);
+                                                }}>{patient.lastVisitAt}</td>
+                                                <td>
+                                                    <img src={Edit} alt="edit"/>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
                                     </tbody>
                                 </table>
                             </div>
@@ -137,8 +353,10 @@ const CreateNote = () => {
 
 
                         <div className={styles.patients_bottom}>
-                            <div className={`${styles.btn} ${styles.show}`}>Показать</div>
-                            <div className={`${styles.btn} ${styles.cancel}`} onClick={() => setOpenPatients(false)}>Отмена</div>
+                            {/*<div className={`${styles.btn} ${styles.show}`}>Показать</div>*/}
+                            <div className={`${styles.btn} ${styles.cancel}`}
+                                 onClick={() => setOpenPatients(false)}>Отмена
+                            </div>
                         </div>
                     </Box>
                 </Backdrop>
@@ -147,23 +365,27 @@ const CreateNote = () => {
                     sx={{backgroundColor: "#007DFF", height: "42px"}}
                     variant="contained"
                     className={styles.create_btn}
-                    startIcon={<UserAdd className="svg_stroke_white" />}
+                    startIcon={<UserAdd className="svg_stroke_white"/>}
                 >
                     Добавить Пациента
                 </Button>
             </FlexSpaceBetween>
 
-
-            <PatientsTable
-                selectData={selectData}
-                setSelectData={setSelectData}
-                timeValue={timeValue}
-                dateValue={dateValue}
-                setDateValue={setDateValue}
-                timeChangeHandler={timeChangeHandler}
-            />
+            {patientStateKeeper.selectedPatient &&
+                <PatientsTable
+                    discount={discount}
+                    setDiscount={setDiscount}
+                    dateValue={dateValue}
+                    setDateValue={setDateValue}
+                    timeValue={timeValue}
+                    timeChangeHandler={timeChangeHandler}
+                    services={services}
+                    appointedServices={appointedServices}
+                    setAppointedServices={setAppointedServices}
+                />
+            }
         </div>
     );
-};
+});
 
 export default CreateNote;

@@ -4,8 +4,8 @@ import {IDoctor} from "../../consts/types";
 import styles from "../../views/main/index.module.scss"
 import {CalendarEventStateKeeper} from "../../store";
 import {observer, useLocalObservable} from "mobx-react-lite";
-import DoctorStateKeeper from "../../store/DoctorStateKeeper";
-import SpecialityStateKeeper from "../../store/SpecialityStateKeeper";
+import {DoctorStateKeeper} from "../../store";
+import {SpecialityStateKeeper} from "../../store";
 
 const MainContainer = observer(() => {
 
