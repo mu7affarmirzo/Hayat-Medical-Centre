@@ -5,6 +5,7 @@ import Month from "react-big-calendar/lib/Month";
 import PropTypes from "prop-types";
 import {Navigate} from "react-big-calendar";
 import {Typography} from "@mui/material";
+import CustomViewWrapper from "./customViewWrapper";
 
 export default function CustomMonthView({
                                             date,
@@ -20,56 +21,20 @@ export default function CustomMonthView({
     )
     const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
     const {selectedDoctors, setSelectedDoctor} = doctorStateKeeper;
+    // console.log(selectedDoctors, "selectedDoctors321321")
     return (
-        <div style={{
-            width: '100%',
-            height: '100%',
-            display: "flex",
-            overflow: 'auto',
-        }}>
-            {
-                selectedDoctors
-                    .map((doctor) => {
-                        setSelectedDoctor(doctor);
-                        return (
-                                <div
-                                    key={doctor.id}
-                                    id="container"
-                                    data-doctorid={doctor.id}
-                                    style={{
-                                        width: '100%',
-                                        borderLeft: 1,
-                                        borderRight: 1,
-                                        borderLeftStyle: 'solid',
-                                        borderRightStyle: 'solid',
-                                        borderLeftColor: '#000',
-                                        borderRightColor: '#000',
-                                    }}>
-                                    <Typography
-                                        variant={'h5'}
-                                        align={'center'}
-                                        style={{
-                                            background: '#64B6F7',
-                                        }}
-                                    >
-                                        {doctor.full_name}
-                                    </Typography>
-                                    <Month
-                                        date={date}
-                                        eventOffset={15}
-                                        localizer={localizer}
-                                        max={max}
-                                        min={min}
-                                        range={currRange}
-                                        scrollToTime={scrollToTime}
-                                        {...props}
-                                    />
-                                </div>
-                            )
-                        }
-                    )
-            }
-        </div>
+        <CustomViewWrapper>
+            <Month
+                date={date}
+                eventOffset={15}
+                localizer={localizer}
+                max={max}
+                min={min}
+                range={currRange}
+                scrollToTime={scrollToTime}
+                {...props}
+            />
+        </CustomViewWrapper>
     )
 }
 

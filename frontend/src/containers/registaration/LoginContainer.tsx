@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {LoginView} from "../../views";
 import {ILoginState} from "../../consts/types";
+import {useLocalObservable} from "mobx-react-lite";
+import {CalendarEventStateKeeper} from "../../store";
+import AuthorizationStateKeeper from "../../store/AuthorizationStateKeeper";
 
 const LoginContainer = () => {
-    const [values, setValues] = React.useState<ILoginState>({
+    const [values, setValues] = useState<ILoginState>({
         login: '',
         password: '',
         showPassword: false,
@@ -11,6 +14,9 @@ const LoginContainer = () => {
         isPasswordValid: null,
         rememberMe: false
     });
+    const [errorClient, setErrorClient] = useState<boolean>(false);
+    const localAuthorizationStateKeeper = useLocalObservable(() => AuthorizationStateKeeper.instance);
+    const {setRole} = localAuthorizationStateKeeper;
 
     const handleChange = (prop: keyof ILoginState) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setValues({...values, [prop]: event.target.value});
@@ -38,6 +44,10 @@ const LoginContainer = () => {
         event.preventDefault();
     };
 
+    const loginAction = (event: React.MouseEvent) => {
+        setRole("admin")
+    }
+
     return (
         <>
             <LoginView
@@ -47,6 +57,8 @@ const LoginContainer = () => {
                 handleChange={handleChange}
                 handleClickShowPassword={handleClickShowPassword}
                 handleMouseDownPassword={handleMouseDownPassword}
+                errorClient={errorClient}
+                loginAction={loginAction}
             />
         </>
     );

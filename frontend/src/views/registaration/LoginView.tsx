@@ -30,19 +30,23 @@ const LoginView = ({
                        handleClickShowPassword,
                        handleMouseDownPassword,
                        setValues,
+                       errorClient,
+                       loginAction
                    }: {
     values: ILoginState,
     setValues: (obj: ILoginState) => void,
     handleChange: (prop: keyof ILoginState) => (event: React.ChangeEvent<HTMLInputElement>) => undefined | void,
     checkInput: (event: any, type: string) => void,
     handleClickShowPassword: () => void,
-    handleMouseDownPassword: (event: React.MouseEvent<HTMLButtonElement>) => void
+    handleMouseDownPassword: (event: React.MouseEvent<HTMLButtonElement>) => void,
+    errorClient: boolean,
+    loginAction: (event: React.MouseEvent) => void
 }) => {
 
     return (
-        <Container maxWidth="xl" sx={{height: "100vh"}}>
+        <Container maxWidth="xl" sx={{height: "100vh", width: "1920px", padding: "0 !important",}}>
             <Grid container spacing={0}>
-                <Grid item xl={7} height={"100%"}>
+                <Grid item xl={7} height={"100%"} width={"calc(100% - 800px)"}>
                     <Item height="100vh">
                         <Box sx={{
                             width: "581px",
@@ -53,9 +57,6 @@ const LoginView = ({
                                     Hayat Medical Center
                                 </Typography>
                             </Typography>
-
-
-                            {/*<FormControl control={<TextField label="Логин" variant="outlined" className={styles.input} size="medium"/>} />*/}
 
                             <FormGroup>
                                 <FormControl error={values.isLoginValid === false} className={styles.input}
@@ -72,7 +73,7 @@ const LoginView = ({
 
                                     {values.isLoginValid === false &&
                                         <FormHelperText error>
-                                            Incorrect entry.
+                                           Ведите более трех символов 
                                         </FormHelperText>
                                     }
                                 </FormControl>
@@ -103,12 +104,12 @@ const LoginView = ({
 
                                     {values.isPasswordValid === false &&
                                         <FormHelperText error>
-                                            Incorrect entry.
+                                           Введите более трех символов
                                         </FormHelperText>
                                     }
                                 </FormControl>
 
-                                {false && <Box className={`${styles.error_block}`}>
+                                {errorClient && <Box className={`${styles.error_block}`}>
                                     <div className={styles.left_side}>
                                         <ErrorOutlineOutlined sx={{color: "#fff"}}/>
                                         <Typography component={"span"}>
@@ -144,6 +145,7 @@ const LoginView = ({
                                     disabled={!(values.isLoginValid === true && values.isPasswordValid === true)}
                                     color="primary"
                                     variant="contained"
+                                    onClick={loginAction}
                                 >
                                     Вход в систему
                                 </Button>

@@ -7,22 +7,8 @@ import DoctorStateKeeper from "../../store/DoctorStateKeeper";
 import {CalendarEventStateKeeper} from "../../store";
 
 const ToolBarView = (data) => {
-    const changeButtons: Array<{ text: string, type: string }> = [
-        {
-            text: "месяц",
-            type: "month"
-        },
-        {
-            text: "неделя",
-            type: "week"
-        },
-        {
-            text: "день",
-            type: "day"
-        },
-
-    ];
-    const [active, setActive] = useState<string>("month");
+    const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
+    const {addViewAction} = calendarEventsStateKeeper;
 
     const changeActiveTime = useCallback(() => {
         let activeTime: any = document.querySelector(".calendar_block .week_time_block.active_time");
@@ -35,10 +21,22 @@ const ToolBarView = (data) => {
     useEffect(() => {
         let timeOut, timeInterval;
         const activeDataElem: HTMLElement | null = document.querySelector(".rbc-day-slot.rbc-time-column.rbc-now.rbc-today");
+        const activeButton = document.querySelector(".month_buttons_block .month_buttons.month_button_active");
 
-        if (data.view !== active) {
-            setActive(data.view)
+        if(activeButton && activeButton.getAttribute("data-type") !== data.view){
+            data.onView(activeButton.getAttribute("data-type"));
         }
+
+        if(activeButton?.getAttribute("data-type") === "day"){
+            document.querySelectorAll(".calendar_block .rbc-time-view .rbc-time-content .rbc-day-slot.rbc-today").forEach((item: any) => item.style.backgroundColor = "#fff")
+            document.querySelectorAll(".calendar_block .rbc-time-view .rbc-time-header").forEach((item: any) => item.style.display = "none")
+        }
+
+        addViewAction(data.onView)
+
+        // if (data.view !== active) {
+        //     setActive(data.view)
+        // }
 
         if (data.view === "day") {
             activeDataElem?.classList?.add("day_view_mode")
@@ -70,43 +68,8 @@ const ToolBarView = (data) => {
         }
     }, [data.view])
 
-    const changeView = (type: string) => {
-        setActive(type);
-        console.log(type, "changeView")
-        data.onView(type);
-    }
-
-    const convertDate = () => {
-        const momentRu = moment().locale("ru")
-        if (active === "month") {
-            return momentRu.format("MMMM YYYY")
-        } else if (active === "week") {
-            let startWeek = momentRu.startOf("week").format("DD MMMM YYYY");
-            let endWeek = momentRu.endOf("week").format("DD MMMM YYYY");
-            return `${startWeek} - ${endWeek}`;
-        } else if (active === "day") {
-            return momentRu.format("dddd | DD MMMM");
-        }
-    }
-
     return (
-        <div className={styles.toolbar}>
-            <div className={styles.button_now}>Сегодня</div>
-            <p className={styles.now_day}> {convertDate()}</p>
-
-            <div className={`month_buttons_block ${styles.buttons_change}`}>
-                {changeButtons.map((item, i) => (
-                    <div
-                        key={item.type}
-                        onClick={(e) => changeView(item.type)}
-                        className={`month_buttons ${styles.button_item} ${item.type === active ? `month_button_active ${styles.active}` : ""}`}
-                        data-type={item.type}
-                    >
-                        {item.text}
-                    </div>
-                ))}
-            </div>
-        </div>
+        <></>
     );
 }
 
@@ -134,8 +97,8 @@ const WeekHeaderView = (data) => {
     }
 
     useEffect(() => {
-        let a: any = document.querySelector(".calendar_block .rbc-time-header .rbc-time-header-content .rbc-allday-cell");
-        a && (a.style.display = "none");
+        let a: any = document.querySelectorAll(".calendar_block .rbc-time-header .rbc-time-header-content .rbc-allday-cell");
+        a.length && a.forEach(item => item.style.display = "none");
     }, [])
 
     return (
@@ -166,24 +129,14 @@ const TimeSlotView = (data) => {
 }
 
 const EventWrapperView = observer((data: any) => {
-    console.log(data, "EventWrapperView")
-
     const [offsetTop, setOffsetTop] = useState<number>(0);
-    const [test, setTest] = useState<number>(0);
     const [viewMode, setViewMode] = useState<any>("");
 
-
-    const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
-    const {filterEventByDoctorId} = calendarEventsStateKeeper;
-    const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
-    const {selectedDoctors} = doctorStateKeeper;
 
     useEffect(() => {
         let hourBlock = document.querySelector(`.rbc-timeslot-group .week_time_block[data-timehour="${data.event.start.getHours()}"]`);
         let activeButton = document.querySelector(".month_buttons_block .month_buttons.month_button_active");
-        // console.log(activeButton)
         setViewMode(activeButton?.getAttribute("data-type"))
-        // console.log(viewMode)
 
         if (viewMode === "day") {
             let EventsList = Array.from(document.querySelectorAll(".calendar_block .rbc-time-view .rbc-time-content .rbc-day-slot .rbc-events-container .event_wrapper_block"))
@@ -202,10 +155,8 @@ const EventWrapperView = observer((data: any) => {
                 }
 
             });
-            // console.log(store)
             store.forEach(item => {
                 if (item.length > 4) {
-                    // console.log(document.querySelectorAll(".rbc-time-content .rbc-day-slot.rbc-time-column .rbc-timeslot-group"))
                     document.querySelectorAll(".rbc-time-content .rbc-day-slot.rbc-time-column .rbc-timeslot-group")
                         .forEach((_item: any) => _item.style.width = (280 * item.length) + "px");
                 }
@@ -220,13 +171,10 @@ const EventWrapperView = observer((data: any) => {
             })
         } else if (viewMode === "month") {
             let eventsList: Array<Element> = Array.from(document.querySelectorAll(".rbc-row-content .rbc-row")).filter(item => Boolean(item.querySelector(".rbc-row-segment")));
-            console.log(eventsList, "eventsList23")
             const getNumber = (str: string | null): string => {
-                // console.log(str)
                 if (str) {
                     const regExp: RegExp = /\d/g;
                     let matchedSymbols = str.match(regExp);
-                    // console.log(matchedSymbols, matchedSymbols?.length)
                     if (matchedSymbols && matchedSymbols.length >= 1) {
                         return matchedSymbols.join("");
                     }
@@ -236,13 +184,13 @@ const EventWrapperView = observer((data: any) => {
             }
 
             eventsList.forEach(item => {
-                let rowSegment = item.querySelector(".rbc-row-segment:last-child");
-                let segmentButton = rowSegment?.querySelector("button.rbc-button-link.rbc-show-more");
-                let date = rowSegment?.parentElement?.previousElementSibling?.querySelector(".event_wrapper_block")?.getAttribute("data-date")
-                if (segmentButton && rowSegment) {
-                    rowSegment.innerHTML = `<div  data-date=${date} class="event_wrapper_block  event_block_couter ${styles.event_wrapper}">
-                                                <span id="events_number">${getNumber(segmentButton?.textContent)}</span>
-                                            + записей</div>`
+                let segmentButton: any = item.querySelector(".rbc-row-segment button.rbc-button-link.rbc-show-more");
+                if (segmentButton) {
+                    let rowSegment = segmentButton.parentElement;
+                    let date = rowSegment?.parentElement?.previousElementSibling?.querySelector(".event_wrapper_block")?.getAttribute("data-date");
+                    segmentButton.parentElement.innerHTML = `<div  data-date=${date} class="event_wrapper_block  event_block_couter ${styles.event_wrapper}">
+                                                                <span id="events_number">${getNumber(segmentButton?.textContent)}</span>+ записей
+                                                            </div>`
                 }
             })
         } else if (viewMode === "week") {
@@ -274,7 +222,7 @@ const EventWrapperView = observer((data: any) => {
                 }
             }
 
-            console.log(store)
+            // console.log(store, "store")
 
             store.forEach(item => {
                 Object.entries(item).forEach((data, i) => {
@@ -300,48 +248,7 @@ const EventWrapperView = observer((data: any) => {
 
         let block: any = hourBlock?.querySelector(".calendar_minutes")?.children[data.event.start.getMinutes() >= 30 ? 1 : 0];
         setOffsetTop(block?.offsetTop);
-
-        setTest(prevState => prevState += 1)
     }, [data, viewMode]);
-
-    useEffect(() => {
-        if(selectedDoctors.length > 1){
-            console.log(selectedDoctors, "selectedDoctors")
-            document.querySelectorAll("#container").forEach(item => {
-                let eventList = Array.from(item.querySelectorAll(".event_wrapper_block"));
-                console.log(eventList, "eventList")
-                let filteredEvents = filterEventByDoctorId(item.getAttribute("data-doctorid") || "");
-                let filteredEventsId = filteredEvents.map(eventData => String(eventData.id));
-                console.log(filteredEvents, 'filteredEvents')
-                eventList.forEach((event: any) => {
-                    let eventId = event.getAttribute("data-eventid") || "";
-                    if(event.classList.contains("event_block_couter")){
-                        console.log(filteredEvents.length, "length")
-                        if(filteredEvents.length > 3){
-                            let date = event.getAttribute("data-date");
-                            let filteredEventsDate = filteredEvents.filter(eventData => String(new Date(eventData.start).getDate()) === date)
-                            if(filteredEventsDate.length > 0){
-                                let numberBlock = event.querySelector(".events_number");
-                                if(numberBlock){
-                                    if(Number(numberBlock.textContent) !== filteredEventsDate.length){
-                                        numberBlock.textContent = String(filteredEventsDate.length);
-                                    }
-                                }
-
-                                return true;
-                            }
-                        }
-
-                        event.style.display = "none";
-                    }else{
-                        if(!(filteredEventsId.includes(eventId))){
-                            event.style.display = "none";
-                        }
-                    }
-                })
-            })
-        }
-    }, [test])
 
     return (
         <div

@@ -20,9 +20,9 @@ export const RoutingData: MyGroupType = {
             "global": true,
         },
     ],
-    "test": [
+    "admin": [
         {
-            "path": "/test",
+            "path": "/main",
             "component": <MainContainer/>,
             "global": true,
         },

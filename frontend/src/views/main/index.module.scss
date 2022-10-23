@@ -224,7 +224,7 @@
                 }
 
                 &:nth-child(2) {
-                  width: 37%;
+                  width: 36%;
                 }
 
                 &:nth-child(3) {
@@ -236,7 +236,7 @@
                 }
 
                 &:nth-child(5) {
-                  width: 30px;
+                  width: 33px;
                   padding: 5px;
                 }
 
@@ -307,7 +307,71 @@
 
     .calendar {
       height: 100%;
-      width: calc(100% - 635px);
+      width: calc(100% - 652px);
+      //overflow: auto;
+
+
+      .toolbar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+
+        .button_now {
+          padding: 5px 16px;
+          font-size: 14px;
+          line-height: 20px;
+          letter-spacing: 0.15px;
+          color: #007DFF;
+        }
+
+        .now_day {
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0.15px;
+          color: rgba(0, 0, 0, 0.87);
+          text-transform: capitalize;
+        }
+
+        .buttons_change {
+          display: flex;
+          height: 40px;
+          border: 1px solid #BDBDBD;
+          border-radius: 5px;
+
+
+          .button_item {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-left: 1px solid #BDBDBD;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: 0.15px;
+            color: #007DFF;
+            transition: 0.3s;
+            cursor: pointer;
+            user-select: none;
+
+            &.active {
+              color: #FFFFFF;
+              background-color: #007DFF;
+            }
+
+            &:first-child {
+              border-left: none;
+            }
+          }
+        }
+      }
+
+      .calendar_main{
+        height: calc(100% - 55px);
+        width: 100%;
+        overflow: auto;
+      }
     }
   }
 }

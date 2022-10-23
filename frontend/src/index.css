@@ -60,6 +60,15 @@ a{
     margin-right: 20px;
 }
 
+.hidden_profile_block .MuiMenuItem-gutters{
+    width: 185px;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    color: rgba(0, 0, 0, 0.87);
+    transition: 0.3s;
+}
+
 .calendar_block .rbc-header {
     padding: 0;
     border-left: none !important;

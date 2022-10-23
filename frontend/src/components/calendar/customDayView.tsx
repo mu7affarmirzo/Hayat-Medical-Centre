@@ -4,7 +4,7 @@ import DoctorStateKeeper from "../../store/DoctorStateKeeper";
 import Day from "react-big-calendar/lib/Day";
 import PropTypes from "prop-types";
 import {Navigate} from "react-big-calendar";
-import {Typography} from "@mui/material";
+import CustomViewWrapper from "./customViewWrapper";
 
 export default function CustomDayView({
                                           date,
@@ -21,50 +21,18 @@ export default function CustomDayView({
     const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
     const {selectedDoctors} = doctorStateKeeper;
     return (
-        <div
-            style={{
-                width: `100%`,
-                height: '100%',
-                display: 'flex',
-                overflow: 'scroll',
-            }}>
-            {
-                selectedDoctors
-                    .map((doctor) => (
-                        <div
-                            key={doctor.id}
-                            style={{
-                                width: '100%',
-                                borderLeft: 1,
-                                borderRight: 1,
-                                borderLeftStyle: 'solid',
-                                borderRightStyle: 'solid',
-                                borderLeftColor: '#000',
-                                borderRightColor: '#000',
-                            }}>
-                            <Typography
-                                variant={'h5'}
-                                align={'center'}
-                                style={{
-                                    background: '#64B6F7',
-                                }}
-                            >
-                                {doctor.full_name}
-                            </Typography>
-                            <Day
-                                date={date}
-                                eventOffset={15}
-                                localizer={localizer}
-                                max={max}
-                                min={min}
-                                range={currRange}
-                                scrollToTime={scrollToTime}
-                                {...props}
-                            />
-                        </div>
-                    ))
-            }
-        </div>
+        <CustomViewWrapper>
+            <Day
+                date={date}
+                eventOffset={15}
+                localizer={localizer}
+                max={max}
+                min={min}
+                range={currRange}
+                scrollToTime={scrollToTime}
+                {...props}
+            />
+        </CustomViewWrapper>
     )
 }
 

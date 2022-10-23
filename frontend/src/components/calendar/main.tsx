@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Calendar, momentLocalizer} from 'react-big-calendar'
 import moment from "moment";
 import {observer, useLocalObservable} from "mobx-react-lite";
@@ -7,11 +7,16 @@ import {CalendarEventStateKeeper} from "../../store";
 import CustomWeekView from "./customWeekView";
 import CustomMonthView from "./customMonthView";
 import CustomDayView from "./customDayView";
+import DoctorStateKeeper from "../../store/DoctorStateKeeper";
+import styles from "./calendar.module.scss";
 
 const CalendarMain = observer(() => {
 
     const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
-    const {eventsCopy, findAllAppointments} = calendarEventsStateKeeper;
+    const {eventsCopy, findAllAppointments, filterEventByDoctorId} = calendarEventsStateKeeper;
+
+    const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
+    const {selectedDoctors} = doctorStateKeeper;
 
     moment.locale("es-es", {
         week: {
@@ -42,18 +47,34 @@ const CalendarMain = observer(() => {
 
     return (
         <>
-            <Calendar
-                // @ts-ignore
-                components={components}
-                events={eventsCopy}
-                localizer={mLocalizer}
-                startAccessor="end"
-                endAccessor="end"
-                // @ts-ignore
-                views={views}
-                className="calendar_block"
-                messages={messages}
-            />
+
+            <div style={{
+                display: "flex",
+                height: "100%",
+                width: selectedDoctors.length + "00%",
+
+            }}>
+                {
+                    selectedDoctors.map(item => {
+                        return(
+                            <Calendar
+                                // @ts-ignore
+                                components={components}
+                                events={filterEventByDoctorId(item.id)}
+                                localizer={mLocalizer}
+                                startAccessor="end"
+                                endAccessor="end"
+                                // @ts-ignore
+                                views={views}
+                                className="calendar_block"
+                                messages={messages}
+                                style={{width: "1110px"}}
+                            />
+                        )
+                    })
+                }
+            </div>
+
         </>
     );
 });

@@ -11,13 +11,18 @@ class AuthorizationStateKeeper {
         return AuthorizationStateKeeper._instance;
     }
 
-    role: string = "test";
+    private getRoleFromLocalStorage (): string {
+        return localStorage.getItem("role") || "NoAuth"
+    }
+
+    role: string = this.getRoleFromLocalStorage();
 
     constructor() {
         makeAutoObservable(this, {}, {autoBind: true});
     }
 
     setRole(data: string) {
+        localStorage.setItem("role", data)
         this.role = data;
     }
 

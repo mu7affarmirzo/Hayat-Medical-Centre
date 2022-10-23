@@ -4,6 +4,9 @@ import styles from "../views/main/index.module.scss"
 import logoImg from "../assets/img/logo.svg";
 import {NavBarDropdowns} from "../consts/main";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import {useLocalObservable} from "mobx-react-lite";
+import AuthorizationStateKeeper from "../store/AuthorizationStateKeeper";
+import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
 
 const Headers = () => {
     const [anchorEl, setAnchorEl] = React.useState<{ index: string, elem: null | HTMLElement }>({
@@ -11,6 +14,8 @@ const Headers = () => {
         elem: null
     });
     const [profileOpen, setProfileOpen] = React.useState<null | HTMLElement>(null);
+    const localAuthorizationStateKeeper = useLocalObservable(() => AuthorizationStateKeeper.instance);
+    const {setRole} = localAuthorizationStateKeeper;
 
     const handleClick = (index: string, event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl({index, elem: event.currentTarget});
@@ -103,10 +108,14 @@ const Headers = () => {
                         anchorEl={profileOpen}
                         open={Boolean(profileOpen)}
                         onClose={() => setProfileOpen(null)}
+                        className="hidden_profile_block"
                     >
-                        <MenuItem onClick={() => setProfileOpen(null)}>Profile</MenuItem>
-                        <MenuItem onClick={() => setProfileOpen(null)}>My account</MenuItem>
-                        <MenuItem onClick={() => setProfileOpen(null)}>Logout</MenuItem>
+                        {/*<MenuItem onClick={() => setProfileOpen(null)}>Profile</MenuItem>*/}
+                        {/*<MenuItem onClick={() => setProfileOpen(null)}>My account</MenuItem>*/}
+                        <MenuItem onClick={() => setRole("NoAuth")}>
+                            <LogoutTwoToneIcon sx={{mr: "12px"}}/>
+                            Logout
+                        </MenuItem>
                     </Menu>
                 </>
             </div>

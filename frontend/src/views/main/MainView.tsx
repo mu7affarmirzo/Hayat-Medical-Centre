@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from "./index.module.scss";
 import ToolBoxTop from "../../components/registrationToolBlocks/main";
 import {Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select} from "@mui/material";
@@ -6,7 +6,9 @@ import {ReactComponent as SearchNormal} from "../../assets/img/search-normal.svg
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalendarMain from "../../components/calendar/main";
 import {IDoctor, ISpeciality} from "../../consts/types";
-import {observer} from "mobx-react-lite";
+import {observer, useLocalObservable} from "mobx-react-lite";
+import moment from "moment";
+import {CalendarEventStateKeeper} from "../../store";
 
 
 const MainView = observer((
@@ -28,6 +30,46 @@ const MainView = observer((
         selectedDoctors: Array<IDoctor>
     }
 ) => {
+    const changeButtons: Array<{ text: string, type: string }> = [
+        {
+            text: "месяц",
+            type: "month"
+        },
+        {
+            text: "неделя",
+            type: "week"
+        },
+        {
+            text: "день",
+            type: "day"
+        },
+
+    ];
+
+    const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
+    const {changeViewFunctions} = calendarEventsStateKeeper;
+
+    const [active, setActive] = useState<string>("month");
+
+    const changeView = (type: string) => {
+        setActive(type);
+        console.log(type, "changeView")
+        changeViewFunctions.forEach(item => item(type))
+    }
+
+    const convertDate = () => {
+        const momentRu = moment().locale("ru")
+        if (active === "month") {
+            return momentRu.format("MMMM YYYY")
+        } else if (active === "week") {
+            let startWeek = momentRu.startOf("week").format("DD MMMM YYYY");
+            let endWeek = momentRu.endOf("week").format("DD MMMM YYYY");
+            return `${startWeek} - ${endWeek}`;
+        } else if (active === "day") {
+            return momentRu.format("dddd | DD MMMM");
+        }
+    }
+
     return (
         <>
             <div className={styles.main_block}>
@@ -144,7 +186,26 @@ const MainView = observer((
                         </div>
                     </div>
                     <div className={styles.calendar}>
-                        <CalendarMain/>
+                        <div className={styles.toolbar}>
+                            <div className={styles.button_now}>Сегодня</div>
+                            <p className={styles.now_day}> {convertDate()}</p>
+
+                            <div className={`month_buttons_block ${styles.buttons_change}`}>
+                                {changeButtons.map((item, i) => (
+                                    <div
+                                        key={item.type}
+                                        onClick={(e) => changeView(item.type)}
+                                        className={`month_buttons ${styles.button_item} ${item.type === active ? `month_button_active ${styles.active}` : ""}`}
+                                        data-type={item.type}
+                                    >
+                                        {item.text}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className={styles.calendar_main}>
+                            <CalendarMain/>
+                        </div>
                     </div>
                 </div>
             </div>

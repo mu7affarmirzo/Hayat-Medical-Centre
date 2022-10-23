@@ -34,7 +34,7 @@ const CreateNote = () => {
     return (
         <div className={styles.create_note}>
             <FlexSpaceBetween className={styles.top_block}>
-                <Link to="/test" className={styles.return_back}>
+                <Link to="/main" className={styles.return_back}>
                     <img src={ArrowCircle} alt="ArrowCircle"/>
                     <p>Запись на прием - ЛОР</p>
                 </Link>
@@ -43,7 +43,7 @@ const CreateNote = () => {
                     <Button sx={{backgroundColor: "#64B6F7"}} variant="contained" className={styles.create_btn} startIcon={<NoteAdd />}>
                         Создать
                     </Button>
-                    <Link to="/test">
+                    <Link to="/main">
                         <Button sx={{backgroundColor: "#BDBDBD", marginLeft: "10px"}} variant="contained" className={styles.create_btn} startIcon={<CloseCircle />}>
                             Отмена
                         </Button>

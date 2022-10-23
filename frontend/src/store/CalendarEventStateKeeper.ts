@@ -18,6 +18,8 @@ class CalendarEventStateKeeper {
 
     eventsCopy: IEvent[] = [];
 
+    changeViewFunctions: Array<any> = [];
+
     constructor(
         calendarEventApiStub: CalendarEventApiStub = CalendarEventApiStub.instance
     ) {
@@ -35,6 +37,10 @@ class CalendarEventStateKeeper {
 
     filterEventByIds (ids: string[]) {
         this.eventsCopy = this.events.filter(item => ids.includes(item.doctorId || ''));
+    }
+
+    addViewAction (func) {
+        this.changeViewFunctions.push(func)
     }
 
     async findAllAppointments(): Promise<IEvent[]> {
