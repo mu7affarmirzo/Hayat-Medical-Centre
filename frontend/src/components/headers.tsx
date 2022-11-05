@@ -7,6 +7,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {useLocalObservable} from "mobx-react-lite";
 import AuthorizationStateKeeper from "../store/AuthorizationStateKeeper";
 import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
+import { Link } from 'react-router-dom';
 
 const Headers = () => {
     const [anchorEl, setAnchorEl] = React.useState<{ index: string, elem: null | HTMLElement }>({
@@ -74,10 +75,10 @@ const Headers = () => {
                                         item.dropdown.map((dropdownItem, index) => {
                                             return (
                                                 <MenuItem onClick={handleClose}>
-                                                    <>
+                                                    <Link to={dropdownItem.path}>
                                                         {dropdownItem.img}
                                                         {dropdownItem.text}
-                                                    </>
+                                                    </Link>
                                                 </MenuItem>
                                             );
                                         })

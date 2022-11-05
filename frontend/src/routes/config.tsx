@@ -1,6 +1,8 @@
 import {LoginContainer, MainContainer} from "../containers/index";
 import React, {ReactElement} from "react";
 import CreateNote from "../views/createNote/createNote";
+import DirectoryContainer from "../containers/directory/DirectoryContainer";
+import CreatePatients from "../views/PatientsDirectory/createPatients";
 
 type IRouting = {
     path: string;
@@ -29,6 +31,14 @@ export const RoutingData: MyGroupType = {
         {
             "path": "/createNote",
             "component": <CreateNote/>,
-        }
+        },
+        {
+            "path": "/patientsDirectory",
+            "component": <DirectoryContainer />,
+        },
+        {
+            "path": "/patientsDirectory/create",
+            "component": <CreatePatients />,
+        },
     ]
 };

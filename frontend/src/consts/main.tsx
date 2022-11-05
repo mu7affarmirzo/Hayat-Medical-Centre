@@ -22,7 +22,8 @@ interface INav {
         img: typeof CalendarEdit;
         text: string;
         sideBarText?: string;
-        active?: boolean
+        active?: boolean,
+        path: string
     }>
 }
 
@@ -35,22 +36,26 @@ export const NavBarDropdowns: Array<INav> = [
                 img: <CalendarEdit/>,
                 text: "Расписания врачей",
                 sideBarText: "Расписания <br> врачей",
-                active: true
+                active: true,
+                path: "/main"
             },
             {
                 img: <FolderAdd/>,
                 text: "Добавить пакет",
-                sideBarText: "Добавить <br> пакет"
+                sideBarText: "Добавить <br> пакет",
+                path: ""
             },
             {
                 img: <Note/>,
                 text: "Добавить группу приемов",
-                sideBarText: "Добавить <br> группу приемов"
+                sideBarText: "Добавить <br> группу приемов",
+                path: ""
             },
             {
                 img: <ProfileUser/>,
                 text: "Справочник пациентов",
-                sideBarText: "Справочник <br> пациентов"
+                sideBarText: "Справочник <br> пациентов",
+                path: "/patientsDirectory"
             },
         ]
     },
@@ -60,27 +65,33 @@ export const NavBarDropdowns: Array<INav> = [
         dropdown: [
             {
                 img: <Moneys/>,
-                text: "Касса"
+                text: "Касса",
+                path: ""
             },
             {
                 img: <ProfileMoney/>,
-                text: "Оплаты по пациентам"
+                text: "Оплаты по пациентам",
+                path: ""
             },
             {
                 img: <LockArrow/>,
-                text: "История закрытий"
+                text: "История закрытий",
+                path: ""
             },
             {
                 img: <Bill/>,
-                text: "Мемордера"
+                text: "Мемордера",
+                path: ""
             },
             {
                 img: <MoneyTime/>,
-                text: "Должники"
+                text: "Должники",
+                path: ""
             },
             {
                 img: <ClipboardClose/>,
-                text: "Быстрая запись"
+                text: "Быстрая запись",
+                path: ""
             },
         ]
     },
@@ -93,15 +104,18 @@ export const NavBarDropdowns: Array<INav> = [
         dropdown: [
             {
                 img: <Clients/>,
-                text: "Клиенты"
+                text: "Клиенты",
+                path: ""
             },
             {
                 img: <UserSquare/>,
-                text: "Группа клиентов"
+                text: "Группа клиентов",
+                path: ""
             },
             {
                 img: <ScanBarcode/>,
-                text: "Промокоды"
+                text: "Промокоды",
+                path: ""
             }
         ]
     },
@@ -111,7 +125,8 @@ export const NavBarDropdowns: Array<INav> = [
         dropdown: [
             {
                 img: <People/>,
-                text: "Слияние пациентов"
+                text: "Слияние пациентов",
+                path: ""
             }
         ]
     },
