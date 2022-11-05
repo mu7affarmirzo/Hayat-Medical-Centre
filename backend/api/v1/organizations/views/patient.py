@@ -9,6 +9,9 @@ from api.v1.organizations.serializers.patient import PatientModelSerializer, Pat
 from account.models.patients import PatientModel
 from django.db.models import Q
 from api.v1.organizations.serializers.patient import PatientSearchSerializer
+from rest_framework.decorators import api_view
+
+
 class PatientView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -31,6 +34,11 @@ class PatientView(APIView):
 
 class PatientRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = PatientModelSerializer
+
+    @staticmethod
+    def get_queryset():
+        return PatientModel.objects.all()
 
     @swagger_auto_schema(tags=['patients'])
     def get(self, request, pk, format=None):
@@ -66,20 +74,12 @@ class PatientRetrieveView(RetrieveAPIView):
 
 
 @swagger_auto_schema(method='post', tags=['patients'], request_body=PatientSearchSerializer)
+@api_view(['POST'])
 def filter_patients_view(request):
     data = request.data
-    try:
-        l_name = data['full_name'][0]
-    except:
-        l_name = ''
-    try:
-        f_name = data['full_name'][1]
-    except:
-        f_name = ''
-    try:
-        mid_name = data['full_name'][1:]
-    except:
-        mid_name = ''
+    l_name = data['l_name']
+    f_name = data['f_name']
+    mid_name = data['mid_name']
     inn = data['inn']
     doc_number = data['doc_number']
     date_of_birth = data['date_of_birth']
@@ -87,7 +87,7 @@ def filter_patients_view(request):
     id = data['id']
 
     last_visit_at = data['last_visit_at']
-    patients = PatientModel.objects.filter(Q(l_name=l_name) | Q(f_name=f_name) | Q(mid_name=mid_name) | Q(inn=inn)
+    patients = PatientModel.objects.filter(Q(l_name=l_name) | Q(f_name=f_name) | Q(mid_name=mid_name) | Q(INN=inn)
                                            | Q(doc_number=doc_number) | Q(date_of_birth=date_of_birth) |
                                            Q(mobile_phone_number=mobile_phone_number) | Q(id=id) |
                                            Q(last_visit_at=last_visit_at))
