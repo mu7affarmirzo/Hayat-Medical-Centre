@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 from api.v1.organizations.serializers.patient import PatientModelSerializer, PatientCreateSerializer
 from account.models.patients import PatientModel
-
-
+from django.db.models import Q
+from api.v1.organizations.serializers.patient import PatientSearchSerializer
 class PatientView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -64,6 +64,35 @@ class PatientRetrieveView(RetrieveAPIView):
         patient.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+@swagger_auto_schema(method='post', tags=['patients'], request_body=PatientSearchSerializer)
+def filter_patients_view(request):
+    data = request.data
+    try:
+        l_name = data['full_name'][0]
+    except:
+        l_name = ''
+    try:
+        f_name = data['full_name'][1]
+    except:
+        f_name = ''
+    try:
+        mid_name = data['full_name'][1:]
+    except:
+        mid_name = ''
+    inn = data['inn']
+    doc_number = data['doc_number']
+    date_of_birth = data['date_of_birth']
+    mobile_phone_number = data['mobile_phone_number']
+    id = data['id']
+
+    last_visit_at = data['last_visit_at']
+    patients = PatientModel.objects.filter(Q(l_name=l_name) | Q(f_name=f_name) | Q(mid_name=mid_name) | Q(inn=inn)
+                                           | Q(doc_number=doc_number) | Q(date_of_birth=date_of_birth) |
+                                           Q(mobile_phone_number=mobile_phone_number) | Q(id=id) |
+                                           Q(last_visit_at=last_visit_at))
+    serializer = PatientModelSerializer(patients, many=True)
+    return Response(data=serializer.data)
 
 
 
