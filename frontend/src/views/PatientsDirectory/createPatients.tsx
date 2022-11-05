@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 const CreatePatients = () => {
     const [state, setState] = React.useState<object[]>([])
     const navigate = useNavigate()
+
     const handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.currentTarget;
         setState({ ...state, [name]: value })
@@ -62,16 +63,39 @@ const CreatePatients = () => {
                         </Grid>
                     </Grid>
                     <FormControl fullWidth className={classes.padding_8}>
-                        <TextField label="Дата рождения" type="text" />
+                        <TextField
+                            onChange={handleTextFieldChange}
+                            name='bith_date'
+                            label="Дата рождения"
+                            type="text"
+                        />
                     </FormControl>
                     <FormControl fullWidth className={classes.padding_8}>
-                        <TextField label="Имя" type="text" />
+                        <TextField
+                            onChange={handleTextFieldChange}
+                            name='firstname'
+                            label="Имя"
+                            type="text"
+                        />
+                    </FormControl>
+                    <FormControl
+
+                        fullWidth
+                        className={classes.padding_8}>
+                        <TextField
+                            onChange={handleTextFieldChange}
+                            name='lastname'
+                            label="Фамилия"
+                            type="text"
+                        />
                     </FormControl>
                     <FormControl fullWidth className={classes.padding_8}>
-                        <TextField label="Фамилия" type="text" />
-                    </FormControl>
-                    <FormControl fullWidth className={classes.padding_8}>
-                        <TextField label="Отчество" type="text" />
+                        <TextField
+                            onChange={handleTextFieldChange}
+                            name='middlename'
+                            label="Отчество"
+                            type="text"
+                        />
                     </FormControl>
                 </Grid>
 
@@ -85,7 +109,8 @@ const CreatePatients = () => {
                                     style={{ display: 'block' }}
                                     aria-labelledby="demo-radio-buttons-group-label"
                                     defaultValue="male"
-                                    name="radio-buttons-group"
+                                    name="pol"
+                                    onChange={handleTextFieldChange}
                                 >
                                     <FormControlLabel value="female" control={<Radio />} label="Женский" />
                                     <FormControlLabel value="male" control={<Radio />} label="Мужской" />
@@ -94,47 +119,90 @@ const CreatePatients = () => {
                         </Grid>
                         <Grid md={6}>
                             <FormControl fullWidth>
-                                <TextField label="Адрес" type="text" />
+                                <TextField
+                                    onChange={handleTextFieldChange}
+                                    name='address'
+                                    label="Адрес"
+                                    type="text"
+                                />
                             </FormControl>
                         </Grid>
                         <Grid md={6}>
                             <FormControl fullWidth>
-                                <TextField label="Домашный телефон" type="number" />
+                                <TextField
+                                    onChange={handleTextFieldChange}
+                                    name='homPhoneNumber'
+                                    label="Домашный телефон"
+                                    type="number"
+                                />
                             </FormControl>
                         </Grid>
                         <Grid md={6}>
                             <FormControl fullWidth>
-                                <TextField label="Мобилный телефон" type="number" />
+                                <TextField
+                                    onChange={handleTextFieldChange}
+                                    name='mobilePhoneNumber'
+                                    label="Мобилный телефон"
+                                    type="number"
+                                />
                             </FormControl>
                         </Grid>
                         <Grid md={6}>
                             <FormControl fullWidth>
-                                <TextField label="Электронная почта" type="email" />
+                                <TextField
+                                    onChange={handleTextFieldChange}
+                                    name='email'
+                                    label="Электронная почта"
+                                    type="email"
+                                />
                             </FormControl>
                         </Grid>
                         <Grid md={6}>
                             <FormControl fullWidth>
-                                <TextField label="Дополнительная  информация" type="text" />
+                                <TextField
+                                    onChange={handleTextFieldChange}
+                                    name='dob'
+                                    label="Дополнительная  информация"
+                                    type="text"
+                                />
                             </FormControl>
                         </Grid>
                         <Grid md={6}>
                             <FormControl fullWidth>
-                                <TextField label="Создатель пациента" type="text" />
+                                <TextField
+                                    onChange={handleTextFieldChange}
+                                    name='creator'
+                                    label="Создатель пациента"
+                                    type="text"
+                                />
                             </FormControl>
                         </Grid>
                         <Grid md={6}>
                             <FormControl fullWidth>
-                                <TextField label="Медкарта" type="text" />
+                                <TextField
+                                    onChange={handleTextFieldChange}
+                                    name='medCadNumber'
+                                    label="Медкарта" type="text"
+                                />
                             </FormControl>
                         </Grid>
                         <Grid md={6}>
                             <FormControl fullWidth>
-                                <TextField label="Депозить" type="text" />
+                                <TextField
+                                    onChange={handleTextFieldChange}
+                                    name='deposit'
+                                    label="Депозить"
+                                    type="text"
+                                />
                             </FormControl>
                         </Grid>
                         <Grid md={6}>
                             <FormControl fullWidth>
-                                <FormControlLabel control={<Checkbox defaultChecked />} label="Активный" />
+                                <FormControlLabel control={<Checkbox
+                                    onChange={handleTextFieldChange}
+                                    name='isActive'
+                                    defaultChecked
+                                />} label="Активный" />
                             </FormControl>
                         </Grid>
                     </Grid>
@@ -153,8 +221,8 @@ const CreatePatients = () => {
                 </Grid>
 
                 <Grid xs={6} md={12} style={{ display: 'flex', justifyContent: 'space-between ' }}>
-                    <Button className={`${classes.secondaryButton} ${classes.w50}`} variant="outlined" >Промокод</Button>
-                    <Button className={`${classes.secondaryButton} ${classes.w50}`} variant="outlined" >Промокод</Button>
+                    <Button className={`${classes.secondaryButton} ${classes.w50}`} variant="outlined" >Заглавная  страница медкарты</Button>
+                    <Button className={`${classes.secondaryButton} ${classes.w50}`} variant="outlined" >История звонков</Button>
                 </Grid>
 
             </Grid>

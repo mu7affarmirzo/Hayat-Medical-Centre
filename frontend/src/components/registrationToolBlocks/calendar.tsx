@@ -58,7 +58,7 @@ const Calendar = () => {
             <div className={styles.left_side}>
                 <div className={styles.tools}>
                     {calendarData.map(item => (
-                        <div className={`${styles.tools_item} ${item.border ? styles.border : ""}`}>
+                        <div  className={`${styles.tools_item} ${item.border ? styles.border : ""}`}>
                             {item.img}
                             <span>{parse(item.text)}</span>
                         </div>

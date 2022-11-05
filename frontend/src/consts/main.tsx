@@ -49,7 +49,7 @@ export const NavBarDropdowns: Array<INav> = [
                 img: <Note/>,
                 text: "Добавить группу приемов",
                 sideBarText: "Добавить <br> группу приемов",
-                path: ""
+                path: " "
             },
             {
                 img: <ProfileUser/>,
