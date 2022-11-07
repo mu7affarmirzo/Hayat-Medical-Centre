@@ -8,6 +8,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['username'] = user.username
         token['is_superuser'] = user.is_superuser
-        print(user.account_role_user.count())
+        # print(user.account_role_user.count())
         # token['user_role'] = user.account_role_user
         return token
