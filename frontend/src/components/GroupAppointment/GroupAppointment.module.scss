@@ -28,10 +28,52 @@
   padding: 10px 20px;
   display: flex;
   align-items: center;
-  fieldset{
+  fieldset {
     border: none;
   }
-  svg{
+  svg {
     margin-right: 10px;
+  }
+}
+
+.tableBody {
+  border-collapse: collapse;
+  width: 100%;
+  thead {
+    th {
+      background: #64b6f7;
+    }
+  }
+  td{
+     white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+    max-width: 326px;
+  }
+  th,
+  td {
+    border: 1px solid rgba(0, 0, 0, 0.199);
+ font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+color: rgba(0, 0, 0, 0.87);
+padding: 10px;
+text-align: left;
+  }
+}
+
+.row{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  button {
+    margin-left: 10px;
+    padding: 16px;
+    border-color: #c4c4c4;
+  }
+  .formControl{
+    margin-bottom: 0 !important;
   }
 }
