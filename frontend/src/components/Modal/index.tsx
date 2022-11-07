@@ -10,7 +10,11 @@ function Modal({ children, show, onClose }) {
 
     useEffect(() => {
         setIsBrowser(true);
-        return () => setIsBrowser(false)
+        document.body.style.overflow = 'hidden'
+        return () => {
+            setIsBrowser(false)
+            document.body.style.overflow = 'initial'
+        }
     }, []);
 
     const modal = show ? (

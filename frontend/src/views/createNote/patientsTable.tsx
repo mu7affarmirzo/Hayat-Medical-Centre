@@ -90,8 +90,8 @@ const PatientsTable = observer((
                                         sx={{height: "32px"}}
                                     >
                                         {
-                                            Array(22).fill(1).map((_, index) => index * 5).map((discount) => (
-                                                <MenuItem value={discount}>{discount}%</MenuItem>
+                                            Array(22).fill(1).map((_, index) => index * 5).map((discount, i) => (
+                                                <MenuItem key={i} value={discount}>{discount}%</MenuItem>
                                             ))
                                         }
                                     </Select>
@@ -400,8 +400,8 @@ const PatientsTable = observer((
                                     <table>
                                         <tbody>
                                         {
-                                            appointedServices.map((appointedService) => (
-                                                <tr>
+                                                appointedServices.map((appointedService, index) => (
+                                                    <tr key={index}>
                                                     <td>{appointedService.service.name}</td>
                                                     <td className={styles.center_cel}>{appointedService.quantity}</td>
                                                     <td>
@@ -446,8 +446,8 @@ const PatientsTable = observer((
                                         {
                                             services
                                                 .filter((service) => service.name.toLowerCase().includes(serviceSearchText.toLowerCase()))
-                                                .map((service) => (
-                                                <tr>
+                                                    .map((service, i) => (
+                                                        <tr key={i}>
                                                     <td style={{padding: 0}}>
                                                         <div
                                                             className={`${styles.icon_cell} ${styles.green}`}

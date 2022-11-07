@@ -29,8 +29,9 @@ const SideBar = () => {
                   <GroupAppointment />
               </Modal>
           ) : null}
-          {NavBarDropdowns[0]?.dropdown?.map((item) => (
+            {NavBarDropdowns[0]?.dropdown?.map((item, index) => (
               <div
+                    key={index}
                   onClick={() => clickHandler(item.path)}
                   className={`${styles.sideBar_item} ${item.path === location.pathname ? styles.active : ""
                       }`}

@@ -317,8 +317,8 @@ const CreateNote = observer(() => {
                                 <table>
                                     <tbody>
                                     {
-                                        patients.map((patient) => (
-                                            <tr>
+                                            patients.map((patient, index) => (
+                                                <tr key={index}>
                                                 <td onClick={() => {
                                                     patientStateKeeper.setSelectedPatient(patient);
                                                     setOpenPatients(false);

@@ -34,14 +34,14 @@ const AppRouting = observer(() => {
                                 {
                                     RoutingData[role].map((item, i) => {
                                         return (
-                                            <>
-                                                <Route key={i} path={item.path} element={item.component}/>
+                                            <React.Fragment key={i}>
+                                                <Route path={item.path} element={item.component} />
 
                                                 {
                                                     item.global &&
                                                     <Route path="*" element={<Navigate to={item.path} replace/>}/>
                                                 }
-                                            </>
+                                            </React.Fragment>
                                         );
                                     })
                                 }

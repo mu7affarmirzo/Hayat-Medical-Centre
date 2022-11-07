@@ -143,7 +143,7 @@ const MainView = observer((
                             <div className={`${styles.table_medical} ${styles.custom_scrollbar}`}>
                                 <div onClick={() => changeSpecialty("all")} className={styles.table_item}>Все</div>
                                 {
-                                    specialities.map(item => (
+                                    specialities.map((item, i) => (
                                         <div
                                             onClick={() => changeSpecialty(item.id)}
                                             // style={{backgroundColor: item.color}}

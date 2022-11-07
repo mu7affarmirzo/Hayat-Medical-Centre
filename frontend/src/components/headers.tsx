@@ -19,7 +19,7 @@ const Headers = () => {
     const [profileOpen, setProfileOpen] = React.useState<null | HTMLElement>(null);
     const [groupAppointment, setGroupAppointment] = React.useState(false)
     const localAuthorizationStateKeeper = useLocalObservable(() => AuthorizationStateKeeper.instance);
-    const { setRole } = localAuthorizationStateKeeper;
+    const { setRole, setToken } = localAuthorizationStateKeeper;
 
     const handleClick = (index: string, event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl({ index, elem: event.currentTarget });
@@ -28,6 +28,11 @@ const Headers = () => {
     const handleClose = () => {
         setAnchorEl({ index: "", elem: null });
     };
+
+    const handleLogOut = () => {
+        setRole("NoAuth");
+        setToken(JSON.stringify({}))
+    }
 
     const handleModalOpener = () => {
         setGroupAppointment(true)
@@ -51,7 +56,7 @@ const Headers = () => {
                     {NavBarDropdowns.map((item, i) => {
                         if (!item.dropdown) {
                             return (
-                                <div className={styles.nav_item}>
+                                <div key={i} className={styles.nav_item}>
                                     {item.button}
                                 </div>
                             );
@@ -90,12 +95,12 @@ const Headers = () => {
                                         item.dropdown.map((dropdownItem, index) => {
                                             return (
                                                 dropdownItem.text === 'Добавить группу приемов' ? (
-                                                    <MenuItem onClick={handleModalOpener}>
+                                                    <MenuItem key={index} onClick={handleModalOpener}>
                                                         {dropdownItem.img}
                                                         {dropdownItem.text}
                                                     </MenuItem>
                                                 ) : (
-                                                        <MenuItem onClick={handleClose}>
+                                                        <MenuItem key={index} onClick={handleClose}>
                                                             <Link to={dropdownItem.path}>
                                                                 {dropdownItem.img}
                                                                 {dropdownItem.text}
@@ -135,7 +140,7 @@ const Headers = () => {
                     >
                         {/*<MenuItem onClick={() => setProfileOpen(null)}>Profile</MenuItem>*/}
                         {/*<MenuItem onClick={() => setProfileOpen(null)}>My account</MenuItem>*/}
-                        <MenuItem onClick={() => setRole("NoAuth")}>
+                        <MenuItem onClick={handleLogOut}>
                             <LogoutTwoToneIcon sx={{ mr: "12px" }} />
                             Logout
                         </MenuItem>
