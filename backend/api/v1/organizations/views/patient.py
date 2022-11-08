@@ -53,6 +53,8 @@ class PatientRetrieveView(RetrieveAPIView):
     def put(self, request, pk, format=None):
         try:
             patient = PatientModel.objects.get(pk=pk)
+            patient.modified_by = request.user
+            patient.save()
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
