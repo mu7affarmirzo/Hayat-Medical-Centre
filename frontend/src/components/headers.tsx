@@ -95,12 +95,15 @@ const Headers = () => {
                                         item.dropdown.map((dropdownItem, index) => {
                                             return (
                                                 dropdownItem.text === 'Добавить группу приемов' ? (
-                                                    <MenuItem key={index} onClick={handleModalOpener}>
+                                                    <MenuItem className={styles.dropdown_menu} key={index} onClick={handleModalOpener}>
                                                         {dropdownItem.img}
                                                         {dropdownItem.text}
                                                     </MenuItem>
                                                 ) : (
-                                                        <MenuItem key={index} onClick={handleClose}>
+                                                        <MenuItem
+                                                            className={styles.dropdown_menu}
+                                                            key={index}
+                                                            onClick={handleClose}>
                                                             <Link to={dropdownItem.path}>
                                                                 {dropdownItem.img}
                                                                 {dropdownItem.text}

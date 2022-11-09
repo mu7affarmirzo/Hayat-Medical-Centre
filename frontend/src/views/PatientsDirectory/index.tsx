@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { useNavigate, } from "react-router";
+import { useNavigate } from "react-router";
 import BpCheckbox from "../../components/BpCheckbox";
 import {
     PatientsDirectoryActions,
@@ -20,42 +20,42 @@ import classes from "./patientsDirectory.module.scss";
 
 const PatientsDirectory = observer(
     ({ patients }: { patients: Array<IPatient> }) => {
-
         const [age, setAge] = React.useState(["", ""]);
-        const [selected, setSelected] = React.useState<object[]>([])
+        const [selected, setSelected] = React.useState<object[]>([]);
 
         const handleChange = (event: SelectChangeEvent) => {
             setAge([...age, event.target.value]);
         };
 
-        const navigate = useNavigate()
+        const navigate = useNavigate();
 
         const handleClick = (event: React.MouseEvent<HTMLElement>) => {
             const type = event.currentTarget.dataset.type;
             switch (type) {
-                case 'add':
-                    navigate('/patientsDirectory/create')
+                case "add":
+                    navigate("/patientsDirectory/create");
                     break;
-                case 'edit':
-                    navigate('/patientsDirectory/edit')
+                case "edit":
+                    navigate("/patientsDirectory/edit");
+                    break;
+                case "remove":
+                    alert(JSON.stringify(selected));
                     break;
 
                 default:
                     break;
             }
-        }
+        };
 
         const handlecheckboxchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const { value, checked, name } = e.target;
+            const { checked, name } = e.currentTarget;
             if (checked) {
-                setSelected({ ...selected, [name]: value });
+                setSelected({ ...selected, [name]: checked });
+            } else {
+                delete selected[name];
+                setSelected(selected);
             }
-            else {
-                for (let [key, val] of Object.entries(selected)) {
-                    console.log(key, val, value)
-                }
-            }
-        }
+        };
 
         return (
             <div className={classes.main}>
@@ -140,7 +140,11 @@ const PatientsDirectory = observer(
                                 <td>{item.dob}</td>
                                 <td>{item.email}</td>
                                 <td style={{ display: "flex", justifyContent: "center" }}>
-                                    <BpCheckbox id={item.id} handlecheckboxchange={handlecheckboxchange} defaultChecked={false} />
+                                    <BpCheckbox
+                                        id={item.id}
+                                        handlecheckboxchange={handlecheckboxchange}
+                                        defaultChecked={false}
+                                    />
                                 </td>
                                 <td>{item.lastVisitAt}</td>
                             </tr>
