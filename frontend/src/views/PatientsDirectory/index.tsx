@@ -21,13 +21,17 @@ import classes from "./patientsDirectory.module.scss";
 const PatientsDirectory = observer(
     ({ patients }: { patients: Array<IPatient> }) => {
         const [age, setAge] = React.useState(["", ""]);
-        const [selected, setSelected] = React.useState<object[]>([]);
-
+        const [active, setactive] = React.useState<object[]>([]);
+        const [selected, setSelected] = React.useState<string>('0')
         const handleChange = (event: SelectChangeEvent) => {
             setAge([...age, event.target.value]);
         };
 
         const navigate = useNavigate();
+
+        const handleSelectPatient = (event: React.MouseEvent<HTMLElement>) => {
+            setSelected(event.currentTarget.dataset.id || '')
+        }
 
         const handleClick = (event: React.MouseEvent<HTMLElement>) => {
             const type = event.currentTarget.dataset.type;
@@ -39,7 +43,7 @@ const PatientsDirectory = observer(
                     navigate("/patientsDirectory/edit");
                     break;
                 case "remove":
-                    alert(JSON.stringify(selected));
+                    alert(JSON.stringify(active));
                     break;
 
                 default:
@@ -50,10 +54,10 @@ const PatientsDirectory = observer(
         const handlecheckboxchange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const { checked, name } = e.currentTarget;
             if (checked) {
-                setSelected({ ...selected, [name]: checked });
+                setactive({ ...active, [name]: checked });
             } else {
-                delete selected[name];
-                setSelected(selected);
+                delete active[name];
+                setactive(active);
             }
         };
 
@@ -128,7 +132,7 @@ const PatientsDirectory = observer(
                             ))}
                         </thead>
                         {patients.slice(0, 7).map((item) => (
-                            <tr>
+                            <tr data-id={item.id} onClick={handleSelectPatient} className={item.id === parseInt(selected) ? classes.selectedDoctor : ''}>
                                 <td></td>
                                 <td>{item.lastName}</td>
                                 <td>{item.firstName}</td>

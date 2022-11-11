@@ -10,7 +10,6 @@ import {observer, useLocalObservable} from "mobx-react-lite";
 import moment from "moment";
 import {CalendarEventStateKeeper} from "../../store";
 import ErrorNotification from "../../store/ErrorNotification";
-import DoctorStateKeeper from "../../store/DoctorStateKeeper";
 
 
 const MainView = observer((

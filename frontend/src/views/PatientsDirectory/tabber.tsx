@@ -7,12 +7,14 @@ import classes from "./createPatient.module.scss";
 import {
     FormControl,
     FormLabel,
-    InputLabel,
     MenuItem,
     Select,
+    SelectChangeEvent,
     TextField,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
+import { MobileDatePicker } from "@mui/x-date-pickers";
+import { Dayjs } from "dayjs";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -22,6 +24,8 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
+
+
 
     return (
         <div
@@ -47,12 +51,30 @@ function a11yProps(index: number) {
     };
 }
 
-export default function Tabber() {
+export default function Tabber({ handleTextFieldChange, handleSelectChange, state, setState }) {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    const [dateValue, setDate] = React.useState<Dayjs | null>(
+    );
+
+    const handleDatePicker = (newValue: Dayjs | null) => {
+        setDate(newValue);
+    };
+    const [group, setGroupName] = React.useState<string[]>([]);
+    const handleChangeGroup = (event: SelectChangeEvent<typeof group>) => {
+        const {
+            target: { value },
+        } = event;
+        setGroupName(
+            typeof value === 'string' ? value.split(',') : value,
+        );
+        setState({ ...state, patient_group: typeof value === 'string' ? value.split(',') : value })
+    };
+
 
     return (
         <Box sx={{ width: "100%" }} className={classes.tabber}>
@@ -71,21 +93,31 @@ export default function Tabber() {
             <TabPanel value={value} index={0}>
                 <FormLabel>Источник информации</FormLabel>
                 <FormControl style={{ marginBottom: 10 }} fullWidth>
-                    <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                        <MenuItem value={10}>Ten</MenuItem>
+                    <Select onChange={handleSelectChange} name='information_source' labelId="demo-simple-select-label" id="demo-simple-select">
+                        <MenuItem value={1}>VIP клиенты</MenuItem>
+                        <MenuItem value={2}>VIP клиенты2</MenuItem>
                     </Select>
                 </FormControl>
                 <FormLabel>Группа</FormLabel>
                 <FormControl style={{ marginBottom: 10 }} fullWidth>
-                    <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                        <MenuItem value={30}>Thirty</MenuItem>
+                    <Select
+                        multiple
+                        onChange={handleChangeGroup}
+                        name='patient_group'
+                        value={group}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                    >
+                        <MenuItem value={1}>VIP клиенты</MenuItem>
+                        <MenuItem value={2}>VIP клиенты2</MenuItem>
+                        <MenuItem value={3}>VIP клиенты3</MenuItem>
                     </Select>
                 </FormControl>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <FormLabel>Лечащий врач</FormLabel>
                 <FormControl style={{ marginBottom: 10 }} fullWidth>
-                    <Select labelId="demo-simple-select-label" id="demo-simple-select">
+                    <Select onChange={handleSelectChange} name='doctor' labelId="demo-simple-select-label" id="demo-simple-select">
                         <MenuItem value={10}>Ten</MenuItem>
                     </Select>
                 </FormControl>
@@ -104,6 +136,7 @@ export default function Tabber() {
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
+                                name="doc_type"
                             >
                                 <MenuItem value={"passport"}>Passport</MenuItem>
                                 <MenuItem value={"id"}>ID card</MenuItem>
@@ -113,25 +146,30 @@ export default function Tabber() {
                     <Grid md={4}>
                         <FormControl fullWidth>
                             <FormLabel>Номер документа</FormLabel>
-                            <TextField type="number" />
+                            <TextField name="doc_number" type="number" />
                         </FormControl>
                     </Grid>
                     <Grid md={4}>
                         <FormControl fullWidth>
                             <FormLabel>Выдан (дата)</FormLabel>
-                            <TextField type="text" />
+                            <MobileDatePicker
+                                inputFormat="MM/DD/YYYY"
+                                value={dateValue}
+                                onChange={handleDatePicker}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
                         </FormControl>
                     </Grid>
                     <Grid md={6}>
                         <FormControl fullWidth>
                             <FormLabel>Номер ИНН</FormLabel>
-                            <TextField type="number" />
+                            <TextField name="INN" onChange={handleTextFieldChange} type="number" />
                         </FormControl>
                     </Grid>
                     <Grid md={6}>
                         <FormControl fullWidth>
                             <FormLabel>Гражданство</FormLabel>
-                            <TextField type="text" />
+                            <TextField type="text" name="country" onChange={handleTextFieldChange} />
                         </FormControl>
                     </Grid>
                 </Grid>
