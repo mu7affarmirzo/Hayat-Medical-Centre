@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from account.models.organizations import OrganizationModel, BranchModel
+from apps.account.models import OrganizationModel, BranchModel
 
 
 class OrganizationCreateSerializer(serializers.ModelSerializer):

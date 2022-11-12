@@ -1,4 +1,4 @@
-from account.models import AppointmentsModel, AppointmentServiceModel
+from apps.account.models import AppointmentsModel, AppointmentServiceModel
 from rest_framework import serializers
 
 

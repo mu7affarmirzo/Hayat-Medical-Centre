@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from account.models.organizations import OrganizationModel, BranchModel
+from apps.account.models import OrganizationModel, BranchModel
 from rest_framework.generics import CreateAPIView, ListCreateAPIView
 
 from api.v1.organizations.serializers.organizations import OrganizationCreateSerializer, OrganizationListSerializer, \

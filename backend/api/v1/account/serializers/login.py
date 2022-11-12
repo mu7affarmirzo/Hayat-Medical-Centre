@@ -8,6 +8,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['username'] = user.username
         token['is_superuser'] = user.is_superuser
-        # print(user.account_role_user.count())
-        # token['user_role'] = user.account_role_user
+        a = [x for x in user.account_role_user.all()]
+        roles = dict()
+        for i in a:
+            temp = 0
+            roles[temp] = i.role.name
+            temp += 1
+        token['user_role'] = roles
         return token

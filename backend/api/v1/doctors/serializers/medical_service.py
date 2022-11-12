@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from account.models import MedicalService
+from apps.account.models import MedicalService
 
 
 class MedicalServiceSerializer(serializers.ModelSerializer):

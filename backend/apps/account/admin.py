@@ -1,7 +1,8 @@
 from django.contrib import admin
-from account.models import (
-    accounts, organizations, roles_permissions, patients, appointments, specialities
+from apps.account.models import (
+    accounts, organizations, roles_permissions, patients, specialities
 )
+from apps.account.models import appointments
 
 
 @admin.register(accounts.Account)

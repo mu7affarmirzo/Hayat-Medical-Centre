@@ -1,4 +1,4 @@
-from account.models import AppointmentsModel
+from apps.account.models import AppointmentsModel
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 from api.v1.appointment.serializers.appointment import AppointmentSerializer, AppointmentCreateSerializer
+
 
 class AppointmentsModelView(APIView):
     permission_classes = [IsAuthenticated]

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from account.models import SpecialityModel, DoctorSpecialityModel
+from apps.account.models import SpecialityModel, DoctorSpecialityModel
 
 
 # class CreateSerializer(serializers.ModelSerializer):

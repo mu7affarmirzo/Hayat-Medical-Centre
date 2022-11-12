@@ -1,9 +1,9 @@
 from django.db import models
 
-from account.models.accounts import ReferringDoctorModel, Account
-from account.models.organizations import BranchModel
-from account.models.patients import PatientModel, InformationSourceModel
-from account.models.specialities import SpecialityModel
+from apps.account.models import ReferringDoctorModel, Account
+from apps.account.models import BranchModel
+from apps.account.models import PatientModel, InformationSourceModel
+from apps.account.models import SpecialityModel
 
 APPOINTMENT_CHOICES = (
     ('PAID', "PAID"),

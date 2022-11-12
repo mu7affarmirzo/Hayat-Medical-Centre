@@ -1,4 +1,4 @@
-from account.models.patients import PatientGroupModel
+from apps.account.models import PatientGroupModel
 from rest_framework.decorators import api_view
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated

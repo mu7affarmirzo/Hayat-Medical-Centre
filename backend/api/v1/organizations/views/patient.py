@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 from api.v1.organizations.serializers.patient import PatientModelSerializer, PatientCreateSerializer
-from account.models.patients import PatientModel
+from apps.account.models import PatientModel
 from django.db.models import Q
 from api.v1.organizations.serializers.patient import PatientSearchSerializer
 from rest_framework.decorators import api_view

@@ -1,7 +1,7 @@
 from django.db import models
 
-from account.models.accounts import Account
-from account.models.organizations import OrganizationModel, BranchModel
+from apps.account.models import Account
+from apps.account.models import OrganizationModel, BranchModel
 
 
 class SpecialityModel(models.Model):

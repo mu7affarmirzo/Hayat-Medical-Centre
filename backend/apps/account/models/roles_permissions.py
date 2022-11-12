@@ -1,6 +1,6 @@
 from django.db import models
 
-from account.models import Account
+from apps.account.models import Account
 
 
 class RolesModel(models.Model):

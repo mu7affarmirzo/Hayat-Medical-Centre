@@ -1,4 +1,4 @@
-from account.models import MedicalService
+from apps.account.models import MedicalService
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import permission_classes
