@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     'drf_yasg',
-    'corsheaders'
+    'corsheaders',
+    'import_export',
 ]
 
 REST_FRAMEWORK = {

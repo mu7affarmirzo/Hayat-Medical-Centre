@@ -15,7 +15,7 @@ APPOINTMENT_CHOICES = (
 class MedicalService(models.Model):
     name = models.CharField(max_length=255)
     cost = models.BigIntegerField()
-    doctor = models.ManyToManyField(Account, blank=True, null=True)
+    doctor = models.ManyToManyField(Account, blank=True)
     speciality = models.ForeignKey(SpecialityModel, on_delete=models.SET_NULL, null=True)
     created_by = models.ForeignKey(Account, related_name='med_serv_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

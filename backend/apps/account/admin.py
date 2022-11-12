@@ -1,3 +1,4 @@
+from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 from apps.account.models import (
     accounts, organizations, roles_permissions, patients, specialities
@@ -6,7 +7,7 @@ from apps.account.models import appointments
 
 
 @admin.register(accounts.Account)
-class AccountAdmin(admin.ModelAdmin):
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('email', 'username')
 
 
@@ -34,5 +35,15 @@ admin.site.register(appointments.AppointmentServiceModel)
 admin.site.register(appointments.EMCDocumentModel)
 admin.site.register(accounts.ReferringDoctorModel)
 admin.site.register(roles_permissions.AccountRolesModel)
-admin.site.register(specialities.SpecialityModel)
-admin.site.register(specialities.DoctorSpecialityModel)
+
+
+@admin.register(specialities.SpecialityModel)
+class SpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
+    # list_display = ('email', 'username')
+
+
+@admin.register(specialities.DoctorSpecialityModel)
+class DoctorSpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
+    # list_display = ('email', 'username')

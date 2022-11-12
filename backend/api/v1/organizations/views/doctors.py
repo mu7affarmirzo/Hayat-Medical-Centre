@@ -22,7 +22,7 @@ class DoctorsListCreateView(APIView):
     @permission_classes((IsAuthenticated,))
     def get(self, request, format=None):
         doctors = self.get_queryset()
-        serializer = DoctorsCreateSerializer(doctors, many=True)
+        serializer = DoctorsListSerializer(doctors, many=True)
         return Response(serializer.data)
 
     @swagger_auto_schema(tags=['organizations-doctor'], request_body=DoctorsCreateSerializer)

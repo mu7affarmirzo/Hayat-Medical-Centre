@@ -27,11 +27,7 @@ class DoctorSpecialitiesListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DoctorSpecialityModel
-        fields = [
-            "id",
-            "name",
-            "color"
-        ]
+        fields = "__all__"
 
 
 class DoctorSpecialitiesCreateSerializer(serializers.ModelSerializer):
@@ -39,3 +35,4 @@ class DoctorSpecialitiesCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorSpecialityModel
         fields = "__all__"
+        

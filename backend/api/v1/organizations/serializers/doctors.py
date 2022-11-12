@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.account.models import Account
+from apps.account.models import Account, DoctorSpecialityModel
 
 
 class DoctorsCreateSerializer(serializers.ModelSerializer):
@@ -36,16 +36,29 @@ class DoctorsCreateSerializer(serializers.ModelSerializer):
         return account
 
 
-
 class DoctorsListSerializer(serializers.ModelSerializer):
     created_by = serializers.SerializerMethodField()
 
     class Meta:
         model = Account
-        fields = '__all__'
+        fields = [
+            'id',
+            'email',
+            'username',
+            'f_name',
+            'l_name',
+            'm_name',
+            'phone_number',
+            'sex',
+            'organization_id',
+            'branch_id',
+            'color',
+            'created_by'
+        ]
 
-    def get_created_by(self, organization):
-        created_by = organization.created_by.username
+    def get_created_by(self, account):
+        target_doctor = DoctorSpecialityModel.objects.filter(doctor=account)[0]
+        created_by = target_doctor.created_by.email
         return created_by
 
 

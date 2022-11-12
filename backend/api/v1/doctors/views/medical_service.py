@@ -36,8 +36,7 @@ class MedicalServiceRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = MedicalServiceSerializer
 
-    @staticmethod
-    def get_queryset():
+    def get_queryset(self):
         return MedicalService.objects.all()
 
     @swagger_auto_schema(tags=['medical-services'])
