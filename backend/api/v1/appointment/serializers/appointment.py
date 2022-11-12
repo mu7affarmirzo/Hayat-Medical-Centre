@@ -39,3 +39,11 @@ class AppointmentServiceCreateSerializers(serializers.ModelSerializer):
     class Meta:
         model = AppointmentServiceModel
         fields = ['branch', 'appointment', 'service']
+
+
+class TimeSerializer(serializers.Serializer):
+    min = serializers.DateTimeField()
+    max = serializers.DateTimeField()
+
+    class Meta:
+        fields = '__all__'

@@ -1,11 +1,14 @@
 from apps.account.models import AppointmentsModel
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 from api.v1.appointment.serializers.appointment import AppointmentSerializer, AppointmentCreateSerializer
+
+from api.v1.appointment.serializers.appointment import TimeSerializer
 
 
 class AppointmentsModelView(APIView):
@@ -71,3 +74,11 @@ class AppointmentsRetrieveView(RetrieveAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@swagger_auto_schema(method="post", tags=["appointments"], request_body=TimeSerializer)
+@api_view(['POST', ])
+def appointment_time_view(request):
+    min_date = request.data['min']
+    max_date = request.data['max']
+    appoints = AppointmentsModel.objects.filter(start_time__gte=min_date, end_time__lte=max_date)
+    serializer = AppointmentSerializer(appoints, many=True)
+    return Response(serializer.data)
