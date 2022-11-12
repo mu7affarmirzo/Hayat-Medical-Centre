@@ -41,7 +41,7 @@ class PatientModel(models.Model):
     address = models.TextField(blank=True, null=True)
     additional_info = models.JSONField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    information_source = models.OneToOneField(InformationSourceModel, on_delete=models.CASCADE)
+    information_source = models.ForeignKey(InformationSourceModel, on_delete=models.CASCADE)
     patient_group = models.ManyToManyField(PatientGroupModel)
     doc_type = models.CharField(max_length=255, blank=True, null=True)
     doc_number = models.CharField(max_length=255, blank=True, null=True)
