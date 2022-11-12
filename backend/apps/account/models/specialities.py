@@ -23,9 +23,9 @@ class DoctorSpecialityModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_doc_spec_by_user", on_delete=models.SET_NULL, null=True)
-    organization = models.ForeignKey(OrganizationModel, related_name="doc_speciality", on_delete=models.SET_NULL, null=True)
-    branch = models.ForeignKey(BranchModel, related_name="doc_speciality", on_delete=models.SET_NULL, null=True)
-    speciality = models.ForeignKey(SpecialityModel, related_name="doc_speciality", on_delete=models.CASCADE, null=True)
+    organization = models.ForeignKey(OrganizationModel, related_name="doc_speciality_org", on_delete=models.SET_NULL, null=True)
+    branch = models.ForeignKey(BranchModel, related_name="doc_speciality_branch", on_delete=models.SET_NULL, null=True)
+    speciality = models.ForeignKey(SpecialityModel, related_name="doc_speciality_spec", on_delete=models.CASCADE, null=True)
     doctor = models.ForeignKey(Account, related_name="doc_speciality", on_delete=models.CASCADE, null=True)
 
     def __str__(self):

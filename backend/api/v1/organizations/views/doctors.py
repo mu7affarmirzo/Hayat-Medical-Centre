@@ -1,7 +1,7 @@
 from django.db.models import Exists, Q
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,7 +9,8 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from apps.account.models import DoctorSpecialityModel
 from apps.account.models import Account
-from api.v1.organizations.serializers.doctors import DoctorsCreateSerializer, DoctorsListSerializer
+from api.v1.organizations.serializers.doctors import DoctorsCreateSerializer, DoctorsListSerializer, \
+    DoctorSearchSerializer
 
 
 class DoctorsListCreateView(APIView):
@@ -69,3 +70,4 @@ class DoctorsRetrieveView(RetrieveUpdateDestroyAPIView):
 
         doctor.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+

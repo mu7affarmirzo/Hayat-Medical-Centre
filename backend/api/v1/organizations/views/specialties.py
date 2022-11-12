@@ -51,3 +51,24 @@ class DoctorSpecialitiesView(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SpecialitiesView(APIView):
+
+    @swagger_auto_schema(tags=['organizations-speciality'])
+    def get(self, request, format=None):
+        specialities = SpecialityModel.objects.all()
+        serializer = SpecialitiesListSerializer(specialities, many=True)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(tags=['organizations-speciality'], request_body=DoctorSpecialitiesCreateSerializer)
+    @permission_classes((IsAuthenticated, ))
+    def post(self, request, format=None):
+        creator = request.user
+        specialty = DoctorSpecialityModel(created_by=creator)
+        serializer = DoctorSpecialitiesCreateSerializer(specialty, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

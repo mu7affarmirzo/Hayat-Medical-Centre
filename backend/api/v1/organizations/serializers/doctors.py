@@ -37,7 +37,7 @@ class DoctorsCreateSerializer(serializers.ModelSerializer):
 
 
 class DoctorsListSerializer(serializers.ModelSerializer):
-    created_by = serializers.SerializerMethodField()
+    # created_by = serializers.SerializerMethodField()
 
     class Meta:
         model = Account
@@ -53,12 +53,25 @@ class DoctorsListSerializer(serializers.ModelSerializer):
             'organization_id',
             'branch_id',
             'color',
-            'created_by'
+            # 'created_by'
         ]
+    #
+    # def get_created_by(self, account):
+    #     print("******************************")
+    #     print("******************************")
+    #     print(account)
+    #     print("******************************")
+    #     print("******************************")
+    #     target_doctor = DoctorSpecialityModel.objects.filter(doctor=account)
+    #     print(target_doctor)
+    #     # created_by = target_doctor.created_by.email
+    #     return "created_by"
 
-    def get_created_by(self, account):
-        target_doctor = DoctorSpecialityModel.objects.filter(doctor=account)[0]
-        created_by = target_doctor.created_by.email
-        return created_by
+
+class DoctorSearchSerializer(serializers.Serializer):
+    f_name = serializers.CharField(max_length=255, allow_null=True)
+    mid_name = serializers.CharField(max_length=255, allow_null=True)
+    l_name = serializers.CharField(max_length=255, allow_null=True)
+    mobile_phone_number = serializers.IntegerField(allow_null=True)
 
 

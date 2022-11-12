@@ -45,5 +45,5 @@ class SpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(specialities.DoctorSpecialityModel)
 class DoctorSpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
-    # list_display = ('email', 'username')
+    list_display = ('organization', 'branch_id', 'doctor', 'doctor_id',
+                    'speciality', 'speciality_id')
