@@ -1,15 +1,18 @@
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
+from rest_framework import filters
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView
 from api.v1.organizations.serializers.patient import PatientModelSerializer, PatientCreateSerializer
+from api.v1.organizations.services.filters import PatientFilter
 from apps.account.models import PatientModel
 from django.db.models import Q
 from api.v1.organizations.serializers.patient import PatientSearchSerializer
 from rest_framework.decorators import api_view
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class PatientView(APIView):
@@ -75,28 +78,11 @@ class PatientRetrieveView(RetrieveAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@swagger_auto_schema(method='post', tags=['patients'], request_body=PatientSearchSerializer)
-@api_view(['POST'])
-def filter_patients_view(request):
-    data = request.data
-    l_name = data['l_name']
-    f_name = data['f_name']
-    mid_name = data['mid_name']
-    inn = data['inn']
-    doc_number = data['doc_number']
-    date_of_birth = data['date_of_birth']
-    mobile_phone_number = data['mobile_phone_number']
-    id = data['id']
-
-    last_visit_at = data['last_visit_at']
-    patients = PatientModel.objects.filter(Q(l_name=l_name) | Q(f_name=f_name) | Q(mid_name=mid_name) | Q(INN=inn)
-                                           | Q(doc_number=doc_number) | Q(date_of_birth=date_of_birth) |
-                                           Q(mobile_phone_number=mobile_phone_number) | Q(id=id) |
-                                           Q(last_visit_at=last_visit_at))
-    serializer = PatientModelSerializer(patients, many=True)
-    return Response(data=serializer.data)
-
-
+class PatientFilterView(ListAPIView):
+    queryset = PatientModel.objects.all()
+    serializer_class = PatientModelSerializer
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
+    filterset_class = PatientFilter
 
 
 
