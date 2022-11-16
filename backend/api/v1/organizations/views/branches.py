@@ -28,8 +28,8 @@ def doctors_by_branch_view(request, branch_id):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def specialty_by_branch_view(request, pk):
-    specialty = SpecialityModel.objects.filter(branch=pk)
-    serializer = SpecialitiesListSerializer(specialty, many=True)
+    specialties = SpecialityModel.objects.filter(branch=pk)
+    serializer = SpecialitiesListSerializer(specialties, many=True)
     return Response(serializer.data)
 
 
