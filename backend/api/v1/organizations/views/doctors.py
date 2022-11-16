@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
+from api.v1.organizations.serializers.specialties import DoctorSpecialitiesListSerializer
 from apps.account.models import DoctorSpecialityModel
 from apps.account.models import Account
 from api.v1.organizations.serializers.doctors import DoctorsCreateSerializer, DoctorsListSerializer, \
@@ -22,8 +23,8 @@ class DoctorsListCreateView(APIView):
     @swagger_auto_schema(tags=['organizations-doctor'])
     @permission_classes((IsAuthenticated,))
     def get(self, request, format=None):
-        doctors = self.get_queryset()
-        serializer = DoctorsListSerializer(doctors, many=True)
+        doc_specs = DoctorSpecialityModel.objects.all().distinct('doctor')
+        serializer = DoctorSpecialitiesListSerializer(doc_specs, many=True)
         return Response(serializer.data)
 
     @swagger_auto_schema(tags=['organizations-doctor'], request_body=DoctorsCreateSerializer)

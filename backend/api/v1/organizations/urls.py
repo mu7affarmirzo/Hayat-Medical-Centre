@@ -15,6 +15,7 @@ urlpatterns = [
     path('branches/', BranchesListCreateView.as_view(), name='branches'),
     path('branches/specialty/<int:pk>', specialty_by_branch_view, name='branch-spec'),
     path('branches/specialty/<int:pk>/<int:spec_id>', get_specialty_by_id_view, name='branch-spec'),
+
     path('branches/doctors/<int:branch_id>', doctors_by_branch_view, name='branch-docs'),
 
     path('specialites/', SpecialtiesView.as_view(), name='specialites'),
