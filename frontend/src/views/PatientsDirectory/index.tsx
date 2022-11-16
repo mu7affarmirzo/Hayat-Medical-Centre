@@ -104,6 +104,7 @@ const PatientsDirectory = observer(
                             key={index}
                             onClick={handleClick}
                             data-type={button.dataset}
+                            disabled={button.text === 'Редактировать' && selected === '0' ? true : false}
                         >
                             {button.icon}
                             {button.text}
@@ -144,58 +145,54 @@ const PatientsDirectory = observer(
                 </nav>
 
                 <div className={classes.patientsList}>
-                    {
-                        !!patients !== true ? (
-                            <table className={classes.table}>
-                                <thead className={classes.tableHead}>
-                                    {[
-                                        "",
-                                        "Фамилия",
-                                        "Имя",
-                                        "Отчество",
-                                        "Пол",
-                                        "Адрес",
-                                        "Моб.телефон",
-                                        "Дом.телефон",
-                                        "Дата регис трации",
-                                        "Регистратор",
-                                        "Активный",
-                                        "Дата последного посещение",
-                                    ].map((item) => (
-                                        <th key={item}>{item}</th>
-                                    ))}
-                                </thead>
-                                {patients.slice(0, 7).map((item) => (
-                                    <tr
-                                        data-id={item.id}
-                                        onClick={handleSelectPatient}
-                                        className={
-                                            item.id === parseInt(selected) ? classes.selectedDoctor : ""
-                                        }
-                                    >
-                                        <td></td>
-                                        <td>{item.lastName}</td>
-                                        <td>{item.firstName}</td>
-                                        <td>{item.middleName}</td>
-                                        <td>{item.dob}</td>
-                                        <td>{item.address}</td>
-                                        <td>{item.mobilePhoneNumber}</td>
-                                        <td>{item.homPhoneNumber}</td>
-                                        <td>{item.dob}</td>
-                                        <td>{item.email}</td>
-                                        <td style={{ display: "flex", justifyContent: "center" }}>
-                                            <BpCheckbox
-                                                id={item.id}
-                                                handlecheckboxchange={handlecheckboxchange}
-                                                defaultChecked={false}
-                                            />
-                                        </td>
-                                        <td>{item.lastVisitAt}</td>
-                                    </tr>
-                                ))}
-                            </table>
-                        ) : null
-                    }
+                    <table className={classes.table}>
+                        <thead className={classes.tableHead}>
+                            {[
+                                "",
+                                "Фамилия",
+                                "Имя",
+                                "Отчество",
+                                "Пол",
+                                "Адрес",
+                                "Моб.телефон",
+                                "Дом.телефон",
+                                "Дата регис трации",
+                                "Регистратор",
+                                "Активный",
+                                "Дата последного посещение",
+                            ].map((item) => (
+                                <th key={item}>{item}</th>
+                            ))}
+                        </thead>
+                        {patients.slice(0, 7).map((item) => (
+                            <tr
+                                data-id={item.id}
+                                onClick={handleSelectPatient}
+                                className={
+                                    item.id === parseInt(selected) ? classes.selectedDoctor : ""
+                                }
+                            >
+                                <td></td>
+                                <td>{item.l_name}</td>
+                                <td>{item.f_name}</td>
+                                <td>{item.mid_name}</td>
+                                <td>{item.sex}</td>
+                                <td>{item.address}</td>
+                                <td>{item.mobile_phone_number}</td>
+                                <td>{item.homPhoneNumber}</td>
+                                <td>{new Date(item.created_at).toLocaleDateString()}</td>
+                                <td>{item.email}</td>
+                                <td style={{ display: "flex", justifyContent: "center" }}>
+                                    <BpCheckbox
+                                        id={item.id}
+                                        handlecheckboxchange={handlecheckboxchange}
+                                        defaultChecked={false}
+                                    />
+                                </td>
+                                <td>{item.last_visit_at}</td>
+                            </tr>
+                        ))}
+                    </table>
                 </div>
             </div>
         );

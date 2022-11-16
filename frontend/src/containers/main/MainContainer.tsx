@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MainView } from "../../views";
-import { IBranch, IDoctor } from "../../consts/types";
+import { IDoc } from "../../consts/types";
 import styles from "../../views/main/index.module.scss";
 import {
     AuthorizationStateKeeper,
@@ -26,7 +26,7 @@ const MainContainer = observer(() => {
         () => BranchesStateKeeper.instance
     );
     const { filterEventByIds } = calendarEventsStateKeeper;
-    const { specialitiesCopy, findAllSpecialties, searchByName } =
+    const { specialitiesCopy, findAllSpecialties, searchByName, setSpecialist } =
         specialityStateKeeper;
     const {
         doctorsCopy,
@@ -37,7 +37,7 @@ const MainContainer = observer(() => {
     } = doctorStateKeeper;
     const { findAllBranches, branchesCopy } = branchesStateKeeper;
     const [selectData, setSelectData] = useState<string>("");
-    const [doctorsData, setDoctorsData] = useState<Array<IDoctor>>(doctorsCopy);
+    const [doctorsData, setDoctorsData] = useState<Array<IDoc>>(doctorsCopy);
     const authorizationStateKeeper = useLocalObservable(
         () => AuthorizationStateKeeper.instance
     );
@@ -49,7 +49,7 @@ const MainContainer = observer(() => {
     }>({ specialities: "", doctors: "" });
 
     useEffect(() => {
-        filterEventByIds(selectedDoctors.map((doctor) => doctor.id));
+        filterEventByIds(selectedDoctors.map((doctor) => String(doctor.doctor.id)));
     }, [selectedDoctors]);
 
     useEffect(() => {
@@ -63,17 +63,17 @@ const MainContainer = observer(() => {
     }, [findAllSpecialties, findAllDoctors, findAllBranches]);
     const changeSpecialty = (id: string) => {
         let filteredData;
-        // console.log('doctorsCopy', doctorsCopy.map(item => item.f_name))
+        console.log('doctorsCopy', doctorsCopy.map(item => item.speciality))
         if (id === "all") {
             filteredData = doctorsCopy;
         } else {
-            filteredData = doctorsCopy.filter((item) => item.speciality.id === id);
+            filteredData = doctorsCopy.filter((item) => item.speciality === parseInt(id));
         }
         setDoctorsData(filteredData);
     };
     const handleSelectDoctor = (
         e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>,
-        data: IDoctor
+        data: IDoc
     ) => {
         let parentElem = e.currentTarget.closest(".doctors_table_row");
 
@@ -82,25 +82,33 @@ const MainContainer = observer(() => {
         } else {
             setSelectedDoctors([...selectedDoctors, data]);
         }
+        console.log(selectedDoctors);
+
     };
-    console.log(JSON.parse(token));
 
     const handleChangeBranch = (id: string) => {
+        setSelectData(id)
+        const headers = {
+            headers: {
+                Authorization: "Bearer " + JSON.parse(token).access,
+            },
+        }
         request
             .get(
                 `https://back.dev-hayat.uz/api/v1/organizations/branches/doctors/${id}`,
-                {
-                    headers: {
-                        Authorization: "Bearer " + JSON.parse(token).access,
-                    },
-                }
+                headers
         )
             .then((res) => {
-                const doctorList: any = []
-                res.data.forEach(item => {
-                    doctorList.push(item.doctor)
-                })
-                setDoctorsData(doctorList)
+                setDoctorsData(res.data)
+            })
+            .catch((err) => console.log(err));
+        request
+            .get(
+                `https://back.dev-hayat.uz/api/v1/organizations/branches/specialty/${id}`,
+                headers
+            )
+            .then((res) => {
+                setSpecialist(res.data)
             })
             .catch((err) => console.log(err));
     };

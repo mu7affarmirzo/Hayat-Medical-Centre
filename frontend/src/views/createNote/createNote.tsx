@@ -65,11 +65,11 @@ const CreateNote = observer(() => {
             patientStateKeeper.patients
                 .filter((patient) => {
                         return searchFields.fullName.length ?
-                            searchFields.fullName.toLowerCase().includes(patient.lastName.toLowerCase()) ||
-                            patient.lastName.toLowerCase().includes(searchFields.fullName.toLowerCase()) ||
-                            searchFields.fullName.toLowerCase().includes(patient.firstName.toLowerCase()) ||
-                            patient.firstName.toLowerCase().includes(searchFields.fullName.toLowerCase()) ||
-                            searchFields.fullName.toLowerCase().includes(patient.middleName ? patient.middleName.toLowerCase() : '')
+                            searchFields.fullName.toLowerCase().includes(patient.l_name.toLowerCase()) ||
+                            patient.l_name.toLowerCase().includes(searchFields.fullName.toLowerCase()) ||
+                            searchFields.fullName.toLowerCase().includes(patient.f_name.toLowerCase()) ||
+                            patient.f_name.toLowerCase().includes(searchFields.fullName.toLowerCase()) ||
+                            searchFields.fullName.toLowerCase().includes(patient.mid_name ? patient.mid_name.toLowerCase() : '')
                             : true;
                     }
                 )
@@ -91,8 +91,8 @@ const CreateNote = observer(() => {
                         return searchFields.phoneNumber.length ?
                             searchFields.phoneNumber.toLowerCase().includes(patient.homPhoneNumber.toLowerCase()) ||
                             patient.homPhoneNumber.toLowerCase().includes(searchFields.phoneNumber.toLowerCase()) ||
-                            searchFields.phoneNumber.toLowerCase().includes(patient.mobilePhoneNumber.toLowerCase()) ||
-                            patient.mobilePhoneNumber.toLowerCase().includes(searchFields.phoneNumber.toLowerCase())
+                            searchFields.phoneNumber.toLowerCase().includes(patient.mobile_phone_number.toLowerCase()) ||
+                            patient.mobile_phone_number.toLowerCase().includes(searchFields.phoneNumber.toLowerCase())
                             : true;
                     }
                 )
@@ -105,8 +105,8 @@ const CreateNote = observer(() => {
                 )
                 .filter((patient) => {
                         return searchFields.lastVisitAt.length ?
-                            searchFields.lastVisitAt.toLowerCase().includes(patient.lastVisitAt.toLowerCase()) ||
-                            patient.lastVisitAt.toLowerCase().includes(searchFields.lastVisitAt.toLowerCase())
+                            searchFields.lastVisitAt.toLowerCase().includes(patient.last_visit_at.toLowerCase()) ||
+                            patient.last_visit_at.toLowerCase().includes(searchFields.lastVisitAt.toLowerCase())
                             : true;
                     }
                 )
@@ -140,7 +140,7 @@ const CreateNote = observer(() => {
 
     useEffect(() => {
         if (doctorStateKeeper.selectedDoctors.length) {
-            setServices([...medicalServiceStateKeeper.services.filter((service) => service.doctorId.toString() === doctorStateKeeper.selectedDoctors.at(0)!.id)]);
+            setServices([...medicalServiceStateKeeper.services.filter((service) => service.doctorId === doctorStateKeeper.selectedDoctors.at(0)!.id)]);
         }
     }, [medicalServiceStateKeeper.services, doctorStateKeeper.selectedDoctors.at(0)]);
 
@@ -151,9 +151,9 @@ const CreateNote = observer(() => {
             calendarEventStateKeeper.addEvent({
                 end: timeValue.from!.toDate(),
                 start: timeValue.to!.toDate(),
-                title: `${patientStateKeeper.selectedPatient?.lastName} ${patientStateKeeper.selectedPatient?.firstName}`,
+                title: `${patientStateKeeper.selectedPatient?.l_name} ${patientStateKeeper.selectedPatient?.f_name}`,
                 id: Math.max(...calendarEventStateKeeper.events.map((event) => event.id)),
-                doctorId: doctorStateKeeper.selectedDoctors.at(0)!.id,
+                doctorId: String(doctorStateKeeper.selectedDoctors.at(0)!.id),
             });
             doctorStateKeeper.selectedDoctors.shift();
             doctorStateKeeper.setSelectedDoctors([...doctorStateKeeper.selectedDoctors]);
@@ -179,7 +179,7 @@ const CreateNote = observer(() => {
             <FlexSpaceBetween className={styles.top_block}>
                 <Link to="/main" className={styles.return_back}>
                     <img src={ArrowCircle} alt="ArrowCircle"/>
-                    <p>Запись на прием - {doctorStateKeeper.selectedDoctors.at(0)?.f_name}</p>
+                    <p>Запись на прием - {doctorStateKeeper.selectedDoctors.at(0)?.doctor.f_name}</p>
                 </Link>
 
                 <div className={styles.buttons}>
@@ -210,7 +210,7 @@ const CreateNote = observer(() => {
                 <Box className={styles.choose_block} onClick={() => setOpenPatients(true)}>
                     <p className={styles.title}>Выберите пациента</p>
                     <FlexSpaceBetween>
-                        <p className={styles.text}>{patientStateKeeper.selectedPatient ? `${patientStateKeeper.selectedPatient.lastName} ${patientStateKeeper.selectedPatient.firstName} ${patientStateKeeper.selectedPatient.middleName}`.trim() : 'ФИО пациента'}</p>
+                        <p className={styles.text}>{patientStateKeeper.selectedPatient ? `${patientStateKeeper.selectedPatient.l_name} ${patientStateKeeper.selectedPatient.f_name} ${patientStateKeeper.selectedPatient.mid_name}`.trim() : 'ФИО пациента'}</p>
                         <ArrowDropDownIcon/>
                     </FlexSpaceBetween>
                 </Box>
@@ -322,23 +322,23 @@ const CreateNote = observer(() => {
                                                 <td onClick={() => {
                                                     patientStateKeeper.setSelectedPatient(patient);
                                                     setOpenPatients(false);
-                                                }}>{patient.lastName}</td>
+                                                    }}>{patient?.l_name}</td>
                                                 <td onClick={() => {
                                                     patientStateKeeper.setSelectedPatient(patient);
                                                     setOpenPatients(false);
-                                                }}>{patient.firstName}</td>
+                                                    }}>{patient?.f_name}</td>
                                                 <td onClick={() => {
                                                     patientStateKeeper.setSelectedPatient(patient);
                                                     setOpenPatients(false);
-                                                }}>{patient.middleName}</td>
+                                                    }}>{patient.mid_name}</td>
                                                 <td onClick={() => {
                                                     patientStateKeeper.setSelectedPatient(patient);
                                                     setOpenPatients(false);
-                                                }}>{patient.dob}</td>
+                                                    }}>{new Date(patient.date_of_birth).toLocaleDateString()}</td>
                                                 <td onClick={() => {
                                                     patientStateKeeper.setSelectedPatient(patient);
                                                     setOpenPatients(false);
-                                                }}>{patient.mobilePhoneNumber}</td>
+                                                    }}>{patient.mobile_phone_number}</td>
                                                 <td onClick={() => {
                                                     patientStateKeeper.setSelectedPatient(patient);
                                                     setOpenPatients(false);
@@ -346,7 +346,7 @@ const CreateNote = observer(() => {
                                                 <td onClick={() => {
                                                     patientStateKeeper.setSelectedPatient(patient);
                                                     setOpenPatients(false);
-                                                }}>{patient.lastVisitAt}</td>
+                                                    }}>{patient.last_visit_at}</td>
                                                 <td>
                                                     <img src={Edit} alt="edit"/>
                                                 </td>

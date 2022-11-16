@@ -11,8 +11,8 @@ const CustomViewWrapper = ({children}) => {
     useEffect(() => {
         document.querySelectorAll("#container_calendar #calendar_title").forEach((item, index) => {
             if(item){
-                const { f_name, speciality } = selectedDoctors[index];
-                // item.textContent = `${speciality.name} - ${f_name}`
+                const { doctor, speciality } = selectedDoctors[index];
+                item.textContent = `${speciality} - ${doctor.f_name}`
             }
         })
     }, [selectedDoctors])

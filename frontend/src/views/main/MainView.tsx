@@ -5,7 +5,7 @@ import {Alert, Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Sele
 import {ReactComponent as SearchNormal} from "../../assets/img/search-normal.svg"
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalendarMain from "../../components/calendar/main";
-import { IBranch, IDoctor, ISpeciality } from "../../consts/types";
+import { IBranch, IDoc, ISpeciality } from "../../consts/types";
 import {observer, useLocalObservable} from "mobx-react-lite";
 import moment from "moment";
 import {CalendarEventStateKeeper} from "../../store";
@@ -29,10 +29,10 @@ const MainView = observer((
         selectData: string
         setSelectData: (str: string) => void
         specialities: Array<ISpeciality>
-        doctors: Array<IDoctor>
+            doctors: Array<IDoc>
         changeSpecialty: (id: string) => void
-        onSelectDoctor: (e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>, data: IDoctor) => void
-        selectedDoctors: Array<IDoctor>
+            onSelectDoctor: (e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>, data: IDoc) => void
+            selectedDoctors: Array<IDoc>
         searchInputsValue: {specialities: string, doctors: string}
             searchInputsHandler: (type: string, value: string) => void,
             branchesCopy: Array<IBranch>,
@@ -166,35 +166,36 @@ const MainView = observer((
 
                             <div className={`${styles.table_doctors} ${styles.custom_scrollbar}`}>
                                 {
-                                    doctors.map((item: IDoctor) => (
+                                    doctors.map((doctor: IDoc) => (
                                         <div
-                                            onClick={(e) => onSelectDoctor(e, item)}
-                                            key={item.id}
-                                            className={`doctors_table_row ${styles.row} ${selectedDoctors.map((doctor) => doctor.id).includes(item.id) ? styles.selected : ""}`}
+                                            onClick={(e) => onSelectDoctor(e, doctor)}
+                                            key={doctor.doctor.id}
+                                            className={`doctors_table_row ${styles.row} ${selectedDoctors.map((doctor) => doctor.doctor.id).includes(doctor.doctor.id) ? styles.selected : ""}`}
                                             // style={{backgroundColor: item.color}}
                                         >
                                             <div className={styles.cell}>
                                                 <label className={styles.checkbox_block}>
                                                     <input
                                                         type="checkbox"
-                                                        checked={selectedDoctors.map((doctor) => doctor.id).includes(item.id)}
-                                                        onChange={(e) => onSelectDoctor(e, item)}
+                                                        checked={selectedDoctors.map((doctor) => doctor.id).includes(doctor.id)}
+                                                        onChange={(e) => onSelectDoctor(e, doctor)}
                                                     />
                                                     <div className={styles.box}></div>
                                                 </label>
                                             </div>
                                             <div className={styles.cell}>
-                                                {item?.email}
+                                                {/* {doctor.doc} {doctor?.id} */}
+                                                {doctor.doctor?.f_name ?? doctor.doctor.username}
                                             </div>
                                             <div className={styles.cell}>
-                                                {/* {item.speciality.name} */}
+                                                {doctor.speciality}
                                             </div>
                                             <div className={styles.cell}>
-                                                {item.phone_number}
+                                                {doctor.doctor.phone_number}
                                             </div>
                                             <div className={styles.cell}>
                                                 <div
-                                                    className={`${styles.status_block} ${item.active ? "" : styles.not_active}`}></div>
+                                                    className={`${styles.status_block} ${doctor.doctor?.active ? "" : styles.not_active}`}></div>
                                             </div>
                                         </div>
                                     ))

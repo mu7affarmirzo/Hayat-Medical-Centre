@@ -15,16 +15,40 @@ export interface ISpeciality {
     color: string
 }
 
-export interface IDoctor {
-  id: string;
-  f_name: string;
-  speciality: ISpeciality;
-  phone_number: string;
-  color: string;
-  active: boolean;
-  email?: string;
+// export interface IDoctor {
+//   id: string;
+//   f_name: string;
+//   speciality: ISpeciality;
+//   phone_number: string;
+//   color: string;
+//   active: boolean;
+//   email?: string;
+// }
+export interface IDoc {
+  branch: number;
+  created_at: string;
+  created_by: number;
+  doctor: IDoctor;
+  id: number;
+  modified_at: string;
+  modified_by: number;
+  organization: number;
+  speciality: number;
 }
-
+export interface IDoctor {
+  branch_id: number;
+  color: string;
+  email: string;
+  f_name: string;
+  id: number;
+  l_name: string;
+  m_name: string;
+  organization_id: number;
+  phone_number: string;
+  active?: boolean;
+  sex: boolean;
+  username: string;
+}
 export interface IEvent {
   end: Date;
   start: Date;
@@ -51,17 +75,20 @@ interface IEMC {
 
 export interface IPatient {
   id: number;
-  firstName: string;
-  middleName?: string;
-  lastName: string;
+  f_name: string;
+  mid_name?: string;
+  l_name: string;
   email: string;
   dob: string;
   homPhoneNumber: string;
-  mobilePhoneNumber: string;
+  mobile_phone_number: string;
   address: string;
   inn: string;
-  lastVisitAt: string;
+  last_visit_at: string;
   emc: IEMC;
+  date_of_birth: string;
+  created_at: string;
+  sex: string
 }
 
 export interface IMedicalService {

@@ -1,7 +1,6 @@
 import {ApiClient} from "../utils";
 
-import doctorsList from "../repositories/data/doctors.json";
-import {IDoctor} from "../consts/types";
+import { IDoc } from "../consts/types";
 
 export default class DoctorApiStub {
   /* Gen by NARA Studio */
@@ -17,12 +16,8 @@ export default class DoctorApiStub {
     return DoctorApiStub._instance;
   }
 
-  async findAllDoctors(): Promise<IDoctor[]> {
+  async findAllDoctors(): Promise<IDoc[]> {
     /* Gen by NARA Studio */
-    return this.client.getData<IDoctor>("/");
-
-    return doctorsList
-      ? (doctorsList as unknown as IDoctor[])
-      : this.client.getArray<IDoctor>("/");
+    return this.client.getData<IDoc>("/");
   }
 }

@@ -60,7 +60,7 @@ const CalendarMain = observer(() => {
                             <Calendar
                                 // @ts-ignore
                                 components={components}
-                                events={filterEventByDoctorId(item.id)}
+                                events={filterEventByDoctorId(String(item.doctor.id))}
                                 localizer={mLocalizer}
                                 startAccessor="end"
                                 endAccessor="end"

@@ -3,6 +3,8 @@ import React, {ReactElement} from "react";
 import CreateNote from "../views/createNote/createNote";
 import DirectoryContainer from "../containers/directory/DirectoryContainer";
 import CreatePatients from "../views/PatientsDirectory/createPatients";
+import { Navigate } from "react-router";
+import EditPatient from "../views/PatientsDirectory/editPatient";
 
 type IRouting = {
     path: string;
@@ -24,6 +26,11 @@ export const RoutingData: MyGroupType = {
     ],
     "admin": [
         {
+            "path": "/",
+            "component": <Navigate to='/main' />,
+            "global": true,
+        },
+        {
             "path": "/main",
             "component": <MainContainer/>,
             "global": true,
@@ -42,7 +49,7 @@ export const RoutingData: MyGroupType = {
         },
         {
             "path": "/patientsDirectory/edit/:id",
-            "component": <CreatePatients />,
+            "component": <EditPatient />,
         },
     ]
 };

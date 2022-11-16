@@ -9,7 +9,7 @@ import { useLocalObservable } from "mobx-react-lite";
 import { AuthorizationStateKeeper } from "../../store";
 import PatientForm from "../../containers/patientForm";
 
-const CreatePatients = () => {
+const EditPatient = () => {
 
     type StateTypes = {
         date_of_birth?: string,
@@ -78,7 +78,7 @@ const CreatePatients = () => {
 
     const post_patient = () => {
         axios
-            .post("https://back.dev-hayat.uz/api/v1/organizations/patients/", state, {
+            .put("https://back.dev-hayat.uz/api/v1/organizations/patients/", state, {
                 headers: {
                     Authorization: "Bearer " + JSON.parse(token).access,
                 },
@@ -94,9 +94,9 @@ const CreatePatients = () => {
 
     return (
         <div className={classes.create}>
-            <PatientForm title='Добавить новой записи' medcard={medcard} state={state} setState={setState} value={value} open={open} handleTextFieldChange={handleTextFieldChange} handleChange={handleChange} handleCloseNotification={handleCloseNotification} handleSelectChange={handleSelectChange} post_patient={post_patient} />
+            <PatientForm title='Редактирование записи' medcard={medcard} state={state} setState={setState} value={value} open={open} handleTextFieldChange={handleTextFieldChange} handleChange={handleChange} handleCloseNotification={handleCloseNotification} handleSelectChange={handleSelectChange} post_patient={post_patient} />
         </div>
     );
 };
 
-export default CreatePatients;
+export default EditPatient;
