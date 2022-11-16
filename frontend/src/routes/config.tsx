@@ -40,5 +40,9 @@ export const RoutingData: MyGroupType = {
             "path": "/patientsDirectory/create",
             "component": <CreatePatients />,
         },
+        {
+            "path": "/patientsDirectory/edit/:id",
+            "component": <CreatePatients />,
+        },
     ]
 };

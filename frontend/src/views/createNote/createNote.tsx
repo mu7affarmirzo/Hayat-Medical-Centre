@@ -179,7 +179,7 @@ const CreateNote = observer(() => {
             <FlexSpaceBetween className={styles.top_block}>
                 <Link to="/main" className={styles.return_back}>
                     <img src={ArrowCircle} alt="ArrowCircle"/>
-                    <p>Запись на прием - {doctorStateKeeper.selectedDoctors.at(0)?.fullName}</p>
+                    <p>Запись на прием - {doctorStateKeeper.selectedDoctors.at(0)?.f_name}</p>
                 </Link>
 
                 <div className={styles.buttons}>

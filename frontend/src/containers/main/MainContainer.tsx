@@ -1,84 +1,133 @@
-import React, {useEffect, useState} from 'react';
-import {MainView} from "../../views";
-import {IDoctor} from "../../consts/types";
-import styles from "../../views/main/index.module.scss"
-import {CalendarEventStateKeeper} from "../../store";
-import {observer, useLocalObservable} from "mobx-react-lite";
-import {DoctorStateKeeper} from "../../store";
-import {SpecialityStateKeeper} from "../../store";
+import React, { useEffect, useState } from "react";
+import { MainView } from "../../views";
+import { IBranch, IDoctor } from "../../consts/types";
+import styles from "../../views/main/index.module.scss";
+import {
+    AuthorizationStateKeeper,
+    CalendarEventStateKeeper,
+} from "../../store";
+import { observer, useLocalObservable } from "mobx-react-lite";
+import { DoctorStateKeeper } from "../../store";
+import { SpecialityStateKeeper } from "../../store";
+import BranchesStateKeeper from "../../store/BranchesStateKeeper";
+import request from "../../utils/request";
 
 const MainContainer = observer(() => {
-
-    const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
-    const specialityStateKeeper = useLocalObservable(() => SpecialityStateKeeper.instance);
-    const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
-
-    const {filterEventByIds} = calendarEventsStateKeeper;
-    const {specialitiesCopy, findAllSpecialties, searchByName} = specialityStateKeeper;
-    const {doctorsCopy, findAllDoctors, selectedDoctors, setSelectedDoctors, searchDoctor} = doctorStateKeeper;
-
-    const [selectData, setSelectData] = useState<string>('');
+    const calendarEventsStateKeeper = useLocalObservable(
+        () => CalendarEventStateKeeper.instance
+    );
+    const specialityStateKeeper = useLocalObservable(
+        () => SpecialityStateKeeper.instance
+    );
+    const doctorStateKeeper = useLocalObservable(
+        () => DoctorStateKeeper.instance
+    );
+    const branchesStateKeeper = useLocalObservable(
+        () => BranchesStateKeeper.instance
+    );
+    const { filterEventByIds } = calendarEventsStateKeeper;
+    const { specialitiesCopy, findAllSpecialties, searchByName } =
+        specialityStateKeeper;
+    const {
+        doctorsCopy,
+        findAllDoctors,
+        selectedDoctors,
+        setSelectedDoctors,
+        searchDoctor,
+    } = doctorStateKeeper;
+    const { findAllBranches, branchesCopy } = branchesStateKeeper;
+    const [selectData, setSelectData] = useState<string>("");
     const [doctorsData, setDoctorsData] = useState<Array<IDoctor>>(doctorsCopy);
-    const [searchInputsValue, setSearchInputs] = useState<{specialities: string, doctors: string}>({specialities: "", doctors: ""});
+    const authorizationStateKeeper = useLocalObservable(
+        () => AuthorizationStateKeeper.instance
+    );
+    const token = authorizationStateKeeper.token;
+
+    const [searchInputsValue, setSearchInputs] = useState<{
+        specialities: string;
+        doctors: string;
+    }>({ specialities: "", doctors: "" });
 
     useEffect(() => {
         filterEventByIds(selectedDoctors.map((doctor) => doctor.id));
     }, [selectedDoctors]);
 
     useEffect(() => {
-        findAllSpecialties()
-            .then(() => {
-            findAllDoctors()
-                .then((items) => {
+        findAllBranches().then(() => {
+            findAllSpecialties().then(() => {
+                findAllDoctors().then((items) => {
                     setDoctorsData(items);
-
                 });
+            });
         });
-    }, [findAllSpecialties, findAllDoctors]);
-
+    }, [findAllSpecialties, findAllDoctors, findAllBranches]);
     const changeSpecialty = (id: string) => {
         let filteredData;
-
+        // console.log('doctorsCopy', doctorsCopy.map(item => item.f_name))
         if (id === "all") {
             filteredData = doctorsCopy;
         } else {
-            filteredData = doctorsCopy.filter(item => item.speciality.id === id);
+            filteredData = doctorsCopy.filter((item) => item.speciality.id === id);
         }
-
         setDoctorsData(filteredData);
-    }
-
-    const handleSelectDoctor = (e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>, data: IDoctor) => {
+    };
+    const handleSelectDoctor = (
+        e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>,
+        data: IDoctor
+    ) => {
         let parentElem = e.currentTarget.closest(".doctors_table_row");
 
         if (parentElem && parentElem.classList.contains(styles.selected)) {
-            setSelectedDoctors(selectedDoctors.filter(item => item.id !== data.id))
+            setSelectedDoctors(selectedDoctors.filter((item) => item.id !== data.id));
         } else {
-            setSelectedDoctors([...selectedDoctors, data])
+            setSelectedDoctors([...selectedDoctors, data]);
         }
-    }
+    };
+    console.log(JSON.parse(token));
+
+    const handleChangeBranch = (id: string) => {
+        request
+            .get(
+                `https://back.dev-hayat.uz/api/v1/organizations/branches/doctors/${id}`,
+                {
+                    headers: {
+                        Authorization: "Bearer " + JSON.parse(token).access,
+                    },
+                }
+        )
+            .then((res) => {
+                const doctorList: any = []
+                res.data.forEach(item => {
+                    doctorList.push(item.doctor)
+                })
+                setDoctorsData(doctorList)
+            })
+            .catch((err) => console.log(err));
+    };
 
     const searchInputsHandler = (type: string, value: string) => {
-        setSearchInputs(prev => ({...prev, [type]: value}))
-        if(type === "specialities"){
-            searchByName(value)
-        }else if(type === "doctors") {
-            searchDoctor(value)
+        setSearchInputs((prev) => ({ ...prev, [type]: value }));
+        if (type === "specialities") {
+            searchByName(value);
+        } else if (type === "doctors") {
+            searchDoctor(value);
         }
-    }
+    };
 
     return (
         <>
             <MainView
                 selectData={selectData}
                 setSelectData={setSelectData}
-                doctors={doctorsCopy}
+                doctors={doctorsData}
                 specialities={specialitiesCopy}
+                branchesCopy={branchesCopy}
                 changeSpecialty={changeSpecialty}
                 onSelectDoctor={handleSelectDoctor}
                 selectedDoctors={selectedDoctors}
                 searchInputsValue={searchInputsValue}
                 searchInputsHandler={searchInputsHandler}
+                handleChangeBranch={handleChangeBranch}
             />
         </>
     );

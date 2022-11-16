@@ -24,6 +24,7 @@ import { Dayjs } from "dayjs";
 import axios from "axios";
 import { useLocalObservable } from "mobx-react-lite";
 import { AuthorizationStateKeeper } from "../../store";
+import Notification from "../../components/Notification";
 
 const CreatePatients = () => {
 
@@ -51,13 +52,12 @@ const CreatePatients = () => {
         ]
     }
 
-
     const [state, setState] = React.useState<StateTypes>();
+
     const navigate = useNavigate();
     const authorizationStateKeeper = useLocalObservable(
         () => AuthorizationStateKeeper.instance
     );
-
     const token = authorizationStateKeeper.token;
 
     const handleTextFieldChange = (
@@ -68,6 +68,19 @@ const CreatePatients = () => {
     };
 
     const [value, setValue] = React.useState<Dayjs | null>();
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpenNotification = () => {
+        setOpen(true);
+    };
+
+    const handleCloseNotification = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
 
     const handleChange = (newValue: Dayjs | null) => {
         setValue(newValue);
@@ -88,12 +101,18 @@ const CreatePatients = () => {
                     Authorization: "Bearer " + JSON.parse(token).access,
                 },
             })
-            .then((res) => console.log(res))
+            .then((res) => {
+                if (res.status === 201) {
+                    handleOpenNotification()
+                }
+            })
             .catch((err) => console.log(err));
     };
 
+
     return (
         <div className={classes.create}>
+            <Notification open={open} handleClose={handleCloseNotification} />
             <div className={classes.header}>
                 <div className={classes.unsetButton}>
                     <Link to="/patientsDirectory">

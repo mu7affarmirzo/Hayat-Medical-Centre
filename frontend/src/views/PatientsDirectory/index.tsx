@@ -7,7 +7,8 @@ import {
     SelectChangeEvent,
     TextField,
 } from "@mui/material";
-import { observer } from "mobx-react-lite";
+import axios from "axios";
+import { observer, useLocalObservable } from "mobx-react-lite";
 import React from "react";
 import { useNavigate } from "react-router";
 import BpCheckbox from "../../components/BpCheckbox";
@@ -16,22 +17,50 @@ import {
     PatientsDirectoryNav,
 } from "../../consts/patientsDirectory";
 import { IPatient } from "../../consts/types";
+import useDebounce from "../../hooks/useDebounce";
+import { AuthorizationStateKeeper } from "../../store";
 import classes from "./patientsDirectory.module.scss";
 
 const PatientsDirectory = observer(
     ({ patients }: { patients: Array<IPatient> }) => {
+        const [searchedValue, setSearchedValue] = React.useState<string>("");
         const [age, setAge] = React.useState(["", ""]);
         const [active, setactive] = React.useState<object[]>([]);
-        const [selected, setSelected] = React.useState<string>('0')
+        const [selected, setSelected] = React.useState<string>("0");
+        const navigate = useNavigate();
+        const debouncedValue = useDebounce<string>(searchedValue, 500)
+        const authorizationStateKeeper = useLocalObservable(
+            () => AuthorizationStateKeeper.instance)
+        const token = authorizationStateKeeper.token;
+
+        React.useEffect(() => {
+            if (searchedValue.length > 0) {
+                searchHandler()
+            }
+        }, [debouncedValue])
+
+        const searchHandler = () => {
+            axios.get(`https://back.dev-hayat.uz/api/v1/organizations/patients-search/`, {
+                headers: {
+                    'Authorazition': 'Bearer ' + token
+                },
+                params: {
+                    f_name: searchedValue
+                }
+            })
+        }
+
         const handleChange = (event: SelectChangeEvent) => {
             setAge([...age, event.target.value]);
         };
 
-        const navigate = useNavigate();
-
         const handleSelectPatient = (event: React.MouseEvent<HTMLElement>) => {
-            setSelected(event.currentTarget.dataset.id || '')
-        }
+            setSelected(event.currentTarget.dataset.id || "");
+        };
+
+        const handleSeachPatient = (event: React.ChangeEvent<HTMLInputElement>) => {
+            setSearchedValue(event.target.value);
+        };
 
         const handleClick = (event: React.MouseEvent<HTMLElement>) => {
             const type = event.currentTarget.dataset.type;
@@ -40,7 +69,9 @@ const PatientsDirectory = observer(
                     navigate("/patientsDirectory/create");
                     break;
                 case "edit":
-                    navigate("/patientsDirectory/edit");
+                    if (selected != "0") {
+                        navigate(`/patientsDirectory/edit/${selected}`);
+                    }
                     break;
                 case "remove":
                     alert(JSON.stringify(active));
@@ -105,6 +136,7 @@ const PatientsDirectory = observer(
                                     id="outlined-search"
                                     label={item.label}
                                     type={item.type}
+                                        onChange={handleSeachPatient}
                                 />
                             </FormControl>
                         )
@@ -112,48 +144,58 @@ const PatientsDirectory = observer(
                 </nav>
 
                 <div className={classes.patientsList}>
-                    <table className={classes.table}>
-                        <thead className={classes.tableHead}>
-                            {[
-                                "",
-                                "Фамилия",
-                                "Имя",
-                                "Отчество",
-                                "Пол",
-                                "Адрес",
-                                "Моб.телефон",
-                                "Дом.телефон",
-                                "Дата регис трации",
-                                "Регистратор",
-                                "Активный",
-                                "Дата последного посещение",
-                            ].map((item) => (
-                                <th key={item}>{item}</th>
-                            ))}
-                        </thead>
-                        {patients.slice(0, 7).map((item) => (
-                            <tr data-id={item.id} onClick={handleSelectPatient} className={item.id === parseInt(selected) ? classes.selectedDoctor : ''}>
-                                <td></td>
-                                <td>{item.lastName}</td>
-                                <td>{item.firstName}</td>
-                                <td>{item.middleName}</td>
-                                <td>{item.dob}</td>
-                                <td>{item.address}</td>
-                                <td>{item.mobilePhoneNumber}</td>
-                                <td>{item.homPhoneNumber}</td>
-                                <td>{item.dob}</td>
-                                <td>{item.email}</td>
-                                <td style={{ display: "flex", justifyContent: "center" }}>
-                                    <BpCheckbox
-                                        id={item.id}
-                                        handlecheckboxchange={handlecheckboxchange}
-                                        defaultChecked={false}
-                                    />
-                                </td>
-                                <td>{item.lastVisitAt}</td>
-                            </tr>
-                        ))}
-                    </table>
+                    {
+                        !!patients !== true ? (
+                            <table className={classes.table}>
+                                <thead className={classes.tableHead}>
+                                    {[
+                                        "",
+                                        "Фамилия",
+                                        "Имя",
+                                        "Отчество",
+                                        "Пол",
+                                        "Адрес",
+                                        "Моб.телефон",
+                                        "Дом.телефон",
+                                        "Дата регис трации",
+                                        "Регистратор",
+                                        "Активный",
+                                        "Дата последного посещение",
+                                    ].map((item) => (
+                                        <th key={item}>{item}</th>
+                                    ))}
+                                </thead>
+                                {patients.slice(0, 7).map((item) => (
+                                    <tr
+                                        data-id={item.id}
+                                        onClick={handleSelectPatient}
+                                        className={
+                                            item.id === parseInt(selected) ? classes.selectedDoctor : ""
+                                        }
+                                    >
+                                        <td></td>
+                                        <td>{item.lastName}</td>
+                                        <td>{item.firstName}</td>
+                                        <td>{item.middleName}</td>
+                                        <td>{item.dob}</td>
+                                        <td>{item.address}</td>
+                                        <td>{item.mobilePhoneNumber}</td>
+                                        <td>{item.homPhoneNumber}</td>
+                                        <td>{item.dob}</td>
+                                        <td>{item.email}</td>
+                                        <td style={{ display: "flex", justifyContent: "center" }}>
+                                            <BpCheckbox
+                                                id={item.id}
+                                                handlecheckboxchange={handlecheckboxchange}
+                                                defaultChecked={false}
+                                            />
+                                        </td>
+                                        <td>{item.lastVisitAt}</td>
+                                    </tr>
+                                ))}
+                            </table>
+                        ) : null
+                    }
                 </div>
             </div>
         );

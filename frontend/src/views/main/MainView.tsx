@@ -5,7 +5,7 @@ import {Alert, Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Sele
 import {ReactComponent as SearchNormal} from "../../assets/img/search-normal.svg"
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalendarMain from "../../components/calendar/main";
-import {IDoctor, ISpeciality} from "../../consts/types";
+import { IBranch, IDoctor, ISpeciality } from "../../consts/types";
 import {observer, useLocalObservable} from "mobx-react-lite";
 import moment from "moment";
 import {CalendarEventStateKeeper} from "../../store";
@@ -22,7 +22,9 @@ const MainView = observer((
         onSelectDoctor,
         selectedDoctors,
         searchInputsValue,
-        searchInputsHandler
+        searchInputsHandler,
+        branchesCopy,
+        handleChangeBranch
     }: {
         selectData: string
         setSelectData: (str: string) => void
@@ -32,10 +34,17 @@ const MainView = observer((
         onSelectDoctor: (e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>, data: IDoctor) => void
         selectedDoctors: Array<IDoctor>
         searchInputsValue: {specialities: string, doctors: string}
-        searchInputsHandler: (type: string, value: string) => void
+            searchInputsHandler: (type: string, value: string) => void,
+            branchesCopy: Array<IBranch>,
+            handleChangeBranch: (str: string) => void
     }
 ) => {
     const {openNotification, changeVisibilityNotification} = useLocalObservable(() => ErrorNotification.instance);
+
+    React.useEffect(() => {
+
+    }, [])
+
     const changeButtons: Array<{ text: string, type: string }> = [
         {
             text: "месяц",
@@ -51,7 +60,6 @@ const MainView = observer((
         },
 
     ];
-
     const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
     const {changeViewFunctions} = calendarEventsStateKeeper;
 
@@ -75,7 +83,6 @@ const MainView = observer((
             return momentRu.format("dddd | DD MMMM");
         }
     }
-
     return (
         <>
             <div className={styles.main_block}>
@@ -93,11 +100,13 @@ const MainView = observer((
                                     id="demo-simple-select"
                                     value={selectData}
                                     label="Филиал"
-                                    onChange={(e) => setSelectData(e.target.value)}
+                                    onChange={(e) => handleChangeBranch(e.target.value)}
                                 >
-                                    <MenuItem value={"head1"}>Головной1</MenuItem>
-                                    <MenuItem value={"head2"}>Головной2</MenuItem>
-                                    <MenuItem value={"head3"}>Головной3</MenuItem>
+                                    {
+                                        branchesCopy.map((item, index) => (
+                                            <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
+                                        ))
+                                    }
                                 </Select>
                             </FormControl>
                         </Box>
@@ -145,7 +154,7 @@ const MainView = observer((
                                     specialities.map((item, i) => (
                                         <div
                                             onClick={() => changeSpecialty(item.id)}
-                                            // style={{backgroundColor: item.color}}
+                                            // style={{ backgroundColor: item.color }}
                                             className={styles.table_item}
                                             key={item.id}
                                         >
@@ -175,13 +184,13 @@ const MainView = observer((
                                                 </label>
                                             </div>
                                             <div className={styles.cell}>
-                                                {item.fullName}
+                                                {item?.email}
                                             </div>
                                             <div className={styles.cell}>
-                                                {item.speciality.name}
+                                                {/* {item.speciality.name} */}
                                             </div>
                                             <div className={styles.cell}>
-                                                {item.number}
+                                                {item.phone_number}
                                             </div>
                                             <div className={styles.cell}>
                                                 <div
