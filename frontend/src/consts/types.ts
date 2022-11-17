@@ -96,6 +96,7 @@ export interface IMedicalService {
   name: string;
   cost: number;
   doctorId: number;
+  doctor: IDoc;
 }
 
 export interface IDateValue {

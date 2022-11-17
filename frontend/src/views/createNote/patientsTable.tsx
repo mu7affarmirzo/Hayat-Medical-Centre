@@ -443,12 +443,13 @@ const PatientsTable = observer((
                                 <div className={styles.list_wrapper}>
                                     <table>
                                         <tbody>
+
                                         {
                                             services
                                                 .filter((service) => service.name.toLowerCase().includes(serviceSearchText.toLowerCase()))
                                                     .map((service, i) => (
                                                         <tr key={i}>
-                                                    <td style={{padding: 0}}>
+                                                            <td style={{ padding: 0 }}>
                                                         <div
                                                             className={`${styles.icon_cell} ${styles.green}`}
                                                             onClick={() => {

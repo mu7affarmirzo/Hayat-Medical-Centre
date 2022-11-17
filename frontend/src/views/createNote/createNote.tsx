@@ -140,7 +140,9 @@ const CreateNote = observer(() => {
 
     useEffect(() => {
         if (doctorStateKeeper.selectedDoctors.length) {
-            setServices([...medicalServiceStateKeeper.services.filter((service) => service.doctorId === doctorStateKeeper.selectedDoctors.at(0)!.id)]);
+            console.log('ppppppppppppppp', medicalServiceStateKeeper.services.filter(({ doctor }) => doctor.id === doctorStateKeeper.selectedDoctors.at(0)?.id));
+
+            setServices([...medicalServiceStateKeeper.services.filter((service) => service.doctor[0].id === doctorStateKeeper.selectedDoctors.at(0)!.id)]);
         }
     }, [medicalServiceStateKeeper.services, doctorStateKeeper.selectedDoctors.at(0)]);
 

@@ -14,11 +14,13 @@ export default class PatientApiStub {
     if (!PatientApiStub._instance) {
       PatientApiStub._instance = new PatientApiStub();
     }
+
     return PatientApiStub._instance;
   }
   async findAllPatients(): Promise<IPatient[]> {
     /* Gen by NARA Studio */
     return this.client.getData<IPatient>("/");
+    
     return patientsList
       ? (patientsList as unknown as IPatient[])
       : this.client.getArray<IPatient>("/");
