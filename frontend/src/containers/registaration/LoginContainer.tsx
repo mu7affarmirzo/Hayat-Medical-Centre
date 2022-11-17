@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { LoginView } from "../../views";
 import { ILoginState } from "../../consts/types";
 import { useLocalObservable } from "mobx-react-lite";
-import { CalendarEventStateKeeper } from "../../store";
 import AuthorizationStateKeeper from "../../store/AuthorizationStateKeeper";
 import request from "../../utils/request";
 
