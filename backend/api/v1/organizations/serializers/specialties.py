@@ -22,11 +22,19 @@ class SpecialtiesCreateSerializer(serializers.ModelSerializer):
 
 class DoctorSpecialitiesListSerializer(serializers.ModelSerializer):
     doctor = DoctorsListSerializer()
+    specialty_name = serializers.SerializerMethodField()
 
     class Meta:
         model = DoctorSpecialityModel
         fields = "__all__"
         ordering = ('doctor__f_name',)
+
+    def get_specialty_name(self, obj):
+        try:
+            specialty_name = str(obj.speciality.name)
+        except:
+            specialty_name = ''
+        return specialty_name
 
 
 class DoctorSpecialitiesCreateSerializer(serializers.ModelSerializer):

@@ -33,9 +33,6 @@ urlpatterns = [
     path('patient-group/', PatientGroupView.as_view(), name='patient-group'),
     path('patient-group/<int:pk>', PatientGroupRetrieveView.as_view(), name='patient-group'),
 
-    path('services/', MedicalServiceView.as_view(), name='services'),
-    path('services/<int:pk>', MedicalServiceRetrieveView.as_view(), name='services-retrieve'),
-
 ]
 
 

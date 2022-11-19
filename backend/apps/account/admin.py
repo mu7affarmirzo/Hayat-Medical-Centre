@@ -27,10 +27,22 @@ class RolesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(patients.PatientGroupModel)
-admin.site.register(patients.PatientModel)
+
+
+@admin.register(patients.PatientModel)
+class PatientAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
+
+
 admin.site.register(patients.InformationSourceModel)
 admin.site.register(appointments.MedicalService)
-admin.site.register(appointments.AppointmentsModel)
+
+
+@admin.register(appointments.AppointmentsModel)
+class AppointmentsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
+
+
 admin.site.register(appointments.AppointmentServiceModel)
 admin.site.register(appointments.EMCDocumentModel)
 admin.site.register(accounts.ReferringDoctorModel)

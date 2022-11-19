@@ -14,13 +14,13 @@ from api.v1.appointment.serializers.appointment import TimeSerializer
 class AppointmentsModelView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(tags=['appointment'])
+    @swagger_auto_schema(tags=['appointments'])
     def get(self, requset, format=None):
         apps = AppointmentsModel.objects.all()
         serializer = AppointmentSerializer(apps, many=True)
         return Response(serializer.data)
 
-    @swagger_auto_schema(tags=['appointment'], request_body=AppointmentCreateSerializer)
+    @swagger_auto_schema(tags=['appointments'], request_body=AppointmentCreateSerializer)
     def post(self, request, format=None):
         account = request.user
         app = AppointmentsModel(created_by=account, modified_by=account)
@@ -39,7 +39,7 @@ class AppointmentsRetrieveView(RetrieveAPIView):
     def get_queryset():
         return AppointmentsModel.objects.all()
 
-    @swagger_auto_schema(tags=['appointment'])
+    @swagger_auto_schema(tags=['appointments'])
     def get(self, request, pk, format=None):
         try:
             app = AppointmentsModel.objects.get(pk=pk)
@@ -48,7 +48,7 @@ class AppointmentsRetrieveView(RetrieveAPIView):
         serializer = AppointmentSerializer(app)
         return Response(serializer.data)
 
-    @swagger_auto_schema(tags=['appointment'], request_body=AppointmentCreateSerializer)
+    @swagger_auto_schema(tags=['appointments'], request_body=AppointmentCreateSerializer)
     def put(self, request, pk, format=None):
         try:
             app = AppointmentsModel.objects.get(pk=pk)
@@ -63,7 +63,7 @@ class AppointmentsRetrieveView(RetrieveAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(tags=['appointment'])
+    @swagger_auto_schema(tags=['appointments'])
     def delete(self, request, pk, format=None):
         try:
             app = AppointmentsModel.objects.get(pk=pk)

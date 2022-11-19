@@ -38,7 +38,7 @@ class AppointmentServiceCreateSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = AppointmentServiceModel
-        fields = ['branch', 'appointment', 'service']
+        fields = ['appointment', 'service']
 
 
 class TimeSerializer(serializers.Serializer):

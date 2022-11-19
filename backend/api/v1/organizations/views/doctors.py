@@ -43,8 +43,8 @@ class DoctorsRetrieveView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = DoctorsListSerializer
 
-    def get_queryset(self):
-        return super().get_queryset()
+    # def get_queryset(self):
+    #     return super().get_queryset()
 
     @swagger_auto_schema(tags=['organizations-doctor'])
     def get(self, request, pk, format=None):
