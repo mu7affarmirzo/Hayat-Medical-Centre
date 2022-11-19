@@ -15,7 +15,7 @@ class AppointmentsModelView(APIView):
     permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(tags=['appointments'])
-    def get(self, requset, format=None):
+    def get(self, request, format=None):
         apps = AppointmentsModel.objects.all()
         serializer = AppointmentSerializer(apps, many=True)
         return Response(serializer.data)

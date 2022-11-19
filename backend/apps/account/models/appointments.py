@@ -81,7 +81,7 @@ class AppointmentServiceModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="app_serv", on_delete=models.SET_NULL, null=True)
-    appointment = models.ForeignKey(AppointmentsModel, on_delete=models.SET_NULL, null=True)
+    appointment = models.ForeignKey(AppointmentsModel, related_name='app_services', on_delete=models.SET_NULL, null=True)
     service = models.ForeignKey(MedicalService, on_delete=models.CASCADE)
     is_paid = models.BooleanField(default=False)
 
