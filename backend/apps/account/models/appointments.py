@@ -83,7 +83,7 @@ class AppointmentServiceModel(models.Model):
     modified_by = models.ForeignKey(Account, related_name="app_serv", on_delete=models.SET_NULL, null=True)
     appointment = models.ForeignKey(AppointmentsModel, related_name='app_services', on_delete=models.SET_NULL, null=True)
     service = models.ForeignKey(MedicalService, on_delete=models.CASCADE)
-    is_paid = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return str(self.service)
