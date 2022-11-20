@@ -45,9 +45,9 @@ class AppointmentsModel(models.Model):
     referring_doc_notes = models.TextField(blank=True, null=True)
     addition_info = models.TextField(blank=True, null=True)
     registrator_notes = models.TextField(blank=True, null=True)
-    is_contract = models.BooleanField(default=False)
-    is_priority = models.BooleanField(default=False)  # makes it priority in queue
-    send_sms = models.BooleanField(default=False)
+    is_contract = models.BooleanField(default=False, null=True)
+    is_priority = models.BooleanField(default=False, null=True)  # makes it priority in queue
+    send_sms = models.BooleanField(default=False, null=True)
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
