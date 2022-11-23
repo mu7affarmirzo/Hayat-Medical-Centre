@@ -1,4 +1,4 @@
-from apps.account.models import AppointmentsModel
+from apps.account.models import AppointmentsModel, AppointmentServiceModel
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -27,6 +27,8 @@ class AppointmentsModelView(APIView):
         serializer = AppointmentCreateSerializer(app, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            for i in serializer.data['services']:
+                AppointmentServiceModel.objects.create(appointment=app, service_id=i['service'], created_by=account, modified_by=account)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
