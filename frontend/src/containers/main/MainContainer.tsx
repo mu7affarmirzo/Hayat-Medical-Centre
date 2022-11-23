@@ -78,7 +78,7 @@ const MainContainer = observer(() => {
         let parentElem = e.currentTarget.closest(".doctors_table_row");
 
         if (parentElem && parentElem.classList.contains(styles.selected)) {
-            setSelectedDoctors(selectedDoctors.filter((item) => item.id !== data.id));
+            setSelectedDoctors(selectedDoctors.filter((item) => item.doctor.id !== data.doctor.id));
         } else {
             setSelectedDoctors([...selectedDoctors, data]);
         }

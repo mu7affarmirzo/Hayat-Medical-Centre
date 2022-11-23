@@ -1,13 +1,12 @@
 import {ApiClient} from "../utils";
 
-import servicesList from "../repositories/data/services.json";
 import {IMedicalService} from "../consts/types";
 
 export default class MedicalServiceApiStub {
   /* Gen by NARA Studio */
   static _instance: MedicalServiceApiStub;
 
-  private readonly client = new ApiClient("organizations/services");
+  private readonly client = new ApiClient("doctors/services");
 
   static get instance() {
     /* Gen by NARA Studio */

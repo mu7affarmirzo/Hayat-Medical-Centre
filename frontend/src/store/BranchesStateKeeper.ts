@@ -27,7 +27,6 @@ class BranchesStateKeeper {
       this.branches = branches;
       this.branchesCopy = branches;
     });
-    console.log("branches", branches);
     return branches;
   }
 }

@@ -10,9 +10,10 @@ export interface ILoginState {
 }
 
 export interface ISpeciality {
-    id: string;
-    name: string;
-    color: string
+  id: string;
+  name: string;
+  color: string;
+  specialty_name: string;
 }
 
 // export interface IDoctor {
@@ -34,6 +35,7 @@ export interface IDoc {
   modified_by: number;
   organization: number;
   speciality: number;
+  specialty_name: string;
 }
 export interface IDoctor {
   branch_id: number;
@@ -60,11 +62,22 @@ export interface IEvent {
 }
 
 export interface IAppointment {
-  id: number;
-  title: string;
-  doctorId: string;
-  start: string;
-  end: string;
+  addition_info: string;
+  branch: number;
+  debt: number;
+  end_time: string;
+  exemption: number;
+  information_source: number;
+  name: string;
+  patient: number;
+  price: number;
+  referring_doc_notes: string;
+  referring_doctor: number;
+  services: [];
+  start_time: string;
+  status: string;
+  id?: number;
+  doctorId?: string;
 }
 
 interface IEMC {

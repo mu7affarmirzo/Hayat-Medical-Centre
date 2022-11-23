@@ -28,7 +28,9 @@ class AuthorizationStateKeeper {
     localStorage.setItem("token", data);
     this.token = data;
   }
-
+  removeToken() {
+    localStorage.removeItem("token");
+  }
   setRole(data: string) {
     localStorage.setItem("role", data);
     this.role = data;

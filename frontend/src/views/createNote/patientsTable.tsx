@@ -24,6 +24,8 @@ import {observer} from "mobx-react-lite";
 const PatientsTable = observer((
     {
         discount,
+        setFormData,
+        formData,
         setDiscount,
         dateValue,
         setDateValue,
@@ -34,6 +36,8 @@ const PatientsTable = observer((
         setAppointedServices,
     }: {
         discount: number,
+            setFormData: any,
+            formData: any,
         setDiscount: React.Dispatch<React.SetStateAction<number>>,
         dateValue: moment.Moment | null,
         setDateValue: React.Dispatch<React.SetStateAction<moment.Moment | null>>,
@@ -53,6 +57,17 @@ const PatientsTable = observer((
 
     const [serviceSearchText, setServiceSearchText] = useState<string>('');
 
+    const handleChangeInput = (event) => {
+        const { name, value } = event.target;
+        if (name === 'debt' || name === 'price') {
+            setFormData({
+                ...formData, [name]: parseInt(value.match(/\d+/g).join(''))
+            })
+        } else {
+            setFormData({ ...formData, [name]: value })
+        }
+    }
+
     return (
         <>
             <div className={styles.patients_main_table}>
@@ -67,6 +82,7 @@ const PatientsTable = observer((
                                 <FormControl className={styles.table_dropdown}>
                                     <InputLabel
                                         id="demo-simple-select-label"
+
                                         sx={[
                                             {
                                                 top: "-12px",
@@ -86,7 +102,11 @@ const PatientsTable = observer((
                                         id="demo-simple-select"
                                         value={discount}
                                         label="Без скидок"
-                                        onChange={(e) => setDiscount(e.target.value as number)}
+                                        name='exemption'
+                                        onChange={(e) => {
+                                            setDiscount(e.target.value as number)
+                                            handleChangeInput(e)
+                                        }}
                                         sx={{height: "32px"}}
                                     >
                                         {
@@ -146,7 +166,8 @@ const PatientsTable = observer((
 
                                 <CurrencyInput
                                     id="input-example"
-                                    name="input-name"
+                                    name="debt"
+                                    onChange={handleChangeInput}
                                     placeholder="Please enter a number"
                                     value={appointedServices
                                         .map((appointedService) => appointedService.service.cost * appointedService.quantity * (1 - discount / 100))
@@ -167,7 +188,7 @@ const PatientsTable = observer((
 
                                 <CurrencyInput
                                     id="input-example"
-                                    name="input-name"
+                                    name="price"
                                     placeholder="Please enter a number"
                                     value={appointedServices
                                         .map((appointedService) => appointedService.service.cost * appointedService.quantity * (1 - discount / 100))
@@ -177,6 +198,7 @@ const PatientsTable = observer((
                                     }
                                     allowDecimals={true}
                                     allowNegativeValue={false}
+                                    onChange={handleChangeInput}
                                     prefix="UZS "
                                     className={styles.currency_input}
                                     onValueChange={(value, name) => console.log(value, name)}
@@ -195,20 +217,26 @@ const PatientsTable = observer((
                                 disablePortal
                                 sx={{width: "282px"}}
                                 id="combo-box-demo"
+                                onChange={(e, v) => setFormData({ ...formData, referring_doctor: v?.value })}
                                 options={[
                                     {
-                                        label: "test"
+                                        label: "test3",
+                                        value: 1
                                     },
                                     {
-                                        label: "test2"
+                                        label: "test4",
+                                        value: 2
                                     },
                                     {
-                                        label: "test3"
+                                        label: "test5",
+                                        value: 3
                                     }
                                 ]}
                                 className={styles.input_block}
                                 noOptionsText={'Направление не найдено'}
-                                renderInput={(params) => <TextField {...params} label="Выберите направление"
+                                renderInput={(params) => <TextField
+                                    name="referring_doctor"
+                                    {...params} label="Выберите направление"
                                                                     InputLabelProps={{
                                                                         sx: [
                                                                             {
@@ -232,20 +260,25 @@ const PatientsTable = observer((
                                 disablePortal
                                 sx={{width: "282px"}}
                                 id="combo-box-demo"
+                                onChange={(e, v) => setFormData({ ...formData, information_source: v?.value })}
                                 options={[
                                     {
-                                        label: "test3"
+                                        label: "test3",
+                                        value: 1
                                     },
                                     {
-                                        label: "test4"
+                                        label: "test4",
+                                        value: 2
                                     },
                                     {
-                                        label: "test5"
+                                        label: "test5",
+                                        value: 3
                                     }
                                 ]}
                                 className={styles.input_block}
                                 noOptionsText={'Источник не найдено'}
                                 renderInput={(params) => <TextField {...params} label="Выберите источники"
+                                    name="information_source"
                                                                     InputLabelProps={{
                                                                         sx: [
                                                                             {
@@ -265,13 +298,13 @@ const PatientsTable = observer((
                         <div className={styles.table_row}>
                             <p className={styles.row_title}>Коммент нап врача</p>
 
-                            <OutlinedInput className={styles.input_block} sx={{width: "282px"}}/>
+                            <OutlinedInput onChange={handleChangeInput} name="referring_doc_notes" className={styles.input_block} sx={{ width: "282px" }} />
                         </div>
 
                         <div className={styles.table_row}>
                             <p className={styles.row_title}>Доп. информация</p>
 
-                            <OutlinedInput className={styles.input_block} sx={{width: "282px"}}/>
+                            <OutlinedInput onChange={handleChangeInput} name="addition_info" className={styles.input_block} sx={{ width: "282px" }} />
                         </div>
 
                     </div>
@@ -285,7 +318,7 @@ const PatientsTable = observer((
                     <div className={styles.table_row}>
                         <Button variant="outlined" className={styles.button_white}>Допольнительно</Button>
                         <Button variant="outlined" className={styles.button_white}>Аптека</Button>
-                        <FormControlLabel control={<Checkbox/>} label="Контракты" className={styles.checkbox_block}/>
+                        <FormControlLabel control={<Checkbox />} name="isContract" onChange={handleChangeInput} label="Контракты" className={styles.checkbox_block} />
                     </div>
 
                     <div className={styles.table_title}>Дополнительно</div>
@@ -443,7 +476,7 @@ const PatientsTable = observer((
                                 <div className={styles.list_wrapper}>
                                     <table>
                                         <tbody>
-
+                                            {services.length}
                                         {
                                             services
                                                 .filter((service) => service.name.toLowerCase().includes(serviceSearchText.toLowerCase()))

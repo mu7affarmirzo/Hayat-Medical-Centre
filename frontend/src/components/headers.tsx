@@ -19,7 +19,7 @@ const Headers = () => {
     const [profileOpen, setProfileOpen] = React.useState<null | HTMLElement>(null);
     const [groupAppointment, setGroupAppointment] = React.useState(false)
     const localAuthorizationStateKeeper = useLocalObservable(() => AuthorizationStateKeeper.instance);
-    const { setRole, setToken } = localAuthorizationStateKeeper;
+    const { setRole, removeToken } = localAuthorizationStateKeeper;
 
     const handleClick = (index: string, event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl({ index, elem: event.currentTarget });
@@ -31,7 +31,7 @@ const Headers = () => {
 
     const handleLogOut = () => {
         setRole("NoAuth");
-        setToken(JSON.stringify({}))
+        removeToken()
     }
 
     const handleModalOpener = () => {

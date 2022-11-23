@@ -33,6 +33,9 @@ class CalendarEventStateKeeper {
     }
 
     filterEventByDoctorId (id: string) {
+        this.events.filter((item) => {
+            console.log('doktoooooor', item);
+        });
         return this.events.filter(item => item.doctorId === id);
     }
 
@@ -46,16 +49,19 @@ class CalendarEventStateKeeper {
 
     async findAllAppointments(): Promise<IEvent[]> {
         const appointments = await this.calendarEventApiStub.findAllAppointments();
+        console.log("appointments", appointments);
+
         runInAction(() => {
             if(this.events.length < appointments.length){
                 this.events = appointments.map((appointment) => {
                     return {
-                        id: appointment.id,
-                        title: appointment.title,
-                        doctorId: appointment.doctorId,
-                        start: new Date(appointment.start),
-                        end: new Date(appointment.end)
-                    }
+                      id: 9,
+                      //   id: appointment.id,
+                      doctorId: appointment.doctorId,
+                      title: appointment.name,
+                      start: new Date(appointment.start_time),
+                      end: new Date(appointment.end_time),
+                    };
                 });
             }
             this.eventsCopy = this.events;

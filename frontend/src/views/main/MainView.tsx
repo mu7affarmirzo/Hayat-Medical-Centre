@@ -158,7 +158,7 @@ const MainView = observer((
                                             className={styles.table_item}
                                             key={item.id}
                                         >
-                                            {item.name}
+                                            {item.specialty_name ?? item.name}
                                         </div>
                                     ))
                                 }
@@ -167,40 +167,40 @@ const MainView = observer((
                             <div className={`${styles.table_doctors} ${styles.custom_scrollbar}`}>
                                 {
                                     doctors.map((doctor: IDoc) => (
-                                        <div
-                                            onClick={(e) => onSelectDoctor(e, doctor)}
-                                            key={doctor.doctor.id}
-                                            className={`doctors_table_row ${styles.row} ${selectedDoctors.map((doctor) => doctor.doctor.id).includes(doctor.doctor.id) ? styles.selected : ""}`}
+                                        doctor.doctor && (
+                                            <div
+                                                onClick={(e) => onSelectDoctor(e, doctor)}
+                                                key={doctor.doctor.id}
+                                                className={`doctors_table_row ${styles.row} ${selectedDoctors.map((doctor) => doctor.doctor.id).includes(doctor.doctor.id) ? styles.selected : ""}`}
                                             // style={{backgroundColor: item.color}}
-                                        >
-                                            <div className={styles.cell}>
-                                                <label className={styles.checkbox_block}>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={selectedDoctors.map((doctor) => doctor.id).includes(doctor.id)}
-                                                        onChange={(e) => onSelectDoctor(e, doctor)}
-                                                    />
-                                                    <div className={styles.box}></div>
-                                                </label>
+                                            >
+                                                <div className={styles.cell}>
+                                                    <label className={styles.checkbox_block}>
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={selectedDoctors.map((doctor) => doctor.id).includes(doctor.id)}
+                                                            onChange={(e) => onSelectDoctor(e, doctor)}
+                                                        />
+                                                        <div className={styles.box}></div>
+                                                    </label>
+                                                </div>
+                                                <div className={styles.cell}>
+                                                    {doctor.doctor?.f_name ?? doctor.doctor.username}
+                                                </div>
+                                                <div className={styles.cell}>
+                                                    {doctor.specialty_name}
+                                                </div>
+                                                <div className={styles.cell}>
+                                                    {doctor.doctor.phone_number}
+                                                </div>
+                                                <div className={styles.cell}>
+                                                    <div
+                                                        className={`${styles.status_block} ${doctor.doctor?.active ? "" : styles.not_active}`}></div>
+                                                </div>
                                             </div>
-                                            <div className={styles.cell}>
-                                                {/* {doctor.doc} {doctor?.id} */}
-                                                {doctor.doctor?.f_name ?? doctor.doctor.username}
-                                            </div>
-                                            <div className={styles.cell}>
-                                                {doctor.speciality}
-                                            </div>
-                                            <div className={styles.cell}>
-                                                {doctor.doctor.phone_number}
-                                            </div>
-                                            <div className={styles.cell}>
-                                                <div
-                                                    className={`${styles.status_block} ${doctor.doctor?.active ? "" : styles.not_active}`}></div>
-                                            </div>
-                                        </div>
+                                        )
                                     ))
                                 }
-
                             </div>
                         </div>
                     </div>

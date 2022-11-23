@@ -4,7 +4,7 @@ import { ISpeciality } from "../consts/types";
 export default class SpecialityApiStub {
   /* Gen by NARA Studio */
   static _instance: SpecialityApiStub;
-  private readonly client = new ApiClient("organizations/specialites");
+  private readonly client = new ApiClient("organizations/specialities");
 
   static get instance() {
     /* Gen by NARA Studio */

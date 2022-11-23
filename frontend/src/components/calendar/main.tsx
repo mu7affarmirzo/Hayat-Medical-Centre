@@ -68,7 +68,7 @@ const CalendarMain = observer(() => {
                                 views={views}
                                 className="calendar_block"
                                 messages={messages}
-                                style={{width: "1110px"}}
+                                style={{ width: "1110px" }}
                             />
                         )
                     })

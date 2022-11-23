@@ -28,27 +28,35 @@ const PatientsDirectory = observer(
         const [active, setactive] = React.useState<object[]>([]);
         const [selected, setSelected] = React.useState<string>("0");
         const navigate = useNavigate();
-        const debouncedValue = useDebounce<string>(searchedValue, 500)
+        const debouncedValue = useDebounce<string>(searchedValue, 500);
+        const [searchResult, setSearchResult] = React.useState<IPatient[]>([]);
         const authorizationStateKeeper = useLocalObservable(
-            () => AuthorizationStateKeeper.instance)
+            () => AuthorizationStateKeeper.instance
+        );
         const token = authorizationStateKeeper.token;
 
         React.useEffect(() => {
             if (searchedValue.length > 0) {
-                searchHandler()
+                searchHandler();
             }
-        }, [debouncedValue])
+        }, [debouncedValue]);
 
         const searchHandler = () => {
-            axios.get(`https://back.dev-hayat.uz/api/v1/organizations/patients-search/`, {
-                headers: {
-                    'Authorazition': 'Bearer ' + token
-                },
-                params: {
-                    f_name: searchedValue
+            axios
+                .get(
+                    `https://back.dev-hayat.uz/api/v1/organizations/patients-search/`,
+                    {
+                        headers: {
+                        Authorazition: "Bearer " + JSON.parse(token).access,
+                    },
+                    params: {
+                        f_name: searchedValue,
+                    },
                 }
-            })
-        }
+            )
+                .then((response) => setSearchResult(response.data))
+                .catch((err) => console.log(err));
+        };
 
         const handleChange = (event: SelectChangeEvent) => {
             setAge([...age, event.target.value]);
@@ -104,7 +112,11 @@ const PatientsDirectory = observer(
                             key={index}
                             onClick={handleClick}
                             data-type={button.dataset}
-                            disabled={button.text === 'Редактировать' && selected === '0' ? true : false}
+                            disabled={
+                                button.text === "Редактировать" && selected === "0"
+                                    ? true
+                                    : false
+                            }
                         >
                             {button.icon}
                             {button.text}
@@ -137,13 +149,13 @@ const PatientsDirectory = observer(
                                     id="outlined-search"
                                     label={item.label}
                                     type={item.type}
-                                        onChange={handleSeachPatient}
+                                    onChange={handleSeachPatient}
                                 />
                             </FormControl>
                         )
                     )}
                 </nav>
-
+                {searchResult.length < 0 && (
                 <div className={classes.patientsList}>
                     <table className={classes.table}>
                         <thead className={classes.tableHead}>
@@ -164,7 +176,7 @@ const PatientsDirectory = observer(
                                 <th key={item}>{item}</th>
                             ))}
                         </thead>
-                        {patients.slice(0, 7).map((item) => (
+                            {searchResult.map((item) => (
                             <tr
                                 data-id={item.id}
                                 onClick={handleSelectPatient}
@@ -194,6 +206,7 @@ const PatientsDirectory = observer(
                         ))}
                     </table>
                 </div>
+                )}
             </div>
         );
     }

@@ -47,8 +47,10 @@ class DoctorStateKeeper {
     }
     this.doctorsCopy = this.doctors.filter((item) => {
       if (item.doctor.f_name) {
-        return item.doctor.f_name.toLowerCase().includes(str.toLowerCase());
-        // item.speciality.name.toLowerCase().includes(str.toLowerCase()) ||
+        return (
+          item.doctor.f_name.toLowerCase().includes(str.toLowerCase()) ||
+          item.specialty_name.toLowerCase().includes(str.toLowerCase())
+        ); 
         //   item.phone_number.toLowerCase().includes(str.toLowerCase())
       }
     });
