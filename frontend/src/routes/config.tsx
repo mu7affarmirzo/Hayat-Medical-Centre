@@ -5,6 +5,8 @@ import DirectoryContainer from "../containers/directory/DirectoryContainer";
 import CreatePatients from "../views/PatientsDirectory/createPatients";
 import { Navigate } from "react-router";
 import EditPatient from "../views/PatientsDirectory/editPatient";
+import CashBoxContainer from "../containers/cashbox/cashBoxContainer";
+import PaymentsbyPatientsContainer from "../containers/paymentByPatients/paymentsbyPatients";
 
 type IRouting = {
     path: string;
@@ -51,5 +53,13 @@ export const RoutingData: MyGroupType = {
             "path": "/patientsDirectory/edit/:id",
             "component": <EditPatient />,
         },
+        {
+            "path": "/cashbox",
+            "component": <CashBoxContainer />
+        },
+        {
+            "path": "/patientPayments",
+            "component": <PaymentsbyPatientsContainer />
+        }
     ]
 };

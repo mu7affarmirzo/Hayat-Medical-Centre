@@ -224,15 +224,19 @@ const CreateNote = observer(() => {
                 return data;
             });
             calendarEventStateKeeper.addEvent(values);
-            setFormData({
-                ...formData,
-                end: values.end,
-                start: values.start,
-                services: selectedServices,
-                patient: patientStateKeeper.selectedPatient?.id,
-                name: patientStateKeeper.selectedPatient?.f_name,
+            setFormData(prev => {
+                return {
+                    ...prev,
+                    end: values.end,
+                    start: values.start,
+                    services: selectedServices,
+                    patient: patientStateKeeper.selectedPatient?.id,
+                    name: patientStateKeeper.selectedPatient?.f_name,
+                    doctorId: doctorStateKeeper.selectedDoctors[0].doctor.id
+                }
             });
-            // doctorStateKeeper.selectedDoctors.shift();
+
+            doctorStateKeeper.selectedDoctors.shift();
             // doctorStateKeeper.setSelectedDoctors([...doctorStateKeeper.selectedDoctors]);
             // setServices([]);
             // setAppointedServices([]);

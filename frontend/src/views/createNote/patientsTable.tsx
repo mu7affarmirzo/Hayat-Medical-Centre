@@ -19,7 +19,8 @@ import {ReactComponent as CloseCircle} from "../../assets/img/close-circle.svg";
 import {ReactComponent as AddCircle} from "../../assets/img/add-circle.svg";
 import moment from "moment/moment";
 import {IDateValue, IMedicalService} from "../../consts/types";
-import {observer} from "mobx-react-lite";
+import { observer, useLocalObservable } from "mobx-react-lite";
+import { DoctorStateKeeper } from '../../store';
 
 const PatientsTable = observer((
     {
@@ -54,7 +55,9 @@ const PatientsTable = observer((
         }[]>>,
     }) => {
     //
-
+    const doctorStateKeeper = useLocalObservable(
+        () => DoctorStateKeeper.instance
+    );
     const [serviceSearchText, setServiceSearchText] = useState<string>('');
 
     const handleChangeInput = (event) => {
@@ -476,7 +479,6 @@ const PatientsTable = observer((
                                 <div className={styles.list_wrapper}>
                                     <table>
                                         <tbody>
-                                            {services.length}
                                         {
                                             services
                                                 .filter((service) => service.name.toLowerCase().includes(serviceSearchText.toLowerCase()))
@@ -491,6 +493,7 @@ const PatientsTable = observer((
                                                                     if (appointedService.service.id === service.id) {
                                                                         found = true;
                                                                         appointedService.quantity++;
+                                                                        setFormData({ ...formData, debt: appointedService.service.cost * appointedService.quantity })
                                                                     }
                                                                 });
                                                                 if (found) {

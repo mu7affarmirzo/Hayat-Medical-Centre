@@ -66,12 +66,12 @@ export const NavBarDropdowns: Array<INav> = [
             {
                 img: <Moneys/>,
                 text: "Касса",
-                path: ""
+                path: "/cashbox"
             },
             {
                 img: <ProfileMoney/>,
                 text: "Оплаты по пациентам",
-                path: ""
+                path: "/patientPayments"
             },
             {
                 img: <LockArrow/>,

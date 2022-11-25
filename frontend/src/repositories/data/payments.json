@@ -1,0 +1,53 @@
+[
+  {
+    "payment_date": "19.08.2022 01:42",
+    "doctor": "Борислав Казаков",
+    "speciality": "Стационарный врач",
+    "service": "Валерий Казаков ",
+    "type_payment": "Наличные",
+    "patient": "Олег Алексеев",
+    "base_price": "0,00",
+    "comment": "Флеболог",
+    "amount_payment": "-812 445,94",
+    "bank": "Ipak yuli",
+    "payment_purpose": "none",
+    "bank_transfer": "",
+    "direction_of_payment": "Расход",
+    "cheque": "123",
+    "id": 2
+  },
+  {
+    "payment_date": "19.08.2022 01:42",
+    "doctor": "Людмила Дмитриева",
+    "speciality": "УЗИ",
+    "service": "Валерий Казаков ",
+    "type_payment": "Банковская карта",
+    "patient": "Олег Алексеев",
+    "base_price": "0,00",
+    "comment": "Флеболог",
+    "amount_payment": "-812 445,94",
+    "bank": "Ipak yuli",
+    "payment_purpose": "none",
+    "bank_transfer": "",
+    "direction_of_payment": "Расход",
+    "cheque": "123",
+    "id": 45
+  },
+  {
+    "payment_date": "22.08.2022 07:39",
+    "doctor": "Александра Степанова",
+    "speciality": "Лабаратория",
+    "service": "Екатерина Максимова",
+    "type_payment": "Humo ",
+    "patient": "Алина Николаева",
+    "base_price": "34 413,77 ",
+    "comment": "Флеболог",
+    "amount_payment": "152 349,20",
+    "bank": "Universalbank ",
+    "payment_purpose": "none",
+    "bank_transfer": "",
+    "direction_of_payment": "Приход",
+    "cheque": "123",
+    "id": 1
+  }
+]
