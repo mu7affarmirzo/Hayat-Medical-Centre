@@ -7,6 +7,7 @@ import { Navigate } from "react-router";
 import EditPatient from "../views/PatientsDirectory/editPatient";
 import CashBoxContainer from "../containers/cashbox/cashBoxContainer";
 import PaymentsbyPatientsContainer from "../containers/paymentByPatients/paymentsbyPatients";
+import PaymentHistoryView from "../views/paymentHistory/paymentHistoryView";
 
 type IRouting = {
     path: string;
@@ -60,6 +61,10 @@ export const RoutingData: MyGroupType = {
         {
             "path": "/patientPayments",
             "component": <PaymentsbyPatientsContainer />
+        },
+        {
+            "path": "/historyPayments",
+            "component": <PaymentHistoryView />
         }
     ]
 };

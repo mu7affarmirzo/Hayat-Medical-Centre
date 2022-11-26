@@ -1,18 +1,22 @@
 import React from "react";
-import {ReactComponent as CalendarEdit} from "../assets/img/header_icons/calendar-edit.svg";
-import {ReactComponent as FolderAdd} from "../assets/img/header_icons/folder-add.svg";
-import {ReactComponent as Note} from "../assets/img/header_icons/note.svg";
-import {ReactComponent as ProfileUser} from "../assets/img/header_icons/profile-2user.svg";
-import {ReactComponent as Moneys} from "../assets/img/header_icons/moneys.svg";
-import {ReactComponent as ProfileMoney} from "../assets/img/header_icons/profile-money.svg";
-import {ReactComponent as LockArrow} from "../assets/img/header_icons/lock.svg";
-import {ReactComponent as Bill} from "../assets/img/header_icons/bill.svg";
-import {ReactComponent as MoneyTime} from "../assets/img/header_icons/money-time.svg";
-import {ReactComponent as ClipboardClose} from "../assets/img/header_icons/clipboard-close.svg";
-import {ReactComponent as People} from "../assets/img/header_icons/people.svg";
-import {ReactComponent as Clients} from "../assets/img/header_icons/clients.svg";
-import {ReactComponent as UserSquare} from "../assets/img/header_icons/user-square.svg";
-import {ReactComponent as ScanBarcode} from "../assets/img/header_icons/scan-barcode.svg";
+import { ReactComponent as CalendarEdit } from "../assets/img/header_icons/calendar-edit.svg";
+import { ReactComponent as FolderAdd } from "../assets/img/header_icons/folder-add.svg";
+import { ReactComponent as Note } from "../assets/img/header_icons/note.svg";
+import { ReactComponent as ProfileUser } from "../assets/img/header_icons/profile-2user.svg";
+import { ReactComponent as Moneys } from "../assets/img/header_icons/moneys.svg";
+import { ReactComponent as ProfileMoney } from "../assets/img/header_icons/profile-money.svg";
+import { ReactComponent as LockArrow } from "../assets/img/header_icons/lock.svg";
+import { ReactComponent as Bill } from "../assets/img/header_icons/bill.svg";
+import { ReactComponent as MoneyTime } from "../assets/img/header_icons/money-time.svg";
+import { ReactComponent as ClipboardClose } from "../assets/img/header_icons/clipboard-close.svg";
+import { ReactComponent as People } from "../assets/img/header_icons/people.svg";
+import { ReactComponent as Clients } from "../assets/img/header_icons/clients.svg";
+import { ReactComponent as UserSquare } from "../assets/img/header_icons/user-square.svg";
+import { ReactComponent as ScanBarcode } from "../assets/img/header_icons/scan-barcode.svg";
+import { ReactComponent as Exchange } from "../assets/img/exchange-card.svg";
+import { ReactComponent as CreateNote } from "../assets/img/create-note.svg";
+import { ReactComponent as Printer } from "../assets/img/printer.svg";
+import { ReactComponent as Bookmark } from "../assets/img/bookmark.svg";
 
 interface INav {
     button: string;
@@ -33,26 +37,26 @@ export const NavBarDropdowns: Array<INav> = [
         title: "Регистратура",
         dropdown: [
             {
-                img: <CalendarEdit/>,
+                img: <CalendarEdit />,
                 text: "Расписания врачей",
                 sideBarText: "Расписания <br> врачей",
                 active: true,
                 path: "/main"
             },
             {
-                img: <FolderAdd/>,
+                img: <FolderAdd />,
                 text: "Добавить пакет",
                 sideBarText: "Добавить <br> пакет",
                 path: ""
             },
             {
-                img: <Note/>,
+                img: <Note />,
                 text: "Добавить группу приемов",
                 sideBarText: "Добавить <br> группу приемов",
                 path: "/groupAppointment"
             },
             {
-                img: <ProfileUser/>,
+                img: <ProfileUser />,
                 text: "Справочник пациентов",
                 sideBarText: "Справочник <br> пациентов",
                 path: "/patientsDirectory"
@@ -64,32 +68,32 @@ export const NavBarDropdowns: Array<INav> = [
         title: "Касса",
         dropdown: [
             {
-                img: <Moneys/>,
+                img: <Moneys />,
                 text: "Касса",
                 path: "/cashbox"
             },
             {
-                img: <ProfileMoney/>,
+                img: <ProfileMoney />,
                 text: "Оплаты по пациентам",
                 path: "/patientPayments"
             },
             {
-                img: <LockArrow/>,
+                img: <LockArrow />,
                 text: "История закрытий",
-                path: ""
+                path: "/historyPayments"
             },
             {
-                img: <Bill/>,
+                img: <Bill />,
                 text: "Мемордера",
                 path: ""
             },
             {
-                img: <MoneyTime/>,
+                img: <MoneyTime />,
                 text: "Должники",
                 path: ""
             },
             {
-                img: <ClipboardClose/>,
+                img: <ClipboardClose />,
                 text: "Быстрая запись",
                 path: ""
             },
@@ -103,17 +107,17 @@ export const NavBarDropdowns: Array<INav> = [
         title: "Справочники",
         dropdown: [
             {
-                img: <Clients/>,
+                img: <Clients />,
                 text: "Клиенты",
                 path: ""
             },
             {
-                img: <UserSquare/>,
+                img: <UserSquare />,
                 text: "Группа клиентов",
                 path: ""
             },
             {
-                img: <ScanBarcode/>,
+                img: <ScanBarcode />,
                 text: "Промокоды",
                 path: ""
             }
@@ -124,7 +128,7 @@ export const NavBarDropdowns: Array<INav> = [
         title: "Утилиты",
         dropdown: [
             {
-                img: <People/>,
+                img: <People />,
                 text: "Слияние пациентов",
                 path: ""
             }
@@ -139,3 +143,21 @@ export const NavBarDropdowns: Array<INav> = [
 
 ]
 
+export const CASHIER_ACTIONS = [
+    {
+        title: 'Взаимарасчёт',
+        img: <Exchange />
+    },
+    {
+        title: 'Редактировать прием',
+        img: <CreateNote />
+    },
+    {
+        title: 'Печать бланка',
+        img: <Printer />
+    },
+    {
+        title: 'Печать счёта',
+        img: <Bookmark />
+    }
+]

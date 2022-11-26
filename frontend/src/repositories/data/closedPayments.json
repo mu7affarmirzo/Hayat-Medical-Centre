@@ -1,0 +1,38 @@
+[
+  {
+    "branch": "Головной",
+    "operator": "Борислав Казаков",
+    "sum_amount": 62904,
+    "date": "05.09.2022 12:38"
+  },
+  {
+    "branch": "Hayat hospital",
+    "operator": "09.08.2022 16:08",
+    "sum_amount": 1629041,
+    "date": "09.08.2022 16:08"
+  },
+  {
+    "branch": "Hayat kids",
+    "operator": "Кирилл Егоров",
+    "sum_amount": 5588149,
+    "date": "09.08.2022 19:08"
+  },
+  {
+    "branch": "Головной",
+    "operator": "Олеся Маркова",
+    "sum_amount": 894999027,
+    "date": "22.08.2022 04:05"
+  },
+  {
+    "branch": "Hayat hospital",
+    "operator": "09.08.2022 16:08",
+    "sum_amount": 1629000,
+    "date": "09.08.2022 16:08"
+  },
+  {
+    "branch": "Hayat kids",
+    "operator": "Кирилл Егоров",
+    "sum_amount": 5588149,
+    "date": "09.08.2022 19:08"
+  }
+]

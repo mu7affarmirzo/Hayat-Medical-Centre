@@ -22,6 +22,7 @@ import { IDateValue, IMedicalService, IPatient } from "../../consts/types";
 import moment from "moment";
 import ErrorNotification from "../../store/ErrorNotification";
 import axios from "axios";
+import { ReactComponent as EkmLogo } from "../../assets/ekm.svg";
 
 const CreateNote = observer(() => {
     const navigator = useNavigate();
@@ -195,10 +196,13 @@ const CreateNote = observer(() => {
         if (doctorStateKeeper.selectedDoctors.length) {
             setServices([
                 ...medicalServiceStateKeeper.services.filter(
-                    (service) => service.doctor[0].id === 2
+                    (service) =>
+                        service.id === doctorStateKeeper.selectedDoctors.at(0)?.doctor.id
                 ),
             ]);
         }
+        console.log("hayat", doctorStateKeeper.selectedDoctors.at(0));
+        console.log("hayat", medicalServiceStateKeeper.services.at(0));
     }, [
         medicalServiceStateKeeper.services,
         doctorStateKeeper.selectedDoctors.at(0),
@@ -220,11 +224,14 @@ const CreateNote = observer(() => {
                 doctorId: String(doctorStateKeeper.selectedDoctors.at(0)!.id),
             };
             const selectedServices = appointedServices.map((item) => {
-                const data: object = { service: item.service.id, quantity: item.quantity };
+                const data: object = {
+                    service: item.service.id,
+                    quantity: item.quantity,
+                };
                 return data;
             });
             calendarEventStateKeeper.addEvent(values);
-            setFormData(prev => {
+            setFormData((prev) => {
                 return {
                     ...prev,
                     end: values.end,
@@ -232,12 +239,12 @@ const CreateNote = observer(() => {
                     services: selectedServices,
                     patient: patientStateKeeper.selectedPatient?.id,
                     name: patientStateKeeper.selectedPatient?.f_name,
-                    doctorId: doctorStateKeeper.selectedDoctors[0].doctor.id
-                }
+                    doctorId: doctorStateKeeper.selectedDoctors[0].doctor.id,
+                };
             });
 
             doctorStateKeeper.selectedDoctors.shift();
-            // doctorStateKeeper.setSelectedDoctors([...doctorStateKeeper.selectedDoctors]);
+            doctorStateKeeper.setSelectedDoctors([...doctorStateKeeper.selectedDoctors]);
             // setServices([]);
             // setAppointedServices([]);
             // setDiscount(0);
@@ -245,7 +252,6 @@ const CreateNote = observer(() => {
         create_appointment(formData);
     };
     const create_appointment = (data) => {
-        // return console.log('aaaaaaaaaaaaaaaaaaaa', data)s
         axios
             .post("https://back.dev-hayat.uz/api/v1/appointments/", data, headers)
             .then((res) => console.log(res))
@@ -392,6 +398,7 @@ const CreateNote = observer(() => {
                             />
                             <Button
                                 variant="contained"
+                                onClick={() => navigator("/patientsDirectory/create")}
                                 className={styles.create_btn}
                                 startIcon={<UserAdd className="svg_stroke_white" />}
                                 sx={{
@@ -501,15 +508,25 @@ const CreateNote = observer(() => {
                         </div>
                     </Box>
                 </Backdrop>
-
-                <Button
-                    sx={{ backgroundColor: "#007DFF", height: "42px" }}
-                    variant="contained"
-                    className={styles.create_btn}
-                    startIcon={<UserAdd className="svg_stroke_white" />}
-                >
-                    Добавить Пациента
-                </Button>
+                <Box>
+                    <Button
+                        sx={{ backgroundColor: "#007DFF", height: "42px", marginRight: 1 }}
+                        variant="contained"
+                        className={styles.create_btn}
+                        startIcon={<EkmLogo className="svg_stroke_white" />}
+                    >
+                        ЭМК
+                    </Button>
+                    <Button
+                        sx={{ backgroundColor: "#007DFF", height: "42px" }}
+                        variant="contained"
+                        onClick={() => setOpenPatients(true)}
+                        className={styles.create_btn}
+                        startIcon={<UserAdd className="svg_stroke_white" />}
+                    >
+                        Добавить Пациента
+                    </Button>
+                </Box>
             </FlexSpaceBetween>
 
             {patientStateKeeper.selectedPatient && (

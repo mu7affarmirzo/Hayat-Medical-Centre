@@ -45,35 +45,17 @@ const NAVBAR_BUTTONS = [
     type: "detailed_total_sum",
   },
 ];
-const CashboxView = () => {
-  const [selectedPayment, setSelectedPayment] = React.useState<string>("");
-  const [incomeOutcomeModal, setIncomeOutcomeModal] =
-    React.useState<boolean>(false);
-  const [deletePaymentModal, setDeletePaymentModal] =
-    React.useState<boolean>(false);
-  const [sumPaymentModal, setSumPaymentModal] = React.useState<boolean>(false);
-
-  const navbarActionHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e.currentTarget.dataset.actionType);
-    switch (e.currentTarget.dataset.actionType) {
-      case "close_cash_punkt":
-        setDeletePaymentModal(true);
-        break;
-      case "detailed_total_sum":
-        setSumPaymentModal(true);
-        break;
-      case "income_outcome":
-        setIncomeOutcomeModal(true);
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  const paymentActionHandler = (e: React.MouseEvent<HTMLElement>) => {
-    setSelectedPayment(e.currentTarget.dataset?.paymentId ?? "");
-  };
+const CashboxView = ({
+  navbarActionHandler,
+  paymentActionHandler,
+  sumPaymentModal,
+  deletePaymentModal,
+  selectedPayment,
+  incomeOutcomeModal,
+  setIncomeOutcomeModal,
+  setDeletePaymentModal,
+  setSumPaymentModal
+}) => {
 
   return (
     <>

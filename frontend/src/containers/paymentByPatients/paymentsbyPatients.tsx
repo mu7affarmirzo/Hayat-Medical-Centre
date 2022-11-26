@@ -1,8 +1,21 @@
-import React from 'react'
-import PaymentByPatientView from '../../views/paymentByPatient/paymentByPatientView'
+import React from "react";
+import PaymentByPatientView from "../../views/paymentByPatient/paymentByPatientView";
 
 const PaymentsbyPatientsContainer = () => {
-    return <PaymentByPatientView />
-}
+    const [selected, setSelected] = React.useState<string>("");
+    const [paymentModal, setPaymentModal] = React.useState<boolean>(false);
+    const handleSelectPatient = (event: React.MouseEvent<HTMLElement>) => {
+        setSelected(event.currentTarget.dataset.id || "");
+        setPaymentModal(true);
+    };
+    return (
+        <PaymentByPatientView
+            paymentModal={paymentModal}
+            setPaymentModal={setPaymentModal}
+            handleSelectPatient={handleSelectPatient}
+            selected={selected}
+        />
+    );
+};
 
-export default PaymentsbyPatientsContainer
+export default PaymentsbyPatientsContainer;

@@ -1,0 +1,142 @@
+.modalWrapper {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  th {
+    font-size: 14px;
+    padding: 5px;
+  }
+  td {
+    padding: 0 5px;
+  }
+}
+.roundedOutlineButton {
+  all: unset;
+  border: 1.5px solid #000000;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+.modalHeader {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h4 {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0.15px;
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
+.modalBody {
+  padding: 24px;
+}
+.formSubtitle {
+  font-style: normal;
+  font-weight: 400;
+  padding: 8px 16px;
+  font-size: 16px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.87);
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.paper {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px 20px;
+}
+.mb10 {
+  margin-bottom: 10px !important;
+}
+
+.tableWrapper {
+  min-height: 200px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+.elipsis {
+  table {
+    width: 100%;
+    margin-left: 10px;
+  }
+
+  td {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &:first-child {
+      max-width: 40px;
+    }
+    span {
+      white-space: nowrap;
+      font-size: 14px;
+    }
+  }
+}
+
+.flexContainer {
+  display: flex;
+}
+.childModal {
+  padding: 24px;
+  h3 {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0.15px;
+    color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 20px;
+  }
+  div {
+    display: flex;
+    align-items: center;
+    svg {
+      margin-right: 12px;
+    }
+    margin-bottom: 10px;
+  }
+  button {
+    padding: 6px 16px;
+    width: 100px;
+    float: right;
+    color: rgba(0, 0, 0, 0.87);
+    height: 36px;
+    background: #eeeeee;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+}

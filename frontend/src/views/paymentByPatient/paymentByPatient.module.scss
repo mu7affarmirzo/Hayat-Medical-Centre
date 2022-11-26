@@ -4,14 +4,17 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   margin: 10px 20px;
 }
+
 .table {
   border-collapse: collapse;
   width: 100%;
+
   .tableHead {
     th {
       background: #64b6f7;
     }
   }
+
   th,
   td {
     border: 1px solid rgba(0, 0, 0, 0.199);
@@ -28,6 +31,7 @@
     padding: 8px;
   }
 }
+
 .title {
   font-style: normal;
   font-weight: 500;
@@ -35,4 +39,36 @@
   line-height: 32px;
   color: rgba(0, 0, 0, 0.87);
   padding: 20px 15px;
+}
+
+.selected {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.headerActionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 135px;
+  border: none !important;
+  span {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.4px;
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  svg {
+    margin-bottom: 10px;
+  }
+}
+.actionButtonsWrapper{
+  padding: 10px 20px ;
 }
