@@ -2,16 +2,17 @@ import React from 'react';
 import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import styles from "../views/main/index.module.scss"
 import logoImg from "../assets/img/logo.svg";
-import { NavBarDropdowns } from "../consts/main";
+import { CashBoxDropdowns, NavBarDropdowns } from "../consts/main";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useLocalObservable } from "mobx-react-lite";
 import AuthorizationStateKeeper from "../store/AuthorizationStateKeeper";
 import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Modal from './Modal';
 import GroupAppointment from './GroupAppointment';
 
 const Headers = () => {
+    const location = useLocation()
     const [anchorEl, setAnchorEl] = React.useState<{ index: string, elem: null | HTMLElement }>({
         index: "",
         elem: null
@@ -20,7 +21,7 @@ const Headers = () => {
     const [groupAppointment, setGroupAppointment] = React.useState(false)
     const localAuthorizationStateKeeper = useLocalObservable(() => AuthorizationStateKeeper.instance);
     const { setRole, removeToken } = localAuthorizationStateKeeper;
-
+    const [navbar, setNavbar] = React.useState(NavBarDropdowns)
     const handleClick = (index: string, event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl({ index, elem: event.currentTarget });
     };
@@ -38,6 +39,14 @@ const Headers = () => {
         setGroupAppointment(true)
         handleClose()
     }
+    const use_cases = ['/cashbox', '/patientPayments', '/historyPayments', '/reports', '/patientSale']
+    React.useEffect(() => {
+        if (use_cases.includes(location.pathname)) {
+            setNavbar(CashBoxDropdowns)
+        } else {
+            setNavbar(NavBarDropdowns)
+        }
+    }, [location.pathname])
 
     return (
         <div className={styles.header}>
@@ -53,7 +62,7 @@ const Headers = () => {
 
                 <nav className={styles.nav}>
 
-                    {NavBarDropdowns.map((item, i) => {
+                    {navbar.map((item, i) => {
                         if (!item.dropdown) {
                             return (
                                 <div key={i} className={styles.nav_item}>
@@ -100,15 +109,17 @@ const Headers = () => {
                                                         {dropdownItem.text}
                                                     </MenuItem>
                                                 ) : (
-                                                        <MenuItem
-                                                            className={styles.dropdown_menu}
+                                                        <Link
+                                                            to={dropdownItem.path}
                                                             key={index}
-                                                            onClick={handleClose}>
-                                                            <Link to={dropdownItem.path}>
+                                                        >
+                                                        <MenuItem
+                                                                className={styles.dropdown_menu}
+                                                                onClick={handleClose}>
                                                                 {dropdownItem.img}
                                                                 {dropdownItem.text}
-                                                            </Link>
                                                         </MenuItem>
+                                                        </Link>
                                                     )
                                             );
                                         })

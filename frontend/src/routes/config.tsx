@@ -8,6 +8,7 @@ import EditPatient from "../views/PatientsDirectory/editPatient";
 import CashBoxContainer from "../containers/cashbox/cashBoxContainer";
 import PaymentsbyPatientsContainer from "../containers/paymentByPatients/paymentsbyPatients";
 import PaymentHistoryView from "../views/paymentHistory/paymentHistoryView";
+import ReportsContainer from "../containers/reports/ReportsContainer";
 
 type IRouting = {
     path: string;
@@ -65,6 +66,10 @@ export const RoutingData: MyGroupType = {
         {
             "path": "/historyPayments",
             "component": <PaymentHistoryView />
+        },
+        {
+            "path": "/reports",
+            "component": <ReportsContainer />
         }
     ]
 };

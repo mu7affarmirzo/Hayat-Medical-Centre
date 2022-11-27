@@ -13,7 +13,9 @@ const CashBoxContainer = () => {
         console.log(e.currentTarget.dataset.actionType);
         switch (e.currentTarget.dataset.actionType) {
             case "close_cash_punkt":
-                setDeletePaymentModal(true);
+                if (selectedPayment.length > 0) {
+                    setDeletePaymentModal(true);
+                }
                 break;
             case "detailed_total_sum":
                 setSumPaymentModal(true);

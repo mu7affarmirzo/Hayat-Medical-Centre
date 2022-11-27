@@ -26,9 +26,9 @@ interface INav {
         img: typeof CalendarEdit;
         text: string;
         sideBarText?: string;
-        active?: boolean,
-        path: string
-    }>
+        active?: boolean;
+        path: string;
+    }>;
 }
 
 export const NavBarDropdowns: Array<INav> = [
@@ -41,27 +41,27 @@ export const NavBarDropdowns: Array<INav> = [
                 text: "Расписания врачей",
                 sideBarText: "Расписания <br> врачей",
                 active: true,
-                path: "/main"
+                path: "/main",
             },
             {
                 img: <FolderAdd />,
                 text: "Добавить пакет",
                 sideBarText: "Добавить <br> пакет",
-                path: ""
+                path: "",
             },
             {
                 img: <Note />,
                 text: "Добавить группу приемов",
                 sideBarText: "Добавить <br> группу приемов",
-                path: "/groupAppointment"
+                path: "/groupAppointment",
             },
             {
                 img: <ProfileUser />,
                 text: "Справочник пациентов",
                 sideBarText: "Справочник <br> пациентов",
-                path: "/patientsDirectory"
+                path: "/patientsDirectory",
             },
-        ]
+        ],
     },
     {
         button: "Кассовые операции",
@@ -70,37 +70,37 @@ export const NavBarDropdowns: Array<INav> = [
             {
                 img: <Moneys />,
                 text: "Касса",
-                path: "/cashbox"
+                path: "/cashbox",
             },
             {
                 img: <ProfileMoney />,
                 text: "Оплаты по пациентам",
-                path: "/patientPayments"
+                path: "/patientPayments",
             },
             {
                 img: <LockArrow />,
                 text: "История закрытий",
-                path: "/historyPayments"
+                path: "/historyPayments",
             },
             {
                 img: <Bill />,
                 text: "Мемордера",
-                path: ""
+                path: "",
             },
             {
                 img: <MoneyTime />,
                 text: "Должники",
-                path: ""
+                path: "",
             },
             {
                 img: <ClipboardClose />,
                 text: "Быстрая запись",
-                path: ""
+                path: "",
             },
-        ]
+        ],
     },
     {
-        button: "Стационар"
+        button: "Стационар",
     },
     {
         button: "Справочники",
@@ -109,19 +109,19 @@ export const NavBarDropdowns: Array<INav> = [
             {
                 img: <Clients />,
                 text: "Клиенты",
-                path: ""
+                path: "",
             },
             {
                 img: <UserSquare />,
                 text: "Группа клиентов",
-                path: ""
+                path: "",
             },
             {
                 img: <ScanBarcode />,
                 text: "Промокоды",
-                path: ""
-            }
-        ]
+                path: "",
+            },
+        ],
     },
     {
         button: "Утилиты",
@@ -130,34 +130,114 @@ export const NavBarDropdowns: Array<INav> = [
             {
                 img: <People />,
                 text: "Слияние пациентов",
-                path: ""
-            }
-        ]
+                path: "",
+            },
+        ],
     },
     {
-        button: "Телефония"
+        button: "Телефония",
     },
     {
-        button: "Телефония"
+        button: "Телефония",
     },
-
-]
+];
+export const CashBoxDropdowns: Array<INav> = [
+    {
+        button: "Регистратура",
+        title: "Регистратура",
+        dropdown: [
+            {
+                img: <CalendarEdit />,
+                text: "Расписания врачей",
+                sideBarText: "Расписания <br> врачей",
+                active: true,
+                path: "/main",
+            },
+            {
+                img: <FolderAdd />,
+                text: "Реестр посещений  ",
+                sideBarText: "Добавить <br> пакет",
+                path: "",
+            },
+            {
+                img: <Note />,
+                text: "Добавить группу приемов",
+                sideBarText: "Реестр счетов ",
+                path: "/groupAppointment",
+            },
+        ],
+    },
+    {
+        button: "Кассовые операции",
+        title: "Касса",
+        dropdown: [
+            {
+                img: <Moneys />,
+                text: "Касса",
+                path: "/cashbox",
+            },
+            {
+                img: <ProfileMoney />,
+                text: "Оплаты по пациентам",
+                path: "/patientPayments",
+            },
+            {
+                img: <LockArrow />,
+                text: "История закрытий",
+                path: "/historyPayments",
+            },
+            {
+                img: <ClipboardClose />,
+                text: "Быстрая запись",
+                path: "Быстрая запись",
+            },
+        ],
+    },
+    {
+        button: "Отчёты",
+        title: "Отчёты",
+        dropdown: [
+            {
+                img: <Note />,
+                text: "По кассовым операциям",
+                sideBarText: "По кассовым операциям",
+                path: "/reports",
+            },
+            {
+                img: <Note />,
+                text: "По клиентским скидкам",
+                sideBarText: "По клиентским скидкам",
+                path: "/patientSale",
+            },
+            {
+                img: <Note />,
+                text: "По перенаправленным приёмам",
+                path: "/patientSale",
+            },
+            {
+                img: <Note />,
+                text: "По пациенту возврата",
+                path: "/patientSale",
+            },
+        ],
+    },
+];
 
 export const CASHIER_ACTIONS = [
     {
-        title: 'Взаимарасчёт',
-        img: <Exchange />
+        title: "Взаимарасчёт",
+        img: <Exchange />,
     },
     {
-        title: 'Редактировать прием',
-        img: <CreateNote />
+        title: "Редактировать прием",
+        img: <CreateNote />,
     },
     {
-        title: 'Печать бланка',
-        img: <Printer />
+        title: "Печать бланка",
+        img: <Printer />,
     },
     {
-        title: 'Печать счёта',
-        img: <Bookmark />
-    }
-]
+        title: "Печать счёта",
+        img: <Bookmark />,
+    },
+];
