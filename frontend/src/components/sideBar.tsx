@@ -30,6 +30,7 @@ const SideBar = () => {
             setNavbar(CashBoxDropdowns)
             setIndex(2)
         } else {
+            setNavbar(NavBarDropdowns)
             setIndex(0)
         }
     }, [location.pathname])
@@ -37,13 +38,13 @@ const SideBar = () => {
     return (
         <div className={styles.sideBar}>
             {groupAppointment && <Modal
-                show={groupAppointment}
                 onClose={() => setGroupAppointment(false)}
+                show={groupAppointment}
             >
                 <GroupAppointment />
             </Modal>}
             {navbar[index]?.dropdown?.map((item, index) => (
-              <div
+                item.sideBarText && <div
                     key={index}
                   onClick={() => clickHandler(item.path)}
                   className={`${styles.sideBar_item} ${item.path === location.pathname ? styles.active : ""

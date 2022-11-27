@@ -70,16 +70,19 @@ export const NavBarDropdowns: Array<INav> = [
             {
                 img: <Moneys />,
                 text: "Касса",
+                sideBarText: 'Касса',
                 path: "/cashbox",
             },
             {
                 img: <ProfileMoney />,
                 text: "Оплаты по пациентам",
+                sideBarText: "Оплаты по пациентам",
                 path: "/patientPayments",
             },
             {
                 img: <LockArrow />,
                 text: "История закрытий",
+                sideBarText: "История закрытий",
                 path: "/historyPayments",
             },
             {
@@ -96,6 +99,7 @@ export const NavBarDropdowns: Array<INav> = [
                 img: <ClipboardClose />,
                 text: "Быстрая запись",
                 path: "",
+                sideBarText: "Быстрая запись"
             },
         ],
     },
@@ -175,21 +179,25 @@ export const CashBoxDropdowns: Array<INav> = [
                 img: <Moneys />,
                 text: "Касса",
                 path: "/cashbox",
+                sideBarText: 'Касса'
             },
             {
                 img: <ProfileMoney />,
                 text: "Оплаты по пациентам",
+                sideBarText: "Оплаты по пациентам",
                 path: "/patientPayments",
             },
             {
                 img: <LockArrow />,
                 text: "История закрытий",
+                sideBarText: "История закрытий",
                 path: "/historyPayments",
             },
             {
                 img: <ClipboardClose />,
                 text: "Быстрая запись",
-                path: "Быстрая запись",
+                sideBarText: "Быстрая запись",
+                path: "",
             },
         ],
     },
