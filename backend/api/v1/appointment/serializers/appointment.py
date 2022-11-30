@@ -49,7 +49,7 @@ class AppointmentCreateSerializer(serializers.ModelSerializer):
         model = AppointmentsModel
         fields = [
             # 'days_since_joined',
-            'patient',
+                  'patient',
                   'name',
                   'status',
                   'exemption',
@@ -62,7 +62,8 @@ class AppointmentCreateSerializer(serializers.ModelSerializer):
                   'referring_doc_notes',
                   'addition_info',
                   'branch',
-                  'services'
+                  'services',
+                  'doctor'
                   ]
 
     # def get_days_since_joined(self, validated_data):

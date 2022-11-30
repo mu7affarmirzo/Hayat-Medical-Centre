@@ -33,6 +33,7 @@ class MedicalService(models.Model):
 
 class AppointmentsModel(models.Model):
     patient = models.ForeignKey(PatientModel, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Account, blank=True, null=True, on_delete=models.SET_NULL, related_name='doctor_appointments')
     name = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(choices=APPOINTMENT_CHOICES, default='NOT PAID', max_length=50)
     exemption = models.IntegerField(blank=True, null=True)
