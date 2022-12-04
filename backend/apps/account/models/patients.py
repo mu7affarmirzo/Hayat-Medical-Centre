@@ -55,6 +55,16 @@ class PatientModel(models.Model):
     modified_by = models.ForeignKey(Account, related_name="modf_patient_by_user", on_delete=models.SET_NULL, null=True)
     organization = models.ForeignKey(OrganizationModel, on_delete=models.SET_NULL, null=True)
 
+
+    @property
+    def full_name(self):
+        try:
+            mid_name = self.mid_name
+        except:
+            mid_name = ''
+
+        return f"{self.f_name} {self.l_name} {mid_name}"
+
     def __str__(self):
 
         try:

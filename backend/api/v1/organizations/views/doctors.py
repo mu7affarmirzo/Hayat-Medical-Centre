@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from api.v1.organizations.serializers.specialties import DoctorSpecialitiesListSerializer
-from apps.account.models import DoctorSpecialityModel
+from apps.account.models import DoctorSpecialityModel, DoctorAccountModel
 from apps.account.models import Account
 from api.v1.organizations.serializers.doctors import DoctorsCreateSerializer, DoctorsListSerializer, \
     DoctorSearchSerializer
@@ -49,7 +49,7 @@ class DoctorsRetrieveView(RetrieveUpdateDestroyAPIView):
     @swagger_auto_schema(tags=['organizations-doctor'])
     def get(self, request, pk, format=None):
         try:
-            doctor = Account.objects.filter(doc_speciality__isnull=False, pk=pk)
+            doctor = DoctorAccountModel.objects.get(pk=pk)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = DoctorsListSerializer(doctor)
@@ -57,7 +57,7 @@ class DoctorsRetrieveView(RetrieveUpdateDestroyAPIView):
 
     @swagger_auto_schema(tags=['organizations-doctor'], request_body=DoctorsListSerializer)
     def put(self, request, pk, format=None):
-        doctor = Account.objects.filter(doc_speciality__isnull=False, pk=pk)
+        doctor = DoctorAccountModel.objects.get(pk=pk)
 
         serializer = DoctorsListSerializer(doctor, data=request.data)
         if serializer.is_valid():
@@ -67,8 +67,10 @@ class DoctorsRetrieveView(RetrieveUpdateDestroyAPIView):
 
     @swagger_auto_schema(tags=['organizations-doctor'])
     def delete(self, request, pk, format=None):
-        doctor = Account.objects.filter(doc_speciality__isnull=False, pk=pk)
-
+        try:
+            doctor = DoctorAccountModel.objects.get(pk=pk)
+        except DoctorAccountModel.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         doctor.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -65,6 +65,16 @@ class Account(AbstractBaseUser):
         return True
 
 
+class DoctorAccountModel(models.Model):
+    doctor = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='doctor_model')
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        email = str(Account.email)
+        return email
+
+
 class ReferringDoctorModel(models.Model):
     name = models.CharField(max_length=255)
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)

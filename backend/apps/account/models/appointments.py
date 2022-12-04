@@ -1,6 +1,8 @@
+import uuid
+
 from django.db import models
 from datetime import date, datetime, time, timedelta
-from apps.account.models import ReferringDoctorModel, Account
+from apps.account.models import ReferringDoctorModel, Account, DoctorAccountModel
 from apps.account.models import BranchModel
 from apps.account.models import PatientModel, InformationSourceModel
 from apps.account.models import SpecialityModel
@@ -33,7 +35,6 @@ class MedicalService(models.Model):
 
 class AppointmentsModel(models.Model):
     patient = models.ForeignKey(PatientModel, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(Account, blank=True, null=True, on_delete=models.SET_NULL, related_name='doctor_appointments')
     name = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(choices=APPOINTMENT_CHOICES, default='NOT PAID', max_length=50)
     exemption = models.IntegerField(blank=True, null=True)
@@ -83,6 +84,8 @@ class AppointmentServiceModel(models.Model):
     modified_by = models.ForeignKey(Account, related_name="app_serv", on_delete=models.SET_NULL, null=True)
     appointment = models.ForeignKey(AppointmentsModel, related_name='app_services', on_delete=models.SET_NULL, null=True)
     service = models.ForeignKey(MedicalService, on_delete=models.CASCADE)
+    doctor = models.OneToOneField(DoctorAccountModel, on_delete=models.CASCADE, null=True)
+    quantity = models.IntegerField(default=1)
 
     def __str__(self):
         return str(self.service)
@@ -105,3 +108,5 @@ def add_end_time(sender, instance=None, created=False, **kwargs):
         instance.end_time = instance.start_time + timedelta(minutes=30)
 
         instance.save()
+
+

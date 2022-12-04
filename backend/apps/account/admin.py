@@ -1,14 +1,27 @@
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 from apps.account.models import (
-    accounts, organizations, roles_permissions, patients, specialities
+    accounts, organizations, roles_permissions, patients, specialities, appointments
 )
-from apps.account.models import appointments
 
 
 @admin.register(accounts.Account)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('email', 'username')
+
+
+@admin.register(accounts.DoctorAccountModel)
+class DoctorsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('doctor_email', 'doctor_l_name', 'doctor_f_name')
+
+    def doctor_email(self, obj):
+        return obj.doctor.email
+
+    def doctor_l_name(self, obj):
+        return obj.doctor.l_name
+
+    def doctor_f_name(self, obj):
+        return obj.doctor.f_name
 
 
 @admin.register(organizations.OrganizationModel)
@@ -40,7 +53,7 @@ admin.site.register(appointments.MedicalService)
 
 @admin.register(appointments.AppointmentsModel)
 class AppointmentsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = ('patient', )
 
 
 admin.site.register(appointments.AppointmentServiceModel)
@@ -59,3 +72,5 @@ class SpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class DoctorSpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('organization', 'branch_id', 'doctor', 'doctor_id',
                     'speciality', 'speciality_id')
+
+
