@@ -18,7 +18,7 @@ urlpatterns = [
 
     path('branches/doctors/<int:branch_id>', doctors_by_branch_view, name='branch-docs'),
 
-    path('specialites/', SpecialtiesView.as_view(), name='specialites'),
+    path('specialities/', SpecialtiesView.as_view(), name='specialites'),
 
     path('patients/', PatientView.as_view(), name='patients'),
     path('patients-search/', PatientFilterView.as_view(), name='patients-search'),
