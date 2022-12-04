@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.account.models import Account, DoctorSpecialityModel
+from apps.account.models import Account, DoctorSpecialityModel, DoctorAccountModel
 
 
 class DoctorsCreateSerializer(serializers.ModelSerializer):
@@ -33,12 +33,13 @@ class DoctorsCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'password': 'Password must match!'})
         account.set_password(password)
         account.save()
+
+        doctor = DoctorAccountModel(doctor=account)
+        doctor.save()
         return account
 
 
-class DoctorsListSerializer(serializers.ModelSerializer):
-    # created_by = serializers.SerializerMethodField()
-
+class DoctorAccountListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = [
@@ -53,19 +54,19 @@ class DoctorsListSerializer(serializers.ModelSerializer):
             'organization_id',
             'branch_id',
             'color',
-            # 'created_by'
         ]
-    #
-    # def get_created_by(self, account):
-    #     print("******************************")
-    #     print("******************************")
-    #     print(account)
-    #     print("******************************")
-    #     print("******************************")
-    #     target_doctor = DoctorSpecialityModel.objects.filter(doctor=account)
-    #     print(target_doctor)
-    #     # created_by = target_doctor.created_by.email
-    #     return "created_by"
+
+
+class DoctorsListSerializer(serializers.ModelSerializer):
+    doctor = DoctorAccountListSerializer()
+
+    class Meta:
+        model = DoctorAccountModel
+        fields = [
+            'id',
+            'doctor',
+        ]
+        ordering = ('doctor__l_name',)
 
 
 class DoctorSearchSerializer(serializers.Serializer):

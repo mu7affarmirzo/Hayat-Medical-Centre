@@ -23,8 +23,8 @@ class DoctorsListCreateView(APIView):
     @swagger_auto_schema(tags=['organizations-doctor'])
     @permission_classes((IsAuthenticated,))
     def get(self, request, format=None):
-        doc_specs = DoctorSpecialityModel.objects.all().distinct('doctor')
-        serializer = DoctorSpecialitiesListSerializer(doc_specs, many=True)
+        doctors = DoctorAccountModel.objects.all()
+        serializer = DoctorsListSerializer(doctors, many=True)
         return Response(serializer.data)
 
     @swagger_auto_schema(tags=['organizations-doctor'], request_body=DoctorsCreateSerializer)
