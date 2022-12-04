@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.account.models import Account
+from apps.account.models import Account, DoctorAccountModel
 from apps.account.models import OrganizationModel, BranchModel
 
 
@@ -26,7 +26,7 @@ class DoctorSpecialityModel(models.Model):
     organization = models.ForeignKey(OrganizationModel, related_name="doc_speciality_org", on_delete=models.SET_NULL, null=True)
     branch = models.ForeignKey(BranchModel, related_name="doc_speciality_branch", on_delete=models.SET_NULL, null=True)
     speciality = models.ForeignKey(SpecialityModel, related_name="doc_speciality_spec", on_delete=models.CASCADE, null=True)
-    doctor = models.ForeignKey(Account, related_name="doc_speciality", on_delete=models.CASCADE, null=True)
+    doctor = models.ForeignKey(DoctorAccountModel, related_name="doc_speciality", on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.doctor) + " - " + str(self.speciality)

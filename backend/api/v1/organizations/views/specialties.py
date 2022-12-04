@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from apps.account.models import SpecialityModel, DoctorSpecialityModel
 from api.v1.organizations.serializers.specialties import SpecialtiesListSerializer, SpecialtiesCreateSerializer, \
-    DoctorSpecialitiesListSerializer, DoctorSpecialitiesCreateSerializer
+    DoctorSpecialitiesListSerializer, DoctorSpecialitiesCreateSerializer, SpecialitiesListSerializer
 from rest_framework.generics import ListAPIView
 
 

@@ -28,7 +28,6 @@ urlpatterns = [
     path('doctors/<int:pk>', DoctorsRetrieveView.as_view(), name='doctors'),
 
     path('doc-specialities/', DoctorSpecialitiesView.as_view(), name='doctors-specialities'),
-    path('specialities/', DoctorSpecialitiesView.as_view(), name='doctors-specialities'),
 
     path('patient-group/', PatientGroupView.as_view(), name='patient-group'),
     path('patient-group/<int:pk>', PatientGroupRetrieveView.as_view(), name='patient-group'),

@@ -71,8 +71,7 @@ class DoctorAccountModel(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        email = str(Account.email)
-        return email
+        return str(self.doctor.email)
 
 
 class ReferringDoctorModel(models.Model):
