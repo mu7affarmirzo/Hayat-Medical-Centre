@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "jwt-decode": "^3.1.2",
-    "material-ui-popup-state": "^4.1.0"
-  }
-}

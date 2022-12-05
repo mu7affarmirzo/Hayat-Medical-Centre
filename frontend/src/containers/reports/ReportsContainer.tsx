@@ -1,9 +1,8 @@
 import React from 'react'
+import ReportView from '../../views/ReportViews/ReportView'
 
 const ReportsContainer = () => {
-    return (
-        <div>ReportsContainer</div>
-    )
+    return <ReportView />
 }
 
 export default ReportsContainer

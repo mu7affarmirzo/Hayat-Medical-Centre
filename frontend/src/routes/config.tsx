@@ -9,6 +9,8 @@ import CashBoxContainer from "../containers/cashbox/cashBoxContainer";
 import PaymentsbyPatientsContainer from "../containers/paymentByPatients/paymentsbyPatients";
 import PaymentHistoryView from "../views/paymentHistory/paymentHistoryView";
 import ReportsContainer from "../containers/reports/ReportsContainer";
+import RegisteryVIsits from "../views/RegistryVisits";
+import RegisteredAccounts from "../views/RegisteredAccounts";
 
 type IRouting = {
     path: string;
@@ -70,6 +72,14 @@ export const RoutingData: MyGroupType = {
         {
             "path": "/reports",
             "component": <ReportsContainer />
-        }
+        },
+        {
+            "path": "/registeryVisits",
+            "component": <RegisteryVIsits />
+        },
+        {
+            "path": "/registeryAccounts",
+            "component": <RegisteredAccounts />
+        },
     ]
 };

@@ -201,8 +201,6 @@ const CreateNote = observer(() => {
                 ),
             ]);
         }
-        console.log("hayat", doctorStateKeeper.selectedDoctors.at(0));
-        console.log("hayat", medicalServiceStateKeeper.services.at(0));
     }, [
         medicalServiceStateKeeper.services,
         doctorStateKeeper.selectedDoctors.at(0),
@@ -221,35 +219,37 @@ const CreateNote = observer(() => {
                 id: Math.max(
                     ...calendarEventStateKeeper.events.map((event) => event.id)
                 ),
-                doctorId: String(doctorStateKeeper.selectedDoctors.at(0)!.id),
+                doctor: String(doctorStateKeeper.selectedDoctors.at(0)!.id),
             };
             const selectedServices = appointedServices.map((item) => {
                 const data: object = {
                     service: item.service.id,
                     quantity: item.quantity,
+                    doctor: item.service.doctor[0].id
                 };
                 return data;
             });
             calendarEventStateKeeper.addEvent(values);
-            setFormData((prev) => {
-                return {
-                    ...prev,
-                    end: values.end,
-                    start: values.start,
-                    services: selectedServices,
-                    patient: patientStateKeeper.selectedPatient?.id,
-                    name: patientStateKeeper.selectedPatient?.f_name,
-                    doctorId: doctorStateKeeper.selectedDoctors[0].doctor.id,
-                };
+            setFormData({
+                ...formData,
+                end: values.end,
+                start: values.start,
+                services: selectedServices,
+                patient: patientStateKeeper.selectedPatient?.id,
+                name: patientStateKeeper.selectedPatient?.f_name,
+                doctor: doctorStateKeeper.selectedDoctors[0].doctor.id,
             });
 
-            doctorStateKeeper.selectedDoctors.shift();
             doctorStateKeeper.setSelectedDoctors([...doctorStateKeeper.selectedDoctors]);
+            // doctorStateKeeper.selectedDoctors.shift();
             // setServices([]);
             // setAppointedServices([]);
             // setDiscount(0);
+            setTimeout(() => {
+                create_appointment(formData);
+                console.log('aapointmentsss', formData)
+            }, 3000);
         }
-        create_appointment(formData);
     };
     const create_appointment = (data) => {
         axios

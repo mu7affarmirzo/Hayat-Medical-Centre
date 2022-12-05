@@ -39,7 +39,7 @@ const Headers = () => {
         setGroupAppointment(true)
         handleClose()
     }
-    const use_cases = ['/cashbox', '/patientPayments', '/historyPayments', '/reports', '/patientSale']
+    const use_cases = ['/cashbox', '/patientPayments', '/historyPayments', '/reports', '/patientSale', "/registeryVisits", "/registeryAccounts",]
     React.useEffect(() => {
         if (use_cases.includes(location.pathname)) {
             setNavbar(CashBoxDropdowns)

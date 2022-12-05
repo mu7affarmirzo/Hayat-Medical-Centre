@@ -17,6 +17,8 @@ import { ReactComponent as Exchange } from "../assets/img/exchange-card.svg";
 import { ReactComponent as CreateNote } from "../assets/img/create-note.svg";
 import { ReactComponent as Printer } from "../assets/img/printer.svg";
 import { ReactComponent as Bookmark } from "../assets/img/bookmark.svg";
+import { ReactComponent as Checklist } from "../assets/img/checklist.svg";
+import { ReactComponent as Wallet } from "../assets/img/wallet.svg";
 
 interface INav {
     button: string;
@@ -158,16 +160,16 @@ export const CashBoxDropdowns: Array<INav> = [
                 path: "/main",
             },
             {
-                img: <FolderAdd />,
+                img: <Checklist />,
                 text: "Реестр посещений  ",
-                sideBarText: "Добавить <br> пакет",
-                path: "",
+                sideBarText: "Реестр <br/>посещений  ",
+                path: "/registeryVisits",
             },
             {
-                img: <Note />,
-                text: "Добавить группу приемов",
+                img: <Wallet />,
+                text: "Реестр счетов ",
                 sideBarText: "Реестр счетов ",
-                path: "/groupAppointment",
+                path: "/registeryAccounts",
             },
         ],
     },
