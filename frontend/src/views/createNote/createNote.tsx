@@ -46,6 +46,9 @@ const CreateNote = observer(() => {
     );
     const [patients, setPatients] = useState<IPatient[]>([]);
     const [formData, setFormData] = useState({});
+
+    // { patiend: '', name: '', status: '', exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doctor_notes: '', addition_info: '', branch: '', services: [], }
+    
     useEffect(() => {
         patientStateKeeper.findAllPatients().then();
     }, []);
