@@ -72,7 +72,7 @@ const Headers = () => {
                         }
 
                         return (
-                            <>
+                            <React.Fragment key={i} >
                                 <Button
                                     id="basic-button"
                                     aria-controls={anchorEl.index === String(i) ? 'basic-menu' : undefined}
@@ -80,7 +80,6 @@ const Headers = () => {
                                     aria-expanded={anchorEl.index === String(i) ? 'true' : undefined}
                                     onClick={(e) => handleClick(String(i), e)}
                                     className={styles.nav_item}
-                                // key={item.id}
                                 >
                                     {item.button}
                                 </Button>
@@ -126,7 +125,7 @@ const Headers = () => {
                                     }
 
                                 </Menu>
-                            </>
+                            </React.Fragment>
                         );
                     })}
                 </nav>
