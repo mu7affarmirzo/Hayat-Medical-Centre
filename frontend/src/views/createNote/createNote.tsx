@@ -24,6 +24,22 @@ import ErrorNotification from "../../store/ErrorNotification";
 import axios from "axios";
 import { ReactComponent as EkmLogo } from "../../assets/ekm.svg";
 
+interface IAppointment {
+    patient: any;
+    name: any;
+    exemtion: string;
+    start_time: any;
+    end_time: any;
+    price: string;
+    debt: string;
+    referring_doctor: string;
+    information_source: string;
+    referring_doctor_notes: string;
+    addition_info: string;
+    branch: string;
+    services: any;
+}
+
 const CreateNote = observer(() => {
     const navigator = useNavigate();
     const [openPatientsPopup, setOpenPatients] = useState<boolean | string>(
@@ -44,11 +60,15 @@ const CreateNote = observer(() => {
     const doctorStateKeeper = useLocalObservable(
         () => DoctorStateKeeper.instance
     );
-    const [patients, setPatients] = useState<IPatient[]>([]);
-    const [formData, setFormData] = useState({});
 
-    // { patiend: '', name: '', status: '', exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doctor_notes: '', addition_info: '', branch: '', services: [], }
-    
+    const [dateValue, setDateValue] = React.useState<moment.Moment | null>(
+        moment()
+    );
+    const [patients, setPatients] = useState<IPatient[]>([]);
+
+
+    // { patiend: '', name: '',  exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doctor_notes: '', addition_info: '', branch: '', services: [], }
+
     useEffect(() => {
         patientStateKeeper.findAllPatients().then();
     }, []);
@@ -172,10 +192,21 @@ const CreateNote = observer(() => {
         from: moment(),
         to: moment().add(5, "minutes"),
     });
-
-    const [dateValue, setDateValue] = React.useState<moment.Moment | null>(
-        moment()
-    );
+    const [formData, setFormData] = useState<IAppointment>({
+        patient: "",
+        name: "",
+        exemtion: "",
+        end_time: timeValue.from!.toDate(),
+        start_time: timeValue.to!.toDate(),
+        price: "",
+        debt: "",
+        referring_doctor: "",
+        information_source: "",
+        referring_doctor_notes: "",
+        addition_info: "",
+        branch: "",
+        services: [],
+    });
 
     const timeChangeHandler = (time, type) => {
         setTimeValue({ ...timeValue, [type]: time });
@@ -228,38 +259,50 @@ const CreateNote = observer(() => {
                 const data: object = {
                     service: item.service.id,
                     quantity: item.quantity,
-                    doctor: item.service.doctor[0].id
+                    doctor: item.service.doctor[0].id,
                 };
                 return data;
             });
             calendarEventStateKeeper.addEvent(values);
             setFormData({
                 ...formData,
-                end: values.end,
-                start: values.start,
+                end_time: values.end,
+                start_time: values.start,
                 services: selectedServices,
                 patient: patientStateKeeper.selectedPatient?.id,
                 name: patientStateKeeper.selectedPatient?.f_name,
-                doctor: doctorStateKeeper.selectedDoctors[0].doctor.id,
             });
 
-            doctorStateKeeper.setSelectedDoctors([...doctorStateKeeper.selectedDoctors]);
-            // doctorStateKeeper.selectedDoctors.shift();
-            // setServices([]);
-            // setAppointedServices([]);
-            // setDiscount(0);
+            doctorStateKeeper.setSelectedDoctors([
+                ...doctorStateKeeper.selectedDoctors,
+            ]);
             setTimeout(() => {
                 create_appointment(formData);
-                console.log('aapointmentsss', formData)
-            }, 3000);
+
+            }, 0);
         }
     };
     const create_appointment = (data) => {
         axios
             .post("https://back.dev-hayat.uz/api/v1/appointments/", data, headers)
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err));
+            .then((res) => {
+                if (res.status === 201) {
+                    doctorStateKeeper.selectedDoctors.shift();
+                    setServices([]);
+                    setAppointedServices([]);
+                    setDiscount(0);
+                    clear_values()
+                }
+            })
+            .catch((err) => {
+                if (err.response.status == 400) {
+
+                }
+            });
     };
+    const clear_values = () => [
+        setFormData({ patient: '', name: '', exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doctor_notes: '', addition_info: '', branch: '', services: [] })
+    ]
     useEffect(() => {
         if (doctorStateKeeper.selectedDoctors.length === 0) {
             navigator(-1);
