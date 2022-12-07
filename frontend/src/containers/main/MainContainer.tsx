@@ -63,7 +63,6 @@ const MainContainer = observer(() => {
     }, [findAllSpecialties, findAllDoctors, findAllBranches]);
     const changeSpecialty = (id: string) => {
         let filteredData;
-        console.log('doctorsCopy', doctorsCopy.map(item => item.speciality))
         if (id === "all") {
             filteredData = doctorsCopy;
         } else {
@@ -82,7 +81,6 @@ const MainContainer = observer(() => {
         } else {
             setSelectedDoctors([...selectedDoctors, data]);
         }
-        console.log(selectedDoctors);
 
     };
 

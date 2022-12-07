@@ -34,7 +34,7 @@ interface IAppointment {
     debt: string;
     referring_doctor: string;
     information_source: string;
-    referring_doctor_notes: string;
+    referring_doc_notes: string;
     addition_info: string;
     branch: string;
     services: any;
@@ -67,7 +67,7 @@ const CreateNote = observer(() => {
     const [patients, setPatients] = useState<IPatient[]>([]);
 
 
-    // { patiend: '', name: '',  exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doctor_notes: '', addition_info: '', branch: '', services: [], }
+    // { patiend: '', name: '',  exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doc_notes: '', addition_info: '', branch: '', services: [], }
 
     useEffect(() => {
         patientStateKeeper.findAllPatients().then();
@@ -202,7 +202,7 @@ const CreateNote = observer(() => {
         debt: "",
         referring_doctor: "",
         information_source: "",
-        referring_doctor_notes: "",
+        referring_doc_notes: "",
         addition_info: "",
         branch: "",
         services: [],
@@ -272,12 +272,19 @@ const CreateNote = observer(() => {
                 patient: patientStateKeeper.selectedPatient?.id,
                 name: patientStateKeeper.selectedPatient?.f_name,
             });
-
+            let data = {
+                ...formData,
+                end_time: values.end,
+                start_time: values.start,
+                services: selectedServices,
+                patient: patientStateKeeper.selectedPatient?.id,
+                name: patientStateKeeper.selectedPatient?.f_name,
+            }
             doctorStateKeeper.setSelectedDoctors([
                 ...doctorStateKeeper.selectedDoctors,
             ]);
             setTimeout(() => {
-                create_appointment(formData);
+                create_appointment(data);
 
             }, 0);
         }
@@ -292,6 +299,7 @@ const CreateNote = observer(() => {
                     setAppointedServices([]);
                     setDiscount(0);
                     clear_values()
+                    data = {}
                 }
             })
             .catch((err) => {
@@ -301,7 +309,7 @@ const CreateNote = observer(() => {
             });
     };
     const clear_values = () => [
-        setFormData({ patient: '', name: '', exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doctor_notes: '', addition_info: '', branch: '', services: [] })
+        setFormData({ patient: '', name: '', exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doc_notes: '', addition_info: '', branch: '', services: [] })
     ]
     useEffect(() => {
         if (doctorStateKeeper.selectedDoctors.length === 0) {
