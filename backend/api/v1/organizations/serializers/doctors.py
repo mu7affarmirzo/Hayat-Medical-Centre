@@ -59,14 +59,26 @@ class DoctorAccountListSerializer(serializers.ModelSerializer):
 
 class DoctorsListSerializer(serializers.ModelSerializer):
     doctor = DoctorAccountListSerializer()
+    specialty = serializers.SerializerMethodField()
 
     class Meta:
         model = DoctorAccountModel
         fields = [
             'id',
             'doctor',
+            'specialty'
         ]
         ordering = ('doctor__l_name',)
+
+    def get_specialty(self, obj):
+        specialties = {}
+        for i in obj.doc_speciality.all():
+            specialties[i.speciality.name] = {
+                "name": i.speciality.name,
+                "id": i.speciality.id,
+            }
+
+        return specialties
 
 
 class DoctorSearchSerializer(serializers.Serializer):
