@@ -589,8 +589,8 @@ const PatientsTable = observer(
                             <td className={styles.center_cel}>
                               {new Intl.NumberFormat().format(
                                 appointedService.service.cost *
-                                  appointedService.quantity *
-                                  (1 - discount / 100)
+                                appointedService.quantity *
+                                (1 - discount / 100)
                               )}{" "}
                               UZS
                             </td>
