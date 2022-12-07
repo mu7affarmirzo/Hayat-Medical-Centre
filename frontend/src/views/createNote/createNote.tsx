@@ -25,19 +25,19 @@ import axios from "axios";
 import { ReactComponent as EkmLogo } from "../../assets/ekm.svg";
 
 interface IAppointment {
-    patient: any;
-    name: any;
-    exemtion: string;
-    start_time: any;
-    end_time: any;
-    price: string;
-    debt: string;
-    referring_doctor: string;
-    information_source: string;
-    referring_doc_notes: string;
-    addition_info: string;
-    branch: string;
-    services: any;
+  patient: any;
+  name: any;
+  exemtion: string;
+  start_time: any;
+  end_time: any;
+  price: string;
+  debt: string;
+  referring_doctor: string;
+  information_source: string;
+  referring_doc_notes: string;
+  addition_info: string;
+  branch: string;
+  services: any;
 }
 
 const CreateNote = observer(() => {
@@ -66,9 +66,12 @@ const CreateNote = observer(() => {
   );
   const [patients, setPatients] = useState<IPatient[]>([]);
 
-  // { patiend: '', name: '',  exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doctor_notes: '', addition_info: '', branch: '', services: [], }
 
-    // { patiend: '', name: '',  exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doc_notes: '', addition_info: '', branch: '', services: [], }
+  // { patiend: '', name: '',  exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doc_notes: '', addition_info: '', branch: '', services: [], }
+
+  useEffect(() => {
+    patientStateKeeper.findAllPatients().then();
+  }, []);
 
   useEffect(() => {
     setPatients([...patientStateKeeper.patients]);
@@ -105,100 +108,85 @@ const CreateNote = observer(() => {
         .filter((patient) => {
           return searchFields.fullName.length
             ? searchFields.fullName
-                .toLowerCase()
-                .includes(patient.l_name.toLowerCase()) ||
-                patient.l_name
-                  .toLowerCase()
-                  .includes(searchFields.fullName.toLowerCase()) ||
-                searchFields.fullName
-                  .toLowerCase()
-                  .includes(patient.f_name.toLowerCase()) ||
-                patient.f_name
-                  .toLowerCase()
-                  .includes(searchFields.fullName.toLowerCase()) ||
-                searchFields.fullName
-                  .toLowerCase()
-                  .includes(
-                    patient.mid_name ? patient.mid_name.toLowerCase() : ""
-                  )
+              .toLowerCase()
+              .includes(patient.l_name.toLowerCase()) ||
+            patient.l_name
+              .toLowerCase()
+              .includes(searchFields.fullName.toLowerCase()) ||
+            searchFields.fullName
+              .toLowerCase()
+              .includes(patient.f_name.toLowerCase()) ||
+            patient.f_name
+              .toLowerCase()
+              .includes(searchFields.fullName.toLowerCase()) ||
+            searchFields.fullName
+              .toLowerCase()
+              .includes(
+                patient.mid_name ? patient.mid_name.toLowerCase() : ""
+              )
             : true;
         })
         .filter((patient) => {
           return searchFields.inn.length
             ? searchFields.inn
-                .toLowerCase()
-                .includes(patient.inn.toLowerCase()) ||
-                patient.inn
-                  .toLowerCase()
-                  .includes(searchFields.inn.toLowerCase())
+              .toLowerCase()
+              .includes(patient.inn.toLowerCase()) ||
+            patient.inn
+              .toLowerCase()
+              .includes(searchFields.inn.toLowerCase())
             : true;
         })
         .filter((patient) => {
           return searchFields.emcNumber.length
             ? searchFields.emcNumber
-                .toLowerCase()
-                .includes(patient.emc.name.toLowerCase()) ||
-                patient.emc.name
-                  .toLowerCase()
-                  .includes(searchFields.emcNumber.toLowerCase())
+              .toLowerCase()
+              .includes(patient.emc.name.toLowerCase()) ||
+            patient.emc.name
+              .toLowerCase()
+              .includes(searchFields.emcNumber.toLowerCase())
             : true;
         })
         .filter((patient) => {
           return searchFields.phoneNumber.length
             ? searchFields.phoneNumber
-                .toLowerCase()
-                .includes(patient.homPhoneNumber.toLowerCase()) ||
-                patient.homPhoneNumber
-                  .toLowerCase()
-                  .includes(searchFields.phoneNumber.toLowerCase()) ||
-                searchFields.phoneNumber
-                  .toLowerCase()
-                  .includes(patient.mobile_phone_number.toLowerCase()) ||
-                patient.mobile_phone_number
-                  .toLowerCase()
-                  .includes(searchFields.phoneNumber.toLowerCase())
+              .toLowerCase()
+              .includes(patient.homPhoneNumber.toLowerCase()) ||
+            patient.homPhoneNumber
+              .toLowerCase()
+              .includes(searchFields.phoneNumber.toLowerCase()) ||
+            searchFields.phoneNumber
+              .toLowerCase()
+              .includes(patient.mobile_phone_number.toLowerCase()) ||
+            patient.mobile_phone_number
+              .toLowerCase()
+              .includes(searchFields.phoneNumber.toLowerCase())
             : true;
         })
         .filter((patient) => {
           return searchFields.patientID.length
             ? searchFields.patientID
-                .toLowerCase()
-                .includes(patient.id.toString()) ||
-                patient.id.toString().includes(searchFields.patientID)
+              .toLowerCase()
+              .includes(patient.id.toString()) ||
+            patient.id.toString().includes(searchFields.patientID)
             : true;
         })
         .filter((patient) => {
           return searchFields.lastVisitAt.length
             ? searchFields.lastVisitAt
-                .toLowerCase()
-                .includes(patient.last_visit_at.toLowerCase()) ||
-                patient.last_visit_at
-                  .toLowerCase()
-                  .includes(searchFields.lastVisitAt.toLowerCase())
+              .toLowerCase()
+              .includes(patient.last_visit_at.toLowerCase()) ||
+            patient.last_visit_at
+              .toLowerCase()
+              .includes(searchFields.lastVisitAt.toLowerCase())
             : true;
         })
     );
   }, [searchFields]);
 
-    const [timeValue, setTimeValue] = React.useState<IDateValue>({
-        from: moment(),
-        to: moment().add(5, "minutes"),
-    });
-    const [formData, setFormData] = useState<IAppointment>({
-        patient: "",
-        name: "",
-        exemtion: "",
-        end_time: timeValue.from!.toDate(),
-        start_time: timeValue.to!.toDate(),
-        price: "",
-        debt: "",
-        referring_doctor: "",
-        information_source: "",
-        referring_doc_notes: "",
-        addition_info: "",
-        branch: "",
-        services: [],
-    });
+  const [discount, setDiscount] = useState<number>(0);
+  const { changeVisibilityNotification } = useLocalObservable(
+    () => ErrorNotification.instance
+  );
 
   const [timeValue, setTimeValue] = React.useState<IDateValue>({
     from: moment(),
@@ -214,7 +202,7 @@ const CreateNote = observer(() => {
     debt: "",
     referring_doctor: "",
     information_source: "",
-    referring_doctor_notes: "",
+    referring_doc_notes: "",
     addition_info: "",
     branch: "",
     services: [],
@@ -284,12 +272,20 @@ const CreateNote = observer(() => {
         patient: patientStateKeeper.selectedPatient?.id,
         name: patientStateKeeper.selectedPatient?.f_name,
       });
-
+      let data = {
+        ...formData,
+        end_time: values.end,
+        start_time: values.start,
+        services: selectedServices,
+        patient: patientStateKeeper.selectedPatient?.id,
+        name: patientStateKeeper.selectedPatient?.f_name,
+      }
       doctorStateKeeper.setSelectedDoctors([
         ...doctorStateKeeper.selectedDoctors,
       ]);
       setTimeout(() => {
-        create_appointment(formData);
+        create_appointment(data);
+
       }, 0);
     }
   };
@@ -302,94 +298,40 @@ const CreateNote = observer(() => {
           setServices([]);
           setAppointedServices([]);
           setDiscount(0);
-          clear_values();
+          clear_values()
+          data = {}
         }
-    }, [
-        medicalServiceStateKeeper.services,
-        doctorStateKeeper.selectedDoctors.at(0),
-    ]);
+      })
+      .catch((err) => {
+        if (err.response.status == 400) {
 
-    const calendarEventStateKeeper = useLocalObservable(
-        () => CalendarEventStateKeeper.instance
-    );
-
-    const handleCreateAppointmentClick = () => {
-        if (doctorStateKeeper.selectedDoctors.length) {
-            const values = {
-                end: timeValue.from!.toDate(),
-                start: timeValue.to!.toDate(),
-                title: `${patientStateKeeper.selectedPatient?.l_name} ${patientStateKeeper.selectedPatient?.f_name}`,
-                id: Math.max(
-                    ...calendarEventStateKeeper.events.map((event) => event.id)
-                ),
-                doctor: String(doctorStateKeeper.selectedDoctors.at(0)!.id),
-            };
-            const selectedServices = appointedServices.map((item) => {
-                const data: object = {
-                    service: item.service.id,
-                    quantity: item.quantity,
-                    doctor: item.service.doctor[0].id,
-                };
-                return data;
-            });
-            calendarEventStateKeeper.addEvent(values);
-            setFormData({
-                ...formData,
-                end_time: values.end,
-                start_time: values.start,
-                services: selectedServices,
-                patient: patientStateKeeper.selectedPatient?.id,
-                name: patientStateKeeper.selectedPatient?.f_name,
-            });
-            let data = {
-                ...formData,
-                end_time: values.end,
-                start_time: values.start,
-                services: selectedServices,
-                patient: patientStateKeeper.selectedPatient?.id,
-                name: patientStateKeeper.selectedPatient?.f_name,
-            }
-            doctorStateKeeper.setSelectedDoctors([
-                ...doctorStateKeeper.selectedDoctors,
-            ]);
-            setTimeout(() => {
-                create_appointment(data);
-
-            }, 0);
         }
-    };
-    const create_appointment = (data) => {
-        axios
-            .post("https://back.dev-hayat.uz/api/v1/appointments/", data, headers)
-            .then((res) => {
-                if (res.status === 201) {
-                    doctorStateKeeper.selectedDoctors.shift();
-                    setServices([]);
-                    setAppointedServices([]);
-                    setDiscount(0);
-                    clear_values()
-                    data = {}
-                }
-            })
-            .catch((err) => {
-                if (err.response.status == 400) {
+      });
+  };
+  const clear_values = () => [
+    setFormData({ patient: '', name: '', exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doc_notes: '', addition_info: '', branch: '', services: [] })
+  ]
+  useEffect(() => {
+    if (doctorStateKeeper.selectedDoctors.length === 0) {
+      navigator(-1);
+      if (!patientStateKeeper.selectedPatient) {
+        changeVisibilityNotification(true);
+      } else if (Object.keys(patientStateKeeper.selectedPatient).length > 0) {
+        patientStateKeeper.setSelectedPatient(null);
+      }
+    }
+  }, [doctorStateKeeper.selectedDoctors]);
 
-                }
-            });
-    };
-    const clear_values = () => [
-        setFormData({ patient: '', name: '', exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doc_notes: '', addition_info: '', branch: '', services: [] })
-    ]
-    useEffect(() => {
-        if (doctorStateKeeper.selectedDoctors.length === 0) {
-            navigator(-1);
-            if (!patientStateKeeper.selectedPatient) {
-                changeVisibilityNotification(true);
-            } else if (Object.keys(patientStateKeeper.selectedPatient).length > 0) {
-                patientStateKeeper.setSelectedPatient(null);
-            }
-        }
-    }, [doctorStateKeeper.selectedDoctors]);
+  return (
+    <div className={styles.create_note}>
+      <FlexSpaceBetween className={styles.top_block}>
+        <Link to="/main" className={styles.return_back}>
+          <img src={ArrowCircle} alt="ArrowCircle" />
+          <p>
+            Запись на прием -{" "}
+            {doctorStateKeeper.selectedDoctors.at(0)?.doctor.f_name}
+          </p>
+        </Link>
 
         <div className={styles.buttons}>
           <Button
