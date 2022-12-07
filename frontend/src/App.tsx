@@ -10,7 +10,7 @@ function App() {
         <BrowserRouter>
             <LocalizationProvider dateAdapter={AdapterMoment}>
                 <AppRouting/>
-                <AuthVerify />z
+                <AuthVerify />
             </LocalizationProvider>
         </BrowserRouter>
     );
