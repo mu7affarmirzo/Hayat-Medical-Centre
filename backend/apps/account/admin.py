@@ -1,7 +1,7 @@
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 from apps.account.models import (
-    accounts, organizations, roles_permissions, patients, specialities, appointments
+    accounts, organizations, roles_permissions, patients, specialities, appointments, attandance
 )
 
 
@@ -74,3 +74,6 @@ class DoctorSpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
                     'speciality', 'speciality_id')
 
 
+@admin.register(attandance.AttendanceModel)
+class AttendanceAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('created_at', 'staff', 'is_at_work')

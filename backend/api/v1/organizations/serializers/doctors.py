@@ -60,13 +60,15 @@ class DoctorAccountListSerializer(serializers.ModelSerializer):
 class DoctorsListSerializer(serializers.ModelSerializer):
     doctor = DoctorAccountListSerializer()
     specialty = serializers.SerializerMethodField()
+    is_at_work = serializers.SerializerMethodField()
 
     class Meta:
         model = DoctorAccountModel
         fields = [
             'id',
             'doctor',
-            'specialty'
+            'specialty',
+            'is_at_work'
         ]
         ordering = ('doctor__l_name',)
 
@@ -79,6 +81,9 @@ class DoctorsListSerializer(serializers.ModelSerializer):
             }
 
         return specialties
+
+    def get_is_at_work(self, obj):
+        return obj.doctor.attendance.first().is_at_work
 
 
 class DoctorSearchSerializer(serializers.Serializer):
