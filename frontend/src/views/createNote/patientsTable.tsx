@@ -19,8 +19,7 @@ import { ReactComponent as CloseCircle } from "../../assets/img/close-circle.svg
 import { ReactComponent as AddCircle } from "../../assets/img/add-circle.svg";
 import moment from "moment/moment";
 import { IDateValue, IMedicalService } from "../../consts/types";
-import { observer, useLocalObservable } from "mobx-react-lite";
-import { DoctorStateKeeper } from "../../store";
+import { observer } from "mobx-react-lite";
 
 const PatientsTable = observer(
   ({
@@ -59,9 +58,6 @@ const PatientsTable = observer(
     >;
   }) => {
     //
-    const doctorStateKeeper = useLocalObservable(
-      () => DoctorStateKeeper.instance
-    );
     const [serviceSearchText, setServiceSearchText] = useState<string>("");
 
     const handleChangeInput = (event) => {

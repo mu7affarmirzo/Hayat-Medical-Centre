@@ -47,7 +47,6 @@ class CalendarEventStateKeeper {
 
   async findAllAppointments(): Promise<IEvent[]> {
     const appointments = await this.calendarEventApiStub.findAllAppointments();
-    console.log("appointments", appointments);
 
     runInAction(() => {
       if (this.events.length < appointments.length) {

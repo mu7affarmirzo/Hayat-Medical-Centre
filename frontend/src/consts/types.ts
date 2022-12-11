@@ -36,6 +36,7 @@ export interface IDoc {
   organization: number;
   speciality: number;
   specialty_name: string;
+  specialty: any;
 }
 export interface IDoctor {
   branch_id: number;
@@ -50,6 +51,7 @@ export interface IDoctor {
   active?: boolean;
   sex: boolean;
   username: string;
+  specialty?: any;
 }
 export interface IEvent {
   end: Date;

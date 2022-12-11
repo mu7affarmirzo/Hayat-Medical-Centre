@@ -188,7 +188,7 @@ const MainView = observer((
                                                     {doctor.doctor?.f_name ?? doctor.doctor.username}
                                                 </div>
                                                 <div className={styles.cell}>
-                                                    {doctor.specialty_name}
+                                                    {doctor.specialty[0]?.name}
                                                 </div>
                                                 <div className={styles.cell}>
                                                     {doctor.doctor.phone_number}
