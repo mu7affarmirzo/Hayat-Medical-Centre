@@ -83,7 +83,10 @@ class DoctorsListSerializer(serializers.ModelSerializer):
         return specialties
 
     def get_is_at_work(self, obj):
-        return obj.doctor.attendance.first().is_at_work
+        if obj.doctor.attendance.first().is_at_work is not None:
+            return obj.doctor.attendance.first().is_at_work
+        else:
+            return False
 
 
 class DoctorSearchSerializer(serializers.Serializer):
