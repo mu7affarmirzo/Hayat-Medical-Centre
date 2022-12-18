@@ -73,12 +73,12 @@ class DoctorsListSerializer(serializers.ModelSerializer):
         ordering = ('doctor__l_name',)
 
     def get_specialty(self, obj):
-        specialties = {}
+        specialties = []
         for i in obj.doc_speciality.all():
-            specialties[i.speciality.name] = {
+            specialties.append({
                 "name": i.speciality.name,
                 "id": i.speciality.id,
-            }
+            })
 
         return specialties
 
