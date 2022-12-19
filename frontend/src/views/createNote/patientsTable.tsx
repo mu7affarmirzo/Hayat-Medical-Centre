@@ -19,8 +19,7 @@ import { ReactComponent as CloseCircle } from "../../assets/img/close-circle.svg
 import { ReactComponent as AddCircle } from "../../assets/img/add-circle.svg";
 import moment from "moment/moment";
 import { IDateValue, IMedicalService } from "../../consts/types";
-import { observer, useLocalObservable } from "mobx-react-lite";
-import { DoctorStateKeeper } from "../../store";
+import { observer } from "mobx-react-lite";
 
 const referring_doctor = [
   { "name": "Sardor Akbarov", "id": 1 },
@@ -64,9 +63,6 @@ const PatientsTable = observer(
     >;
   }) => {
     //
-    const doctorStateKeeper = useLocalObservable(
-      () => DoctorStateKeeper.instance
-    );
     const [serviceSearchText, setServiceSearchText] = useState<string>("");
 
     const handleChangeInput = (event) => {
@@ -589,8 +585,8 @@ const PatientsTable = observer(
                             <td className={styles.center_cel}>
                               {new Intl.NumberFormat().format(
                                 appointedService.service.cost *
-                                  appointedService.quantity *
-                                  (1 - discount / 100)
+                                appointedService.quantity *
+                                (1 - discount / 100)
                               )}{" "}
                               UZS
                             </td>
