@@ -19,6 +19,8 @@ class CalendarEventStateKeeper {
 
   changeViewFunctions: Array<any> = [];
 
+  calendarView: number = 0;
+
   constructor(
     calendarEventApiStub: CalendarEventApiStub = CalendarEventApiStub.instance
   ) {
@@ -29,6 +31,10 @@ class CalendarEventStateKeeper {
   addEvent(data: IEvent) {
     this.events.push(data);
     this.eventsCopy = this.events;
+  }
+
+  setCalendarView(key: number) {
+    this.calendarView = key;
   }
 
   filterEventByDoctorId(id: string) {

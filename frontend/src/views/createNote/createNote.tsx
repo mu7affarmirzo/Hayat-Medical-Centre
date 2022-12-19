@@ -321,14 +321,14 @@ const CreateNote = observer(() => {
             }
         }
     }, [doctorStateKeeper.selectedDoctors]);
-
     return (
         <div className={styles.create_note}>
             <FlexSpaceBetween className={styles.top_block}>
-                <Link to="/main" className={styles.return_back}>
+                <Link to="/main" onClick={() => patientStateKeeper.setSelectedPatient(null)} className={styles.return_back}>
                     <img src={ArrowCircle} alt="ArrowCircle" />
                     <p>
                         Запись на прием -{" "}
+                        {doctorStateKeeper.selectedDoctors.at(0)?.specialty.map(item => item.name).join()}{" - "}
                         {doctorStateKeeper.selectedDoctors.at(0)?.doctor.f_name}
                     </p>
                 </Link>

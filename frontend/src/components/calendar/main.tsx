@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {Calendar, momentLocalizer} from 'react-big-calendar'
 import moment from "moment";
 import {observer, useLocalObservable} from "mobx-react-lite";
@@ -8,12 +8,13 @@ import CustomWeekView from "./customWeekView";
 import CustomMonthView from "./customMonthView";
 import CustomDayView from "./customDayView";
 import DoctorStateKeeper from "../../store/DoctorStateKeeper";
-import styles from "./calendar.module.scss";
 
-const CalendarMain = observer(() => {
+const CalendarMain = observer((
+
+) => {
 
     const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
-    const {eventsCopy, findAllAppointments, filterEventByDoctorId} = calendarEventsStateKeeper;
+    const { findAllAppointments, filterEventByDoctorId, calendarView } = calendarEventsStateKeeper;
 
     const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
     const {selectedDoctors} = doctorStateKeeper;
@@ -40,7 +41,6 @@ const CalendarMain = observer(() => {
             day: 'день',
         },
     }), []);
-
     useEffect(() => {
         findAllAppointments().then();
     }, [findAllAppointments]);
@@ -51,27 +51,24 @@ const CalendarMain = observer(() => {
             <div style={{
                 display: "flex",
                 height: "100%",
-                width: selectedDoctors.length + "00%",
+                width: "100%",
 
             }}>
                 {
-                    selectedDoctors.map(item => {
-                        return(
-                            <Calendar
-                                // @ts-ignore
-                                components={components}
-                                events={filterEventByDoctorId(String(item.doctor.id))}
-                                localizer={mLocalizer}
-                                startAccessor="end"
-                                endAccessor="end"
-                                // @ts-ignore
-                                views={views}
-                                className="calendar_block"
-                                messages={messages}
-                                style={{ width: "1110px" }}
-                            />
-                        )
-                    })
+                    selectedDoctors.length > 0 &&
+                    <Calendar
+                        // @ts-ignore
+                        components={components}
+                        events={filterEventByDoctorId(String(selectedDoctors[calendarView].doctor.id))}
+                        localizer={mLocalizer}
+                        startAccessor="end"
+                        endAccessor="end"
+                        // @ts-ignore
+                        views={views}
+                        className="calendar_block"
+                        messages={messages}
+                        style={{ width: "1110px" }}
+                    />
                 }
             </div>
 

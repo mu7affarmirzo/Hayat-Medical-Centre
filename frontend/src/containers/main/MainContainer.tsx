@@ -66,7 +66,7 @@ const MainContainer = observer(() => {
         if (id === "all") {
             filteredData = doctorsCopy;
         } else {
-            filteredData = doctorsCopy.filter((item) => item.speciality === parseInt(id));
+            filteredData = doctorsCopy.filter((item) => item.specialty[0].id === id);
         }
         setDoctorsData(filteredData);
     };

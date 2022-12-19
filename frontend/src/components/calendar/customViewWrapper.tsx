@@ -2,20 +2,22 @@ import React, {useEffect} from 'react';
 import {Typography} from "@mui/material";
 import {useLocalObservable} from "mobx-react-lite";
 import DoctorStateKeeper from "../../store/DoctorStateKeeper";
+import { CalendarEventStateKeeper } from '../../store';
 
 const CustomViewWrapper = ({children}) => {
     const doctorStateKeeper = useLocalObservable(() => DoctorStateKeeper.instance);
-    const {selectedDoctors, setSelectedDoctor} = doctorStateKeeper;
-    console.log(selectedDoctors, "selectedDoctors")
+    const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
+    const { selectedDoctors } = doctorStateKeeper;
+    const { calendarView } = calendarEventsStateKeeper;
 
     useEffect(() => {
         document.querySelectorAll("#container_calendar #calendar_title").forEach((item, index) => {
             if(item){
-                const { doctor, specialty_name } = selectedDoctors[index];
-                item.textContent = `${specialty_name} - ${doctor.f_name}`
+                const { doctor, specialty } = selectedDoctors[calendarView];
+                item.textContent = `${specialty?.map(item => item.name).join()} - ${doctor.f_name}`
             }
         })
-    }, [selectedDoctors])
+    }, [selectedDoctors, calendarView])
 
     return (
         <div

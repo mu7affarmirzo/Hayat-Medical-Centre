@@ -34,8 +34,9 @@ export interface IDoc {
   modified_at: string;
   modified_by: number;
   organization: number;
-  speciality: number;
+  specialty: ISpeciality[];
   specialty_name: string;
+  is_at_work: boolean;
 }
 export interface IDoctor {
   branch_id: number;

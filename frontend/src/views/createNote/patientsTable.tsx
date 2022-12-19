@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./index.module.scss";
 import {
   Autocomplete,
+  AutocompleteValue,
   Button,
   Checkbox,
   FormControl,
@@ -14,13 +15,17 @@ import {
 } from "@mui/material";
 import { DesktopDatePicker, TimePicker } from "@mui/x-date-pickers";
 import CurrencyInput from "react-currency-input-field";
-import { FlexSpaceBetween } from "../../themes/customItems";
 import { ReactComponent as CloseCircle } from "../../assets/img/close-circle.svg";
 import { ReactComponent as AddCircle } from "../../assets/img/add-circle.svg";
 import moment from "moment/moment";
 import { IDateValue, IMedicalService } from "../../consts/types";
 import { observer, useLocalObservable } from "mobx-react-lite";
 import { DoctorStateKeeper } from "../../store";
+
+const referring_doctor = [
+  { "name": "Sardor Akbarov", "id": 1 },
+  { "name": "Sardor Akbarov", "id": 1 }
+]
 
 const PatientsTable = observer(
   ({
@@ -101,13 +106,9 @@ const PatientsTable = observer(
                         },
                       ]}
                     >
-                      Без скидок
                     </InputLabel>
                     <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
                       value={discount}
-                      label="Без скидок"
                       name="exemption"
                       onChange={(e) => {
                         setDiscount(e.target.value as number);
@@ -138,7 +139,6 @@ const PatientsTable = observer(
                   </p>
 
                   <DesktopDatePicker
-                    label="Выберете дату"
                     inputFormat="DD/MM/YYYY"
                     className={styles.input_block}
                     value={dateValue}
@@ -167,7 +167,6 @@ const PatientsTable = observer(
                   </p>
 
                   <TimePicker
-                    label="Time"
                     value={timeValue.from}
                     className={styles.input_block}
                     onChange={(newValue) => timeChangeHandler(newValue, "from")}
@@ -187,7 +186,6 @@ const PatientsTable = observer(
                   </p>
 
                   <TimePicker
-                    label="Time"
                     value={timeValue.to}
                     className={styles.input_block}
                     onChange={(newValue) => timeChangeHandler(newValue, "to")}
@@ -279,20 +277,20 @@ const PatientsTable = observer(
                   sx={{ width: "282px" }}
                   value={formData.referring_doctor}
                   id="combo-box-demo"
-                  onChange={(e, v) =>
-                    setFormData({ ...formData, referring_doctor: v?.value })
-                  }
-                  options={[
+                  // getOptionLabel={(item: { name: string, id: number }) => item.name}
+                  onChange={(_e, v) =>
+                    setFormData({ ...formData, referring_doctor: v?.id })
+                  } options={[
                     {
-                      label: "test3",
+                      label: "1",
                       value: 1,
                     },
                     {
-                      label: "test4",
+                      label: "2",
                       value: 2,
                     },
                     {
-                      label: "test5",
+                      label: "3",
                       value: 3,
                     },
                   ]}
@@ -302,7 +300,6 @@ const PatientsTable = observer(
                     <TextField
                       name="referring_doctor"
                       {...params}
-                      label="Выберите направление"
                       InputLabelProps={{
                         sx: [
                           {
@@ -351,7 +348,6 @@ const PatientsTable = observer(
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Выберите источники"
                       name="information_source"
                       InputLabelProps={{
                         sx: [
@@ -374,11 +370,13 @@ const PatientsTable = observer(
               <div className={styles.table_row}>
                 <p className={styles.row_title}>Коммент нап врача</p>
 
-                <OutlinedInput
+                <TextField
                   onChange={handleChangeInput}
                   name="referring_doc_notes"
                   value={formData.referring_doc_notes}
-                  className={styles.input_block}
+                  className={styles.input_block} 
+                  multiline
+                  rows={4}
                   sx={{ width: "282px" }}
                 />
               </div>
@@ -386,10 +384,12 @@ const PatientsTable = observer(
               <div className={styles.table_row}>
                 <p className={styles.row_title}>Доп. информация</p>
 
-                <OutlinedInput
+                <TextField
                   onChange={handleChangeInput}
                   name="addition_info"
                   value={formData.addition_info}
+                  multiline
+                  rows={4}
                   className={styles.input_block}
                   sx={{ width: "282px" }}
                 />
@@ -404,7 +404,7 @@ const PatientsTable = observer(
                 sx={{ width: "339px" }}
               />
             </div>
-
+            {/*
             <div className={styles.table_row}>
               <Button variant="outlined" className={styles.button_white}>
                 Допольнительно
@@ -537,7 +537,7 @@ const PatientsTable = observer(
                   className={styles.checkbox_block}
                 />
               </div>
-            </div>
+            </div> */}
           </div>
           <div className={styles.right_table}>
             <div className={styles.table_title}>Услуги</div>

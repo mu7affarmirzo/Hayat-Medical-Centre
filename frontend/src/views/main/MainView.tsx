@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styles from "./index.module.scss";
 import ToolBoxTop from "../../components/registrationToolBlocks/main";
-import {Alert, Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select, Snackbar} from "@mui/material";
+import { Alert, Box, Button, ButtonGroup, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select, Snackbar } from "@mui/material";
 import {ReactComponent as SearchNormal} from "../../assets/img/search-normal.svg"
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalendarMain from "../../components/calendar/main";
@@ -61,14 +61,18 @@ const MainView = observer((
 
     ];
     const calendarEventsStateKeeper = useLocalObservable(() => CalendarEventStateKeeper.instance);
-    const {changeViewFunctions} = calendarEventsStateKeeper;
+    const { changeViewFunctions, calendarView, setCalendarView } = calendarEventsStateKeeper;
 
     const [active, setActive] = useState<string>("month");
+    // const [calendarView, setCalendarView] = useState<number>(0);
 
     const changeView = (type: string) => {
         setActive(type);
         console.log(type, "changeView")
         changeViewFunctions.forEach(item => item(type))
+    }
+    const changeCalendar = (type: number) => {
+        setCalendarView(type);
     }
 
     const convertDate = () => {
@@ -188,14 +192,14 @@ const MainView = observer((
                                                     {doctor.doctor?.f_name ?? doctor.doctor.username}
                                                 </div>
                                                 <div className={styles.cell}>
-                                                    {doctor.specialty_name}
+                                                    {doctor.specialty?.map(item => item.name).join()}
                                                 </div>
                                                 <div className={styles.cell}>
                                                     {doctor.doctor.phone_number}
                                                 </div>
                                                 <div className={styles.cell}>
                                                     <div
-                                                        className={`${styles.status_block} ${doctor.doctor?.active ? "" : styles.not_active}`}></div>
+                                                        className={`${styles.status_block} ${doctor?.is_at_work ? "" : styles.not_active}`}></div>
                                                 </div>
                                             </div>
                                         )
@@ -209,7 +213,19 @@ const MainView = observer((
                             selectedDoctors.length > 0 &&
 
                             <div className={styles.toolbar}>
-                                <div className={styles.button_now}>Сегодня</div>
+                                    {/* <div className={styles.button_now}>Сегодня</div> */}
+                                    <div className={`month_buttons_block ${styles.buttons_change}`}>
+                                        {
+                                            selectedDoctors.map((doctor, index) => (
+                                                <div
+                                                    key={index}
+                                                    className={`month_buttons ${styles.button_item}  ${calendarView == index ? `month_button_active ${styles.active}` : ''} `}
+                                                    onClick={() => changeCalendar(index)}
+                                                >{doctor.doctor.f_name}
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
                                 <p className={styles.now_day}> {convertDate()}</p>
 
                                 <div className={`month_buttons_block ${styles.buttons_change}`}>
@@ -227,7 +243,7 @@ const MainView = observer((
                             </div>
                         }
                         <div className={styles.calendar_main}>
-                            <CalendarMain/>
+                            <CalendarMain />
                         </div>
                     </div>
                 </div>
