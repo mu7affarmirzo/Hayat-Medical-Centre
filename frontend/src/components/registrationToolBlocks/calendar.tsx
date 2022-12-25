@@ -9,7 +9,7 @@ import { ReactComponent as Printer } from "../../assets/img/printer.svg";
 import { ReactComponent as CalendarRemove } from "../../assets/img/calendar-remove.svg";
 import styles from "./toolboxs.module.scss";
 import parse from 'html-react-parser';
-import { Button } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Link } from "react-router-dom";
 import Modal from '../Modal';
@@ -73,6 +73,8 @@ const Calendar = () => {
         }
     }
 
+    const [interval, setInterVal] = React.useState('');
+
 
     return (
         <div className={styles.calendar}>
@@ -94,14 +96,23 @@ const Calendar = () => {
                     ))}
                 </div>
                 <div className={styles.calendar_block}>
-                    <div className={styles.calendar_wrapper}>
-                        <div className={styles.left}>
-                            <p className={styles.name}>Интервал</p>
-                            <p className={styles.days}>20.06.2022 - 05.08.2022</p>
-                        </div>
-
-                        <ArrowDropDownIcon sx={{ fill: "rgba(0, 0, 0, 0.54)" }} />
-                    </div>
+                    <Box sx={{ minWidth: 120 }}>
+                        <FormControl fullWidth >
+                            <InputLabel id="demo-simple-select-label">Интервал</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                defaultValue={'10'}
+                                value={interval}
+                                label="Интервал"
+                                onChange={(event: SelectChangeEvent) => setInterVal(event.target.value as string)}
+                            >
+                                <MenuItem value={10}>10 мин</MenuItem>
+                                <MenuItem value={20}>20 мин</MenuItem>
+                                <MenuItem value={30}>30 мин</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
                 </div>
             </div>
 

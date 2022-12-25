@@ -8,9 +8,9 @@ import AuthVerify from './components/AuthVerify';
 function App() {
     return (
         <BrowserRouter>
+            <AuthVerify />
             <LocalizationProvider dateAdapter={AdapterMoment}>
-                <AppRouting/>
-                <AuthVerify />
+                <AppRouting />
             </LocalizationProvider>
         </BrowserRouter>
     );

@@ -67,7 +67,6 @@ const CreateNote = observer(() => {
   const [patients, setPatients] = useState<IPatient[]>([]);
 
 
-  // { patiend: '', name: '',  exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doc_notes: '', addition_info: '', branch: '', services: [], }
 
   useEffect(() => {
     patientStateKeeper.findAllPatients().then();

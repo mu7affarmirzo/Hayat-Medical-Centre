@@ -11,10 +11,10 @@ const CustomViewWrapper = ({children}) => {
     const { calendarView } = calendarEventsStateKeeper;
 
     useEffect(() => {
-        document.querySelectorAll("#container_calendar #calendar_title").forEach((item, index) => {
+        document.querySelectorAll("#container_calendar #calendar_title").forEach((item) => {
             if(item){
                 const { doctor, specialty } = selectedDoctors[calendarView];
-                item.textContent = `${specialty?.map(item => item.name).join()} - ${doctor.f_name}`
+                item.textContent = `${specialty?.map(item => item.name).join()} - ${doctor.f_name ?? doctor.username}`
             }
         })
     }, [selectedDoctors, calendarView])

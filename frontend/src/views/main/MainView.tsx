@@ -221,7 +221,7 @@ const MainView = observer((
                                                     key={index}
                                                     className={`month_buttons ${styles.button_item}  ${calendarView == index ? `month_button_active ${styles.active}` : ''} `}
                                                     onClick={() => changeCalendar(index)}
-                                                >{doctor.doctor.f_name}
+                                                >{doctor.doctor.f_name ?? doctor.doctor.username}
                                                 </div>
                                             ))
                                         }
