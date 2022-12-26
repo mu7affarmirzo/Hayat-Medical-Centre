@@ -37,6 +37,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'addition_info',
             'branch',
             'services'
+            'doctor'
         ]
 
 
@@ -61,6 +62,7 @@ class AppointmentCreateSerializer(serializers.ModelSerializer):
                   'addition_info',
                   'branch',
                   'services',
+                  'doctor'
                   ]
 
     # def get_days_since_joined(self, validated_data):
