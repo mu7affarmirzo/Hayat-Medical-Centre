@@ -1,0 +1,9 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: row !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.inputHolder:not(:last-child,:first-child){
+    margin: 10px 5px;
+}

@@ -6,8 +6,6 @@ import { ReactComponent as ProfileUser } from "../assets/img/header_icons/profil
 import { ReactComponent as Moneys } from "../assets/img/header_icons/moneys.svg";
 import { ReactComponent as ProfileMoney } from "../assets/img/header_icons/profile-money.svg";
 import { ReactComponent as LockArrow } from "../assets/img/header_icons/lock.svg";
-import { ReactComponent as Bill } from "../assets/img/header_icons/bill.svg";
-import { ReactComponent as MoneyTime } from "../assets/img/header_icons/money-time.svg";
 import { ReactComponent as ClipboardClose } from "../assets/img/header_icons/clipboard-close.svg";
 import { ReactComponent as People } from "../assets/img/header_icons/people.svg";
 import { ReactComponent as Clients } from "../assets/img/header_icons/clients.svg";
@@ -126,7 +124,7 @@ export const NavBarDropdowns: Array<INav> = [
             {
                 img: <People />,
                 text: "Слияние пациентов",
-                path: "",
+                path: "/merge-patients",
             },
         ],
     },

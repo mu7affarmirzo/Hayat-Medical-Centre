@@ -11,6 +11,7 @@ import PaymentHistoryView from "../views/paymentHistory/paymentHistoryView";
 import ReportsContainer from "../containers/reports/ReportsContainer";
 import RegisteryVIsits from "../views/RegistryVisits";
 import RegisteredAccounts from "../views/RegisteredAccounts";
+import MergePatientsView from "../views/mergePatients/mergePatients";
 
 type IRouting = {
     path: string;
@@ -80,6 +81,10 @@ export const RoutingData: MyGroupType = {
         {
             "path": "/registeryAccounts",
             "component": <RegisteredAccounts />
+        },
+        {
+            "path": "/merge-patients",
+            "component": <MergePatientsView />
         },
     ]
 };

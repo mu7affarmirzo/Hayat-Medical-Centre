@@ -1,0 +1,82 @@
+.wrapper {
+  padding: 20px;
+  width: 100%;
+}
+.table {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tableBody {
+  border-collapse: collapse;
+  width: 100%;
+  thead {
+    th {
+      background: #64b6f7;
+    }
+  }
+  td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 326px;
+  }
+  th,
+  td {
+    border: 1px solid rgba(0, 0, 0, 0.199);
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgba(0, 0, 0, 0.87);
+    padding: 10px;
+    text-align: left;
+  }
+}
+.table {
+  min-height: 300px;
+}
+.clonedPatientsWrapper {
+}
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-top: 10px;
+  button {
+    margin-left: 10px;
+  }
+  button svg {
+    margin-right: 8px;
+  }
+}
+.secondaryButton {
+  color: rgba(0, 0, 0, 0.54) !important;
+  border-color: rgba(0, 0, 0, 0.54) !important;
+}
+.sortingActions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-direction: row !important;
+  justify-content: space-between;
+  width: 100%;
+}
+.radioWrapper {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 85%;
+  margin-top: 5px;
+  padding: 5px;
+  justify-content: space-between;
+}
+.tableHeading {
+  margin: 10px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+  color: #000000;
+}
