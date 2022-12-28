@@ -10,6 +10,7 @@ const DirectoryContainer = observer(() => {
     );
 
     const [patients, setPatients] = React.useState<IPatient[]>([]);
+    const { filteredPatients } = patientStateKeeper
 
     React.useEffect(() => {
         patientStateKeeper.findAllPatients().then();
@@ -19,7 +20,7 @@ const DirectoryContainer = observer(() => {
         setPatients([...patientStateKeeper.patients]);
     }, [patientStateKeeper.patients]);
 
-    return <PatientsDirectory patients={patients} />;
+    return <PatientsDirectory patients={patients} filteredPatients={filteredPatients} />;
 });
 
 export default DirectoryContainer;

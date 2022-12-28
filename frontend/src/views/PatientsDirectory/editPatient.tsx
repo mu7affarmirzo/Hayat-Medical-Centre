@@ -80,18 +80,7 @@ const EditPatient = () => {
   };
 
   const post_patient = () => {
-    axios
-      .put(
-        "https://back.dev-hayat.uz/api/v1/organizations/patients/",
-        state,
-        headers
-      )
-      .then((res) => {
-        if (res.status === 201) {
-          handleOpenNotification();
-        }
-      })
-      .catch((err) => console.log(err));
+   
   };
 
   React.useEffect(() => {

@@ -88,16 +88,6 @@ export const NavBarDropdowns: Array<INav> = [
                 path: "/historyPayments",
             },
             {
-                img: <Bill />,
-                text: "Мемордера",
-                path: "",
-            },
-            {
-                img: <MoneyTime />,
-                text: "Должники",
-                path: "",
-            },
-            {
                 img: <ClipboardClose />,
                 text: "Быстрая запись",
                 path: "",
@@ -105,9 +95,9 @@ export const NavBarDropdowns: Array<INav> = [
             },
         ],
     },
-    {
-        button: "Стационар",
-    },
+    // {
+    //     button: "Стационар",
+    // },
     {
         button: "Справочники",
         title: "Справочники",
@@ -141,11 +131,11 @@ export const NavBarDropdowns: Array<INav> = [
         ],
     },
     {
-        button: "Телефония",
+        button: "Настройки",
     },
-    {
-        button: "Телефония",
-    },
+        // {
+        //     button: "Телефония",
+        // },
 ];
 export const CashBoxDropdowns: Array<INav> = [
     {

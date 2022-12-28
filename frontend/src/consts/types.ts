@@ -78,7 +78,7 @@ export interface IAppointment {
   services: [];
   start_time: string;
   status: string;
-  id?: number;
+  id: number;
   doctorId?: string;
 }
 
@@ -103,7 +103,7 @@ export interface IPatient {
   emc: IEMC;
   date_of_birth: string;
   created_at: string;
-  sex: string
+  sex: string;
 }
 
 export interface IMedicalService {
@@ -122,4 +122,46 @@ export interface IBranch {
   name: string;
   id: number;
   organization: number;
+}
+
+export interface ITransaction {
+  payment_time: string;
+  doctor: IDoctor;
+  speacialty: ISpeciality;
+  service: IMedicalService;
+  payment_type: string;
+  patient: IPatient;
+  note: string;
+  base_price: number;
+  paid_amount: number;
+  bank_name: string;
+  type: string;
+  payment_purpose: string;
+  direction_of_payment: string;
+  cheque: string;
+  id: number;
+}
+export interface IPayment {
+  receipt_id: number;
+  patient: IPatient;
+  doctor: IDoctor;
+  sevice: IMedicalService;
+  service_date: string;
+  debt: number;
+  price: number;
+  discount: number;
+  branch: IBranch;
+  referring_doctor: any;
+}
+export interface IPaymentProcess {
+  receipt_id: number;
+  payment_type: string;
+  is_manual: boolean;
+  status: string;
+  notes: string;
+  referring_doctor_id: number;
+  apointment_services: IMedicalService[];
+}
+export interface IReports {
+  name: string;
 }

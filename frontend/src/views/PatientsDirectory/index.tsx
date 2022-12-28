@@ -18,45 +18,38 @@ import {
 } from "../../consts/patientsDirectory";
 import { IPatient } from "../../consts/types";
 import useDebounce from "../../hooks/useDebounce";
-import { AuthorizationStateKeeper } from "../../store";
+import { AuthorizationStateKeeper, PatientStateKeeper } from "../../store";
 import classes from "./patientsDirectory.module.scss";
 
 const PatientsDirectory = observer(
-  ({ patients }: { patients: Array<IPatient> }) => {
+  ({
+    patients,
+    filteredPatients
+  }: {
+    patients: Array<IPatient>,
+    filteredPatients: Array<IPatient>
+  }) => {
     const [searchedValue, setSearchedValue] = React.useState<string>("");
     const [age, setAge] = React.useState(["", ""]);
     const [active, setactive] = React.useState<object[]>([]);
     const [selected, setSelected] = React.useState<string>("0");
     const navigate = useNavigate();
     const debouncedValue = useDebounce<string>(searchedValue, 500);
-    const [searchResult, setSearchResult] = React.useState<IPatient[]>([]);
-    const authorizationStateKeeper = useLocalObservable(
-      () => AuthorizationStateKeeper.instance
+
+    const patientStateKeeper = useLocalObservable(
+      () => PatientStateKeeper.instance
     );
-    const token = authorizationStateKeeper.token;
+
+    const { searchPatients } = patientStateKeeper;
 
     React.useEffect(() => {
       if (searchedValue.length > 0) {
-        searchHandler();
+        searchPatients(searchedValue).then();
+
       }
     }, [debouncedValue]);
 
-    const searchHandler = () => {
-      axios
-        .get(
-          `https://back.dev-hayat.uz/api/v1/organizations/patients-search/`,
-          {
-            headers: {
-              Authorazition: "Bearer " + JSON.parse(token).access,
-            },
-            params: {
-              f_name: searchedValue,
-            },
-          }
-        )
-        .then((response) => setSearchResult(response.data))
-        .catch((err) => console.log(err));
-    };
+ 
 
     const handleChange = (event: SelectChangeEvent) => {
       setAge([...age, event.target.value]);
@@ -82,7 +75,7 @@ const PatientsDirectory = observer(
           }
           break;
         case "remove":
-          alert(JSON.stringify(active));
+          alert(JSON.stringify(selected));
           break;
 
         default:
@@ -155,7 +148,7 @@ const PatientsDirectory = observer(
             )
           )}
         </nav>
-        {searchResult.length < 0 && (
+        {filteredPatients.length > 0 && (
           <div className={classes.patientsList}>
             <table className={classes.table}>
               <thead className={classes.tableHead}>
@@ -176,7 +169,7 @@ const PatientsDirectory = observer(
                   <th key={item}>{item}</th>
                 ))}
               </thead>
-              {searchResult.map((item) => (
+              {filteredPatients.map((item) => (
                 <tr
                   data-id={item.id}
                   onClick={handleSelectPatient}

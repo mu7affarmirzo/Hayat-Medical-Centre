@@ -34,21 +34,21 @@ const Calendar = () => {
             text: "Создать <br> запись",
             type: ''
         },
-        {
-            img: <CalendarAdd />,
-            text: "Создать <br> событие",
-            type: 'create_event'
-        },
-        {
-            img: <DocumentForward />,
-            text: "Автозапись",
-            type: ''
-        },
-        {
-            img: <CalendarSearch />,
-            text: "Найти <br> время",
-            type: ''
-        },
+        // {
+        //     img: <CalendarAdd />,
+        //     text: "Создать <br> событие",
+        //     type: 'create_event'
+        // },
+        // {
+        //     img: <DocumentForward />,
+        //     text: "Автозапись",
+        //     type: ''
+        // },
+        // {
+        //     img: <CalendarSearch />,
+        //     text: "Найти <br> время",
+        //     type: ''
+        // },
         {
             img: <ReceiptItem />,
             text: "Выдать <br> счет",
@@ -60,11 +60,11 @@ const Calendar = () => {
             border: true,
             type: ''
         },
-        {
-            img: <CalendarRemove />,
-            text: "Отмененные",
-            type: ''
-        },
+        // {
+        //     img: <CalendarRemove />,
+        //     text: "Отмененные",
+        //     type: ''
+        // },
     ]
 
     const navbarClickHandler = (event) => {

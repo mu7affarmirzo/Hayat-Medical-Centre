@@ -44,7 +44,7 @@ const CalendarMain = observer((
     useEffect(() => {
         findAllAppointments().then();
     }, [findAllAppointments]);
-
+    // console.log('sorting appointments', selectedDoctors.length > 0 && selectedDoctors[calendarView].doctor.id)
     return (
         <>
 

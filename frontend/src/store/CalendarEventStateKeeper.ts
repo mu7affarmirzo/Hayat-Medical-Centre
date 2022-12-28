@@ -53,13 +53,11 @@ class CalendarEventStateKeeper {
 
   async findAllAppointments(): Promise<IEvent[]> {
     const appointments = await this.calendarEventApiStub.findAllAppointments();
-
     runInAction(() => {
       if (this.events.length < appointments.length) {
         this.events = appointments.map((appointment) => {
           return {
-            id: 9,
-            //   id: appointment.id,
+            id: appointment.id,
             doctorId: appointment.doctorId,
             title: appointment.name,
             start: new Date(appointment.start_time),
@@ -69,6 +67,8 @@ class CalendarEventStateKeeper {
       }
       this.eventsCopy = this.events;
     });
+    console.log("appointments", appointments, this.events);
+
     return this.events;
   }
 }

@@ -31,6 +31,7 @@ const AuthVerify = () => {
                             const data = res.data.access;
                             data.refresh = user.refresh;
                             setToken(JSON.stringify(data))
+                            window.localStorage.setItem('token', JSON.stringify(data))
                         })
                         .catch(err => console.log(err))
                 }

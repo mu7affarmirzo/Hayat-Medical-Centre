@@ -16,6 +16,7 @@ export default class ApiClient {
   token = this.authorizationStateKeeper.token;
 
   data: any = [];
+  response = [];
 
   async getData<T>(endpoint: string): Promise<T[]> {
     await axios
@@ -28,6 +29,23 @@ export default class ApiClient {
         this.data = response.data;
       });
     return this.data;
+  }
+
+  async postData<T>(endpoint: string, data): Promise<T[]> {
+    await axios
+      .post(
+        this._url + endpoint,
+        {
+          headers: {
+            Authorization: "Bearer " + JSON.parse(this.token).access,
+          },
+        },
+        data
+      )
+      .then((response) => {
+        this.response = response.data;
+      });
+    return this.response;
   }
 
   async getArray<T>(endpoint: string): Promise<T[]> {

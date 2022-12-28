@@ -252,7 +252,7 @@ const CreateNote = observer(() => {
         id: Math.max(
           ...calendarEventStateKeeper.events.map((event) => event.id)
         ),
-        doctor: String(doctorStateKeeper.selectedDoctors.at(0)!.id),
+        doctorId: String(doctorStateKeeper.selectedDoctors.at(0)!.id),
       };
       const selectedServices = appointedServices.map((item) => {
         const data: object = {

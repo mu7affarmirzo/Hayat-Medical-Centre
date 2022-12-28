@@ -1,0 +1,29 @@
+[
+  {
+    "receipt_id": 1234567890,
+    "patient": {
+      "id": 1,
+      "name": "some patient name"
+    },
+    "doctor": {
+      "id": 1,
+      "name": "Fullname"
+    },
+    "sevice": {
+      "id": 1,
+      "name": "some service name"
+    },
+    "service_date": "timestamp",
+    "debt": 0,
+    "price": 123,
+    "discount": 10,
+    "branch": {
+      "id": 1,
+      "name": "Some branch name"
+    },
+    "referring_doctor": {
+      "id": 1,
+      "name": "Some name"
+    }
+  }
+]

@@ -8,6 +8,7 @@ export default class PatientApiStub {
   static _instance: PatientApiStub;
 
   private readonly client = new ApiClient("organizations/patients");
+  private readonly search = new ApiClient("organizations/patients-search");
 
   static get instance() {
     /* Gen by NARA Studio */
@@ -17,10 +18,15 @@ export default class PatientApiStub {
 
     return PatientApiStub._instance;
   }
+
+  async searchPatients(text: string): Promise<IPatient[]> {
+    return this.search.getData<IPatient>(`?f_name=${text}`);
+  }
+
   async findAllPatients(): Promise<IPatient[]> {
     /* Gen by NARA Studio */
     return this.client.getData<IPatient>("/");
-    
+
     return patientsList
       ? (patientsList as unknown as IPatient[])
       : this.client.getArray<IPatient>("/");

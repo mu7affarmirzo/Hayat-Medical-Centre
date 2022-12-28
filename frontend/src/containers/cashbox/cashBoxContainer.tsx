@@ -1,4 +1,6 @@
-import React from "react";
+import { useLocalObservable } from "mobx-react-lite";
+import React, { useEffect } from "react";
+import TransactionsStateKeeper from "../../store/TransactionStateKeeper";
 import CashboxView from "../../views/cashboxView";
 
 const CashBoxContainer = () => {
@@ -9,8 +11,16 @@ const CashBoxContainer = () => {
         React.useState<boolean>(false);
     const [sumPaymentModal, setSumPaymentModal] = React.useState<boolean>(false);
 
+    const transactionsStateKeeper = useLocalObservable(
+        () => TransactionsStateKeeper.instance
+    )
+    const { transactions, findAllTransactions } = transactionsStateKeeper
+
+    useEffect(() => {
+        findAllTransactions().then()
+    }, [findAllTransactions])
+
     const navbarActionHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(e.currentTarget.dataset.actionType);
         switch (e.currentTarget.dataset.actionType) {
             case "close_cash_punkt":
                 if (selectedPayment.length > 0) {

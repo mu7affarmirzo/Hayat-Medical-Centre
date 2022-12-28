@@ -54,7 +54,7 @@ const CashboxView = ({
   incomeOutcomeModal,
   setIncomeOutcomeModal,
   setDeletePaymentModal,
-  setSumPaymentModal
+  setSumPaymentModal,
 }) => {
 
   return (
