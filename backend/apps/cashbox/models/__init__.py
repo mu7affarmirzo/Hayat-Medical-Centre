@@ -1,3 +1,3 @@
-from .cashbox import *
-from .transactions import *
-from .receipt import *
+from .cashbox import CashBoxClosingHistoryRecordsModel
+from .receipt import ReceiptModel
+from .transactions import TransactionsModel
