@@ -36,7 +36,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'referring_doc_notes',
             'addition_info',
             'branch',
-            'services'
+            'services',
             'doctor'
         ]
 

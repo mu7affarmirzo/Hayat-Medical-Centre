@@ -33,6 +33,8 @@ class CashBoxView(APIView):
 
 class CashBoxRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = CashBoxSerializer
+
 
     @swagger_auto_schema(tags=['cashbox'])
     def get(self, request, pk, format=None):
