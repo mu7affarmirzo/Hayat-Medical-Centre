@@ -53,7 +53,7 @@ admin.site.register(appointments.MedicalService)
 
 @admin.register(appointments.AppointmentsModel)
 class AppointmentsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('patient', )
+    list_display = ('patient', 'doctor')
 
 
 admin.site.register(appointments.AppointmentServiceModel)

@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import receipt, cashbox, transactions
 
-# Register your models here.
+
+admin.site.register(receipt.ReceiptModel)
+admin.site.register(cashbox.CashBoxClosingHistoryRecordsModel)
+admin.site.register(transactions.TransactionsModel)

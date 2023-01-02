@@ -11,5 +11,5 @@ class PatientGroupSerializer(serializers.ModelSerializer):
 class PatientGroupCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PatientGroupModel
-        fields = ['name', 'color', 'exemption_percentage', 'organization']
+        fields = ['name', 'color', 'discount_percentage', 'organization']
 

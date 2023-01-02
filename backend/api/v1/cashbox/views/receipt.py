@@ -8,13 +8,16 @@ from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 
 from api.v1.appointment.serializers.appointment import TimeSerializer
-from api.v1.cashbox.serializers.receipt import ReceiptSerializer
+from api.v1.cashbox.serializers.receipt import ReceiptSerializer, ReceiptCreateSerializer
+from api.v1.cashbox.servives.receipt_service import create_receipt_service
+from apps.account.models import AppointmentsModel
 from apps.cashbox.models import ReceiptModel
 from django.shortcuts import get_object_or_404
 
 
 class ReceiptView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = ReceiptSerializer
 
     @swagger_auto_schema(tags=['receipt'])
     def get(self, request, format=None):
@@ -22,15 +25,10 @@ class ReceiptView(APIView):
         serializer = ReceiptSerializer(receipts, many=True)
         return Response(serializer.data)
 
-    @swagger_auto_schema(tags=['receipt'])
+    @swagger_auto_schema(tags=['receipt'], request_body=ReceiptCreateSerializer)
     def post(self, request, format=None):
         user = request.user
-        receipt = ReceiptModel(created_by=user, modified_by=user)
-        serializer = ReceiptSerializer(receipt, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return create_receipt_service(request, user)
 
 
 class ReceiptRetrieveView(RetrieveAPIView):

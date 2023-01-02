@@ -19,7 +19,7 @@ class InformationSourceModel(models.Model):
 class PatientGroupModel(models.Model):
     name = models.CharField(max_length=255)
     color = models.CharField(max_length=255)
-    exemption_percentage = models.IntegerField(default=1)
+    discount_percentage = models.IntegerField(default=1)
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

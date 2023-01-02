@@ -26,7 +26,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'patient',
             'name',
             'status',
-            'exemption',
+            'discount',
             'start_time',
             'end_time',
             'price',
@@ -47,11 +47,10 @@ class AppointmentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppointmentsModel
         fields = [
-            # 'days_since_joined',
                   'patient',
                   'name',
                   'status',
-                  'exemption',
+                  'discount',
                   'start_time',
                   'end_time',
                   'price',
@@ -65,14 +64,16 @@ class AppointmentCreateSerializer(serializers.ModelSerializer):
                   'doctor'
                   ]
 
-    # def get_days_since_joined(self, validated_data):
-    #     return validated_data.pop('services')
-
     def create(self, validated_data):
+        """
+        This is not working
+        """
         services = validated_data.pop('services')
         appointment = AppointmentsModel.objects.create(**validated_data)
+
         for service in services:
-            AppointmentServiceModel.objects.create(appointment=1, service=1, **service)
+            AppointmentServiceModel.objects.create(appointment=appointment,
+                                                   service=1, doctor=appointment.doctor, **service)
         return appointment
 
 
