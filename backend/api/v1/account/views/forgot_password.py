@@ -10,7 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from hayat_med_center import settings
 from api.v1.account.serializers.otp import OtpSerializer, StepTwoSerializer, ForgotPasswordSerializer
 import random
-from django.core.mail import send_mail
+from api.v1.account.services.email import send_email
 
 from apps.account.models import Account
 from apps.account.models.otp import OtpModel
@@ -23,10 +23,10 @@ def step_one(request):
 
         request_data = request.data
         otp_code = str(random.randint(10000, 99999))
-        try:
-            send_mail('Parolni tiklash', f"Qayta tiklash uchun kod\n {otp_code}", "hayatmedical@gmail.com", [f"{request_data['email']}"]) #, auth_user=settings.EMAIL_HOST_USER, auth_password=settings.EMAIL_HOST_PASSWORD)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        # try:
+        send_email(request_data['email'], otp_code)
+        # except:
+        #     return Response(status=status.HTTP_404_NOT_FOUND)
 
         enc_otp = pbkdf2_sha256.encrypt(otp_code, rounds=12000, salt_size=32)
 
@@ -36,7 +36,7 @@ def step_one(request):
             'enc_otp': enc_otp,
         }
 
-        otp_code = OtpModel(mobile=request_data['email'])
+        otp_code = OtpModel(email=request_data['email'])
         serializer = OtpSerializer(otp_code, data=serializer_data)
         data = {}
 
