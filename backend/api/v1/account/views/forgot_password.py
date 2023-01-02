@@ -23,10 +23,10 @@ def step_one(request):
 
         request_data = request.data
         otp_code = str(random.randint(10000, 99999))
-        # try:
-        send_email(request_data['email'], otp_code)
-        # except:
-        #     return Response(status=status.HTTP_404_NOT_FOUND)
+        try:
+            send_email(request_data['email'], otp_code)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         enc_otp = pbkdf2_sha256.encrypt(otp_code, rounds=12000, salt_size=32)
 
