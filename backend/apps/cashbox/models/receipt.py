@@ -21,6 +21,5 @@ class ReceiptModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_receipt", on_delete=models.SET_NULL, null=True)
-    # operationist?
 
 
