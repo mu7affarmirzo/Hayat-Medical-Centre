@@ -5,13 +5,6 @@ from apps.account.models import AppointmentsModel, AppointmentServiceModel
 from apps.cashbox.models import ReceiptModel
 
 
-# class ReceiptAppointmentSerializer(serializers.ModelSerializer):
-#
-#     class Meta:
-#         model = AppointmentsModel
-#         fields = '__all__'
-
-
 class ReceiptSerializer(serializers.ModelSerializer):
     receipt_appointments = AppointmentSerializer(many=True)
 
