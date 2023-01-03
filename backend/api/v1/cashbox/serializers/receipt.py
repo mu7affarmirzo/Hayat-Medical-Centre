@@ -11,6 +11,21 @@ from apps.cashbox.models import ReceiptModel
 #         model = AppointmentsModel
 #         fields = '__all__'
 
+class RetrieveReceiptSerializer(serializers.ModelSerializer):
+    receipt_appointments = AppointmentSerializer(many=True)
+
+    class Meta:
+        model = ReceiptModel
+        fields = [
+            'id',
+            'patient',
+            'doctor',
+            'services',
+            'doctor',
+            'doctor',
+            ''
+        ]
+
 
 class ReceiptSerializer(serializers.ModelSerializer):
     receipt_appointments = AppointmentSerializer(many=True)
