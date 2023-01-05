@@ -34,12 +34,12 @@ class ReceiptView(APIView):
 class ReceiptRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     queryset = ReceiptModel.objects.all()
-    serializer_class = RetrieveReceiptSerializer
+    serializer_class = ReceiptSerializer
 
     @swagger_auto_schema(tags=['receipt'])
     def get(self, request, pk, format=None):
         receipt = get_object_or_404(ReceiptModel, pk=pk)
-        serializer = RetrieveReceiptSerializer(receipt)
+        serializer = ReceiptSerializer(receipt)
         return Response(serializer.data)
 
     @swagger_auto_schema(tags=['receipt'])
