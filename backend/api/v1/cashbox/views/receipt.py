@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 
 from api.v1.appointment.serializers.appointment import TimeSerializer
-from api.v1.cashbox.serializers.receipt import ReceiptSerializer, ReceiptCreateSerializer
+from api.v1.cashbox.serializers.receipt import ReceiptSerializer, ReceiptCreateSerializer, RetrieveReceiptSerializer
 from api.v1.cashbox.servives.receipt_service import create_receipt_service
 from apps.account.models import AppointmentsModel
 from apps.cashbox.models import ReceiptModel
@@ -33,11 +33,13 @@ class ReceiptView(APIView):
 
 class ReceiptRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
+    queryset = ReceiptModel.objects.all()
+    serializer_class = RetrieveReceiptSerializer
 
     @swagger_auto_schema(tags=['receipt'])
     def get(self, request, pk, format=None):
         receipt = get_object_or_404(ReceiptModel, pk=pk)
-        serializer = ReceiptSerializer(receipt)
+        serializer = RetrieveReceiptSerializer(receipt)
         return Response(serializer.data)
 
     @swagger_auto_schema(tags=['receipt'])

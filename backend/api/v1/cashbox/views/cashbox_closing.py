@@ -35,6 +35,7 @@ class CashBoxRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = CashBoxSerializer
 
+    queryset = CashBoxClosingHistoryRecordsModel.objects.all()
 
     @swagger_auto_schema(tags=['cashbox'])
     def get(self, request, pk, format=None):

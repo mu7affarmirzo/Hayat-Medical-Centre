@@ -38,6 +38,7 @@ class DoctorsRetrieveView(RetrieveUpdateDestroyAPIView):
 
     permission_classes = [IsAuthenticated]
     serializer_class = DoctorsListSerializer
+    queryset = DoctorAccountModel.objects.all()
 
     # def get_queryset(self):
     #     return super().get_queryset()

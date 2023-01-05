@@ -1,2 +1,3 @@
 from .cashbox import *
-from .receipt import  *
+from .receipt import *
+from .transactions import *

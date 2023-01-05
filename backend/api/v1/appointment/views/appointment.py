@@ -30,7 +30,6 @@ class AppointmentsModelView(APIView):
             for i in serializer.data['services']:
                 AppointmentServiceModel.objects.create(appointment=app,
                                                        service_id=i['service'],
-                                                       doctor=app.doctor,
                                                        quantity=i['quantity'],
                                                        created_by=account, modified_by=account)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -41,8 +40,7 @@ class AppointmentsRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = AppointmentSerializer
 
-    @staticmethod
-    def get_queryset():
+    def get_queryset(self):
         return AppointmentsModel.objects.all()
 
     @swagger_auto_schema(tags=['appointments'])
