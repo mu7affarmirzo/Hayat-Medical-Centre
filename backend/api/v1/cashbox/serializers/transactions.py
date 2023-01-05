@@ -44,3 +44,17 @@ class TransactionsSerializer(serializers.ModelSerializer):
     def get_base_price(self, obj):
         return obj.receipt.receipt_appointments.first().price
 
+
+class CreateTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransactionsModel
+        fields = [
+            "amount",
+            "payment_type",
+            "is_manual",
+            "appointment_id",
+            "transaction_type",
+            "receipt",
+            "branch",
+            "referring_doctor"
+        ]

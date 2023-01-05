@@ -1,5 +1,8 @@
 from django.db import models
-from apps.account.models import OrganizationModel, BranchModel, Account
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from apps.account.models import OrganizationModel, BranchModel, Account, ReferringDoctorModel, AppointmentsModel
 # from apps.account.models.appointments import AppointmentServiceModel
 from apps.cashbox.models import ReceiptModel
 
@@ -19,16 +22,31 @@ TYPE = (
 
 class TransactionsModel(models.Model):
     amount = models.BigIntegerField()
-    payment_type = models.CharField(choices=PAYMENT_TYPE, max_length=50)
+    payment_type = models.CharField(choices=PAYMENT_TYPE, max_length=50, default='CASH')
+    is_manual = models.BooleanField(default=False)
     # bank_name = models.CharField(max_length=255, null=True, blank=True)
-    app_service = models.CharField(max_length=5, null=True)
     receipt = models.ForeignKey(ReceiptModel, on_delete=models.SET_NULL, null=True)
+    appointment_id = models.IntegerField(null=True)
     branch = models.ForeignKey(BranchModel, on_delete=models.SET_NULL, null=True)
-    # type = models.CharField(choices=TYPE, max_length=50)
+    transaction_type = models.CharField(choices=TYPE, max_length=50, default='INCOME')
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(Account, related_name="crt_transactions", on_delete=models.SET_NULL, null=True)
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_transactions", on_delete=models.SET_NULL, null=True)
+    referring_doctor = models.ForeignKey(ReferringDoctorModel, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f"{self.amount} - {self.payment_type}"
+
+    # @property
+    # def referring_doctor(self):
+    #     # ref_doc_id = self.receipt.receipt_appointments.
+    #     return 1
+
+
+# @receiver(post_save, sender=TransactionsModel)
+# def create_auth_token(sender, instance, created=False, **kwargs):
+#     if not instance.is_manual:
+#         appointment = AppointmentsModel.objects.get(id=instance.appointment_id)
+#         instance.amount = appointment.price
+#         instance.save()

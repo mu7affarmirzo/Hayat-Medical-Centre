@@ -6,10 +6,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
+
+from apps.account.models import AppointmentsModel
 from apps.cashbox.models import TransactionsModel
 from api.v1.appointment.serializers.appointment import TimeSerializer
 from django.shortcuts import get_object_or_404
-from api.v1.cashbox.serializers import TransactionsSerializer
+from api.v1.cashbox.serializers import TransactionsSerializer, CreateTransactionSerializer
 
 
 class TransactionsView(APIView):
@@ -20,15 +22,18 @@ class TransactionsView(APIView):
         transactions = TransactionsModel.objects.all()
         serializer = TransactionsSerializer(transactions, many=True)
         return Response(serializer.data)
-#
-#     @swagger_auto_schema(tags=['cashbox'])
-#     def post(self, request, format=None):
-#
-#         serializer = CashBoxSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(tags=['payment'], request_body=CreateTransactionSerializer)
+    def post(self, request, format=None):
+        payment = TransactionsModel(created_by=request.user, modified_by=request.user)
+        serializer = CreateTransactionSerializer(payment, data=request.data)
+        if serializer.is_valid():
+            # if not serializer['is_manual']:
+            #     appointment = AppointmentsModel.objects.get(id=serializer['appointment_id'])
+            #     serializer['amount'] = appointment.price
+            serializer.save()
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 #
 #
 # class CashBoxRetrieveView(RetrieveAPIView):
