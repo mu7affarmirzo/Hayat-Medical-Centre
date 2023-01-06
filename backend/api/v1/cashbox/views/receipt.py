@@ -68,3 +68,4 @@ def receipt_time_view(request):
     receipt = ReceiptModel.objects.filter(created_at__range=[min_date, max_date])
     serializer = ReceiptSerializer(receipt, many=True)
     return Response(serializer.data)
+

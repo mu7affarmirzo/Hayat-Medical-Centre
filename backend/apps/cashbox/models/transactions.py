@@ -35,15 +35,10 @@ class TransactionsModel(models.Model):
     def __str__(self):
         return f"{self.amount} - {self.payment_type}"
 
-    # @property
-    # def referring_doctor(self):
-    #     # ref_doc_id = self.receipt.receipt_appointments.
-    #     return 1
 
+class AppointmentServiceTransactionsModel(models.Model):
+    transaction = models.ForeignKey(TransactionsModel, on_delete=models.SET_NULL, null=True, related_name='tr_srv')
+    service_id = models.CharField(max_length=50)
 
-# @receiver(post_save, sender=TransactionsModel)
-# def create_auth_token(sender, instance, created=False, **kwargs):
-#     if not instance.is_manual:
-#         appointment = AppointmentsModel.objects.get(id=instance.appointment_id)
-#         instance.amount = appointment.price
-#         instance.save()
+    def __str__(self):
+        return f"{self.transaction} - {self.service_id}"

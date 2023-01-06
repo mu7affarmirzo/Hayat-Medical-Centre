@@ -5,7 +5,9 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import RetrieveAPIView
 
+from api.v1.cashbox.servives.transaction_service import payment_proceed_service
 from apps.account.models import AppointmentsModel
 from apps.cashbox.models import TransactionsModel
 from api.v1.appointment.serializers.appointment import TimeSerializer
@@ -24,15 +26,21 @@ class TransactionsView(APIView):
 
     @swagger_auto_schema(tags=['payment'], request_body=CreateTransactionSerializer)
     def post(self, request, format=None):
-        payment = TransactionsModel(created_by=request.user, modified_by=request.user)
-        serializer = CreateTransactionSerializer(payment, data=request.data)
-        if serializer.is_valid():
-            if not serializer.validated_data['is_manual']:
-                appointment = AppointmentsModel.objects.get(id=serializer.validated_data['appointment_id'])
-                serializer.validated_data['amount'] = appointment.price
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        response = payment_proceed_service(request)
+        return response
+
+
+class RetrieveTransactionsView(RetrieveAPIView):
+
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(tags=['transactions'])
+    def get(self, request, pk, format=None):
+        transactions = get_object_or_404(TransactionsModel, appointment_id=pk)
+        serializer = TransactionsSerializer(transactions, many=True)
+        return Response(serializer.data)
+
+
 #
 #
 # class CashBoxRetrieveView(RetrieveAPIView):

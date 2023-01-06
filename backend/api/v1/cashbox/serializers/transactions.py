@@ -1,5 +1,8 @@
+from abc import ABC
+
 from rest_framework import serializers
 from apps.cashbox.models import TransactionsModel
+from apps.cashbox.models.transactions import AppointmentServiceTransactionsModel
 
 
 class TransactionsSerializer(serializers.ModelSerializer):
@@ -45,7 +48,25 @@ class TransactionsSerializer(serializers.ModelSerializer):
         return obj.receipt.receipt_appointments.first().price
 
 
+class AppointmentServiceTransactionsCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AppointmentServiceTransactionsModel
+        fields = '__all__'
+
+
+class AppointmentServiceTransactionsSerializer(serializers.Serializer):
+    service_id = serializers.CharField()
+    # class Meta:
+    #     model = AppointmentServiceTransactionsModel
+    #     fields = [
+    #         'service_id'
+    #     ]
+
+
 class CreateTransactionSerializer(serializers.ModelSerializer):
+    tr_srv = AppointmentServiceTransactionsSerializer(many=True, read_only=True)
+
     class Meta:
         model = TransactionsModel
         fields = [
@@ -53,8 +74,16 @@ class CreateTransactionSerializer(serializers.ModelSerializer):
             "payment_type",
             "is_manual",
             "appointment_id",
+            "tr_srv",
             "transaction_type",
             "receipt",
             "branch",
             "referring_doctor"
         ]
+
+    # def update(self, instance, validated_data):
+    #     services = validated_data.pop('tr_srv')
+    #     for srv in services:
+    #         AppointmentServiceTransactionsModel.objects.create(
+    #             transaction=instance, service_id=srv['service_id'])
+    #     return instance
