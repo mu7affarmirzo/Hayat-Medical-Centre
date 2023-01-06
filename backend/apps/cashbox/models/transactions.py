@@ -1,9 +1,6 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
-from apps.account.models import OrganizationModel, BranchModel, Account, ReferringDoctorModel, AppointmentsModel
-# from apps.account.models.appointments import AppointmentServiceModel
+from apps.account.models import BranchModel, Account, ReferringDoctorModel
 from apps.cashbox.models import ReceiptModel
 
 
