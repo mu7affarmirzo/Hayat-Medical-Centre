@@ -1,13 +1,13 @@
-from django.urls import path, include
+from django.urls import path
 
-from api.v1.doctors.views.medical_service import MedicalServiceView, MedicalServiceRetrieveView
 from api.v1.organizations.views.branches import specialty_by_branch_view, get_specialty_by_id_view, \
     doctors_by_branch_view
 from api.v1.organizations.views.doctors import DoctorsListCreateView, DoctorsRetrieveView
 from api.v1.organizations.views.patient import PatientView, PatientRetrieveView, PatientFilterView
 from api.v1.organizations.views.organizations import OrganizationsListCreateView, BranchesListCreateView
 from api.v1.organizations.views.specialties import SpecialtiesView, DoctorSpecialitiesView
-from api.v1.organizations.views.patient_group import *
+from api.v1.organizations.views.patient_group import PatientGroupView, PatientGroupRetrieveView
+from api.v1.organizations.views.information_sources import InformationSourceView, InformationSourceRetrieveView
 
 
 urlpatterns = [
@@ -31,6 +31,9 @@ urlpatterns = [
 
     path('patient-group/', PatientGroupView.as_view(), name='patient-group'),
     path('patient-group/<int:pk>', PatientGroupRetrieveView.as_view(), name='patient-group'),
+
+    path('information-sources/', InformationSourceView.as_view(), name='information-sources'),
+    path('information-sources/<int:pk>', InformationSourceRetrieveView.as_view(), name='information-sources'),
 
 ]
 
