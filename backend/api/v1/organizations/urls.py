@@ -6,8 +6,9 @@ from api.v1.organizations.views.doctors import DoctorsListCreateView, DoctorsRet
 from api.v1.organizations.views.patient import PatientView, PatientRetrieveView, PatientFilterView
 from api.v1.organizations.views.organizations import OrganizationsListCreateView, BranchesListCreateView
 from api.v1.organizations.views.specialties import SpecialtiesView, DoctorSpecialitiesView
+from api.v1.organizations.views.patient_group import PatientGroupView, PatientGroupRetrieveView
+from api.v1.organizations.views.information_sources import InformationSourceView, InformationSourceRetrieveView
 from api.v1.organizations.views.referring_doctors import ReferringDoctorsView
-from api.v1.organizations.views.patient_group import *
 
 urlpatterns = [
     path('', OrganizationsListCreateView.as_view(), name='organizations'),
@@ -31,5 +32,8 @@ urlpatterns = [
 
     path('patient-group/', PatientGroupView.as_view(), name='patient-group'),
     path('patient-group/<int:pk>', PatientGroupRetrieveView.as_view(), name='patient-group'),
+
+    path('information-sources/', InformationSourceView.as_view(), name='information-sources'),
+    path('information-sources/<int:pk>', InformationSourceRetrieveView.as_view(), name='information-sources'),
 
 ]
