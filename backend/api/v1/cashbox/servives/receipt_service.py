@@ -18,7 +18,7 @@ def create_receipt_service(request, account):
             if not appointment["is_manual"]:
                 for service in appointment['services']:
                     sum_service_price += MedicalService.objects.get(pk=service["service"]).cost
-                    appointment["price"] = ""
+                    appointment.pop("price")
                 app = AppointmentsModel(created_by=account, modified_by=account, receipt=receipt, price=sum_service_price)
             else:
                 app = AppointmentsModel(created_by=account, modified_by=account, receipt=receipt)

@@ -63,14 +63,14 @@ class AppointmentsModel(models.Model):
     def __str__(self):
         return str(self.patient) + " - " + str(self.name) + " - " + str(self.doctor)
 
-    @property
-    def price(self):
-        total_price = 0
-        services = self.app_services.all()
-        for service in services:
-            price = service.service.cost * service.quantity
-            total_price += price
-        return total_price
+    # @property
+    # def price(self):
+    #     total_price = 0
+    #     services = self.app_services.all()
+    #     for service in services:
+    #         price = service.service.cost * service.quantity
+    #         total_price += price
+    #     return total_price
 
     @property
     def debt(self):
