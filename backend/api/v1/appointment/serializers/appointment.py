@@ -13,7 +13,7 @@ class AppointmentServiceCreateSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = AppointmentServiceModel
-        fields = ['service', 'quantity', 'doctor']
+        fields = ['service', 'quantity']
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
@@ -25,7 +25,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'id',
             'patient',
             'name',
-            'status',
             'discount',
             'start_time',
             'end_time',
@@ -49,12 +48,9 @@ class AppointmentCreateSerializer(serializers.ModelSerializer):
         fields = [
                   'patient',
                   'name',
-                  'status',
                   'discount',
                   'start_time',
                   'end_time',
-                  'price',
-                  'debt',
                   'referring_doctor',
                   'information_source',
                   'referring_doc_notes',

@@ -41,12 +41,10 @@ class AppointmentsModel(models.Model):
     doctor = models.ForeignKey(DoctorAccountModel, blank=True, null=True, on_delete=models.SET_NULL,
                                related_name='doctor_appointments')
     name = models.CharField(max_length=255, blank=True, null=True)
-    status = models.CharField(choices=APPOINTMENT_CHOICES, default='NOT PAID', max_length=50)
+
     discount = models.IntegerField(blank=True, null=True)
-    start_time = models.DateTimeField(auto_now_add=True)
+    start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
-    price = models.BigIntegerField()
-    debt = models.BigIntegerField(default=0)
     referring_doctor = models.ForeignKey(ReferringDoctorModel, blank=True, null=True, on_delete=models.SET_NULL)
     information_source = models.ForeignKey(InformationSourceModel, blank=True, null=True, on_delete=models.SET_NULL)
     referring_doc_notes = models.TextField(blank=True, null=True)
@@ -63,11 +61,23 @@ class AppointmentsModel(models.Model):
     def __str__(self):
         return str(self.patient) + " - " + str(self.name) + " - " + str(self.doctor)
 
-    # def price(self):
-        # usability in transactions
+    @property
+    def price(self):
+        total_price = 0
+        services = self.app_services.all()
+        for service in services:
+            price = service.service.cost * service.quantity
+            total_price += price
+        return total_price
 
-    # def debt(self):
-        # usability in transactions
+    @property
+    def debt(self):
+        total_debt = 0
+        services = self.app_services.all()
+        for service in services:
+            if service.payment_status not in ['PAID', 'CANCELLED CANCELLED']:
+                total_debt += service.service.cost
+        return total_debt
 
     class Meta:
         ordering = ['-created_at']
@@ -87,6 +97,9 @@ class ContractModel(models.Model):
 
 
 class AppointmentServiceModel(models.Model):
+    payment_status = models.CharField(choices=APPOINTMENT_CHOICES, default='NOT PAID', max_length=50)
+    has_proceed = models.BooleanField(default=False)
+
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -94,7 +107,6 @@ class AppointmentServiceModel(models.Model):
     appointment = models.ForeignKey(AppointmentsModel, related_name='app_services', on_delete=models.SET_NULL,
                                     null=True)
     service = models.ForeignKey(MedicalService, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(DoctorAccountModel, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
