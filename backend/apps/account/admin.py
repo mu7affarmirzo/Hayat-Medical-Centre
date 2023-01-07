@@ -25,21 +25,23 @@ class DoctorsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(organizations.OrganizationModel)
-class OrganizationAdmin(admin.ModelAdmin):
+class OrganizationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('name', 'created_by', 'created_at')
 
 
 @admin.register(organizations.BranchModel)
-class BranchesAdmin(admin.ModelAdmin):
+class BranchesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('name', 'created_by', 'created_at')
 
 
 @admin.register(roles_permissions.RolesModel)
-class RolesAdmin(admin.ModelAdmin):
+class RolesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('code', 'name', 'date_created')
 
 
-admin.site.register(patients.PatientGroupModel)
+@admin.register(patients.PatientGroupModel)
+class PatientGroupAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
 
 
 @admin.register(patients.PatientModel)
@@ -47,8 +49,13 @@ class PatientAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     pass
 
 
-admin.site.register(patients.InformationSourceModel)
-admin.site.register(appointments.MedicalService)
+@admin.register(patients.InformationSourceModel)
+class InformationSourceModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
+
+@admin.register(appointments.MedicalService)
+class MedicalServiceAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
 
 
 @admin.register(appointments.AppointmentsModel)
@@ -56,10 +63,19 @@ class AppointmentsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('patient', 'doctor')
 
 
-admin.site.register(appointments.AppointmentServiceModel)
-admin.site.register(appointments.EMCDocumentModel)
-admin.site.register(accounts.ReferringDoctorModel)
-admin.site.register(roles_permissions.AccountRolesModel)
+@admin.register(appointments.AppointmentServiceModel)
+class AppointmentServiceModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
+@admin.register(appointments.EMCDocumentModel)
+class EMCDocumentModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
+@admin.register(accounts.ReferringDoctorModel)
+class ReferringDoctorModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
+
+@admin.register(roles_permissions.AccountRolesModel)
+class AccountRolesModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
 
 
 @admin.register(specialities.SpecialityModel)

@@ -34,8 +34,7 @@ class AppointmentServiceRetrieveView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = AppointmentServiceSerializers
 
-    @staticmethod
-    def get_queryset():
+    def get_queryset(self, ):
         return AppointmentServiceModel.objects.all()
 
     @swagger_auto_schema(tags=['appointment-service'])

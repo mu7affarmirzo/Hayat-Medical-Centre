@@ -23,6 +23,7 @@ def create_receipt_service(request, account):
                     AppointmentServiceModel.objects.create(appointment=app,
                                                            service_id=service['service'],
                                                            doctor=app.doctor,
+                                                           quantity=service['quantity'],
                                                            created_by=account, modified_by=account)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)

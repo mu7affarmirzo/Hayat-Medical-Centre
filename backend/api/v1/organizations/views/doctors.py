@@ -16,10 +16,6 @@ from api.v1.organizations.serializers.doctors import DoctorsCreateSerializer, Do
 
 class DoctorsListCreateView(APIView):
 
-    @staticmethod
-    def get_queryset():
-        return Account.objects.filter(doc_speciality__isnull=False)
-
     @swagger_auto_schema(tags=['organizations-doctor'])
     @permission_classes((IsAuthenticated,))
     def get(self, request, format=None):
@@ -42,6 +38,7 @@ class DoctorsRetrieveView(RetrieveUpdateDestroyAPIView):
 
     permission_classes = [IsAuthenticated]
     serializer_class = DoctorsListSerializer
+    queryset = DoctorAccountModel.objects.all()
 
     # def get_queryset(self):
     #     return super().get_queryset()
