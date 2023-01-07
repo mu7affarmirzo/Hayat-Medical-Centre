@@ -3,7 +3,7 @@ from django.urls import path
 from api.v1.organizations.views.branches import specialty_by_branch_view, get_specialty_by_id_view, \
     doctors_by_branch_view
 from api.v1.organizations.views.doctors import DoctorsListCreateView, DoctorsRetrieveView
-from api.v1.organizations.views.patient import PatientView, PatientRetrieveView, PatientFilterView
+from api.v1.organizations.views.patient import PatientView, PatientRetrieveView, PatientFilterView, PatientsMergeView
 from api.v1.organizations.views.organizations import OrganizationsListCreateView, BranchesListCreateView
 from api.v1.organizations.views.specialties import SpecialtiesView, DoctorSpecialitiesView
 from api.v1.organizations.views.patient_group import PatientGroupView, PatientGroupRetrieveView
@@ -23,6 +23,7 @@ urlpatterns = [
 
     path('patients/', PatientView.as_view(), name='patients'),
     path('patients-search/', PatientFilterView.as_view(), name='patients-search'),
+    path('patients-merge/', PatientsMergeView.as_view(), name='patients-merge'),
     path('patients/<int:pk>', PatientRetrieveView.as_view(), name='patients'),
 
     path('doctors/', DoctorsListCreateView.as_view(), name='doctors'),
