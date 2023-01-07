@@ -22,7 +22,6 @@ def create_receipt_service(request, account):
                 for service in serializer.data['services']:
                     AppointmentServiceModel.objects.create(appointment=app,
                                                            service_id=service['service'],
-                                                           doctor=app.doctor,
                                                            quantity=service['quantity'],
                                                            created_by=account, modified_by=account)
 
