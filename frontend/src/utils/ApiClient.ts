@@ -2,7 +2,7 @@ import axios from "axios";
 import { useLocalObservable } from "mobx-react-lite";
 import { AuthorizationStateKeeper } from "../store";
 
-const host = "https://back.dev-hayat.uz/api/v1/";
+const host = "http://185.196.213.71:8080/api/v1/";
 
 export default class ApiClient {
   private _url: string;
