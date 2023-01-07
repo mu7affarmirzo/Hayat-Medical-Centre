@@ -1,6 +1,6 @@
-from apps.account.models import AppointmentsModel, AppointmentServiceModel
+from apps.account.models import AppointmentsModel, AppointmentServiceModel, MedicalService
 from rest_framework import serializers
-
+from django.shortcuts import get_object_or_404
 
 class AppointmentServiceSerializers(serializers.ModelSerializer):
 
@@ -55,6 +55,8 @@ class AppointmentCreateSerializer(serializers.ModelSerializer):
                   'information_source',
                   'referring_doc_notes',
                   'addition_info',
+                  'price',
+                  'is_manual',
                   'branch',
                   'services',
                   'doctor'
@@ -71,6 +73,17 @@ class AppointmentCreateSerializer(serializers.ModelSerializer):
             AppointmentServiceModel.objects.create(appointment=appointment,
                                                    service=1, doctor=appointment.doctor, **service)
         return appointment
+
+    # def update(self, instance, validated_data):
+    #     instance.price = 0
+    #     if validated_data["is_manual"]:
+    #         instance.price = validated_data["price"]
+    #     else:
+    #         for service in validated_data["services"]:
+    #             print(100*"0", dict(service.items())["service"].cost)
+    #             instance.price += dict(service.items())["service"].cost
+    #         # instance.price = sum_services_price
+    #     instance.save()
 
 
 class TimeSerializer(serializers.Serializer):

@@ -49,6 +49,8 @@ class AppointmentsModel(models.Model):
     information_source = models.ForeignKey(InformationSourceModel, blank=True, null=True, on_delete=models.SET_NULL)
     referring_doc_notes = models.TextField(blank=True, null=True)
     addition_info = models.TextField(blank=True, null=True)
+    price = models.BigIntegerField(null=True, blank=True)
+    is_manual = models.BooleanField(default=True, null=True)
     is_contract = models.BooleanField(default=False, null=True)
     is_priority = models.BooleanField(default=False, null=True)  # makes it priority in queue
     send_sms = models.BooleanField(default=False, null=True)
