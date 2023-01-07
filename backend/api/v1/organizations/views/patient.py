@@ -1,17 +1,13 @@
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework import filters
-from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView, ListAPIView
-from api.v1.organizations.serializers.patient import PatientModelSerializer, PatientCreateSerializer
+from api.v1.organizations.serializers.patient import PatientModelSerializer, PatientCreateSerializer, PatientsMergeSerializer
 from api.v1.organizations.services.filters import PatientFilter
 from apps.account.models import PatientModel
-from django.db.models import Q
-from api.v1.organizations.serializers.patient import PatientSearchSerializer
-from rest_framework.decorators import api_view
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -86,6 +82,18 @@ class PatientFilterView(ListAPIView):
 
 
 
+
+
+class PatientsMergeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(tags=['patients-merge'], request_body=PatientsMergeSerializer)
+    def post(self, request):
+        serializer = PatientsMergeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
