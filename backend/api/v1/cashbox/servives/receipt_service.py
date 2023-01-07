@@ -26,4 +26,4 @@ def create_receipt_service(request, account):
                                                            created_by=account, modified_by=account)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

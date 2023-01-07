@@ -13,5 +13,4 @@ def payment_proceed_service(request):
         serializer.save()
 
         return Response(serializer.data)
-    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
