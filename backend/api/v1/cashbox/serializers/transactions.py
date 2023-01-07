@@ -1,6 +1,8 @@
 from abc import ABC
 
 from rest_framework import serializers
+
+from apps.account.models import AppointmentsModel
 from apps.cashbox.models import TransactionsModel
 from apps.cashbox.models.transactions import AppointmentServiceTransactionsModel
 
@@ -65,7 +67,7 @@ class AppointmentServiceTransactionsSerializer(serializers.Serializer):
 
 
 class CreateTransactionSerializer(serializers.ModelSerializer):
-    tr_srv = AppointmentServiceTransactionsSerializer(many=True, read_only=True)
+    tr_srv = AppointmentServiceTransactionsSerializer(many=True)
 
     class Meta:
         model = TransactionsModel
@@ -81,9 +83,25 @@ class CreateTransactionSerializer(serializers.ModelSerializer):
             "referring_doctor"
         ]
 
-    # def update(self, instance, validated_data):
-    #     services = validated_data.pop('tr_srv')
-    #     for srv in services:
-    #         AppointmentServiceTransactionsModel.objects.create(
-    #             transaction=instance, service_id=srv['service_id'])
-    #     return instance
+    def update(self, instance, validated_data):
+        services = validated_data.pop('tr_srv')
+        instance.payment_type = validated_data['payment_type']
+        instance.is_manual = validated_data['is_manual']
+
+        if not validated_data['is_manual']:
+            appointment = AppointmentsModel.objects.get(id=validated_data['appointment_id'])
+            instance.amount = appointment.price
+        else:
+            instance.amount = validated_data['amount']
+
+        instance.receipt = validated_data['receipt']
+        instance.appointment_id = validated_data['appointment_id']
+        instance.branch = validated_data['branch']
+        instance.transaction_type = validated_data['transaction_type']
+        instance.referring_doctor = validated_data['referring_doctor']
+        instance.save()
+
+        for srv in services:
+            AppointmentServiceTransactionsModel.objects.create(
+                transaction=instance, service_id=srv['service_id'])
+        return instance

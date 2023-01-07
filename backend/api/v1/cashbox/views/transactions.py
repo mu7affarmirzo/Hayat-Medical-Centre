@@ -33,13 +33,22 @@ class TransactionsView(APIView):
 class RetrieveTransactionsView(RetrieveAPIView):
 
     permission_classes = [IsAuthenticated]
+    serializer_class = TransactionsSerializer
+    queryset = TransactionsModel
 
     @swagger_auto_schema(tags=['transactions'])
     def get(self, request, pk, format=None):
         transactions = get_object_or_404(TransactionsModel, appointment_id=pk)
-        serializer = TransactionsSerializer(transactions, many=True)
+        serializer = TransactionsSerializer(transactions)
         return Response(serializer.data)
 
+
+@swagger_auto_schema(method='get', tags=['transactions'])
+@api_view(['GET', ])
+def get_by_tr_id_view(request, pk):
+    transactions = get_object_or_404(TransactionsModel, id=pk)
+    serializer = TransactionsSerializer(transactions)
+    return Response(serializer.data)
 
 #
 #
