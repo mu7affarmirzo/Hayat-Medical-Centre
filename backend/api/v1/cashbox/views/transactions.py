@@ -11,7 +11,7 @@ from api.v1.cashbox.servives.transaction_service import payment_proceed_service
 from apps.cashbox.models import TransactionsModel
 from api.v1.appointment.serializers.appointment import TimeSerializer
 from django.shortcuts import get_object_or_404
-from api.v1.cashbox.serializers import TransactionsSerializer, CreateTransactionSerializer
+from api.v1.cashbox.serializers import TransactionsSerializer, CreateTransactionSerializer, TransactionsListSerializer
 
 
 class TransactionsView(APIView):
@@ -19,10 +19,12 @@ class TransactionsView(APIView):
 
     @swagger_auto_schema(tags=['transactions'])
     def get(self, request, format=None):
-        start_date = self.request.query_params.get("start_date", datetime.today().date())
-        end_date = self.request.query_params.get("end_date", datetime.today().date())
-        transactions = TransactionsModel.objects.filter(created_at__range=(start_date, end_date))
-        serializer = TransactionsSerializer(transactions, many=True)
+        # start_date = self.request.query_params.get("start_date", datetime.today().date())
+        # end_date = self.request.query_params.get("end_date", datetime.today().date())
+        # transactions = TransactionsModel.objects.filter(created_at__range=(start_date, end_date))
+        transactions = TransactionsModel.objects.all()
+        # serializer = TransactionsSerializer(transactions, many=True)
+        serializer = TransactionsListSerializer(transactions, many=True)
         return Response(serializer.data)
 
     @swagger_auto_schema(tags=['payment'], request_body=CreateTransactionSerializer)

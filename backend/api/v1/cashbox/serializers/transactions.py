@@ -7,6 +7,12 @@ from apps.cashbox.models import TransactionsModel
 from apps.cashbox.models.transactions import AppointmentServiceTransactionsModel
 
 
+class TransactionsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransactionsModel
+        fields = '__all__'
+
+
 class TransactionsSerializer(serializers.ModelSerializer):
     receipt_id = serializers.SerializerMethodField('get_receipt_id')
     doctor = serializers.SerializerMethodField('get_doctor')
@@ -43,7 +49,7 @@ class TransactionsSerializer(serializers.ModelSerializer):
     def get_patient(self, obj):
         context = {}
         context['id'] = obj.receipt.receipt_appointments.first().patient.id
-        context['name'] = obj.receipt.receipt_appointments.first().patient.f_name
+        context['name'] = obj.receipt.receipt_appointments.first().patient.full_name
         return context
 
     def get_base_price(self, obj):
