@@ -64,6 +64,15 @@ class Account(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
+    @property
+    def full_name(self):
+        try:
+            m_name = self.m_name
+        except:
+            m_name = ''
+
+        return f"{self.f_name} {self.l_name} {m_name}"
+
 
 class DoctorAccountModel(models.Model):
     doctor = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='doctor_model')
