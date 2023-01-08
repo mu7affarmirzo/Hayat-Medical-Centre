@@ -23,8 +23,8 @@ class TransactionsView(APIView):
         # end_date = self.request.query_params.get("end_date", datetime.today().date())
         # transactions = TransactionsModel.objects.filter(created_at__range=(start_date, end_date))
         transactions = TransactionsModel.objects.all()
-        # serializer = TransactionsSerializer(transactions, many=True)
-        serializer = TransactionsListSerializer(transactions, many=True)
+        serializer = TransactionsSerializer(transactions, many=True)
+        # serializer = TransactionsListSerializer(transactions, many=True)
         return Response(serializer.data)
 
     @swagger_auto_schema(tags=['payment'], request_body=CreateTransactionSerializer)
