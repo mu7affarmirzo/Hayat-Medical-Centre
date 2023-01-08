@@ -1,14 +1,13 @@
+from datetime import datetime
+
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 
 from api.v1.cashbox.servives.transaction_service import payment_proceed_service
-from apps.account.models import AppointmentsModel
 from apps.cashbox.models import TransactionsModel
 from api.v1.appointment.serializers.appointment import TimeSerializer
 from django.shortcuts import get_object_or_404
@@ -20,7 +19,9 @@ class TransactionsView(APIView):
 
     @swagger_auto_schema(tags=['transactions'])
     def get(self, request, format=None):
-        transactions = TransactionsModel.objects.all()
+        start_date = self.request.query_params.get("start_date", datetime.today().date())
+        end_date = self.request.query_params.get("end_date", datetime.today().date())
+        transactions = TransactionsModel.objects.filter(created_at__range=(start_date, end_date))
         serializer = TransactionsSerializer(transactions, many=True)
         return Response(serializer.data)
 

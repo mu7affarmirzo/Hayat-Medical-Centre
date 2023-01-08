@@ -1,7 +1,9 @@
+from datetime import datetime
+from typing import List
+
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -17,7 +19,14 @@ class CashBoxView(APIView):
 
     @swagger_auto_schema(tags=['cashbox'])
     def get(self, request, format=None):
-        cashbox = CashBoxClosingHistoryRecordsModel.objects.all()
+        operationist_id = self.request.query_params.get("operationist-id", 0)
+        start_date = self.request.query_params.get("start_date", datetime.today().date())
+        end_date = self.request.query_params.get("end_date", datetime.today().date())
+        cashbox: List[CashBoxClosingHistoryRecordsModel]
+        if operationist_id > 0:
+            cashbox = CashBoxClosingHistoryRecordsModel.objects.filter(created_at__range=(start_date, end_date), created_by_id=operationist_id)
+        else:
+            cashbox = CashBoxClosingHistoryRecordsModel.objects.filter(created_at__range=(start_date, end_date))
         serializer = CashBoxSerializer(cashbox, many=True)
         return Response(serializer.data)
 
