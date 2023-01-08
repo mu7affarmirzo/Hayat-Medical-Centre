@@ -17,6 +17,9 @@ import BpCheckbox from "../../components/BpCheckbox";
 import PaymentDeletionModal from "./Modals/PaymentDeletionModal";
 import IncomeOutcomeModal from "./Modals/IncomeOutcomeModal";
 import PaymentModal from "./Modals/PaymentModal";
+import { generate_date } from "../../utils/dateFormatter";
+import { ITransaction } from "../../consts/types";
+import { currencyFormatter } from "../../utils/currencyFormatter";
 
 const NAVBAR_BUTTONS = [
   {
@@ -48,6 +51,7 @@ const NAVBAR_BUTTONS = [
 const CashboxView = ({
   navbarActionHandler,
   paymentActionHandler,
+  transactions,
   sumPaymentModal,
   deletePaymentModal,
   selectedPayment,
@@ -56,7 +60,6 @@ const CashboxView = ({
   setDeletePaymentModal,
   setSumPaymentModal,
 }) => {
-
   return (
     <>
       <div className={classes.wrapper}>
@@ -86,7 +89,7 @@ const CashboxView = ({
             ))}
           </ButtonGroup>
         </nav>
-        <div>
+        {transactions.length > 0 && (<div>
           <h4 className={classes.title}>
             Незакрытые платежи по филиалу Головной
           </h4>
@@ -102,6 +105,7 @@ const CashboxView = ({
                 }
               />
             </FormControl>
+
             <table className={classes.table}>
               <thead className={classes.tableHead}>
                 {[
@@ -125,7 +129,7 @@ const CashboxView = ({
                 ))}
               </thead>
               <tbody>
-                {payment.map((item, index) => (
+                {transactions.map((item: ITransaction, index) => (
                   <tr
                     key={item.id}
                     data-payment-id={item.id}
@@ -136,48 +140,50 @@ const CashboxView = ({
                       } ${classes.tableRow}`}
                   >
                     <td></td>
-                    <td>{item.payment_date}</td>
-                    <td>{item.doctor}</td>
-                    <td>{item.speciality}</td>
-                    <td>{item.service}</td>
-                    <td>{item.type_payment}</td>
-                    <td>{item.patient}</td>
-                    <td>{item.base_price}</td>
+                    <td>{generate_date(new Date(item.created_at))}</td>
+                    {/* <td>{item.doctor.username}</td> */}
+                    {/* <td>{item.specialty.name}</td>
+                    <td>{item.service.name}</td>
+                    <td>{item.payment_type}</td>
+                    <td>{item.patient.name}</td> */}
+                    {/* <td>{currencyFormatter(item.base_price, 'UZS')}</td>
                     <td>{item.comment}</td>
-                    <td>{item.amount_payment}</td>
+                    <td>{currencyFormatter(item.amount, 'UZS')}</td>
                     <td>{item.bank}</td>
                     <td>
                       <BpCheckbox id={item.id} defaultChecked={false} />
                     </td>
                     <td>{item.payment_purpose}</td>
-                    <td>{item.direction_of_payment}</td>
-                    <td>{item.cheque}</td>
+                    <td>{item.transaction_type}</td>
+                    <td>{item.receipt_id}</td> */}
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
-        <Box className={classes.overall}>
-          <TextField
-            defaultValue={"69 188 142,01"}
-            id="outlined-basic"
-            label="Приход"
-            variant="outlined"
-          />
-          <TextField
-            defaultValue={"10 861 958,17"}
-            id="outlined-basic"
-            label="Расход"
-            variant="outlined"
-          />
-          <TextField
-            defaultValue={"83 017 442,57"}
-            id="outlined-basic"
-            label="Сумма"
-            variant="outlined"
-          />
-        </Box>
+        </div>)}
+        {!!transactions.length && (
+          <Box className={classes.overall}>
+            <TextField
+              value={currencyFormatter(transactions.flatMap((item: ITransaction) => item.amount).reduce((sum, acc) => sum + acc, 0), 'UZS')}
+              id="outlined-basic"
+              label="Приход"
+              variant="outlined"
+            />
+            <TextField
+              defaultValue={"10 861 958,17"}
+              id="outlined-basic"
+              label="Расход"
+              variant="outlined"
+            />
+            <TextField
+              defaultValue={"83 017 442,57"}
+              id="outlined-basic"
+              label="Сумма"
+              variant="outlined"
+            />
+          </Box>
+        )}
       </div>
       <PaymentDeletionModal
         setDeletePaymentModal={setDeletePaymentModal}
@@ -195,7 +201,5 @@ const CashboxView = ({
     </>
   );
 };
-
-
 
 export default CashboxView;

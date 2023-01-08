@@ -1,10 +1,12 @@
 import { useLocalObservable } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { ITransaction } from "../../consts/types";
 import TransactionsStateKeeper from "../../store/TransactionStateKeeper";
 import CashboxView from "../../views/cashboxView";
 
 const CashBoxContainer = () => {
     const [selectedPayment, setSelectedPayment] = React.useState<string>("");
+    const [transactions, setTransactions] = useState<ITransaction[]>([])
     const [incomeOutcomeModal, setIncomeOutcomeModal] =
         React.useState<boolean>(false);
     const [deletePaymentModal, setDeletePaymentModal] =
@@ -14,11 +16,11 @@ const CashBoxContainer = () => {
     const transactionsStateKeeper = useLocalObservable(
         () => TransactionsStateKeeper.instance
     )
-    const { transactions, findAllTransactions } = transactionsStateKeeper
+    const { findAllTransactions } = transactionsStateKeeper
 
     useEffect(() => {
-        findAllTransactions().then()
-    }, [findAllTransactions])
+        findAllTransactions().then(res => setTransactions(res))
+    }, [])
 
     const navbarActionHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         switch (e.currentTarget.dataset.actionType) {
@@ -48,6 +50,7 @@ const CashBoxContainer = () => {
             selectedPayment={selectedPayment}
             incomeOutcomeModal={incomeOutcomeModal}
             deletePaymentModal={deletePaymentModal}
+            transactions={transactions}
             setIncomeOutcomeModal={setIncomeOutcomeModal}
             setDeletePaymentModal={setDeletePaymentModal}
             setSumPaymentModal={setSumPaymentModal}

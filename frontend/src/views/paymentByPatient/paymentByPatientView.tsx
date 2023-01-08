@@ -5,13 +5,19 @@ import classes from "./paymentByPatient.module.scss";
 import payment from "../../repositories/data/payments.json";
 import PaymentModal from "./paymentModal";
 import { CASHIER_ACTIONS } from "../../consts/main";
+import { IReceipt } from "../../consts/types";
+import { generate_date } from "../../utils/dateFormatter";
+import { currencyFormatter } from "../../utils/currencyFormatter";
 
 const PaymentByPatientView = ({
   handleSelectPatient,
   selected,
   paymentModal,
   setPaymentModal,
+  receipts,
+  selectedReceipt,
 }) => {
+  console.log('receipts', receipts)
   return (
     <div style={{ width: "100%" }}>
       <ButtonGroup className={classes.actionButtonsWrapper}>
@@ -63,34 +69,35 @@ const PaymentByPatientView = ({
             ))}
           </thead>
           <tbody>
-            {payment.map((item, index) => (
+            {receipts.map((item: IReceipt, index: number) => (
               <tr
                 key={item.id}
                 data-id={item.id}
-                onClick={handleSelectPatient}
+                onClick={e => handleSelectPatient(e, item)}
                 className={
                   selected === String(item.id) ? classes.selected : null
                 }
               >
                 <td></td>
-                <td>{item.payment_date}</td>
-                <td>{item.doctor}</td>
-                <td>{item.speciality}</td>
-                <td>{item.service}</td>
-                <td>{item.type_payment}</td>
-                <td>{item.patient}</td>
-                <td>{item.base_price}</td>
-                <td>{item.comment}</td>
-                <td>{item.amount_payment}</td>
-                <td>{item.bank}</td>
+                <td>{item.receipt_appointments[0]?.patient_name}</td>
+                <td>{item.receipt_appointments[0]?.doctor_name}</td>
+                <td>{item.receipt_appointments[0]?.services[0].service_name}</td>
+                <td>{generate_date(new Date(item.receipt_appointments[0]?.services[0]?.created_at ?? new Date()))}</td>
+                <td>{item.receipt_appointments[0]?.services[0]?.payment_status ?? ''}</td>
+                <td>{currencyFormatter(item.receipt_appointments[0]?.debt ?? 0, 'UZS')}</td>
+                <td>{currencyFormatter(item.receipt_appointments[0]?.price ?? 0, 'UZS')}</td>
+                <td>{item.receipt_appointments[0]?.discount ?? 0 + '%'}</td>
+                <td>{item.receipt_appointments[0]?.branch}</td>
+                <td>{item.receipt_appointments[0]?.referring_doctor}</td>
               </tr>
             ))}
           </tbody>
         </table>
-        <PaymentModal
+        {selectedReceipt && <PaymentModal
           open={paymentModal}
+          selectedReceipt={selectedReceipt}
           close={() => setPaymentModal(false)}
-        />
+        />}
       </div>
     </div>
   );

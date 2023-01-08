@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import styles from "./index.module.scss";
 import {
   Autocomplete,
-  AutocompleteValue,
-  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -22,9 +20,9 @@ import { IDateValue, IMedicalService } from "../../consts/types";
 import { observer } from "mobx-react-lite";
 
 const referring_doctor = [
-  { "name": "Sardor Akbarov", "id": 1 },
-  { "name": "Sardor Akbarov", "id": 1 }
-]
+  { name: "Sardor Akbarov", id: 1 },
+  { name: "Sardor Akbarov", id: 1 },
+];
 
 const PatientsTable = observer(
   ({
@@ -101,11 +99,10 @@ const PatientsTable = observer(
                           },
                         },
                       ]}
-                    >
-                    </InputLabel>
+                    ></InputLabel>
                     <Select
                       value={discount}
-                      name="exemption"
+                      name="discount"
                       onChange={(e) => {
                         setDiscount(e.target.value as number);
                         handleChangeInput(e);
@@ -276,7 +273,8 @@ const PatientsTable = observer(
                   // getOptionLabel={(item: { name: string, id: number }) => item.name}
                   onChange={(_e, v) =>
                     setFormData({ ...formData, referring_doctor: v?.id })
-                  } options={[
+                  }
+                  options={[
                     {
                       label: "1",
                       value: 1,
@@ -370,7 +368,7 @@ const PatientsTable = observer(
                   onChange={handleChangeInput}
                   name="referring_doc_notes"
                   value={formData.referring_doc_notes}
-                  className={styles.input_block} 
+                  className={styles.input_block}
                   multiline
                   rows={4}
                   sx={{ width: "282px" }}
@@ -646,6 +644,9 @@ const PatientsTable = observer(
                                           setFormData({
                                             ...formData,
                                             debt:
+                                              appointedService.service.cost *
+                                              appointedService.quantity,
+                                            price:
                                               appointedService.service.cost *
                                               appointedService.quantity,
                                           });

@@ -22,11 +22,12 @@ import Grid from "@mui/material/Unstable_Grid2";
 import BpCheckbox from "../../components/BpCheckbox";
 import payment from "../../repositories/data/payments.json";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { currencyFormatter } from "../../utils/currencyFormatter";
 
-const PaymentModal = ({ open, close }) => {
+const PaymentModal = ({ open, close, selectedReceipt }) => {
   const [paymentType, setPaymentType] = React.useState<string>("Приход");
   const [handleOpenChild, setHandleOpenChild] = React.useState<boolean>(false);
-
+  console.log('selectedReceipt', selectedReceipt)
   const handleChangePaymentType = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -39,7 +40,7 @@ const PaymentModal = ({ open, close }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box className={classes.modalWrapper} style={{ width: 1400 }}>
+      {selectedReceipt && (<Box className={classes.modalWrapper} style={{ width: 1400 }}>
         <div className={classes.modalHeader}>
           <h4>Оплата</h4>
           <button onClick={close} className={classes.roundedOutlineButton}>
@@ -129,7 +130,7 @@ const PaymentModal = ({ open, close }) => {
                         <th key={item}>{item}</th>
                       ))}
                     </thead>
-                    {payment.slice(0, 2).map((item) => (
+                    {selectedReceipt.receipt_appointments[0].services.map((item) => (
                       <tr>
                         <td
                           style={{ display: "flex", justifyContent: "center" }}
@@ -142,10 +143,10 @@ const PaymentModal = ({ open, close }) => {
                           />
                         </td>
                         <td>{item.type_payment}</td>
-                        <td>{item.comment}</td>
-                        <td>{item.amount_payment}</td>
-                        <td>{item.direction_of_payment}</td>
-                        <td>{item.base_price}</td>
+                        <td>{item.service_name}</td>
+                        <td>{currencyFormatter(selectedReceipt.receipt_appointments[0].price, 'uzs')}</td>
+                        <td>{currencyFormatter(selectedReceipt.receipt_appointments[0].discount, 'uzs')}</td>
+                        <td>{currencyFormatter(selectedReceipt.receipt_appointments[0].debt, 'uzs')}</td>
                         <td>{item.payment_date}</td>
                       </tr>
                     ))}
@@ -257,7 +258,7 @@ const PaymentModal = ({ open, close }) => {
             </Box>
           </>
         </Modal>
-      </Box>
+      </Box>)}
     </Modal>
   );
 };

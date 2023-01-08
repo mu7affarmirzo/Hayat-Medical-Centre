@@ -1,11 +1,10 @@
 import { ApiClient } from "../utils";
-import transactions from "../repositories/data/transactions.json";
-import { ITransaction } from "../consts/types";
+import { IReceipt, ITransaction } from "../consts/types";
 
 export default class TransactionsApiStub {
   static _instance: TransactionsApiStub;
 
-  private readonly client = new ApiClient("/transactions");
+  private readonly client = new ApiClient("cashbox");
 
   static get instance() {
     if (!TransactionsApiStub._instance) {
@@ -14,10 +13,10 @@ export default class TransactionsApiStub {
 
     return TransactionsApiStub._instance;
   }
-
+  async findAllReceipts(): Promise<IReceipt[]> {
+    return this.client.getData("/receipt");
+  }
   async findAllTransactions(): Promise<ITransaction[]> {
-    return transactions
-      ? (transactions as unknown as ITransaction[])
-      : this.client.getArray<ITransaction>("/");
+    return this.client.getData("/transactions/");
   }
 }

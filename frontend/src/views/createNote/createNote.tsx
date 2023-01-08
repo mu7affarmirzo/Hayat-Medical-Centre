@@ -1,7 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { FlexSpaceBetween } from "../../themes/customItems";
 import { Link, useNavigate } from "react-router-dom";
-import { Backdrop, Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Backdrop,
+  Box,
+  Button,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import styles from "./index.module.scss";
 import { ReactComponent as NoteAdd } from "../../assets/img/note-add.svg";
 import { ReactComponent as CloseCircle } from "../../assets/img/close-circle.svg";
@@ -27,7 +35,7 @@ import { ReactComponent as EkmLogo } from "../../assets/ekm.svg";
 interface IAppointment {
   patient: any;
   name: any;
-  exemtion: string;
+  discount: string;
   start_time: any;
   end_time: any;
   price: string;
@@ -65,8 +73,6 @@ const CreateNote = observer(() => {
     moment()
   );
   const [patients, setPatients] = useState<IPatient[]>([]);
-
-
 
   useEffect(() => {
     patientStateKeeper.findAllPatients().then();
@@ -191,10 +197,12 @@ const CreateNote = observer(() => {
     from: moment(),
     to: moment().add(5, "minutes"),
   });
+  const [allAppointments, setAllAppointments] = useState<IAppointment[]>([]);
+  const [notificationState, setNotificationState] = useState<boolean>(false);
   const [formData, setFormData] = useState<IAppointment>({
     patient: "",
     name: "",
-    exemtion: "",
+    discount: "",
     end_time: timeValue.from!.toDate(),
     start_time: timeValue.to!.toDate(),
     price: "",
@@ -262,6 +270,19 @@ const CreateNote = observer(() => {
         };
         return data;
       });
+      let data = {
+        ...formData,
+        end_time: values.end,
+        start_time: values.start,
+        services: selectedServices,
+        patient: patientStateKeeper.selectedPatient?.id,
+        name: patientStateKeeper.selectedPatient?.f_name,
+      };
+      const apps = [...allAppointments];
+      apps.push(data);
+      setAllAppointments((prev) => {
+        return [...prev, data];
+      });
       calendarEventStateKeeper.addEvent(values);
       setFormData({
         ...formData,
@@ -271,45 +292,51 @@ const CreateNote = observer(() => {
         patient: patientStateKeeper.selectedPatient?.id,
         name: patientStateKeeper.selectedPatient?.f_name,
       });
-      let data = {
-        ...formData,
-        end_time: values.end,
-        start_time: values.start,
-        services: selectedServices,
-        patient: patientStateKeeper.selectedPatient?.id,
-        name: patientStateKeeper.selectedPatient?.f_name,
-      }
       doctorStateKeeper.setSelectedDoctors([
         ...doctorStateKeeper.selectedDoctors,
       ]);
-      setTimeout(() => {
-        create_appointment(data);
 
-      }, 0);
+      if (doctorStateKeeper.selectedDoctors.length === 1) {
+        create_appointment({ appointments: apps });
+      }
+      doctorStateKeeper.selectedDoctors.shift();
+      setServices([]);
+      setAppointedServices([]);
+      setDiscount(0);
+      clear_values();
     }
   };
   const create_appointment = (data) => {
     axios
-      .post("http://185.196.213.71:8080/api/v1/appointments/", data, headers)
+      .post("http://185.196.213.71:8080/api/v1/cashbox/receipt", data, headers)
       .then((res) => {
         if (res.status === 201) {
-          doctorStateKeeper.selectedDoctors.shift();
-          setServices([]);
-          setAppointedServices([]);
-          setDiscount(0);
-          clear_values()
-          data = {}
+          setAllAppointments([]);
+          setNotificationState(true);
         }
       })
       .catch((err) => {
         if (err.response.status == 400) {
-
         }
       });
   };
   const clear_values = () => [
-    setFormData({ patient: '', name: '', exemtion: '', start_time: '', end_time: '', price: '', debt: '', referring_doctor: '', information_source: '', referring_doc_notes: '', addition_info: '', branch: '', services: [] })
-  ]
+    setFormData({
+      patient: "",
+      name: "",
+      discount: "",
+      start_time: "",
+      end_time: "",
+      price: "",
+      debt: "",
+      referring_doctor: "",
+      information_source: "",
+      referring_doc_notes: "",
+      addition_info: "",
+      branch: "",
+      services: [],
+    }),
+  ];
   useEffect(() => {
     if (doctorStateKeeper.selectedDoctors.length === 0) {
       navigator(-1);
@@ -324,14 +351,22 @@ const CreateNote = observer(() => {
   return (
     <div className={styles.create_note}>
       <FlexSpaceBetween className={styles.top_block}>
-              <Link to="/main" onClick={() => patientStateKeeper.setSelectedPatient(null)} className={styles.return_back}>
-                  <img src={ArrowCircle} alt="ArrowCircle" />
-                  <p>
-                      Запись на прием -{" "}
-                      {doctorStateKeeper.selectedDoctors.at(0)?.specialty.map(item => item.name).join()}{" - "}
-                      {doctorStateKeeper.selectedDoctors.at(0)?.doctor.f_name}
-                  </p>
-              </Link>
+        <Link
+          to="/main"
+          onClick={() => patientStateKeeper.setSelectedPatient(null)}
+          className={styles.return_back}
+        >
+          <img src={ArrowCircle} alt="ArrowCircle" />
+          <p>
+            Запись на прием -{" "}
+            {doctorStateKeeper.selectedDoctors
+              .at(0)
+              ?.specialty.map((item) => item.name)
+              .join()}
+            {" - "}
+            {doctorStateKeeper.selectedDoctors.at(0)?.doctor.f_name}
+          </p>
+        </Link>
 
         <div className={styles.buttons}>
           <Button
@@ -343,7 +378,6 @@ const CreateNote = observer(() => {
           >
             Создать
           </Button>
-
           <Link to="/main">
             <Button
               sx={{ backgroundColor: "#BDBDBD", marginLeft: "10px" }}
@@ -598,6 +632,21 @@ const CreateNote = observer(() => {
           setAppointedServices={setAppointedServices}
         />
       )}
+
+      <Snackbar
+        open={notificationState}
+        autoHideDuration={3000}
+        onClose={() => setNotificationState(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setNotificationState(false)}
+          sx={{ width: "100%" }}
+          severity="success"
+        >
+          Встреча успешно создана!
+        </Alert>
+      </Snackbar>
     </div>
   );
 });

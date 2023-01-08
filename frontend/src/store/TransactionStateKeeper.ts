@@ -1,13 +1,13 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { ITransaction } from "../consts/types";
 import TransactionsApiStub from "../repositories/TransactionsApiStub";
+import { IDoc, IReceipt, ITransaction } from "../consts/types";
 
 class TransactionsStateKeeper {
   static _instance: TransactionsStateKeeper;
   private readonly transactionsApiStub: TransactionsApiStub;
 
   transactions: ITransaction[] = [];
-
+  receipts: IReceipt[] = [];
   static get instance() {
     if (!TransactionsStateKeeper._instance) {
       TransactionsStateKeeper._instance = new TransactionsStateKeeper();
@@ -21,12 +21,20 @@ class TransactionsStateKeeper {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  async findAllTransactions(): Promise<ITransaction[]> {
-    const transactions = await this.transactionsApiStub.findAllTransactions();
+  async findAllReceipts(): Promise<IReceipt[]> {
+    const receipts = await this.transactionsApiStub.findAllReceipts();
     runInAction(() => {
-      this.transactions = transactions;
+      this.receipts = receipts;
     });
-    return transactions;
+    return receipts;
+  }
+
+  async findAllTransactions(): Promise<ITransaction[]> {
+    const transaction = await this.transactionsApiStub.findAllTransactions();
+    runInAction(() => {
+      this.transactions = transaction;
+    });
+    return transaction;
   }
 }
 export default TransactionsStateKeeper;

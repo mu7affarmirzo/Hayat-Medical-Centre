@@ -7,7 +7,7 @@ export default class CalendarEventApiStub {
   /* Gen by NARA Studio */
   static _instance: CalendarEventApiStub;
 
-  private readonly client = new ApiClient("appointments");
+  private readonly client = new ApiClient("cashbox/receipt");
 
   static get instance() {
     /* Gen by NARA Studio */
@@ -21,6 +21,6 @@ export default class CalendarEventApiStub {
     /* Gen by NARA Studio */
     return !appointmentsList
       ? (appointmentsList as unknown as IAppointment[])
-      : this.client.getData<IAppointment>("/");
+      : this.client.getData<IAppointment>("");
   }
 }
