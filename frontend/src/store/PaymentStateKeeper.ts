@@ -21,8 +21,11 @@ class PaymentStateKeeper {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  async payForPatient(): Promise<IPaymentProcess[]> {
-    const payment = await this.paymentApiStub.payByReceiptId("/");
+  async payForPatient(data): Promise<IPaymentProcess[]> {
+    const payment = await this.paymentApiStub.payByReceiptId(
+      "/transactions/",
+      data
+    );
     runInAction(() => {
       this.response = payment;
     });

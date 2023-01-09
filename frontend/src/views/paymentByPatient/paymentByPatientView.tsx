@@ -2,7 +2,6 @@ import { Box, Button, ButtonGroup, TextField } from "@mui/material";
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import classes from "./paymentByPatient.module.scss";
-import payment from "../../repositories/data/payments.json";
 import PaymentModal from "./paymentModal";
 import { CASHIER_ACTIONS } from "../../consts/main";
 import { IReceipt } from "../../consts/types";
@@ -17,7 +16,6 @@ const PaymentByPatientView = ({
   receipts,
   selectedReceipt,
 }) => {
-  console.log('receipts', receipts)
   return (
     <div style={{ width: "100%" }}>
       <ButtonGroup className={classes.actionButtonsWrapper}>

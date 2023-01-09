@@ -25,15 +25,15 @@ const CashBoxContainer = () => {
     const navbarActionHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         switch (e.currentTarget.dataset.actionType) {
             case "close_cash_punkt":
-                if (selectedPayment.length > 0) {
-                    setDeletePaymentModal(true);
-                }
+                setDeletePaymentModal(true);
                 break;
             case "detailed_total_sum":
                 setSumPaymentModal(true);
                 break;
             case "income_outcome":
+                if (selectedPayment.length > 0) {
                 setIncomeOutcomeModal(true);
+                }
                 break;
 
             default:

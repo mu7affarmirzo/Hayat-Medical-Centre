@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   ButtonGroup,
@@ -8,11 +9,9 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
-import React from "react";
 import classes from "./cashboxview.module.scss";
 import { ReactComponent as LockImage } from "../../assets/img/header_icons/lock.svg";
 import { ReactComponent as Export } from "../../assets/img/header_icons/bill.svg";
-import payment from "../../repositories/data/payments.json";
 import BpCheckbox from "../../components/BpCheckbox";
 import PaymentDeletionModal from "./Modals/PaymentDeletionModal";
 import IncomeOutcomeModal from "./Modals/IncomeOutcomeModal";
@@ -141,21 +140,21 @@ const CashboxView = ({
                   >
                     <td></td>
                     <td>{generate_date(new Date(item.created_at))}</td>
-                    {/* <td>{item.doctor.username}</td> */}
-                    {/* <td>{item.specialty.name}</td>
+                    <td>{item.doctor.username}</td>
+                    <td>{item.specialty.name}</td>
                     <td>{item.service.name}</td>
                     <td>{item.payment_type}</td>
-                    <td>{item.patient.name}</td> */}
-                    {/* <td>{currencyFormatter(item.base_price, 'UZS')}</td>
+                    <td>{item.patient.name}</td>
+                    <td>{currencyFormatter(item.base_price ?? 0, 'UZS')}</td>
                     <td>{item.comment}</td>
-                    <td>{currencyFormatter(item.amount, 'UZS')}</td>
+                    <td>{currencyFormatter(item.amount ?? 0, 'UZS')}</td>
                     <td>{item.bank}</td>
                     <td>
                       <BpCheckbox id={item.id} defaultChecked={false} />
                     </td>
                     <td>{item.payment_purpose}</td>
                     <td>{item.transaction_type}</td>
-                    <td>{item.receipt_id}</td> */}
+                    <td>{item.receipt_id}</td>
                   </tr>
                 ))}
               </tbody>
@@ -188,7 +187,7 @@ const CashboxView = ({
       <PaymentDeletionModal
         setDeletePaymentModal={setDeletePaymentModal}
         deletePaymentModal={deletePaymentModal}
-        selectedPayment={selectedPayment}
+        transactions={transactions}
       />
       <PaymentModal
         sumPaymentModal={sumPaymentModal}
@@ -196,6 +195,7 @@ const CashboxView = ({
       />
       <IncomeOutcomeModal
         setIncomeOutcomeModal={setIncomeOutcomeModal}
+        selectedReceipt={transactions.filter(transaction => transaction.id === parseInt(selectedPayment))[0]}
         incomeOutcomeModal={incomeOutcomeModal}
       />
     </>

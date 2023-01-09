@@ -20,6 +20,10 @@ class CashboxStateKeeper {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
+  async closeCashbox() {
+    return await this.cashboxApiStub.closeCashbox();
+  }
+
   async findAllReports(): Promise<IReports[]> {
     const reports = await this.cashboxApiStub.findAllReports();
     runInAction(() => {
@@ -31,7 +35,6 @@ class CashboxStateKeeper {
   async closeHistoryCashbox(data) {
     await this.cashboxApiStub.closeHistory(data);
     return null;
-
   }
 
   async findAllTransactions(): Promise<ITransaction[]> {

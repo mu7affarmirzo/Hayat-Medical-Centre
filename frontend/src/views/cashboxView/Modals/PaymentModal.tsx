@@ -35,17 +35,17 @@ const PaymentModal = ({ sumPaymentModal, setSumPaymentModal }) => {
                         <tr>
                             <td></td>
                             <td>Payme</td>
-                            <td>Payme</td>
+                            <td>315117,38</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td>Payme</td>
-                            <td>Payme</td>
+                            <td>Наличные</td>
+                            <td>408156,61</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td>Payme</td>
-                            <td>Payme</td>
+                            <td>Банковская карта</td>
+                            <td>175659,83</td>
                         </tr>
                     </tbody>
                 </table>

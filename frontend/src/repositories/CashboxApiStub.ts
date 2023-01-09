@@ -5,7 +5,7 @@ import { IReports, ITransaction } from "../consts/types";
 export default class CashboxApiStub {
   static _instance: CashboxApiStub;
 
-  private readonly client = new ApiClient("/cashbox");
+  private readonly client = new ApiClient("cashbox");
 
   static get instance() {
     if (!CashboxApiStub._instance) {
@@ -17,6 +17,10 @@ export default class CashboxApiStub {
 
   async closeHistory(data) {
     return this.client.postData("/", data);
+  }
+
+  async closeCashbox() {
+    return this.client.postData("/cashbox", {});
   }
 
   async findAllReports(): Promise<IReports[]> {

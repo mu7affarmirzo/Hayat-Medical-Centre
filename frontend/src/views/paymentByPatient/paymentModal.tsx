@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
@@ -14,7 +15,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./paymentModal.module.scss";
 import table from "./paymentByPatient.module.scss";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -23,16 +24,85 @@ import BpCheckbox from "../../components/BpCheckbox";
 import payment from "../../repositories/data/payments.json";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { currencyFormatter } from "../../utils/currencyFormatter";
+import { useLocalObservable } from "mobx-react-lite";
+import PaymentStateKeeper from "../../store/PaymentStateKeeper";
 
+interface ServiceItem {
+  service_id: string
+}
+interface ITransaction {
+  transaction_type: string,
+  is_manual: boolean,
+  receipt: number,
+  branch: number,
+  referring_doctor: number,
+  tr_srv: ServiceItem[],
+  appointment_id: number
+}
 const PaymentModal = ({ open, close, selectedReceipt }) => {
-  const [paymentType, setPaymentType] = React.useState<string>("Приход");
+  const paymentStateKeeper = useLocalObservable(() => PaymentStateKeeper.instance);
+
+  const { payForPatient } = paymentStateKeeper
+  const [paymentType, setPaymentType] = React.useState<string>("INCOME ");
   const [handleOpenChild, setHandleOpenChild] = React.useState<boolean>(false);
-  console.log('selectedReceipt', selectedReceipt)
+  const [transaction, setTransaction] = useState<ITransaction>({
+    transaction_type: 'INCOME',
+    is_manual: false,
+    receipt: 0,
+    appointment_id: 0,
+    branch: 0,
+    referring_doctor: 0,
+    tr_srv: []
+  })
+  useEffect(() => {
+    if (selectedReceipt) {
+      setTransaction(
+        {
+          ...transaction,
+          receipt: selectedReceipt.id,
+          branch: selectedReceipt.receipt_appointments[0].branch,
+          appointment_id: selectedReceipt.receipt_appointments[0].id
+        })
+    }
+  }, [selectedReceipt])
+
+  const handlecheckboxchange = (id: string) => {
+    const services = transaction.tr_srv;
+    const isAdded = services.filter(item => item.service_id === id)
+
+    if (!isAdded.length) {
+      services.push({ service_id: id })
+      setTransaction({ ...transaction, tr_srv: services })
+    } else {
+      const indexOfService = services.findIndex((obj) => obj.service_id === id);
+      if (indexOfService > -1) {
+        services.splice(indexOfService, 1);
+        setTransaction({ ...transaction, tr_srv: services })
+      }
+    }
+  }
+
+  const changeHandler = (name: string, value) => {
+    setTransaction({
+      ...transaction, [name]: value
+    })
+  }
   const handleChangePaymentType = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    setTransaction({ ...transaction, transaction_type: event.target.value })
     setPaymentType((event.target as HTMLInputElement).value);
   };
+
+  const proceedPayment = () => {
+    payForPatient(transaction).then(res =>
+      setHandleOpenChild(true))
+  }
+
+  const referringDoctors = [
+    { label: 1, id: 1 },
+    { label: 1, id: 2 },
+  ]
   return (
     <Modal
       open={open}
@@ -61,12 +131,14 @@ const PaymentModal = ({ open, close, selectedReceipt }) => {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
+                    name="payment_type"
+                    onChange={e => changeHandler(e.target.name, e.target.value)}
                     label="Вид платежа"
                   >
-                    <MenuItem value={"Банковская карта"}>
+                    <MenuItem value={"CASH"}>
                       Банковская карта
                     </MenuItem>
-                    <MenuItem value={"Наличные"}>Наличные</MenuItem>
+                    <MenuItem value={"CASH"}>Наличные</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControlLabel
@@ -75,27 +147,31 @@ const PaymentModal = ({ open, close, selectedReceipt }) => {
                   label="Вручную"
                 />
                 <FormControl fullWidth className={classes.mb10}>
-                  <TextField label="Сумма" />
+                  <TextField
+                    label="Сумма"
+                    name="amount"
+                    onChange={e => changeHandler(e.target.name, e.target.value)}
+                  />
                 </FormControl>
                 <FormControl fullWidth>
                   <RadioGroup
                     row
                     onChange={handleChangePaymentType}
                     aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
+                    name="transaction_type"
                     value={paymentType}
                   >
                     <Paper elevation={2} className={classes.paper}>
                       <FormControlLabel
                         style={{ marginRight: 40 }}
-                        value="Приход"
+                        value="INCOME"
                         control={<Radio />}
-                        label="Приход"
+                        label="INCOME"
                       />
                       <FormControlLabel
-                        value="Расход"
+                        value="OUTCOME"
                         control={<Radio />}
-                        label="Расход"
+                        label="OUTCOME"
                       />
                     </Paper>
                   </RadioGroup>
@@ -105,9 +181,22 @@ const PaymentModal = ({ open, close, selectedReceipt }) => {
                   control={<Checkbox />}
                   label="Безналичный расчёт"
                 />
-                <FormControl fullWidth>
-                  <TextField label="DK ФИО или ID номер" />
-                </FormControl>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={referringDoctors}
+                  onInputChange={(event, newInputValue) => {
+                    changeHandler('referring_doctor', newInputValue);
+                  }}
+                  sx={{ width: 300 }}
+                  // getOptionLabel={(option) => option.label}
+                  renderOption={(props, option) => (
+                    <Box value={option.id} component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                      {option.label}
+                    </Box>
+                  )}
+                  renderInput={(params) => <TextField {...params} label="DK ФИО или ID номер" />}
+                />
               </Grid>
               <Grid xs={9}>
                 <FormControlLabel
@@ -138,7 +227,7 @@ const PaymentModal = ({ open, close, selectedReceipt }) => {
                           <BpCheckbox
                             id={item.id}
                             style={{ padding: "15.5px " }}
-                            // handlecheckboxchange={handlecheckboxchange}
+                            handlecheckboxchange={() => handlecheckboxchange(item.id as string)}
                             defaultChecked={false}
                           />
                         </td>
@@ -231,7 +320,8 @@ const PaymentModal = ({ open, close, selectedReceipt }) => {
                   <Button
                     sx={{ marginRight: 1 }}
                     variant="contained"
-                    onClick={() => setHandleOpenChild(true)}
+                    onClick={proceedPayment}
+                    // onClick={() => setHandleOpenChild(true)}
                   >
                     {paymentType}
                   </Button>

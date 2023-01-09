@@ -16,6 +16,9 @@ export default class TransactionsApiStub {
   async findAllReceipts(): Promise<IReceipt[]> {
     return this.client.getData("/receipt");
   }
+  async findAllHistory() {
+    return this.client.getData("/cashbox");
+  }
   async findAllTransactions(): Promise<ITransaction[]> {
     return this.client.getData("/transactions/");
   }

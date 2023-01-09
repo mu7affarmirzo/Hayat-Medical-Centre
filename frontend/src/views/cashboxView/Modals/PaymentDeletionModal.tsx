@@ -1,21 +1,37 @@
-import React from 'react';
-import {
-    Button,
-    Modal,
-    Typography,
-} from "@mui/material";
+import React from "react";
+import { Button, Modal, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { ReactComponent as PrintIcon } from "../../../assets/img/printer.svg";
 import Box from "@mui/material/Box";
-import classes from '../cashboxview.module.scss';
+import classes from "../cashboxview.module.scss";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import payment from "../../../repositories/data/payments.json";
+import { ITransaction } from "../../../consts/types";
+import { currencyFormatter } from "../../../utils/currencyFormatter";
+import { useLocalObservable } from "mobx-react-lite";
+import CashboxStateKeeper from "../../../store/CashboxStateKeeper";
 
 const PaymentDeletionModal = ({
     setDeletePaymentModal,
     deletePaymentModal,
-    selectedPayment,
+    transactions,
 }) => {
+    const cashboxStateKeeper = useLocalObservable(
+        () => CashboxStateKeeper.instance
+    );
+
+    const deleteHandler = () => {
+        cashboxStateKeeper.closeCashbox().then(() =>
+            alert(
+                `Касса ${currencyFormatter(
+                    transactions
+                        .flatMap((item: ITransaction) => item.amount)
+                        .reduce((sum, acc) => sum + acc, 0),
+                    "uzs"
+                )} успешно закрыта`
+            )
+        );
+        setDeletePaymentModal(false)
+    };
     return (
         <Modal
             open={deletePaymentModal}
@@ -40,10 +56,13 @@ const PaymentDeletionModal = ({
                         component="h6"
                     >
                         Закрыть кассу{" "}
-                        {selectedPayment &&
-                            payment.filter((pay) => pay.id === parseInt(selectedPayment))[0]
-                                .amount_payment}{" "}
-                        ?
+                        {transactions &&
+                            currencyFormatter(
+                                transactions
+                                    .flatMap((item: ITransaction) => item.amount)
+                                    .reduce((sum, acc) => sum + acc, 0),
+                                "uzs"
+                            )}
                     </Typography>
                 </div>
                 <Stack
@@ -61,7 +80,11 @@ const PaymentDeletionModal = ({
                         Печать чека
                     </Button>
                     <Stack direction="row" spacing={2}>
-                        <Button className={classes.secondaryButton} variant="outlined">
+                        <Button
+                            onClick={deleteHandler}
+                            className={classes.secondaryButton}
+                            variant="outlined"
+                        >
                             Закрыть кассу
                         </Button>
                         <Button
@@ -77,4 +100,4 @@ const PaymentDeletionModal = ({
         </Modal>
     );
 };
-export default PaymentDeletionModal
+export default PaymentDeletionModal;

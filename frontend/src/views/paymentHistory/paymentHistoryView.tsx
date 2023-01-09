@@ -8,13 +8,21 @@ import {
     Select,
     TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { ReactComponent as DownloadAsExcel } from "../../assets/img/excelDownload.svg";
 import classes from "./PaymentHistoryView.module.scss";
 import payment from "../../repositories/data/closedPayments.json";
 import SearchIcon from "@mui/icons-material/Search";
+import TransactionsStateKeeper from "../../store/TransactionStateKeeper";
+import { useLocalObservable } from "mobx-react-lite";
 
 const PaymentHistoryView = () => {
+    const transactionStateKeeper = useLocalObservable(() => TransactionsStateKeeper.instance);
+    const { gethistory, history } = transactionStateKeeper
+    useEffect(() => {
+        gethistory().then(res => console.log(res))
+
+    }, [])
     return (
         <div className={classes.wrapper}>
             <div className={classes.actions}>

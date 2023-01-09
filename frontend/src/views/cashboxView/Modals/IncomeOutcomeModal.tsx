@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -20,9 +20,58 @@ import {
 import Grid from "@mui/material/Unstable_Grid2";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import classes from '../cashboxview.module.scss';
+import { useLocalObservable } from "mobx-react-lite";
+import PaymentStateKeeper from "../../../store/PaymentStateKeeper";
 
+interface ServiceItem {
+    service_id: string
+}
+interface ITransaction {
+    transaction_type: string,
+    is_manual: boolean,
+    receipt: number,
+    branch: number,
+    referring_doctor: number,
+    tr_srv: ServiceItem[],
+    appointment_id: number
+}
 
-const IncomeOutcomeModal = ({ setIncomeOutcomeModal, incomeOutcomeModal }) => {
+const IncomeOutcomeModal = ({ setIncomeOutcomeModal, incomeOutcomeModal, selectedReceipt }) => {
+    const paymentStateKeeper = useLocalObservable(() => PaymentStateKeeper.instance);
+
+    const { payForPatient } = paymentStateKeeper
+    const [transaction, setTransaction] = useState<ITransaction>({
+        transaction_type: 'INCOME',
+        is_manual: false,
+        receipt: 0,
+        appointment_id: 0,
+        branch: 0,
+        referring_doctor: 0,
+        tr_srv: []
+    })
+    useEffect(() => {
+        if (selectedReceipt) {
+            setTransaction(
+                {
+                    ...transaction,
+                    // receipt: selectedReceipt.id,
+                    // branch: selectedReceipt.receipt_appointments[0].branch,
+                    appointment_id: selectedReceipt.appointment_id
+                })
+        }
+    }, [selectedReceipt])
+    console.log(selectedReceipt)
+    const changeHandler = (name: string, value) => {
+        setTransaction({
+            ...transaction, [name]: value
+        })
+    }
+
+    const proceedPayment = () => {
+        console.log(transaction, selectedReceipt)
+        payForPatient(transaction).then()
+    }
+
     return (
         <Modal
             open={incomeOutcomeModal}
@@ -58,10 +107,13 @@ const IncomeOutcomeModal = ({ setIncomeOutcomeModal, incomeOutcomeModal }) => {
                                     </InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
+                                        id="demo-simple-select" 
+                                        name="payment_type"
+                                        onChange={e => changeHandler(e.target.name, e.target.value)}
                                         label="Форма оплаты "
                                     >
-                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={'CASH'}>Банковская карта</MenuItem>
+                                        <MenuItem value={'CASH'}>Наличные</MenuItem>
                                     </Select>
                                 </FormControl>
                             </div>
@@ -140,7 +192,9 @@ const IncomeOutcomeModal = ({ setIncomeOutcomeModal, incomeOutcomeModal }) => {
                                 />
                             </FormControl>
                             <div style={{ width: "100%" }} className={classes.flexContainer}>
-                                <Button className={classes.secondaryButton} variant="outlined" >принять</Button>
+                                <Button
+                                    onClick={proceedPayment}
+                                    className={classes.secondaryButton} variant="outlined" >принять</Button>
                                 <Button className={classes.secondaryButton} variant="outlined">Отмена</Button>
                             </div>
                         </Grid>
@@ -152,6 +206,7 @@ const IncomeOutcomeModal = ({ setIncomeOutcomeModal, incomeOutcomeModal }) => {
                                 className={classes.mb10}
                                 id="outlined-basic"
                                 label="Сумма "
+                                onChange={e => changeHandler('amount', e.target.value)}
                                 variant="outlined"
                             />
                             <TextField

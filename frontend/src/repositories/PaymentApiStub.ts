@@ -3,7 +3,7 @@ import { ApiClient } from "../utils";
 export default class PaymentApiStub {
   static _instance: PaymentApiStub;
 
-  private readonly client = new ApiClient("/");
+  private readonly client = new ApiClient("cashbox");
 
   static get instance() {
     if (!PaymentApiStub._instance) {
@@ -16,7 +16,7 @@ export default class PaymentApiStub {
     return this.client.getData<IPayment>("");
   }
 
-  async payByReceiptId(data) {
-    this.client.postData("/", data);
+  async payByReceiptId(endpoint: string, data) {
+    this.client.postData(endpoint, data);
   }
 }

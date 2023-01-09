@@ -7,6 +7,7 @@ class TransactionsStateKeeper {
   private readonly transactionsApiStub: TransactionsApiStub;
 
   transactions: ITransaction[] = [];
+  history: unknown = [];
   receipts: IReceipt[] = [];
   static get instance() {
     if (!TransactionsStateKeeper._instance) {
@@ -28,7 +29,13 @@ class TransactionsStateKeeper {
     });
     return receipts;
   }
-
+  async gethistory() {
+    const history = await this.transactionsApiStub.findAllHistory();
+    runInAction(() => {
+      this.history = history;
+    });
+    return history;
+  }
   async findAllTransactions(): Promise<ITransaction[]> {
     const transaction = await this.transactionsApiStub.findAllTransactions();
     runInAction(() => {
