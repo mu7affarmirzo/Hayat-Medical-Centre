@@ -3,12 +3,12 @@ from typing import List
 
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
-from apps.cashbox.models import CashBoxClosingHistoryRecordsModel
+from apps.cashbox.models import CashBoxClosingHistoryRecordsModel, TransactionsModel
 from api.v1.appointment.serializers.appointment import TimeSerializer
 from django.shortcuts import get_object_or_404
 from api.v1.cashbox.serializers import CashBoxSerializer
@@ -32,8 +32,15 @@ class CashBoxView(APIView):
 
     @swagger_auto_schema(tags=['cashbox'])
     def post(self, request, format=None):
-
-        serializer = CashBoxSerializer(data=request.data)
+        user = request.user
+        amount = 0
+        transactions = TransactionsModel.objects.filter(created_by=user)
+        for i in transactions:
+            amount += i.amount
+        cashboxclosing = CashBoxClosingHistoryRecordsModel(amount=amount, organization=user.organization_id,
+                                                           branch=user.branch_id,
+                                                           created_by=user, modified_at=user)
+        serializer = CashBoxSerializer(cashboxclosing)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -69,6 +76,7 @@ class CashBoxRetrieveView(RetrieveAPIView):
 
 
 @swagger_auto_schema(method="post", tags=["cashbox"], request_body=TimeSerializer)
+@permission_classes((IsAuthenticated,))
 @api_view(['POST', ])
 def cashbox_time_view(request):
     min_date = request.data['min']

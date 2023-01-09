@@ -61,6 +61,7 @@ class ReceiptRetrieveView(RetrieveAPIView):
 
 
 @swagger_auto_schema(method="post", tags=["receipt"], request_body=TimeSerializer)
+@permission_classes((IsAuthenticated,))
 @api_view(['POST', ])
 def receipt_time_view(request):
     min_date = request.data['min']
