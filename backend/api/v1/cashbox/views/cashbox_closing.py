@@ -37,14 +37,17 @@ class CashBoxView(APIView):
         transactions = TransactionsModel.objects.filter(created_by=user)
         for i in transactions:
             amount += i.amount
-        cashboxclosing = CashBoxClosingHistoryRecordsModel(amount=amount, organization=user.organization_id,
-                                                           branch=user.branch_id,
-                                                           created_by=user, modified_at=user)
-        serializer = CashBoxSerializer(cashboxclosing)
-        if serializer.is_valid():
-            serializer.save()
+        if amount == 0:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            cashboxclosing = CashBoxClosingHistoryRecordsModel(amount=amount, organization=user.organization_id,
+                                                               branch=user.branch_id, created_by=user, modified_at=user)
+
+            serializer = CashBoxSerializer(cashboxclosing)
             return Response(serializer.data)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        except:
+
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CashBoxRetrieveView(RetrieveAPIView):

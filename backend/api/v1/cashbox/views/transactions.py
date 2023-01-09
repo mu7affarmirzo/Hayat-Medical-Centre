@@ -78,7 +78,7 @@ def transactions_time_view(request):
 @api_view(['POST', ])
 def transactions_type_filter(request):
     type = request.data['type']
-    transactions = TransactionsModel.objects.filter(type=type)
+    transactions = TransactionsModel.objects.filter(payment_type=type)
     serializer = TransactionsSerializer(transactions, many=True)
     return Response(serializer.data)
 
