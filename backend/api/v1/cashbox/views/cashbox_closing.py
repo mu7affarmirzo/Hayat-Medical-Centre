@@ -8,6 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
+
+from apps.account.models import OrganizationModel, BranchModel
 from apps.cashbox.models import CashBoxClosingHistoryRecordsModel, TransactionsModel
 from api.v1.appointment.serializers.appointment import TimeSerializer
 from django.shortcuts import get_object_or_404
@@ -40,8 +42,10 @@ class CashBoxView(APIView):
         if amount == 0:
             return Response(status=status.HTTP_204_NO_CONTENT)
         try:
-            cashboxclosing = CashBoxClosingHistoryRecordsModel(amount=amount, organization=user.organization_id,
-                                                               branch=user.branch_id, created_by=user, modified_at=user)
+            org = get_object_or_404(OrganizationModel, pk=user.organization_id)
+            branch = get_object_or_404(BranchModel, pk=user.branch_id)
+            cashboxclosing = CashBoxClosingHistoryRecordsModel(amount=amount, organization=org,
+                                                               branch=branch, created_by=user, modified_by=user)
 
             serializer = CashBoxSerializer(cashboxclosing)
             return Response(serializer.data)
