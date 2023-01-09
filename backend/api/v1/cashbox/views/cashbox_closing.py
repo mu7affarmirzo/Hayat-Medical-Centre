@@ -46,6 +46,7 @@ class CashBoxView(APIView):
             branch = get_object_or_404(BranchModel, pk=user.branch_id)
             cashboxclosing = CashBoxClosingHistoryRecordsModel(amount=amount, organization=org,
                                                                branch=branch, created_by=user, modified_by=user)
+            cashboxclosing.save()
 
             serializer = CashBoxSerializer(cashboxclosing)
             return Response(serializer.data)
