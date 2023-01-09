@@ -7,46 +7,48 @@ import {
     MenuItem,
     Select,
     TextField,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { ReactComponent as DownloadAsExcel } from "../../assets/img/excelDownload.svg";
-import classes from "./PaymentHistoryView.module.scss";
-import payment from "../../repositories/data/closedPayments.json";
-import SearchIcon from "@mui/icons-material/Search";
-import TransactionsStateKeeper from "../../store/TransactionStateKeeper";
-import { useLocalObservable } from "mobx-react-lite";
-import { generate_date } from "../../utils/dateFormatter";
-import { currencyFormatter } from "../../utils/currencyFormatter";
-import { IHistory } from "../../consts/types";
-import { DesktopDatePicker } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { ReactComponent as DownloadAsExcel } from '../../assets/img/excelDownload.svg';
+import classes from './PaymentHistoryView.module.scss';
+import payment from '../../repositories/data/closedPayments.json';
+import SearchIcon from '@mui/icons-material/Search';
+import TransactionsStateKeeper from '../../store/TransactionStateKeeper';
+import { useLocalObservable } from 'mobx-react-lite';
+import { generate_date } from '../../utils/dateFormatter';
+import { currencyFormatter } from '../../utils/currencyFormatter';
+import { IHistory } from '../../consts/types';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
+import dayjs, { Dayjs } from 'dayjs';
 
 const PaymentHistoryView = () => {
-    const transactionStateKeeper = useLocalObservable(() => TransactionsStateKeeper.instance);
-    const { gethistory } = transactionStateKeeper
-    const [history, setHistory] = useState<IHistory[]>([])
+    const transactionStateKeeper = useLocalObservable(
+        () => TransactionsStateKeeper.instance
+    );
+    const { gethistory } = transactionStateKeeper;
+    const [history, setHistory] = useState<IHistory[]>([]);
     const [valueFrom, setValueFrom] = React.useState<Dayjs | null>(
-        dayjs('2014-08-18T21:11:54'),
-    ); const [valueTo, setValueTo] = React.useState<Dayjs | null>(
-        dayjs(new Date()),
+        dayjs('2014-08-18T21:11:54')
+    );
+    const [valueTo, setValueTo] = React.useState<Dayjs | null>(
+        dayjs(new Date())
     );
 
     const handleChange = (newValue: Dayjs | null) => {
         setValueFrom(newValue);
-        console.log(valueFrom?.format('YYYY-MM-DD'))
+        console.log(valueFrom?.format('YYYY-MM-DD'));
     };
     const handleChangeTo = (newValue: Dayjs | null) => {
         setValueTo(newValue);
     };
-    useEffect(() => {
-        gethistory(`?start_date=${valueFrom?.format('YYYY-MM-DD')}&end_date=${valueTo?.format('YYYY-MM-DD')}`).then(res => setHistory(res))
-    }, [valueTo])
+    // useEffect(() => {
+    //     gethistory(`?start_date=${valueFrom?.format('YYYY-MM-DD')}&end_date=${valueTo?.format('YYYY-MM-DD')}`).then(res => setHistory(res))
+    // }, [valueTo])
     return (
         <div className={classes.wrapper}>
             <div className={classes.actions}>
                 <div className={classes.formControl}>
                     <FormControl fullWidth>
-
                         <DesktopDatePicker
                             label="Дата от"
                             inputFormat="YYYY/MM/DD"
@@ -58,7 +60,6 @@ const PaymentHistoryView = () => {
                 </div>
                 <div className={classes.formControl}>
                     <FormControl fullWidth>
-
                         <DesktopDatePicker
                             label="Дата до"
                             inputFormat="YYYY/MM/DD"
@@ -70,15 +71,23 @@ const PaymentHistoryView = () => {
                 </div>
                 <div className={classes.formControl}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Операционист</InputLabel>
+                        <InputLabel id="demo-simple-select-label">
+                            Операционист
+                        </InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             label="Операционист"
                         >
-                            <MenuItem value={"System system"}>System system</MenuItem>
-                            <MenuItem value={"Степан Быков"}>Степан Быков</MenuItem>
-                            <MenuItem value={"Василий Новиков"}>Василий Новиков</MenuItem>
+                            <MenuItem value={'System system'}>
+                                System system
+                            </MenuItem>
+                            <MenuItem value={'Степан Быков'}>
+                                Степан Быков
+                            </MenuItem>
+                            <MenuItem value={'Василий Новиков'}>
+                                Василий Новиков
+                            </MenuItem>
                         </Select>
                     </FormControl>
                 </div>
@@ -104,9 +113,11 @@ const PaymentHistoryView = () => {
                 </FormControl>
                 <table className={classes.table}>
                     <thead className={classes.tableHead}>
-                        {["", "Филиал", "Операционист", "Дата", "Сумма"].map((item) => (
-                            <th key={item}>{item}</th>
-                        ))}
+                        {['', 'Филиал', 'Операционист', 'Дата', 'Сумма'].map(
+                            (item) => (
+                                <th key={item}>{item}</th>
+                            )
+                        )}
                     </thead>
                     <tbody>
                         {history.map((item, index) => (
@@ -114,7 +125,9 @@ const PaymentHistoryView = () => {
                                 <td style={{ width: 40 }}></td>
                                 <td>{item.branch.name}</td>
                                 <td>{item.created_by.f_name}</td>
-                                <td>{generate_date(new Date(item.created_at))}</td>
+                                <td>
+                                    {generate_date(new Date(item.created_at))}
+                                </td>
                                 <td>{currencyFormatter(item.amount, 'uzs')}</td>
                             </tr>
                         ))}
@@ -127,10 +140,9 @@ const PaymentHistoryView = () => {
                         defaultValue={payment
                             .map((i) => i.sum_amount)
                             .reduce((acc, cur) => acc + cur, 0)
-                            .toLocaleString(
-                                undefined,
-                                { minimumFractionDigits: 2 }
-                            )}
+                            .toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                            })}
                     />
                 </div>
                 {/* <div>

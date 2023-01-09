@@ -1,14 +1,14 @@
-import React from "react";
-import { Button, Modal, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
-import { ReactComponent as PrintIcon } from "../../../assets/img/printer.svg";
-import Box from "@mui/material/Box";
-import classes from "../cashboxview.module.scss";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { ITransaction } from "../../../consts/types";
-import { currencyFormatter } from "../../../utils/currencyFormatter";
-import { useLocalObservable } from "mobx-react-lite";
-import CashboxStateKeeper from "../../../store/CashboxStateKeeper";
+import React from 'react';
+import { Button, Modal, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
+import { ReactComponent as PrintIcon } from '../../../assets/img/printer.svg';
+import Box from '@mui/material/Box';
+import classes from '../cashboxview.module.scss';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { ITransaction } from '../../../consts/types';
+import { currencyFormatter } from '../../../utils/currencyFormatter';
+import { useLocalObservable } from 'mobx-react-lite';
+import CashboxStateKeeper from '../../../store/CashboxStateKeeper';
 
 const PaymentDeletionModal = ({
     setDeletePaymentModal,
@@ -20,20 +20,18 @@ const PaymentDeletionModal = ({
     );
 
     const deleteHandler = () => {
-        cashboxStateKeeper.closeCashbox().then(() =>
-        {
+        cashboxStateKeeper.closeCashbox().then(() => {
             alert(
                 `Касса ${currencyFormatter(
                     transactions
                         .flatMap((item: ITransaction) => item.amount)
                         .reduce((sum, acc) => sum + acc, 0),
-                    "uzs"
+                    'uzs'
                 )} успешно закрыта`
-            )
-            window.location.reload()
-        }
-        );
-        setDeletePaymentModal(false)
+            );
+            window.location.reload();
+        });
+        setDeletePaymentModal(false);
     };
     return (
         <Modal
@@ -58,21 +56,23 @@ const PaymentDeletionModal = ({
                         variant="h5"
                         component="h6"
                     >
-                        Закрыть кассу{" "}
+                        Закрыть кассу{' '}
                         {transactions &&
                             currencyFormatter(
                                 transactions
-                                    .flatMap((item: ITransaction) => item.amount)
+                                    .flatMap(
+                                        (item: ITransaction) => item.amount
+                                    )
                                     .reduce((sum, acc) => sum + acc, 0),
-                                "uzs"
+                                'uzs'
                             )}
                     </Typography>
                 </div>
                 <Stack
-                    width={"100%"}
+                    width={'100%'}
                     direction="row"
                     spacing={14}
-                    style={{ margin: "20px 24px" }}
+                    style={{ margin: '20px 24px' }}
                 >
                     <Button
                         onClick={() => window.print()}
