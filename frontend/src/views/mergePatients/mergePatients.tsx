@@ -6,14 +6,46 @@ import {
     Radio,
     RadioGroup,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchPanel from "../../components/SearchPanel";
 import classes from "./mergePatient.module.scss";
 import { ReactComponent as Dataicon } from "../../assets/img/data.svg";
 import { ReactComponent as TickIcon } from "../../assets/img/tick-circle.svg";
-import patients from "../../repositories/data/patients.json";
+import { IMergePatient, IPatient } from "../../consts/types";
+import { useLocalObservable } from "mobx-react-lite";
+import { PatientStateKeeper } from "../../store";
+
 
 const MergePatientsView = () => {
+    const patientStateKeeper = useLocalObservable(
+        () => PatientStateKeeper.instance
+    )
+
+    const [patients, setPatients] = useState<IPatient[]>([]);
+    const [selectedPatient, setSelectedpatient] = useState<IMergePatient[]>([])
+    useEffect(() => {
+        patientStateKeeper.findAllPatients().then(res => setPatients(res));
+    }, []);
+
+
+    const onSelectPatient = (id: number) => {
+        const patient = selectedPatient
+        const isAdded = patient.filter(item => item.id === id)
+
+        if (!isAdded.length) {
+            patient.push({ id, is_base: true })
+            setSelectedpatient(patient)
+        } else {
+            const index = patient.findIndex(obj => obj.id === id)
+            patient.splice(index, 1)
+            setSelectedpatient(patient)
+        }
+    }
+
+    const mergeHandler = () => {
+        patientStateKeeper.mergePatients({ patients: selectedPatient })
+    }
+
     return (
         <div className={classes.wrapper}>
             <SearchPanel />
@@ -30,23 +62,24 @@ const MergePatientsView = () => {
                         <th>Моб. телефон</th>
                         <th>Адрес </th>
                     </thead>
-                    {patients.splice(0, 3).map((patient) => (
+                    {patients.map((patient) => (
                         <tr>
                             <td style={{ width: "63px" }}>
                                 <Checkbox
-                                    value={patient.firstName}
+                                    value={patient.id}
+                                    onChange={() => onSelectPatient(patient.id)}
                                     inputProps={{
                                         "aria-label": "Checkbox A",
                                     }}
                                 />
                             </td>
-                            <td>{patient.firstName}</td>
-                            <td>{patient.lastName}</td>
-                            <td>{patient.middleName}</td>
-                            <td>{patient.dob}</td>
-                            <td>{"male"}</td>
+                            <td>{patient.l_name}</td>
+                            <td>{patient.f_name}</td>
+                            <td>{patient.mid_name}</td>
+                            <td>{patient.date_of_birth}</td>
+                            <td>{patient.sex}</td>
                             <td>{patient.email}</td>
-                            <td>{patient.mobilePhoneNumber}</td>
+                            <td>{patient.mobile_phone_number}</td>
                             <td>{patient.address}</td>
                         </tr>
                     ))}
@@ -75,7 +108,7 @@ const MergePatientsView = () => {
                         label="Удалить лишних пациентов"
                     />
                 </RadioGroup>
-                <Button size="large" variant="contained">
+                <Button size="large" variant="contained" onClick={mergeHandler}>
                     Добавить к слиянию
                 </Button>
             </FormControl>

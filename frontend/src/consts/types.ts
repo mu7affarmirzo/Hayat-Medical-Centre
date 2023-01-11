@@ -178,3 +178,7 @@ export interface IReceipt {
   created_by: number;
   modified_by: number;
 }
+export interface IMergePatient {
+  id: number;
+  is_base: boolean;
+}

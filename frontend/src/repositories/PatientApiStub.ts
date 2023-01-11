@@ -23,6 +23,10 @@ export default class PatientApiStub {
     return this.search.getData<IPatient>(`?f_name=${text}`);
   }
 
+  async mergePatient(data) {
+    return this.client.postData("-merge/", data);
+  }
+
   async findAllPatients(): Promise<IPatient[]> {
     /* Gen by NARA Studio */
     return this.client.getData<IPatient>("/");

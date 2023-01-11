@@ -30,6 +30,10 @@ class PatientStateKeeper {
     return patients;
   }
 
+  async mergePatients(data) {
+    return await this.patientApiStub.mergePatient(data);
+  }
+
   async searchPatients(patient: string): Promise<IPatient[]> {
     const filteredPatients = await this.patientApiStub.searchPatients(patient);
     runInAction(() => {
