@@ -21,11 +21,11 @@ import { ITransaction } from "../../consts/types";
 import { currencyFormatter } from "../../utils/currencyFormatter";
 
 const NAVBAR_BUTTONS = [
-  {
-    name: "Закрыть кассу",
-    img: <LockImage />,
-    type: "close_cash",
-  },
+  // {
+  //   name: "Закрыть кассу",
+  //   img: <LockImage />,
+  //   type: "close_cash",
+  // },
   {
     name: "Закрыть кассу пункта",
     img: <Export />,

@@ -41,10 +41,6 @@ const MainView = observer((
 ) => {
     const {openNotification, changeVisibilityNotification} = useLocalObservable(() => ErrorNotification.instance);
 
-    React.useEffect(() => {
-
-    }, [])
-
     const changeButtons: Array<{ text: string, type: string }> = [
         {
             text: "месяц",
@@ -93,7 +89,6 @@ const MainView = observer((
                 <div className={styles.top}>
                     <ToolBoxTop/>
                 </div>
-
                 <div className={styles.main_content}>
                     <div className={styles.table}>
                         <Box sx={{mb: "10px"}}>
@@ -211,7 +206,6 @@ const MainView = observer((
                     <div className={styles.calendar}>
                         {
                             selectedDoctors.length > 0 &&
-
                             <div className={styles.toolbar}>
                                     {/* <div className={styles.button_now}>Сегодня</div> */}
                                     <div className={`month_buttons_block ${styles.buttons_change}`}>

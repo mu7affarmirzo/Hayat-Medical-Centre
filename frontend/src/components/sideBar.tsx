@@ -5,18 +5,26 @@ import parse from "html-react-parser";
 import { useLocation, useNavigate } from "react-router";
 import Modal from "./Modal";
 import GroupAppointment from "./GroupAppointment";
+import QuickAppointment from "../containers/quickAppointment";
 
 const SideBar = () => {
     const location = useLocation();
     const [navbar, setNavbar] = React.useState(NavBarDropdowns);
     const navigate = useNavigate();
     const [groupAppointment, setGroupAppointment] = React.useState(false);
+    const [quickAppointment, setQuickAppointment] = React.useState(false);
     const [index, setIndex] = React.useState<number>(0);
     const clickHandler = (path: string) => {
-        if (path === "/groupAppointment") {
-            setGroupAppointment(true);
-        } else {
-            navigate(path);
+        switch (path) {
+            case '/quickAppointment':
+                setQuickAppointment(true)
+                break;
+            case '/groupAppointment':
+                setGroupAppointment(true);
+                break;
+            default:
+                navigate(path);
+                break;
         }
     };
 
@@ -53,6 +61,14 @@ const SideBar = () => {
                     show={groupAppointment}
                 >
                     <GroupAppointment />
+                </Modal>
+            )}
+            {quickAppointment && (
+                <Modal
+                    onClose={() => setQuickAppointment(false)}
+                    show={quickAppointment}
+                >
+                    <QuickAppointment close={() => setQuickAppointment(false)} />
                 </Modal>
             )}
             {navbar[index]?.dropdown?.map(

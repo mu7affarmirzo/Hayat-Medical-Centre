@@ -88,7 +88,7 @@ export const NavBarDropdowns: Array<INav> = [
             {
                 img: <ClipboardClose />,
                 text: "Быстрая запись",
-                path: "",
+                path: "/quickAppointment",
                 sideBarText: "Быстрая запись"
             },
         ],

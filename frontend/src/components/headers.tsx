@@ -10,6 +10,7 @@ import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
 import { Link, useLocation } from 'react-router-dom';
 import Modal from './Modal';
 import GroupAppointment from './GroupAppointment';
+import QuickAppointment from '../containers/quickAppointment';
 
 const Headers = () => {
     const location = useLocation()
@@ -18,7 +19,9 @@ const Headers = () => {
         elem: null
     });
     const [profileOpen, setProfileOpen] = React.useState<null | HTMLElement>(null);
-    const [groupAppointment, setGroupAppointment] = React.useState(false)
+    const [groupAppointment, setGroupAppointment] = React.useState<boolean>(false)
+    const [quickAppointment, setQuickAppointment] = React.useState<boolean>(false);
+
     const localAuthorizationStateKeeper = useLocalObservable(() => AuthorizationStateKeeper.instance);
     const { setRole, removeToken } = localAuthorizationStateKeeper;
     const [navbar, setNavbar] = React.useState(NavBarDropdowns)
@@ -35,8 +38,12 @@ const Headers = () => {
         removeToken()
     }
 
-    const handleModalOpener = () => {
-        setGroupAppointment(true)
+    const handleModalOpener = (path: string) => {
+        if (path === 'Добавить группу приемов') {
+            setGroupAppointment(true)
+        } else {
+            setQuickAppointment(true)
+        }
         handleClose()
     }
     const use_cases = ['/cashbox', '/patientPayments', '/historyPayments', '/reports', '/patientSale', "/registeryVisits", "/registeryAccounts",]
@@ -57,6 +64,14 @@ const Headers = () => {
                     </Modal>
                 ) : null
             }
+            {quickAppointment && (
+                <Modal
+                    onClose={() => setQuickAppointment(false)}
+                    show={quickAppointment}
+                >
+                    <QuickAppointment close={() => setQuickAppointment(false)} />
+                </Modal>
+            )}
             <div className={styles.left}>
                 <img src={logoImg} alt="logoImg" className={styles.logo} />
 
@@ -103,7 +118,15 @@ const Headers = () => {
                                         item.dropdown.map((dropdownItem, index) => {
                                             return (
                                                 dropdownItem.text === 'Добавить группу приемов' ? (
-                                                    <MenuItem className={styles.dropdown_menu} key={index} onClick={handleModalOpener}>
+                                                    <MenuItem className={styles.dropdown_menu} key={index} onClick={() => handleModalOpener(
+                                                        dropdownItem.text)
+                                                    }>
+                                                        {dropdownItem.img}
+                                                        {dropdownItem.text}
+                                                    </MenuItem>
+                                                ) : dropdownItem.text === 'Быстрая запись' ? (
+                                                    <MenuItem className={styles.dropdown_menu} key={index} onClick={() => handleModalOpener(
+                                                        dropdownItem.text)}>
                                                         {dropdownItem.img}
                                                         {dropdownItem.text}
                                                     </MenuItem>

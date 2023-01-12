@@ -15,36 +15,39 @@ import { IMergePatient, IPatient } from "../../consts/types";
 import { useLocalObservable } from "mobx-react-lite";
 import { PatientStateKeeper } from "../../store";
 
-
 const MergePatientsView = () => {
     const patientStateKeeper = useLocalObservable(
         () => PatientStateKeeper.instance
-    )
+    );
 
     const [patients, setPatients] = useState<IPatient[]>([]);
-    const [selectedPatient, setSelectedpatient] = useState<IMergePatient[]>([])
+    const [selectedPatient, setSelectedpatient] = useState<IMergePatient[]>([]);
     useEffect(() => {
-        patientStateKeeper.findAllPatients().then(res => setPatients(res));
+        patientStateKeeper.findAllPatients().then((res) => setPatients(res));
     }, []);
 
-
     const onSelectPatient = (id: number) => {
-        const patient = selectedPatient
-        const isAdded = patient.filter(item => item.id === id)
+        const patient = selectedPatient;
+        const isAdded = patient.filter((item) => item.id === id);
 
         if (!isAdded.length) {
-            patient.push({ id, is_base: true })
-            setSelectedpatient(patient)
+            if (patient.length > 0) {
+                patient.push({ id, is_base: false });
         } else {
-            const index = patient.findIndex(obj => obj.id === id)
-            patient.splice(index, 1)
-            setSelectedpatient(patient)
+              patient.push({ id, is_base: true });
         }
+
+            setSelectedpatient(patient);
+        } else {
+            const index = patient.findIndex((obj) => obj.id === id);
+            patient.splice(index, 1);
+            setSelectedpatient(patient);
     }
+    };
 
     const mergeHandler = () => {
-        patientStateKeeper.mergePatients({ patients: selectedPatient })
-    }
+        patientStateKeeper.mergePatients({ patients: selectedPatient });
+    };
 
     return (
         <div className={classes.wrapper}>

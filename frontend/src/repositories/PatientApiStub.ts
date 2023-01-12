@@ -20,7 +20,7 @@ export default class PatientApiStub {
   }
 
   async searchPatients(text: string): Promise<IPatient[]> {
-    return this.search.getData<IPatient>(`?f_name=${text}`);
+    return this.search.getData<IPatient>(`?search=${text}`);
   }
 
   async mergePatient(data) {
