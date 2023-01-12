@@ -17,7 +17,28 @@ TYPE = (
 )
 
 
+class DutyModel(models.Model):
+    is_closed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(Account, related_name="duty", on_delete=models.SET_NULL, null=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    modified_by = models.ForeignKey(Account, related_name="modf_duty", on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f"{self.created_at} - {self.created_by}- {self.is_closed}"
+
+    def close_the_duty(self):
+        self.is_closed = True
+        self.save()
+
+    class Meta:
+        ordering = ('-created_at', )
+        verbose_name_plural = 'CASHBOX| 1. Duty'
+        verbose_name = 'CASHBOX| 1. Duty'
+
+
 class TransactionsModel(models.Model):
+    duty = models.ForeignKey(DutyModel, on_delete=models.SET_NULL, null=True)
     amount = models.BigIntegerField()
     payment_type = models.CharField(choices=PAYMENT_TYPE, max_length=50, default='CASH')
     is_manual = models.BooleanField(default=False)

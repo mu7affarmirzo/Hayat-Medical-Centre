@@ -14,6 +14,7 @@ from apps.cashbox.models import CashBoxClosingHistoryRecordsModel, TransactionsM
 from api.v1.appointment.serializers.appointment import TimeSerializer
 from django.shortcuts import get_object_or_404
 from api.v1.cashbox.serializers import CashBoxSerializer
+from apps.cashbox.models.transactions import DutyModel
 
 
 class CashBoxView(APIView):
@@ -37,6 +38,10 @@ class CashBoxView(APIView):
         user = request.user
         amount = 0
         transactions = TransactionsModel.objects.filter(created_by=user)
+        duty = DutyModel.objects.filter(is_closed=False, created_by=user)
+        print(duty)
+        if duty.exists():
+            duty.first().close_the_duty()
         for i in transactions:
             amount += i.amount
         if amount == 0:

@@ -9,6 +9,11 @@ class ReceiptAdmin(admin.ModelAdmin):
     list_display = [field.name for field in receipt.ReceiptModel._meta.fields]
 
 
+@admin.register(transactions.DutyModel)
+class DutyModelAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in transactions.DutyModel._meta.fields]
+
+
 admin.site.register(cashbox.CashBoxClosingHistoryRecordsModel)
 admin.site.register(transactions.TransactionsModel)
 admin.site.register(transactions.AppointmentServiceTransactionsModel)
