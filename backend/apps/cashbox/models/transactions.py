@@ -31,10 +31,18 @@ class DutyModel(models.Model):
         self.is_closed = True
         self.save()
 
+    # def close_the_duty(self):
+    #     user = self.created_by
+    #     duties =
+    #     if self.created_by
+    #         raise ValidationError(
+    #             {'title': "Title should have at least 10 letters"})
+
     class Meta:
         ordering = ('-created_at', )
         verbose_name_plural = 'CASHBOX| 1. Duty'
         verbose_name = 'CASHBOX| 1. Duty'
+
 
 
 class TransactionsModel(models.Model):
