@@ -23,7 +23,7 @@ class TransactionsView(APIView):
         # start_date = self.request.query_params.get("start_date", datetime.today().date())
         # end_date = self.request.query_params.get("end_date", datetime.today().date())
         # transactions = TransactionsModel.objects.filter(created_at__range=(start_date, end_date))
-        transactions = TransactionsModel.objects.filter(duty__is_closed=False)
+        transactions = TransactionsModel.objects.filter(duty__is_closed=False, created_by=request.user)
         serializer = TransactionsSerializer(transactions, many=True)
         # serializer = TransactionsListSerializer(transactions, many=True)
         return Response(serializer.data)
