@@ -77,8 +77,11 @@ class PatientRetrieveView(RetrieveAPIView):
 class PatientFilterView(ListAPIView):
     queryset = PatientModel.objects.all()
     serializer_class = PatientModelSerializer
-    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filterset_class = PatientFilter
+    # filter_fields = ['l_name', ]
+    search_fields = ['l_name', 'l_name', 'f_name', 'mid_name', 'INN', 'doc_number']
+    ordering_fields = ['l_name', 'l_name', 'f_name', 'mid_name', 'INN', 'doc_number']
 
 
 class PatientsMergeView(APIView):
