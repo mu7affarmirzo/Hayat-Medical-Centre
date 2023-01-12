@@ -81,9 +81,6 @@ class PatientFilterView(ListAPIView):
     filterset_class = PatientFilter
 
 
-
-
-
 class PatientsMergeView(APIView):
     permission_classes = [IsAuthenticated]
 
