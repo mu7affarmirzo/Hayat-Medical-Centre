@@ -25,7 +25,7 @@ class ReceiptView(APIView):
         serializer = ReceiptSerializer(receipts, many=True)
         return Response(serializer.data)
 
-    @swagger_auto_schema(tags=['receipt'], request_body=ReceiptCreateSerializer)
+    @swagger_auto_schema(tags=['receipt'], request_body=ReceiptCreateSerializer, responses=ReceiptSerializer)
     def post(self, request, format=None):
         user = request.user
         return create_receipt_service(request, user)

@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from api.v1.appointment.serializers.appointment import AppointmentCreateSerializer
-from api.v1.cashbox.serializers import ReceiptCreateSerializer
+from api.v1.cashbox.serializers import ReceiptCreateSerializer, ReceiptSerializer
 from apps.account.models import AppointmentsModel, AppointmentServiceModel, MedicalService
 from apps.cashbox.models import ReceiptModel
 
@@ -32,5 +32,5 @@ def create_receipt_service(request, account):
                                                            quantity=service['quantity'],
                                                            created_by=account, modified_by=account)
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(ReceiptSerializer(receipt, receipt_appointments=serializer.appointments), status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
