@@ -32,7 +32,6 @@ def create_receipt_service(request, account):
                                                            service_id=service['service'],
                                                            quantity=service['quantity'],
                                                            created_by=account, modified_by=account))
-        receipt_appointments  = AppointmentSerializer(appointments, many=True)
-        r_serializer = ReceiptSerializer(receipt, receipt_appointments=receipt_appointments)
+        r_serializer = ReceiptSerializer(receipt)
         return Response(r_serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
