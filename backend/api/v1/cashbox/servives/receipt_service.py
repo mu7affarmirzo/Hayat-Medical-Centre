@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 
-from api.v1.appointment.serializers.appointment import AppointmentCreateSerializer
+from api.v1.appointment.serializers.appointment import AppointmentCreateSerializer, AppointmentSerializer
 from api.v1.cashbox.serializers import ReceiptCreateSerializer, ReceiptSerializer
 from apps.account.models import AppointmentsModel, AppointmentServiceModel, MedicalService
 from apps.cashbox.models import ReceiptModel
@@ -12,6 +12,7 @@ def create_receipt_service(request, account):
     user = account
     receipt = ReceiptModel(created_by=user, modified_by=user)
     serializer = ReceiptCreateSerializer(receipt, data=request.data)
+    appointments = []
     if serializer.is_valid():
         serializer.save()
         for appointment in serializer.data['appointments']:
@@ -27,10 +28,11 @@ def create_receipt_service(request, account):
             if serializer.is_valid():
                 serializer.save()
                 for service in serializer.data['services']:
-                    AppointmentServiceModel.objects.create(appointment=app,
+                    appointments.append(AppointmentServiceModel.objects.create(appointment=app,
                                                            service_id=service['service'],
                                                            quantity=service['quantity'],
-                                                           created_by=account, modified_by=account)
-
-        return Response(ReceiptSerializer(receipt, receipt_appointments=serializer.appointments), status=status.HTTP_201_CREATED)
+                                                           created_by=account, modified_by=account))
+        receipt_appointments  = AppointmentSerializer(appointments, many=True)
+        r_serializer = ReceiptSerializer(receipt, receipt_appointments=receipt_appointments)
+        return Response(r_serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,3 +1,4 @@
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -25,7 +26,7 @@ class ReceiptView(APIView):
         serializer = ReceiptSerializer(receipts, many=True)
         return Response(serializer.data)
 
-    @swagger_auto_schema(tags=['receipt'], request_body=ReceiptCreateSerializer, responses=ReceiptSerializer)
+    @swagger_auto_schema(tags=['receipt'], request_body=ReceiptCreateSerializer, responses={201: openapi.Response('response description', ReceiptSerializer)})
     def post(self, request, format=None):
         user = request.user
         return create_receipt_service(request, user)
@@ -60,7 +61,12 @@ class ReceiptRetrieveView(RetrieveAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@swagger_auto_schema(method="post", tags=["receipt"], request_body=TimeSerializer)
+@swagger_auto_schema(method="post", tags=["receipt"], request_body=TimeSerializer, manual_parameters=[
+            openapi.Parameter('min', openapi.IN_QUERY,
+                      type='date'),
+            openapi.Parameter('max', openapi.IN_QUERY,
+                      type='date'),
+        ],)
 @permission_classes((IsAuthenticated,))
 @api_view(['POST', ])
 def receipt_time_view(request):

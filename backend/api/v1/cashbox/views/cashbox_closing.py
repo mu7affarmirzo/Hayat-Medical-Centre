@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import List
 
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.openapi import Parameter, IN_QUERY
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -18,9 +18,15 @@ from apps.cashbox.models.transactions import DutyModel
 
 
 class CashBoxView(APIView):
+
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(tags=['cashbox'])
+    @swagger_auto_schema(tags=['cashbox'], manual_parameters=[
+            Parameter('start_date', IN_QUERY,
+                      type='date'),
+            Parameter('end_date', IN_QUERY,
+                      type='date'),
+        ],)
     def get(self, request, format=None):
         start_date = self.request.query_params.get("start_date", datetime.today().date())
         end_date = self.request.query_params.get("end_date", datetime.today().date())
@@ -83,9 +89,14 @@ class CashBoxRetrieveView(RetrieveAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@swagger_auto_schema(method="post", tags=["cashbox"], request_body=TimeSerializer)
+@swagger_auto_schema(method="post", tags=["cashbox"], request_body=TimeSerializer, manual_parameters=[
+            Parameter('min', IN_QUERY,
+                      type='date'),
+            Parameter('max', IN_QUERY,
+                      type='date'),
+        ],)
 @permission_classes((IsAuthenticated,))
-@api_view(['POST', ])
+@api_view(['GET', ])
 def cashbox_time_view(request):
     min_date = request.data['min']
     max_date = request.data['max']

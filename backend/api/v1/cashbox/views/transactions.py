@@ -1,5 +1,4 @@
-from datetime import datetime
-
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -71,7 +70,12 @@ def get_by_duty_id_view(request, pk):
     return Response(serializer.data)
 
 
-@swagger_auto_schema(method="post", tags=["transactions"], request_body=TimeSerializer)
+@swagger_auto_schema(method="post", tags=["transactions"], request_body=TimeSerializer, manual_parameters=[
+            openapi.Parameter('min', openapi.IN_QUERY,
+                      type='date'),
+            openapi.Parameter('max', openapi.IN_QUERY,
+                      type='date'),
+        ],)
 @permission_classes((IsAuthenticated,))
 @api_view(['POST', ])
 def transactions_time_view(request):
