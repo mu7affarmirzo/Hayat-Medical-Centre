@@ -62,6 +62,15 @@ def get_by_tr_id_view(request, pk):
     return Response(serializer.data)
 
 
+@swagger_auto_schema(method='get', tags=['transactions'])
+@permission_classes((IsAuthenticated,))
+@api_view(['GET', ])
+def get_by_duty_id_view(request, pk):
+    transactions = get_object_or_404(TransactionsModel, duty_id=pk)
+    serializer = TransactionsSerializer(transactions)
+    return Response(serializer.data)
+
+
 @swagger_auto_schema(method="post", tags=["transactions"], request_body=TimeSerializer)
 @permission_classes((IsAuthenticated,))
 @api_view(['POST', ])
