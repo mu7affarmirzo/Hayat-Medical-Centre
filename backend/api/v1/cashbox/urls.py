@@ -1,5 +1,5 @@
-from django.urls import path, include
-from api.v1.cashbox.views.cashbox_closing import *
+from django.urls import path
+from api.v1.cashbox.views.cashbox_closing import CashBoxView
 from api.v1.cashbox.views.receipt import ReceiptView, ReceiptRetrieveView
 from api.v1.cashbox.views.transactions import TransactionsView, transactions_time_view, RetrieveTransactionsView, \
     get_by_tr_id_view, transactions_type_filter, get_by_duty_id_view

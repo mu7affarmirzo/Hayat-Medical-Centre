@@ -89,7 +89,7 @@ class CashBoxRetrieveView(RetrieveAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@swagger_auto_schema(method="post", tags=["cashbox"], request_body=TimeSerializer, manual_parameters=[
+@swagger_auto_schema(method="get", tags=["cashbox"], request_body=TimeSerializer, manual_parameters=[
             Parameter('min', IN_QUERY,
                       type='date'),
             Parameter('max', IN_QUERY,
