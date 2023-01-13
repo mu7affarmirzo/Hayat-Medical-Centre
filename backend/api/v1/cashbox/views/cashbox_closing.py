@@ -28,9 +28,10 @@ class CashBoxView(APIView):
                       type='date'),
         ],)
     def get(self, request, format=None):
-        start_date = self.request.query_params.get("start_date", datetime.today().date())
-        end_date = self.request.query_params.get("end_date", datetime.today().date())
-        cashbox = CashBoxClosingHistoryRecordsModel.objects.filter(created_at__range=(start_date, end_date))
+        # start_date = self.request.query_params.get("start_date", datetime.today().date())
+        # end_date = self.request.query_params.get("end_date", datetime.today().date())
+        # cashbox = CashBoxClosingHistoryRecordsModel.objects.filter(created_at__range=(start_date, end_date))
+        cashbox = CashBoxClosingHistoryRecordsModel.objects.all()
         serializer = CashBoxSerializer(cashbox, many=True)
         return Response(serializer.data)
 
