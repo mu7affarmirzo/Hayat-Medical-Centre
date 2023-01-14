@@ -23,6 +23,7 @@ class AppointmentServiceCreateSerializers(serializers.ModelSerializer):
 class AppointmentSerializer(serializers.ModelSerializer):
     services = AppointmentServiceSerializers(many=True, source='app_services')
     patient_name = serializers.SerializerMethodField()
+    patient_birth_date = serializers.SerializerMethodField()
     doctor_name = serializers.SerializerMethodField()
 
     class Meta:
@@ -31,6 +32,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
             'id',
             'patient',
             'patient_name',
+            'patient_birth_date',
             'name',
             'discount',
             'start_time',
@@ -54,6 +56,14 @@ class AppointmentSerializer(serializers.ModelSerializer):
         except:
             pass
         return name
+
+    def get_patient_birth_date(self, obj):
+        date_of_birth = "Unknown"
+        try:
+            date_of_birth = obj.patient.date_of_birth
+        except:
+            pass
+        return date_of_birth
 
     def get_doctor_name(self, obj):
         name = "Unknown"
