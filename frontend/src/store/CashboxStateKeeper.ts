@@ -8,6 +8,7 @@ class CashboxStateKeeper {
 
   cashbox: ITransaction[] = [];
   reports: IReports[] = [];
+  cheque: any = {};
 
   static get instance() {
     if (!CashboxStateKeeper._instance) {
@@ -18,6 +19,10 @@ class CashboxStateKeeper {
   constructor(cashboxApiStub: CashboxApiStub = CashboxApiStub.instance) {
     this.cashboxApiStub = cashboxApiStub;
     makeAutoObservable(this, {}, { autoBind: true });
+  }
+
+  async setCheque(data) {
+    this.cheque = data;
   }
 
   async closeCashbox() {

@@ -21,7 +21,6 @@ const PaymentHistoryView = () => {
     const { gethistory, history } = transactionStateKeeper
     useEffect(() => {
         gethistory().then(res => console.log(res))
-
     }, [])
     return (
         <div className={classes.wrapper}>

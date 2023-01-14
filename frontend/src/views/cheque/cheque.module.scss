@@ -1,0 +1,85 @@
+.cheque {
+    padding: 30px 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    width: 50%;
+    margin: 50px auto;
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+}
+.QRwrapper{
+    display: flex;
+    width: 36%;
+    svg{
+        margin-right: 20px;
+    }
+}
+.logo {
+    width: 33%;
+}
+.hayatInfo {
+    margin-left: 22px;
+    line-height: 1.5;
+    text-align: center;
+}
+.textCenter {
+    text-align: center;
+    font-weight: bold;
+    font-size: 35px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+.dashedBorder {
+    border-bottom: 1px dashed rgb(24, 24, 24);
+}
+.textRow {
+    line-height: 1.7;
+}
+.table {
+    border-collapse: collapse;
+    margin-top: 30px;
+    width: 100%;
+    .tableHead {
+        th {
+            background: #64b6f7;
+        }
+    }
+    th,
+    td {
+        border: 1px solid rgba(0, 0, 0, 0.199);
+        padding: 5px;
+        min-width: 40px;
+        font-family: "Roboto";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0.15px;
+        color: rgba(0, 0, 0, 0.87);
+        text-align: start;
+        padding: 8px;
+    }
+}
+.wrapper {
+    width: 100%;
+}
+.actions{
+    width: 40%;
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    button{
+        margin-left: 10px;
+        svg{
+            margin-right: 5px;
+        }
+    }
+}
+.flex{
+    display: flex;
+    justify-content: space-between;
+}

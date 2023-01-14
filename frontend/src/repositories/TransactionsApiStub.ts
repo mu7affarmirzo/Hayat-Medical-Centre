@@ -17,7 +17,9 @@ export default class TransactionsApiStub {
     return this.client.getData("/receipt");
   }
   async findAllHistory() {
-    return this.client.getData("/cashbox");
+    return this.client.getData(
+      "/cashbox?start_date=2022-01-10&end_date=2023-01-01"
+    );
   }
   async findAllTransactions(): Promise<ITransaction[]> {
     return this.client.getData("/transactions/");

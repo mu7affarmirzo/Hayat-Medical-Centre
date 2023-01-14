@@ -83,7 +83,7 @@ export interface IAppointment {
   status: string;
   id: number;
   doctorId?: string;
-  doctor?: number;
+  doctor: number;
 }
 
 interface IEMC {

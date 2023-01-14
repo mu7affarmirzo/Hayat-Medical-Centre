@@ -12,6 +12,7 @@ import ReportsContainer from "../containers/reports/ReportsContainer";
 import RegisteryVIsits from "../views/RegistryVisits";
 import RegisteredAccounts from "../views/RegisteredAccounts";
 import MergePatientsView from "../views/mergePatients/mergePatients";
+import Cheque from "../views/cheque";
 
 type IRouting = {
     path: string;
@@ -85,6 +86,10 @@ export const RoutingData: MyGroupType = {
         {
             "path": "/merge-patients",
             "component": <MergePatientsView />
+        },
+        {
+            "path": "/cheque-for-:username",
+            "component": <Cheque />
         },
     ]
 };

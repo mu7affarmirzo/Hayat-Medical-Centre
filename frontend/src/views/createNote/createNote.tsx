@@ -31,17 +31,18 @@ import moment from "moment";
 import ErrorNotification from "../../store/ErrorNotification";
 import axios from "axios";
 import { ReactComponent as EkmLogo } from "../../assets/ekm.svg";
+import CashboxStateKeeper from "../../store/CashboxStateKeeper";
 
 interface IAppointment {
   patient: any;
   name: any;
   discount: string;
-  start_time: any;
-  end_time: any;
+  start_time: Date;
+  end_time: Date;
   price: string;
   debt: string;
-  referring_doctor: string;
-  information_source: string;
+  referring_doctor: string | null;
+  information_source: string | null;
   referring_doc_notes: string;
   addition_info: string;
   branch: string;
@@ -67,6 +68,10 @@ const CreateNote = observer(() => {
   );
   const doctorStateKeeper = useLocalObservable(
     () => DoctorStateKeeper.instance
+  );
+
+  const cashboxStateKeeper = useLocalObservable(
+    () => CashboxStateKeeper.instance
   );
 
   const [dateValue, setDateValue] = React.useState<moment.Moment | null>(
@@ -210,7 +215,7 @@ const CreateNote = observer(() => {
     referring_doctor: "",
     information_source: "",
     referring_doc_notes: "",
-    addition_info: "",
+    addition_info: '',
     branch: "",
     services: [],
   });
@@ -275,6 +280,7 @@ const CreateNote = observer(() => {
         end_time: values.end,
         start_time: values.start,
         services: selectedServices,
+        doctor: doctorStateKeeper.selectedDoctors.at(0)!.id,
         patient: patientStateKeeper.selectedPatient?.id,
         name: patientStateKeeper.selectedPatient?.f_name,
       };
@@ -311,12 +317,14 @@ const CreateNote = observer(() => {
       .post("http://185.196.213.71:8080/api/v1/cashbox/receipt", data, headers)
       .then((res) => {
         if (res.status === 201) {
+          navigator(`/cheque-for-${res.data.id}`)
+          cashboxStateKeeper.setCheque(res.data)
           setAllAppointments([]);
           setNotificationState(true);
         }
       })
       .catch((err) => {
-        if (err.response.status == 400) {
+        if (err.response.status === 400) {
         }
       });
   };
@@ -325,8 +333,8 @@ const CreateNote = observer(() => {
       patient: "",
       name: "",
       discount: "",
-      start_time: "",
-      end_time: "",
+      start_time: new Date(),
+      end_time: new Date(),
       price: "",
       debt: "",
       referring_doctor: "",
