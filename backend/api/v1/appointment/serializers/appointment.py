@@ -48,10 +48,20 @@ class AppointmentSerializer(serializers.ModelSerializer):
         ]
 
     def get_patient_name(self, obj):
-        return obj.patient.full_name
+        name = "Unknown"
+        try:
+            name = obj.patient.full_name
+        except:
+            pass
+        return name
 
     def get_doctor_name(self, obj):
-        return obj.doctor.doctor.full_name
+        name = "Unknown"
+        try:
+            name = obj.doctor.doctor.full_name
+        except:
+            pass
+        return name
 
 
 class AppointmentCreateSerializer(serializers.ModelSerializer):
