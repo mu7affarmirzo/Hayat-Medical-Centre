@@ -36,7 +36,7 @@ import CashboxStateKeeper from "../../store/CashboxStateKeeper";
 interface IAppointment {
   patient: any;
   name: any;
-  discount: string;
+  discount: string | number;
   start_time: Date;
   end_time: Date;
   price: string;
@@ -207,7 +207,7 @@ const CreateNote = observer(() => {
   const [formData, setFormData] = useState<IAppointment>({
     patient: "",
     name: "",
-    discount: "",
+    discount: 0,
     end_time: timeValue.from!.toDate(),
     start_time: timeValue.to!.toDate(),
     price: "",
