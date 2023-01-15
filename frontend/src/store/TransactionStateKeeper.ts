@@ -1,13 +1,13 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import TransactionsApiStub from "../repositories/TransactionsApiStub";
-import { IDoc, IReceipt, ITransaction } from "../consts/types";
+import { IDoc, IHistory, IReceipt, ITransaction } from "../consts/types";
 
 class TransactionsStateKeeper {
   static _instance: TransactionsStateKeeper;
   private readonly transactionsApiStub: TransactionsApiStub;
 
   transactions: ITransaction[] = [];
-  history: unknown = [];
+  history: IHistory[] = [];
   receipts: IReceipt[] = [];
   static get instance() {
     if (!TransactionsStateKeeper._instance) {
@@ -29,8 +29,8 @@ class TransactionsStateKeeper {
     });
     return receipts;
   }
-  async gethistory() {
-    const history = await this.transactionsApiStub.findAllHistory();
+  async gethistory(params: string): Promise<IHistory[]> {
+    const history = await this.transactionsApiStub.findAllHistory(params);
     runInAction(() => {
       this.history = history;
     });

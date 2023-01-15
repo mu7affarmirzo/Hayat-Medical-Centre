@@ -199,3 +199,27 @@ export interface IInformationSource {
   modified_by: number;
   organization: number;
 }
+export interface IHistory {
+  amount: number;
+  branch: IBranch;
+  created_at: string;
+  created_by: IOperationist;
+  id: number;
+  modified_at: string;
+  modified_by: IOperationist;
+  organization: number;
+}
+
+export interface IOperationist {
+  branch_id: number;
+  color: string;
+  email: string;
+  f_name: string;
+  id: number;
+  l_name: string;
+  m_name: string;
+  organization_id: number;
+  phone_number: string;
+  sex: boolean;
+  username: string;
+}

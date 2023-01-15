@@ -8,19 +8,23 @@ import {
     Select,
     TextField,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as DownloadAsExcel } from "../../assets/img/excelDownload.svg";
 import classes from "./PaymentHistoryView.module.scss";
 import payment from "../../repositories/data/closedPayments.json";
 import SearchIcon from "@mui/icons-material/Search";
 import TransactionsStateKeeper from "../../store/TransactionStateKeeper";
 import { useLocalObservable } from "mobx-react-lite";
+import { generate_date } from "../../utils/dateFormatter";
+import { currencyFormatter } from "../../utils/currencyFormatter";
+import { IHistory } from "../../consts/types";
 
 const PaymentHistoryView = () => {
     const transactionStateKeeper = useLocalObservable(() => TransactionsStateKeeper.instance);
-    const { gethistory, history } = transactionStateKeeper
+    const { gethistory } = transactionStateKeeper
+    const [history, setHistory] = useState<IHistory[]>([])
     useEffect(() => {
-        gethistory().then(res => console.log(res))
+        gethistory('?start_date=2022-01-10&end_date=2023-02-02').then(res => setHistory(res))
     }, [])
     return (
         <div className={classes.wrapper}>
@@ -90,13 +94,13 @@ const PaymentHistoryView = () => {
                         ))}
                     </thead>
                     <tbody>
-                        {payment.map((item, index) => (
+                        {history.map((item, index) => (
                             <tr key={index}>
                                 <td style={{ width: 40 }}></td>
-                                <td>{item.branch}</td>
-                                <td>{item.operator}</td>
-                                <td>{item.date}</td>
-                                <td>{item.sum_amount}</td>
+                                <td>{item.branch.name}</td>
+                                <td>{item.created_by.f_name}</td>
+                                <td>{generate_date(new Date(item.created_at))}</td>
+                                <td>{currencyFormatter(item.amount, 'uzs')}</td>
                             </tr>
                         ))}
                     </tbody>
