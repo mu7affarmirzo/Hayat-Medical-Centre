@@ -16,13 +16,13 @@ import CurrencyInput from "react-currency-input-field";
 import { ReactComponent as CloseCircle } from "../../assets/img/close-circle.svg";
 import { ReactComponent as AddCircle } from "../../assets/img/add-circle.svg";
 import moment from "moment/moment";
-import { IDateValue, IMedicalService } from "../../consts/types";
+import {
+  IDateValue,
+  IInformationSource,
+  IMedicalService,
+  IReferring,
+} from "../../consts/types";
 import { observer } from "mobx-react-lite";
-
-const referring_doctor = [
-  { name: "Sardor Akbarov", id: 1 },
-  { name: "Sardor Akbarov", id: 1 },
-];
 
 const PatientsTable = observer(
   ({
@@ -37,6 +37,8 @@ const PatientsTable = observer(
     services,
     appointedServices,
     setAppointedServices,
+    referring_doctors,
+    informationSource,
   }: {
     discount: number;
     setFormData: any;
@@ -59,10 +61,12 @@ const PatientsTable = observer(
         }[]
       >
     >;
+      referring_doctors: IReferring[];
+      informationSource: IInformationSource[];
   }) => {
     //
     const [serviceSearchText, setServiceSearchText] = useState<string>("");
-
+    console.log(informationSource);
     const handleChangeInput = (event) => {
       const { name, value } = event.target;
       if (name === "debt" || name === "price") {
@@ -267,32 +271,24 @@ const PatientsTable = observer(
 
                 <Autocomplete
                   disablePortal
-                  sx={{ width: "282px" }}
-                  value={formData.referring_doctor}
                   id="combo-box-demo"
-                  // getOptionLabel={(item: { name: string, id: number }) => item.name}
-                  onChange={(_e, v) =>
-                    setFormData({ ...formData, referring_doctor: v?.id })
+                  options={referring_doctors}
+                  onChange={(e, value, reason) => {
+                    setFormData((prev) => {
+                      return {
+                        ...prev,
+                        referring_doctor: value?.id,
+                      };
+                    });
+                  }}
+                  sx={{ width: "282px" }}
+                  // value={formData.referring_doctor}
+                  getOptionLabel={(doc: IReferring) => doc.name}
+                  isOptionEqualToValue={(a: IReferring, b: IReferring) =>
+                    a.id === b.id
                   }
-                  options={[
-                    {
-                      label: "1",
-                      value: 1,
-                    },
-                    {
-                      label: "2",
-                      value: 2,
-                    },
-                    {
-                      label: "3",
-                      value: 3,
-                    },
-                  ]}
-                  className={styles.input_block}
-                  noOptionsText={"Направление не найдено"}
                   renderInput={(params) => (
                     <TextField
-                      name="referring_doctor"
                       {...params}
                       InputLabelProps={{
                         sx: [
@@ -317,32 +313,26 @@ const PatientsTable = observer(
 
                 <Autocomplete
                   disablePortal
-                  sx={{ width: "282px" }}
                   id="combo-box-demo"
-                  value={formData.information_source}
-                  onChange={(e, v) =>
-                    setFormData({ ...formData, information_source: v?.value })
-                  }
-                  options={[
-                    {
-                      label: "1",
-                      value: 1,
-                    },
-                    {
-                      label: "2",
-                      value: 2,
-                    },
-                    {
-                      label: "3",
-                      value: 3,
-                    },
-                  ]}
-                  className={styles.input_block}
-                  noOptionsText={"Источник не найдено"}
+                  componentName="information_source"
+                  options={informationSource}
+                  onChange={(e, value, reason) => {
+                    setFormData((prev) => {
+                      return {
+                        ...prev,
+                        information_source: value?.id,
+                      };
+                    });
+                  }}
+                  sx={{ width: "282px" }}
+                  getOptionLabel={(doc: IInformationSource) => doc.name}
+                  isOptionEqualToValue={(
+                    a: IInformationSource,
+                    b: IInformationSource
+                  ) => a.id === b.id}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      name="information_source"
                       InputLabelProps={{
                         sx: [
                           {

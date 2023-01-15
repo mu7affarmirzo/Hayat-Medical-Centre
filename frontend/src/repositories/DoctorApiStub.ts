@@ -1,12 +1,12 @@
 import {ApiClient} from "../utils";
 
-import { IDoc } from "../consts/types";
+import { IDoc, IInformationSource, IReferring } from "../consts/types";
 
 export default class DoctorApiStub {
   /* Gen by NARA Studio */
   static _instance: DoctorApiStub;
 
-  private readonly client = new ApiClient("organizations/doctors");
+  private readonly client = new ApiClient("organizations/");
 
   static get instance() {
     /* Gen by NARA Studio */
@@ -18,6 +18,14 @@ export default class DoctorApiStub {
 
   async findAllDoctors(): Promise<IDoc[]> {
     /* Gen by NARA Studio */
-    return this.client.getData<IDoc>("/");
+    return this.client.getData<IDoc>("doctors/");
+  }
+  async findAllReferrings(): Promise<IReferring[]> {
+    /* Gen by NARA Studio */
+    return this.client.getData<IReferring>("referring-doctors/");
+  }
+  async findAllInformationSource(): Promise<IInformationSource[]> {
+    /* Gen by NARA Studio */
+    return this.client.getData<IInformationSource>("information-sources/");
   }
 }

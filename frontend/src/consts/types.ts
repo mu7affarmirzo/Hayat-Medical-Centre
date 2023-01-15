@@ -182,3 +182,20 @@ export interface IMergePatient {
   id: number;
   is_base: boolean;
 }
+export interface IReferring {
+  id: number;
+  name: string;
+  created_at: string;
+  modified_at: string;
+  created_by: number;
+  modified_by: number;
+}
+export interface IInformationSource {
+  id: number;
+  name: string;
+  created_at: string;
+  modified_at: string;
+  created_by: number;
+  modified_by: number;
+  organization: number;
+}

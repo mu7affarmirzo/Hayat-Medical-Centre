@@ -11,6 +11,8 @@ import CashboxStateKeeper from "../../store/CashboxStateKeeper";
 import { useLocalObservable } from "mobx-react-lite";
 import { generate_date } from "../../utils/dateFormatter";
 import Barcode from "react-barcode";
+import html2canvas from "html2canvas";
+import pdfMake from "pdfmake/build/pdfmake";
 
 const Cheque = () => {
   const chequeRef = useRef(null);
@@ -18,10 +20,33 @@ const Cheque = () => {
     () => CashboxStateKeeper.instance
   );
   const { cheque } = cashboxStateKeeper;
+  const downloadHandler = () => {
+    html2canvas(document.getElementById("cheque-wrapper")).then((canvas) => {
+      var data = canvas.toDataURL();
+      var pdfExportSetting = {
+        content: [
+          {
+            image: data,
+            width: 500,
+          },
+        ],
+      };
+      pdfMake
+        .createPdf(pdfExportSetting)
+        .download(
+          `cheque-for-${cheque.receipt_appointments[0].patient_name}.pdf`
+        );
+    });
+  };
+
   if (cheque.receipt_appointments === undefined) return <Navigate to="/" />;
   return (
     <div className={classes.wrapper}>
-      <div className={classes.cheque} ref={chequeRef}>
+      <div
+        id="cheque-wrapper"
+        className={`cheque-wrapper ${classes.cheque}`}
+        ref={chequeRef}
+      >
         <div className={classes.header}>
           <div className={classes.QRwrapper}>
             <QRCode
@@ -58,9 +83,11 @@ const Cheque = () => {
           <h3 className={classes.textRow}>
             Пациент: {cheque.receipt_appointments[0].patient_name}
           </h3>
-          <div>
+          <div className={classes.relative}>
             <h3 className={classes.textRow}>Номер счета: {cheque.id}</h3>
-            <Barcode width={1} value="theakbarov.t.me" />
+            <div className={classes.absolute}>
+              <Barcode width={1} value="theakbarov.t.me" />
+            </div>
           </div>
         </div>
         <h3 className={classes.textRow}>
@@ -119,7 +146,7 @@ const Cheque = () => {
           Hа главную
         </Button>
         <div>
-          <Button variant="contained">
+          <Button onClick={downloadHandler} variant="contained">
             <DownloadIcon />
             Скачать
           </Button>

@@ -631,6 +631,7 @@ const CreateNote = observer(() => {
           formData={formData}
           discount={discount}
           setDiscount={setDiscount}
+          referring_doctors={doctorStateKeeper.referring_doctors}
           dateValue={dateValue}
           setDateValue={setDateValue}
           timeValue={timeValue}
@@ -638,6 +639,7 @@ const CreateNote = observer(() => {
           services={services}
           appointedServices={appointedServices}
           setAppointedServices={setAppointedServices}
+          informationSource={doctorStateKeeper.informationSources}
         />
       )}
 

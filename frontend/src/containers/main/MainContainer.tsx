@@ -34,6 +34,8 @@ const MainContainer = observer(() => {
         selectedDoctors,
         setSelectedDoctors,
         searchDoctor,
+        findAllReferrings,
+        findAllInformationSource
     } = doctorStateKeeper;
     const { findAllBranches, branchesCopy } = branchesStateKeeper;
     const [selectData, setSelectData] = useState<string>("");
@@ -54,11 +56,15 @@ const MainContainer = observer(() => {
 
     useEffect(() => {
         findAllBranches().then(() => {
-            findAllSpecialties().then(() => {
-                findAllDoctors().then((items) => {
-                    setDoctorsData(items);
-                });
-            });
+            findAllReferrings().then(() => {
+                findAllInformationSource().then(() => {
+                    findAllSpecialties().then(() => {
+                        findAllDoctors().then((items) => {
+                            setDoctorsData(items);
+                        });
+                    });
+                })
+            })
         });
     }, [findAllSpecialties, findAllDoctors, findAllBranches]);
     const changeSpecialty = (id: string) => {
