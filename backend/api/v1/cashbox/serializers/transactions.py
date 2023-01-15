@@ -26,34 +26,56 @@ class TransactionsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_receipt_id(self, obj):
-        return obj.receipt.id
+        try:
+            return obj.receipt.id
+        except:
+            return "null"
 
     def get_doctor(self, obj):
         context = {}
-        context['id'] = obj.receipt.receipt_appointments.first().doctor.doctor.id
-        context['username'] = obj.receipt.receipt_appointments.first().doctor.doctor.username
+        try:
+            context['id'] = obj.receipt.receipt_appointments.first().doctor.doctor.id
+            context['username'] = obj.receipt.receipt_appointments.first().doctor.doctor.username
+        except:
+            context['id'] = "null"
+            context['username'] = "null"
         return context
 
     def get_doctor_specialty(self, obj):
         context = {}
-        context['id'] = obj.receipt.receipt_appointments.first().doctor.doc_speciality.first().speciality.id
-        context['name'] = obj.receipt.receipt_appointments.first().doctor.doc_speciality.first().speciality.name
+        try:
+            context['id'] = obj.receipt.receipt_appointments.first().doctor.doc_speciality.first().speciality.id
+            context['name'] = obj.receipt.receipt_appointments.first().doctor.doc_speciality.first().speciality.name
+        except:
+            context['id'] = "null"
+            context['name'] = "null"
         return context
 
     def get_service(self, obj):
         context = {}
-        context['id'] = obj.receipt.receipt_appointments.first().app_services.first().service.id
-        context['name'] = obj.receipt.receipt_appointments.first().app_services.first().service.name
+        try:
+            context['id'] = obj.receipt.receipt_appointments.first().app_services.first().service.id
+            context['name'] = obj.receipt.receipt_appointments.first().app_services.first().service.name
+        except:
+            context['id'] = "null"
+            context['name'] = "null"
         return context
 
     def get_patient(self, obj):
         context = {}
-        context['id'] = obj.receipt.receipt_appointments.first().patient.id
-        context['name'] = obj.receipt.receipt_appointments.first().patient.full_name
+        try:
+            context['id'] = obj.receipt.receipt_appointments.first().patient.id
+            context['name'] = obj.receipt.receipt_appointments.first().patient.full_name
+        except:
+            context['id'] = "null"
+            context['name'] = "null"
         return context
 
     def get_base_price(self, obj):
-        return obj.receipt.receipt_appointments.first().price
+        try:
+            return obj.receipt.receipt_appointments.first().price
+        except:
+            return "Unknown"
 
 
 class AppointmentServiceTransactionsCreateSerializer(serializers.ModelSerializer):
