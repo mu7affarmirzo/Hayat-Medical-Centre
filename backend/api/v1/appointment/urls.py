@@ -10,6 +10,7 @@ urlpatterns = [
     path('', AppointmentsModelView.as_view(), name='appointment'),
     path('<int:pk>', AppointmentsRetrieveView.as_view(), name='appointment'),
     path('service/', AppointmentServiceView.as_view(), name='appointment-service'),
+    # path('service-setup/', setup_service, name='appointment-service'),
     path('service/<int:pk>', AppointmentServiceRetrieveView.as_view(), name='appointment-service'),
     path('appointments-time-view/', appointment_time_view, name='appointments-time-view'),
 

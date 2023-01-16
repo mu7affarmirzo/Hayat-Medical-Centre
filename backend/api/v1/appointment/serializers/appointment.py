@@ -2,6 +2,14 @@ from apps.account.models import AppointmentsModel, AppointmentServiceModel, Medi
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 
+
+class MedicalServiceSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = MedicalService
+        fields = "__all__"
+
+
 class AppointmentServiceSerializers(serializers.ModelSerializer):
     service_name = serializers.SerializerMethodField()
 

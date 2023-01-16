@@ -1,13 +1,29 @@
-from apps.account.models import AppointmentServiceModel
+import random
+
+from apps.account.models import AppointmentServiceModel, MedicalService, DoctorAccountModel
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
-from api.v1.appointment.serializers.appointment import AppointmentServiceSerializers,\
-    AppointmentServiceCreateSerializers
+from api.v1.appointment.serializers.appointment import AppointmentServiceSerializers, \
+    AppointmentServiceCreateSerializers, MedicalServiceSerializers
+
+
+# @swagger_auto_schema(method="get", tags=["appointment-service"])
+# @api_view(['GET', ])
+# def setup_service(request):
+#     med_services = MedicalService.objects.all()
+#     doctors = DoctorAccountModel.objects.all()
+#     print(doctors.values())
+#     for serv in med_services:
+#         print(random.choice(doctors))
+#         serv.doctor.add(random.choice(doctors))
+#         serv.save()
+#     serializer = MedicalServiceSerializers(med_services, many=True)
+#     return Response(serializer.data)
 
 
 class AppointmentServiceView(APIView):
