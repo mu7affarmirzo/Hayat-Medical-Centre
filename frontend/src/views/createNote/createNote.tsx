@@ -314,7 +314,7 @@ const CreateNote = observer(() => {
   };
   const create_appointment = (data) => {
     axios
-      .post("http://back.dev-hayat.uz/api/v1/cashbox/receipt", data, headers)
+      .post("https://back.dev-hayat.uz/api/v1/cashbox/receipt", data, headers)
       .then((res) => {
         if (res.status === 201) {
           navigator(`/cheque-for-${res.data.id}`)

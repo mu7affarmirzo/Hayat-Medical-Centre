@@ -26,7 +26,7 @@ const AuthVerify = () => {
             if (user) {
                 const decodedJwt = parseJwt(user.access);
                 if (decodedJwt.exp * 1000 < Date.now()) {
-                    axios.post('http://back.dev-hayat.uz/api/v1/token/refresh/', { refresh: user.refresh })
+                    axios.post('https://back.dev-hayat.uz/api/v1/token/refresh/', { refresh: user.refresh })
                         .then(res => {
                             const data = res.data.access;
                             data.refresh = user.refresh;
