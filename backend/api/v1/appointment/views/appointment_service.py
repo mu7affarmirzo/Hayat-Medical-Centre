@@ -12,18 +12,18 @@ from api.v1.appointment.serializers.appointment import AppointmentServiceSeriali
     AppointmentServiceCreateSerializers, MedicalServiceSerializers
 
 
-@swagger_auto_schema(method="get", tags=["appointment-service"])
-@api_view(['GET', ])
-def setup_service(request):
-    med_services = MedicalService.objects.all()
-    doctors = DoctorAccountModel.objects.all()
-    print(doctors.values())
-    for serv in med_services:
-        print(random.choice(doctors))
-        serv.doctor.add(random.choice(doctors))
-        serv.save()
-    serializer = MedicalServiceSerializers(med_services, many=True)
-    return Response(serializer.data)
+# @swagger_auto_schema(method="get", tags=["appointment-service"])
+# @api_view(['GET', ])
+# def setup_service(request):
+#     med_services = MedicalService.objects.all()
+#     doctors = DoctorAccountModel.objects.all()
+#     print(doctors.values())
+#     for serv in med_services:
+#         print(random.choice(doctors))
+#         serv.doctor.add(random.choice(doctors))
+#         serv.save()
+#     serializer = MedicalServiceSerializers(med_services, many=True)
+#     return Response(serializer.data)
 
 
 class AppointmentServiceView(APIView):
