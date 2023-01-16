@@ -99,7 +99,7 @@ const MainContainer = observer(() => {
         }
         request
             .get(
-                `http://185.196.213.71:8080/api/v1/organizations/branches/doctors/${id}`,
+                `http://back.dev-hayat.uz/api/v1/organizations/branches/doctors/${id}`,
                 headers
         )
             .then((res) => {
@@ -108,7 +108,7 @@ const MainContainer = observer(() => {
             .catch((err) => console.log(err));
         request
             .get(
-                `http://185.196.213.71:8080/api/v1/organizations/branches/specialty/${id}`,
+                `http://back.dev-hayat.uz/api/v1/organizations/branches/specialty/${id}`,
                 headers
             )
             .then((res) => {

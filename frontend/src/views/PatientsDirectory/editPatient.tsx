@@ -86,7 +86,7 @@ const EditPatient = () => {
   React.useEffect(() => {
     axios
       .get(
-        `http://185.196.213.71:8080/api/v1/organizations/patients/${params.id}`,
+        `http://back.dev-hayat.uz/api/v1/organizations/patients/${params.id}`,
         headers
       )
       .then((response) => {

@@ -76,7 +76,7 @@ const CreatePatients = () => {
 
   const post_patient = () => {
     axios
-      .post("http://185.196.213.71:8080/api/v1/organizations/patients/", state, {
+      .post("http://back.dev-hayat.uz/api/v1/organizations/patients/", state, {
         headers: {
           Authorization: "Bearer " + JSON.parse(token).access,
         },
