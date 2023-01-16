@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from api.v1.organizations.serializers.doctors import DoctorsListSerializer
 from api.v1.organizations.serializers.specialties import SpecialitiesListSerializer, DoctorSpecialitiesListSerializer
-from apps.account.models import PatientModel, Account, SpecialityModel, DoctorSpecialityModel
+from apps.account.models import PatientModel, Account, SpecialityModel, DoctorSpecialityModel, DoctorAccountModel
 
 
 @swagger_auto_schema(tags=['organizations'], method="get")
@@ -15,7 +15,7 @@ from apps.account.models import PatientModel, Account, SpecialityModel, DoctorSp
 def doctors_by_branch_view(request, branch_id):
     # doc_specs = DoctorSpecialityModel.objects.filter(branch=branch_id).distinct('doctor')
     ###
-    doc_specs = Account.objects.filter(branch_id=branch_id)
+    doc_specs = DoctorAccountModel.objects.filter(doctor__branch_id=branch_id)
     ###
     # print(doc_specs)
     # doctors = Account.objects.filter(doctorspecialitymodel__in=doc_specs)
