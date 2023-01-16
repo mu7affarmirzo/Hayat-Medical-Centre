@@ -35,11 +35,12 @@ const MainContainer = observer(() => {
         setSelectedDoctors,
         searchDoctor,
         findAllReferrings,
-        findAllInformationSource
+        findAllInformationSource,
+        setDoctorsCopy,
+        doctors
     } = doctorStateKeeper;
     const { findAllBranches, branchesCopy } = branchesStateKeeper;
     const [selectData, setSelectData] = useState<string>("");
-    const [doctorsData, setDoctorsData] = useState<Array<IDoc>>(doctorsCopy);
     const authorizationStateKeeper = useLocalObservable(
         () => AuthorizationStateKeeper.instance
     );
@@ -60,7 +61,7 @@ const MainContainer = observer(() => {
                 findAllInformationSource().then(() => {
                     findAllSpecialties().then(() => {
                         findAllDoctors().then((items) => {
-                            setDoctorsData(items);
+                            setDoctorsCopy(items);
                         });
                     });
                 })
@@ -70,11 +71,11 @@ const MainContainer = observer(() => {
     const changeSpecialty = (id: string) => {
         let filteredData;
         if (id === "all") {
-            filteredData = doctorsCopy;
+            filteredData = doctors;
         } else {
-            filteredData = doctorsCopy.filter((item) => item.specialty[0].id === id);
+            filteredData = doctors.filter((item) => item.specialty[0]?.id === id);
         }
-        setDoctorsData(filteredData);
+        setDoctorsCopy(filteredData);
     };
     const handleSelectDoctor = (
         e: React.MouseEvent<HTMLElement> | React.ChangeEvent<HTMLInputElement>,
@@ -103,7 +104,7 @@ const MainContainer = observer(() => {
                 headers
         )
             .then((res) => {
-                setDoctorsData(res.data)
+                setDoctorsCopy(res.data)
             })
             .catch((err) => console.log(err));
         request
@@ -131,7 +132,7 @@ const MainContainer = observer(() => {
             <MainView
                 selectData={selectData}
                 setSelectData={setSelectData}
-                doctors={doctorsData}
+                doctors={doctorsCopy}
                 specialities={specialitiesCopy}
                 branchesCopy={branchesCopy}
                 changeSpecialty={changeSpecialty}

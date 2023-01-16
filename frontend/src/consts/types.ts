@@ -51,7 +51,7 @@ export interface IDoctor {
   active?: boolean;
   sex: boolean;
   username: string;
-  specialty?: any;
+  specialty?: ISpeciality[];
 }
 export interface IEvent {
   end: Date;

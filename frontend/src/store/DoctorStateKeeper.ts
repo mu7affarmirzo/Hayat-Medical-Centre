@@ -58,6 +58,10 @@ class DoctorStateKeeper {
     this.selectedDoctors = doctors;
   }
 
+  setDoctorsCopy(doctors: IDoc[]) {
+    this.doctorsCopy = doctors;
+  }
+
   searchDoctor(str: string) {
     if (str === "") {
       this.doctorsCopy = this.doctors;
@@ -67,7 +71,8 @@ class DoctorStateKeeper {
       if (item.doctor.f_name) {
         return (
           item.doctor.f_name.toLowerCase().includes(str.toLowerCase()) ||
-          item.specialty_name.toLowerCase().includes(str.toLowerCase())
+          item.doctor.username.toLowerCase().includes(str.toLowerCase())
+          // item.specialty[0].name.toLowerCase().includes(str.toLowerCase())
         );
         //   item.phone_number.toLowerCase().includes(str.toLowerCase())
       }

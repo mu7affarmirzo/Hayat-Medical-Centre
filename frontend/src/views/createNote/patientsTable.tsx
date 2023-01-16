@@ -372,6 +372,7 @@ const PatientsTable = observer(
                   onChange={handleChangeInput}
                   name="addition_info"
                   value={formData.addition_info}
+                  required={true}
                   multiline
                   rows={4}
                   className={styles.input_block}
