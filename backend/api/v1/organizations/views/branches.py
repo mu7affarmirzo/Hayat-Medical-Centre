@@ -13,14 +13,21 @@ from apps.account.models import PatientModel, Account, SpecialityModel, DoctorSp
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
 def doctors_by_branch_view(request, branch_id):
-    doc_specs = DoctorSpecialityModel.objects.filter(branch=branch_id).distinct('doctor')
+    # doc_specs = DoctorSpecialityModel.objects.filter(branch=branch_id).distinct('doctor')
+    ###
+    doc_specs = Account.objects.filter(branch_id=branch_id)
+    ###
     # print(doc_specs)
     # doctors = Account.objects.filter(doctorspecialitymodel__in=doc_specs)
     # print("************")
     # print(doctors)
     # print("************")
     # TODO: finish this part
-    serializer = DoctorSpecialitiesListSerializer(doc_specs, many=True)
+    # serializer = DoctorSpecialitiesListSerializer(doc_specs, many=True)
+    ###
+    serializer = DoctorsListSerializer(doc_specs, many=True)
+    ###
+
     return Response(serializer.data)
 
 
