@@ -7,12 +7,12 @@ from apps.account.models import (
 
 @admin.register(accounts.Account)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('email', 'username')
+    list_display = [field.name for field in accounts.Account._meta.fields]
 
 
 @admin.register(accounts.DoctorAccountModel)
 class DoctorsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('doctor_email', 'doctor_l_name', 'doctor_f_name')
+    list_display = [field.name for field in accounts.DoctorAccountModel._meta.fields]
 
     def doctor_email(self, obj):
         return obj.doctor.email
@@ -26,70 +26,75 @@ class DoctorsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(organizations.OrganizationModel)
 class OrganizationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('name', 'created_by', 'created_at')
+    list_display = [field.name for field in organizations.OrganizationModel._meta.fields]
 
 
 @admin.register(organizations.BranchModel)
 class BranchesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('name', 'created_by', 'created_at')
+    list_display = [field.name for field in organizations.BranchModel._meta.fields]
 
 
 @admin.register(roles_permissions.RolesModel)
 class RolesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('code', 'name', 'date_created')
+    list_display = [field.name for field in roles_permissions.RolesModel._meta.fields]
 
 
 @admin.register(patients.PatientGroupModel)
 class PatientGroupAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = [field.name for field in patients.PatientGroupModel._meta.fields]
 
 
 @admin.register(patients.PatientModel)
 class PatientAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = [field.name for field in patients.PatientModel._meta.fields]
 
 
 @admin.register(patients.InformationSourceModel)
 class InformationSourceModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = [field.name for field in patients.InformationSourceModel._meta.fields]
+
 
 @admin.register(appointments.MedicalService)
 class MedicalServiceAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = [field.name for field in appointments.MedicalService._meta.fields]
 
 
 @admin.register(appointments.AppointmentsModel)
 class AppointmentsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('patient', 'doctor')
+    list_display = [field.name for field in appointments.AppointmentsModel._meta.fields]
 
 
 @admin.register(appointments.AppointmentServiceModel)
 class AppointmentServiceModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = [field.name for field in appointments.AppointmentServiceModel._meta.fields]
+
+
 @admin.register(appointments.EMCDocumentModel)
 class EMCDocumentModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = [field.name for field in appointments.EMCDocumentModel._meta.fields]
+
+
+
 @admin.register(accounts.ReferringDoctorModel)
 class ReferringDoctorModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = [field.name for field in accounts.ReferringDoctorModel._meta.fields]
+
 
 @admin.register(roles_permissions.AccountRolesModel)
 class AccountRolesModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = [field.name for field in roles_permissions.AccountRolesModel._meta.fields]
 
 
 @admin.register(specialities.SpecialityModel)
 class SpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
-    # list_display = ('email', 'username')
+    list_display = [field.name for field in specialities.SpecialityModel._meta.fields]
 
 
 @admin.register(specialities.DoctorSpecialityModel)
-class DoctorSpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('organization', 'branch_id', 'doctor', 'doctor_id',
-                    'speciality', 'speciality_id')
+class DoctorSpecialityAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in specialities.DoctorSpecialityModel._meta.fields]
 
 
 @admin.register(attandance.AttendanceModel)
-class AttendanceAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('created_at', 'staff', 'is_at_work')
+class AttendanceAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in attandance.AttendanceModel._meta.fields]

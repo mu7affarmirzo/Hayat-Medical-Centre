@@ -14,6 +14,16 @@ class DutyModelAdmin(admin.ModelAdmin):
     list_display = [field.name for field in transactions.DutyModel._meta.fields]
 
 
-admin.site.register(cashbox.CashBoxClosingHistoryRecordsModel)
-admin.site.register(transactions.TransactionsModel)
-admin.site.register(transactions.AppointmentServiceTransactionsModel)
+@admin.register(cashbox.CashBoxClosingHistoryRecordsModel)
+class CashBoxClosingHistoryRecordsModelAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in cashbox.CashBoxClosingHistoryRecordsModel._meta.fields]
+
+
+@admin.register(transactions.TransactionsModel)
+class TransactionsModelAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in transactions.TransactionsModel._meta.fields]
+
+
+@admin.register(transactions.AppointmentServiceTransactionsModel)
+class AppointmentServiceTransactionsModelAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in transactions.AppointmentServiceTransactionsModel._meta.fields]
