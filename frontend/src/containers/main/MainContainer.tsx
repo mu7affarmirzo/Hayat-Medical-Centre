@@ -72,7 +72,7 @@ const MainContainer = observer(() => {
         let filteredData;
         if (id === "all") {
             filteredData = doctors;
-        } else {
+            } else {
             filteredData = doctors.filter((item) => item.specialty[0]?.id === id);
         }
         setDoctorsCopy(filteredData);

@@ -36,11 +36,11 @@ import CashboxStateKeeper from "../../store/CashboxStateKeeper";
 interface IAppointment {
   patient: any;
   name: any;
-  discount: string | number;
+  discount: number;
   start_time: Date;
   end_time: Date;
-  price: string;
-  debt: string;
+  price: number;
+  debt: number;
   referring_doctor: string | null;
   information_source: string | null;
   referring_doc_notes: string;
@@ -210,8 +210,8 @@ const CreateNote = observer(() => {
     discount: 0,
     end_time: timeValue.from!.toDate(),
     start_time: timeValue.to!.toDate(),
-    price: "",
-    debt: "",
+    price: 0,
+    debt: 0,
     referring_doctor: "",
     information_source: "",
     referring_doc_notes: "",
@@ -332,11 +332,11 @@ const CreateNote = observer(() => {
     setFormData({
       patient: "",
       name: "",
-      discount: "",
+      discount: 0,
       start_time: new Date(),
       end_time: new Date(),
-      price: "",
-      debt: "",
+      price: 0,
+      debt: 0,
       referring_doctor: "",
       information_source: "",
       referring_doc_notes: "",
