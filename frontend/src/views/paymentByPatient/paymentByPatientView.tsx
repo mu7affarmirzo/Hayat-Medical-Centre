@@ -79,7 +79,7 @@ const PaymentByPatientView = ({
                 <td></td>
                 <td>{item.receipt_appointments[0]?.patient_name}</td>
                 <td>{item.receipt_appointments[0]?.doctor_name}</td>
-                <td>{item.receipt_appointments[0]?.services[0].service_name}</td>
+                <td>{item.receipt_appointments[0]?.services[0]?.service_name}</td>
                 <td>{generate_date(new Date(item.receipt_appointments[0]?.services[0]?.created_at ?? new Date()))}</td>
                 <td>{item.receipt_appointments[0]?.services[0]?.payment_status ?? ''}</td>
                 <td>{currencyFormatter(item.receipt_appointments[0]?.debt ?? 0, 'UZS')}</td>
