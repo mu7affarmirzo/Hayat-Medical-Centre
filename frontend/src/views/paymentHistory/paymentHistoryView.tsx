@@ -33,7 +33,7 @@ const PaymentHistoryView = () => {
 
     const handleChange = (newValue: Dayjs | null) => {
         setValueFrom(newValue);
-        console.log(valueFrom?.format('YYYY/MM/DD'))
+        console.log(valueFrom?.format('YYYY-MM-DD'))
     };
     const handleChangeTo = (newValue: Dayjs | null) => {
         setValueTo(newValue);
@@ -46,16 +46,9 @@ const PaymentHistoryView = () => {
             <div className={classes.actions}>
                 <div className={classes.formControl}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Дата от</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            label="Дата от"
-                        >
-                            <MenuItem value={'07.09.2022'}>07.09.2022</MenuItem>
-                        </Select>
+
                         <DesktopDatePicker
-                            label="Date desktop"
+                            label="Дата от"
                             inputFormat="YYYY/MM/DD"
                             value={valueFrom}
                             onChange={handleChange}
@@ -65,16 +58,9 @@ const PaymentHistoryView = () => {
                 </div>
                 <div className={classes.formControl}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Дата до</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            label="Дата до"
-                        >
-                            <MenuItem value={'08.09.2022'}>08.09.2022</MenuItem>
-                        </Select>
+
                         <DesktopDatePicker
-                            label="Date desktop"
+                            label="Дата до"
                             inputFormat="YYYY/MM/DD"
                             value={valueTo}
                             onChange={handleChangeTo}
