@@ -39,7 +39,7 @@ const PaymentHistoryView = () => {
         setValueTo(newValue);
     };
     useEffect(() => {
-        gethistory('?start_date=2023-01-16&end_date=2023-01-17').then(res => setHistory(res))
+        gethistory(`?start_date=${valueFrom?.format('YYYY-MM-DD')}&end_date=${valueTo?.format('YYYY-MM-DD')}`).then(res => setHistory(res))
     }, [valueTo])
     return (
         <div className={classes.wrapper}>
