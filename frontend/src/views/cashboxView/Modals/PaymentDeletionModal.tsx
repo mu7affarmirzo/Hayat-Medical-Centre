@@ -21,6 +21,7 @@ const PaymentDeletionModal = ({
 
     const deleteHandler = () => {
         cashboxStateKeeper.closeCashbox().then(() =>
+        {
             alert(
                 `Касса ${currencyFormatter(
                     transactions
@@ -29,6 +30,8 @@ const PaymentDeletionModal = ({
                     "uzs"
                 )} успешно закрыта`
             )
+            window.location.reload()
+        }
         );
         setDeletePaymentModal(false)
     };

@@ -67,7 +67,7 @@ const PaymentByPatientView = ({
             ))}
           </thead>
           <tbody>
-            {receipts.map((item: IReceipt, index: number) => (
+            {receipts.reverse().map((item: IReceipt, index: number) => (
               <tr
                 key={item.id}
                 data-id={item.id}

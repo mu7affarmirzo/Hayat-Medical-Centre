@@ -18,14 +18,29 @@ import { useLocalObservable } from "mobx-react-lite";
 import { generate_date } from "../../utils/dateFormatter";
 import { currencyFormatter } from "../../utils/currencyFormatter";
 import { IHistory } from "../../consts/types";
+import { DesktopDatePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
 
 const PaymentHistoryView = () => {
     const transactionStateKeeper = useLocalObservable(() => TransactionsStateKeeper.instance);
     const { gethistory } = transactionStateKeeper
     const [history, setHistory] = useState<IHistory[]>([])
+    const [valueFrom, setValueFrom] = React.useState<Dayjs | null>(
+        dayjs('2014-08-18T21:11:54'),
+    ); const [valueTo, setValueTo] = React.useState<Dayjs | null>(
+        dayjs('2014-08-18T21:11:54'),
+    );
+
+    const handleChange = (newValue: Dayjs | null) => {
+        setValueFrom(newValue);
+        console.log(valueFrom?.format('YYYY/MM/DD'))
+    };
+    const handleChangeTo = (newValue: Dayjs | null) => {
+        setValueTo(newValue);
+    };
     useEffect(() => {
-        gethistory('?start_date=2022-01-10&end_date=2023-02-02').then(res => setHistory(res))
-    }, [])
+        gethistory('?start_date=2023-01-16&end_date=2023-01-17').then(res => setHistory(res))
+    }, [valueTo])
     return (
         <div className={classes.wrapper}>
             <div className={classes.actions}>
@@ -39,6 +54,13 @@ const PaymentHistoryView = () => {
                         >
                             <MenuItem value={'07.09.2022'}>07.09.2022</MenuItem>
                         </Select>
+                        <DesktopDatePicker
+                            label="Date desktop"
+                            inputFormat="YYYY/MM/DD"
+                            value={valueFrom}
+                            onChange={handleChange}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
                     </FormControl>
                 </div>
                 <div className={classes.formControl}>
@@ -51,6 +73,13 @@ const PaymentHistoryView = () => {
                         >
                             <MenuItem value={'08.09.2022'}>08.09.2022</MenuItem>
                         </Select>
+                        <DesktopDatePicker
+                            label="Date desktop"
+                            inputFormat="YYYY/MM/DD"
+                            value={valueTo}
+                            onChange={handleChangeTo}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
                     </FormControl>
                 </div>
                 <div className={classes.formControl}>
