@@ -28,7 +28,7 @@ const PaymentHistoryView = () => {
     const [valueFrom, setValueFrom] = React.useState<Dayjs | null>(
         dayjs('2014-08-18T21:11:54'),
     ); const [valueTo, setValueTo] = React.useState<Dayjs | null>(
-        dayjs('2014-08-18T21:11:54'),
+        dayjs(new Date()),
     );
 
     const handleChange = (newValue: Dayjs | null) => {
@@ -133,7 +133,7 @@ const PaymentHistoryView = () => {
                             )}
                     />
                 </div>
-                <div>
+                {/* <div>
                     <h3 className={classes.tableTitle}>Платежи данного закрытия</h3>
                     <div className={` ${classes.borderTop}`}>
 
@@ -167,7 +167,7 @@ const PaymentHistoryView = () => {
                             ))}
                         </tbody>
                     </table>
-                </div>
+                </div> */}
             </div>
         </div>
     );
