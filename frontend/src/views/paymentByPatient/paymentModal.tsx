@@ -135,10 +135,14 @@ const PaymentModal = ({ open, close, selectedReceipt }) => {
                     onChange={e => changeHandler(e.target.name, e.target.value)}
                     label="Вид платежа"
                   >
-                    <MenuItem value={"CASH"}>
-                      Банковская карта
+                    <MenuItem value={"HUMO"}>
+                      Банковская карта Humo
+                    </MenuItem>
+                    <MenuItem value={"UZCARD"}>
+                      Банковская карта Uzcard
                     </MenuItem>
                     <MenuItem value={"CASH"}>Наличные</MenuItem>
+                    <MenuItem value={"VISA"}>Банковская карта Visa</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControlLabel

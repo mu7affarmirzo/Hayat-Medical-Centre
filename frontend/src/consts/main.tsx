@@ -79,12 +79,12 @@ export const NavBarDropdowns: Array<INav> = [
                 sideBarText: "Оплаты по пациентам",
                 path: "/patientPayments",
             },
-            {
-                img: <LockArrow />,
-                text: "История закрытий",
-                sideBarText: "История закрытий",
-                path: "/historyPayments",
-            },
+            // {
+            //     img: <LockArrow />,
+            //     text: "История закрытий",
+            //     sideBarText: "История закрытий",
+            //     path: "/historyPayments",
+            // },
             {
                 img: <ClipboardClose />,
                 text: "Быстрая запись",
@@ -177,12 +177,12 @@ export const CashBoxDropdowns: Array<INav> = [
                 sideBarText: "Оплаты по пациентам",
                 path: "/patientPayments",
             },
-            {
-                img: <LockArrow />,
-                text: "История закрытий",
-                sideBarText: "История закрытий",
-                path: "/historyPayments",
-            },
+            // {
+            //     img: <LockArrow />,
+            //     text: "История закрытий",
+            //     sideBarText: "История закрытий",
+            //     path: "/historyPayments",
+            // },
             {
                 img: <ClipboardClose />,
                 text: "Быстрая запись",

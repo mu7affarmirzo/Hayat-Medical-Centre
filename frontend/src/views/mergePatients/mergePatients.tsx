@@ -31,12 +31,7 @@ const MergePatientsView = () => {
         const isAdded = patient.filter((item) => item.id === id);
 
         if (!isAdded.length) {
-            if (patient.length > 0) {
-                patient.push({ id, is_base: false });
-        } else {
-              patient.push({ id, is_base: true });
-        }
-
+            patient.push({ id, is_base: false });
             setSelectedpatient(patient);
         } else {
             const index = patient.findIndex((obj) => obj.id === id);
@@ -45,7 +40,21 @@ const MergePatientsView = () => {
     }
     };
 
+    const handleMakeBaseAccount = (id) => {
+        if (selectedPatient.length > 0) {
+            const updatedPatients = [...selectedPatient];
+            const baseUser = updatedPatients.findIndex((obj) => obj.id === id);
+            console.log('selectedPatient')
+            updatedPatients[baseUser].is_base = true;
+            setSelectedpatient(updatedPatients);
+        } else {
+            setSelectedpatient([{ id, is_base: true }]);
+        }
+
+    };
+
     const mergeHandler = () => {
+        return console.log("selectedPatient", selectedPatient);
         patientStateKeeper.mergePatients({ patients: selectedPatient });
     };
 
@@ -56,6 +65,7 @@ const MergePatientsView = () => {
                 <table className={classes.tableBody}>
                     <thead>
                         <th></th>
+                        <th>Oсновной</th>
                         <th>Фамилия</th>
                         <th>Имя</th>
                         <th>Отчество</th>
@@ -74,6 +84,14 @@ const MergePatientsView = () => {
                                     inputProps={{
                                         "aria-label": "Checkbox A",
                                     }}
+                                />
+                            </td>
+                            <td style={{ textAlign: "center" }}>
+                                <input
+                                    type="radio"
+                                    onChange={e => handleMakeBaseAccount(parseInt(e.target.value))}
+                                    value={patient.id}
+                                    name="is_base"
                                 />
                             </td>
                             <td>{patient.l_name}</td>
