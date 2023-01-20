@@ -17,25 +17,36 @@ const AuthVerify = () => {
     const localAuthorizationStateKeeper = useLocalObservable(
         () => AuthorizationStateKeeper.instance
     );
-    const { setToken } = localAuthorizationStateKeeper;
+    const { setToken, removeToken, removeRole } = localAuthorizationStateKeeper;
 
     useEffect(() => {
         if (window.localStorage.getItem("token")) {
-            const user = JSON.parse(window.localStorage.getItem("token") ?? '');
-
-            if (user) {
-                const decodedJwt = parseJwt(user.access);
-                if (decodedJwt.exp * 1000 < Date.now()) {
-                    axios.post('https://back.dev-hayat.uz/api/v1/token/refresh/', { refresh: user.refresh })
-                        .then(res => {
-                            const data = res.data.access;
-                            data.refresh = user.refresh;
-                            setToken(JSON.stringify(data))
-                            window.localStorage.setItem('token', JSON.stringify(data))
-                        })
-                        .catch(err => console.log(err))
+            let user: any
+            try {
+                if (window.localStorage.getItem('token')) {
+                    user = JSON.parse(window.localStorage.getItem("token") ?? '');
+                    if (user) {
+                        const decodedJwt = parseJwt(user.access);
+                        if (decodedJwt.exp * 1000 < Date.now()) {
+                            axios.post('https://back.dev-hayat.uz/api/v1/token/refresh/', { refresh: user.refresh })
+                                .then(res => {
+                                    const data = res.data.access;
+                                    data.refresh = user.refresh;
+                                    setToken(JSON.stringify(data))
+                                    window.localStorage.setItem('token', JSON.stringify(data))
+                                })
+                                .catch(err => console.log(err))
+                        }
+                    }
+                } else {
+                    removeToken()
+                    removeRole()
                 }
+            } catch (error) {
+                removeToken()
+                removeRole()
             }
+
         }
     }, [location]);
 

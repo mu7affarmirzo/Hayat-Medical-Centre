@@ -30,6 +30,11 @@ class AuthorizationStateKeeper {
   }
   removeToken() {
     localStorage.removeItem("token");
+    this.token = {};
+  }
+  removeRole(){
+    localStorage.removeItem('role')
+    this.role = 'NoAuth'
   }
   setRole(data: string) {
     localStorage.setItem("role", data);
