@@ -1,5 +1,8 @@
-FROM node:16.17.1-alpine3.16 as build
-WORKDIR /usr/app
-COPY . /usr/app
+FROM node:16-alpine
+WORKDIR /app
+COPY . .
 RUN npm ci
-ENTRYPOINT ["npm", "run", "start"]
+RUN npm run build
+ENV NODE_ENV production
+EXPOSE 3000
+CMD [ "npx", "serve", "build" ]
