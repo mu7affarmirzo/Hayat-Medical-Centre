@@ -38,6 +38,11 @@ class CalendarEventStateKeeper {
   }
 
   filterEventByDoctorId(id: string) {
+    console.log(
+      "appointment id",
+      id,
+      this.events.map((i) => i.doctorId)
+    );
     return this.events.filter((item) => item.doctorId === id);
   }
 
@@ -58,7 +63,7 @@ class CalendarEventStateKeeper {
         this.events = appointments.map((appointment) => {
           return {
             id: appointment.id,
-            doctorId: appointment.doctorId,
+            doctorId: String(appointment.doctor),
             title: appointment.name,
             start: new Date(appointment.start_time),
             end: new Date(appointment.end_time),
@@ -67,7 +72,6 @@ class CalendarEventStateKeeper {
       }
       this.eventsCopy = this.events;
     });
-    console.log("appointments", appointments, this.events);
 
     return this.events;
   }

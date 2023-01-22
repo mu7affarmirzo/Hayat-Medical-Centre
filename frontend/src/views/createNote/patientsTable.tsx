@@ -113,9 +113,9 @@ const PatientsTable = observer(
                       }}
                       sx={{ height: "32px" }}
                     >
-                      {Array(22)
+                      {Array(15)
                         .fill(1)
-                        .map((_, index) => index * 5)
+                        .map((_, index) => index + 1)
                         .map((discount, i) => (
                           <MenuItem key={i} value={discount}>
                             {discount}%
@@ -255,14 +255,9 @@ const PatientsTable = observer(
                     prefix="UZS "
                     className={styles.currency_input}
                     onValueChange={(value, name) => console.log(value, name)}
-                    style={{ marginRight: "35px" }}
                   />
 
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Вручную"
-                    className={styles.checkbox_block}
-                  />
+
                 </div>
               </div>
 
