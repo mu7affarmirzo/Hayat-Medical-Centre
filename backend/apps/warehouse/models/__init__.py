@@ -3,7 +3,7 @@ from .received_items import ReceivedItemsModel
 from  .receive_registry import ReceiveRegistryModel
 from .send_registry import SendRegistryModel
 from  .income import IncomeModel
-from  .income_items import IncomeItems
+from  .income_items import IncomeItemsModel
 from  .items_in_stock import ItemsInStockModel
 from  .company import CompanyModel
 from  .sent_items import SentItemsModel

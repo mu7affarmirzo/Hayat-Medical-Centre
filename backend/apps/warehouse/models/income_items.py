@@ -4,7 +4,7 @@ from apps.warehouse.models.income import IncomeModel
 from apps.warehouse.models.items import ItemsModel
 
 
-class IncomeItems(models.Model):
+class IncomeItemsModel(models.Model):
     income = models.ForeignKey(IncomeModel, on_delete=models.CASCADE)
     item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE)
     quantity = models.IntegerField()
