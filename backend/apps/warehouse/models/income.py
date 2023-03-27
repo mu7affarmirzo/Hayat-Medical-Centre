@@ -12,7 +12,6 @@ class IncomeModel(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_income", on_delete=models.SET_NULL, null=True)
 
-
     def __str__(self):
         return f"{self.receiver} - {self.serial}"
 
