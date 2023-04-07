@@ -1,0 +1,1 @@
+from rest_framework import serializersfrom apps.account.models.shift import ShiftModelclass ShiftModelSerializers(serializers.ModelSerializer):    class Meta:        model = ShiftModel        fields = '__all__'

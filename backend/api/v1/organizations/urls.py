@@ -5,6 +5,8 @@ from api.v1.organizations.views.branches import specialty_by_branch_view, get_sp
 from api.v1.organizations.views.doctors import DoctorsListCreateView, DoctorsRetrieveView
 from api.v1.organizations.views.patient import PatientView, PatientRetrieveView, PatientFilterView, PatientsMergeView
 from api.v1.organizations.views.organizations import OrganizationsListCreateView, BranchesListCreateView
+from api.v1.organizations.views.shift import get_shift_retrieve_view, get_shifts_view, update_shift_view, \
+    delete_shift_view
 from api.v1.organizations.views.specialties import SpecialtiesView, DoctorSpecialitiesView
 from api.v1.organizations.views.patient_group import PatientGroupView, PatientGroupRetrieveView
 from api.v1.organizations.views.information_sources import InformationSourceView, InformationSourceRetrieveView
@@ -36,5 +38,10 @@ urlpatterns = [
 
     path('information-sources/', InformationSourceView.as_view(), name='information-sources'),
     path('information-sources/<int:pk>', InformationSourceRetrieveView.as_view(), name='information-sources'),
+
+    path('get-shift-retrieve/<int:pk>', get_shift_retrieve_view, name='get-shift-retrieve'),
+    path('delete-shift/<int:pk>', delete_shift_view, name='delete-shift'),
+    path('get-shift-retrieve/', get_shifts_view, name='get-shifts'),
+    path('update-shift-view/', update_shift_view, name='update-shift'),
 
 ]
