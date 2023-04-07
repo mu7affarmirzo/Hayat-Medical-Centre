@@ -10,6 +10,8 @@ services:
       - POSTGRES_DB=hayat
       - POSTGRES_USER=hayat
       - POSTGRES_PASSWORD=hayat
+    ports:
+      - "5432:5432"
   web:
     restart: unless-stopped
     build: .

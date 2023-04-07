@@ -4,14 +4,14 @@ import smtplib
 from hayat_med_center.settings import EMAIL_HOST_PASSWORD
 
 
-def send_email(receiver, code):
+def send_email(receiver, text):
     sender = "nazarmamatovnurmuhammad7@gmail.com"
     #     # your password = "your password"
     password = EMAIL_HOST_PASSWORD
 
     subject = "Hayat Medical Center"
 
-    body = f"{code}"
+    body = f"{text}"
 
     message = EmailMessage()
     message['From'] = sender
