@@ -1,0 +1,1 @@
+from django.db import modelsfrom apps.logus.models import ServiceModel, TariffModelclass TariffServiceModel(models.Model):    service = models.ForeignKey(ServiceModel, on_delete=models.CASCADE)    tariff = models.ForeignKey(TariffModel, on_delete=models.CASCADE)

@@ -1,0 +1,1 @@
+from django.db import modelsfrom apps.logus.models import RoomTypeModelclass RoomModel(models.Model):    room_number = models.CharField(max_length=50)    is_free = models.BooleanField(default=False)    room_type = models.ForeignKey(RoomTypeModel, on_delete=models.CASCADE)    capacity = models.IntegerField()

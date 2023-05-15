@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'apps.account',
     'apps.cashbox',
     'apps.warehouse',
+    'apps.logus',
     'rest_framework',
     'rest_framework_simplejwt',
 

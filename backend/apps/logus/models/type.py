@@ -1,0 +1,1 @@
+from django.db import modelsclass TypeModel(models.Model):    name = models.CharField(max_length=255)

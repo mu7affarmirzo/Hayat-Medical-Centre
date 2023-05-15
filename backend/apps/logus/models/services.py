@@ -1,0 +1,1 @@
+from django.db import modelsclass ServiceModel(models.Model):    service_name = models.CharField(max_length=255)    price = models.IntegerField()

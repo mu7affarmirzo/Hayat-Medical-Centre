@@ -1,0 +1,1 @@
+from django.db import modelsfrom apps.logus.models import TypeModelfrom apps.logus.models import TariffModelclass RoomTypeModel(models.Model):    type = models.ForeignKey(TypeModel, on_delete=models.CASCADE)    tariff = models.ForeignKey(TariffModel, on_delete=models.CASCADE)

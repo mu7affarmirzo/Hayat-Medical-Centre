@@ -1,0 +1,1 @@
+from django.db import modelsfrom apps.logus.models import TariffModel, RoomTypeModelclass BookedRoomModel(models.Model):    tariff = models.ForeignKey(TariffModel, on_delete=models.CASCADE)    room_type = models.ForeignKey(RoomTypeModel, on_delete=models.CASCADE)    guests_number = models.IntegerField()
