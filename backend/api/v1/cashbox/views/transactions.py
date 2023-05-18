@@ -24,7 +24,7 @@ class TransactionsView(APIView):
         # transactions = TransactionsModel.objects.filter(created_at__range=(start_date, end_date))
         transactions = TransactionsModel.objects.filter(duty__is_closed=False, created_by=request.user)
         serializer = TransactionsSerializer(transactions, many=True)
-        # serializer = TransactionsListSerializer(transactions, many=True)
+        # serializers = TransactionsListSerializer(transactions, many=True)
         return Response(serializer.data)
 
     @swagger_auto_schema(tags=['payment'], request_body=CreateTransactionSerializer)

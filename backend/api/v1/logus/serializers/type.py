@@ -1,0 +1,1 @@
+from rest_framework import serializersfrom apps.logus.models import TypeModelclass TypeModelSerializer(serializers.ModelSerializer):    class Meta:        model = TypeModel        exclude = ["modified_by", "created_by"]

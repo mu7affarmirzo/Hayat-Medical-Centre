@@ -1,0 +1,1 @@
+from rest_framework import serializersfrom apps.logus.models import BookingModelclass BookingModelSerializer(serializers.ModelSerializer):    class Meta:        model = BookingModel        exclude = ["modified_by", "created_by"]

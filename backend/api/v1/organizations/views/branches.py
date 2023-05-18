@@ -23,7 +23,7 @@ def doctors_by_branch_view(request, branch_id):
     # print(doctors)
     # print("************")
     # TODO: finish this part
-    # serializer = DoctorSpecialitiesListSerializer(doc_specs, many=True)
+    # serializers = DoctorSpecialitiesListSerializer(doc_specs, many=True)
     ###
     serializer = DoctorsListSerializer(doc_specs, many=True)
     ###

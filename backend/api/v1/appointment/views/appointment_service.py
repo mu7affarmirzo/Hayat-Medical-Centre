@@ -22,8 +22,8 @@ from api.v1.appointment.serializers.appointment import AppointmentServiceSeriali
 #         print(random.choice(doctors))
 #         serv.doctor.add(random.choice(doctors))
 #         serv.save()
-#     serializer = MedicalServiceSerializers(med_services, many=True)
-#     return Response(serializer.data)
+#     serializers = MedicalServiceSerializers(med_services, many=True)
+#     return Response(serializers.data)
 
 
 class AppointmentServiceView(APIView):

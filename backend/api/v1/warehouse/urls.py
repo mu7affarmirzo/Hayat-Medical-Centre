@@ -1,5 +1,6 @@
-from django.urls import path, include
+from django.urls import path
 from api.v1.warehouse.views import *
+
 urlpatterns = [
     path('company/', get_company_view),
     path('company/<int:pk>', get_company_retrieve_view),
@@ -15,7 +16,7 @@ urlpatterns = [
 
     path('income-items/', get_income_item_view),
     path('income-items/<int:pk>', get_income_item_retrieve_view),
-    path('income-items-create/',create_income_item_view ),
+    path('income-items-create/', create_income_item_view),
     path('income-items-update/<int:pk>', update_income_item_view),
     path('income-items-delete/<int:pk>', delete_income_item_view),
 
@@ -28,7 +29,7 @@ urlpatterns = [
     path('items-in-stock/', get_item_in_stock_view),
     path('items-in-stock/<int:pk>', get_item_in_stock_retrieve_view),
     path('items-in-stock-create/', create_item_in_stock_view),
-    path('items-in-stock-update/<int:pk>',update_item_in_stock_view ),
+    path('items-in-stock-update/<int:pk>', update_item_in_stock_view),
     path('items-in-stock-delete/<int:pk>', delete_item_in_stock_view),
 
     path('receive-registry/', get_receive_registry_view),

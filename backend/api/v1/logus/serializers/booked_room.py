@@ -1,0 +1,1 @@
+from rest_framework import serializersfrom apps.logus.models import BookedRoomModelclass BookedRoomModelSerializer(serializers.ModelSerializer):    class Meta:        model = BookedRoomModel        exclude = ["modified_by", "created_by"]

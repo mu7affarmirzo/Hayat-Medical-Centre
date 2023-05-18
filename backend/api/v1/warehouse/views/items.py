@@ -30,7 +30,8 @@ def get_item_retrieve_view(request, pk):
 @swagger_auto_schema(method="post", tags=["warehouse-items"], request_body=ItemsModelSerializer)
 @api_view(['POST'])
 def create_item_view(request):
-    serializer = ItemsModelSerializer(data=request.data)
+    item = ItemsModel.objects.create(created_by=request.user, modified_by=request.user)
+    serializer = ItemsModelSerializer(item, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -42,6 +43,8 @@ def create_item_view(request):
 @api_view(['PUT'])
 def update_item_view(request, pk):
     item = get_object_or_404(ItemsModel, pk=pk)
+    item.modified_by = request.user
+    item.save()
     serializer = ItemsModelSerializer(item, data=request.data)
     if serializer.is_valid():
         serializer.save()
