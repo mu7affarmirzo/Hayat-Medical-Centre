@@ -1,1 +1,1 @@
-from rest_framework import serializersfrom apps.logus.models import TariffTypePriceModelclass TariffTypePriceSerializer(serializers.ModelSerializer):    class Meta:        model = TariffTypePriceModel        exclude = ["modified_by", "created_by"]
+from rest_framework import serializersfrom apps.logus.models import RoomPriceclass RoomPriceSerializer(serializers.ModelSerializer):    class Meta:        model = RoomPrice        exclude = ["modified_by", "created_by"]
