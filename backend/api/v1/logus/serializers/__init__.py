@@ -1,1 +1,1 @@
-from .room_type import *from .tariff_type_price import *from .tariff import *from .type import *from .tariff_services import *from .services import *from .room import *from .booked_room import *from .booking import *
+from .room_type import *from .tariff import *from .tariff_type_price import *from .type import *from .room import *from .tariff_services import *from .services import *from .booked_room import *from .booking import *
