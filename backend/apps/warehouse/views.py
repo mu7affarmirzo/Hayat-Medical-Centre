@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q, F
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from apps.warehouse.forms import AccountAuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from apps.account.models import OrganizationModel
+from apps.warehouse.models import ItemsModel, ItemsInStockModel
 
 # ------------------------------
 #           TASKS
@@ -46,6 +48,7 @@ def login_view(request):
 def index_view(request):
     context = {}
     orgs = OrganizationModel.objects.all()
+    print(request.POST)
     context["orgs"] = orgs
     return render(request, 'warehouse/index.html', context)
 
@@ -54,8 +57,13 @@ class IncomeView(TemplateView):
     template_name = 'warehouse/income.html'
 
 
-class MedicinesView(TemplateView):
-    template_name = 'warehouse/medicines.html'
+@login_required
+def medicines_view(request, pk=None):
+    print(pk)
+    context = {}
+    items = ItemsModel.objects.all()
+    context["items"] = items
+    return render(request, 'warehouse/medicines.html', context)
 
 
 @login_required

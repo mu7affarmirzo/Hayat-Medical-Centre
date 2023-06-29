@@ -37,7 +37,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Вадим Александров
+            {{ user.l_name }} {{ user.f_name }}
           </button>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{% url 'warehouse:warehouse-login' %}">Выйти</a></li>
@@ -181,60 +181,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td style="width: 35px" class="text-center">
-                <img
-                  class="more-icon"
-                  src="{% static "/assets/icons/row-left-mini.svg" %}"
-                  alt=""
-                />
-              </td>
-              <td class="text-center">
-                <img src="{% static "/assets/icons/mail.svg" %}" alt="icon" />
-              </td>
-              <td class="text-start">50000341</td>
-              <td class="text-start">ВНУТРЕНИЙ ПРИХОД</td>
-              <td class="text-start">01.02.2023</td>
-              <td class="text-start">1</td>
-              <td class="text-start">01.02.2023</td>
-              <td class="text-end">1</td>
-              <td class="text-start">01.02.2023</td>
-              <td class="text-start">HAYAT MEDICAL MAIN</td>
-              <td class="text-end">280 000.00</td>
-              <td class="text-end">280 000.00</td>
-              <td class="text-end">280 000.00</td>
-              <td class="text-end">280 000.00</td>
-              <td class="text-start">АДМИНИСТРАТОР</td>
-              <td class="text-start">01.02.2023</td>
-              <td class="text-start">HAYAT MEDICAL FILIAL</td>
-            </tr>
-            <tr>
-              <td style="width: 35px" class="text-center">
-                <img
-                  class="more-icon"
-                  src="{% static "/assets/icons/row-left-mini.svg" %}"
-                  alt=""
-                />
-              </td>
-              <td class="text-center">
-                <img src="{% static "/assets/icons/tick.svg" %}" alt="icon" />
-              </td>
-              <td class="text-start">50000341</td>
-              <td class="text-start">ВНУТРЕНИЙ ПРИХОД</td>
-              <td class="text-start">01.02.2023</td>
-              <td class="text-start">1</td>
-              <td class="text-start">01.02.2023</td>
-              <td class="text-end">1</td>
-              <td class="text-start">01.02.2023</td>
-              <td class="text-start">HAYAT MEDICAL MAIN</td>
-              <td class="text-end">280 000.00</td>
-              <td class="text-end">280 000.00</td>
-              <td class="text-end">280 000.00</td>
-              <td class="text-end">280 000.00</td>
-              <td class="text-start">АДМИНИСТРАТОР</td>
-              <td class="text-start">01.02.2023</td>
-              <td class="text-start">HAYAT MEDICAL FILIAL</td>
-            </tr>
+
             <tr>
               <td style="width: 35px" class="text-center">
                 <img
