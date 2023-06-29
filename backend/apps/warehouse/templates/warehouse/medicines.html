@@ -1,54 +1,7 @@
+{% extends 'snippets/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Medicines</title>
-    <link rel="stylesheet" href="{% static "/assets/css/style.css" %}"/>
-    <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-            crossorigin="anonymous"
-    />
-</head>
-<body>
-<!-- header starts ==== -->
-<header>
-    <div class="header-left">
-        <div class="logo">
-            <a href="{% url 'warehouse:warehouse-index' %}">
-                <img src="{% static "/assets/icons/logo.svg" %}" alt="logo"/>
-            </a>
-        </div>
-        <div class="header-links">
-            <div class="header-link header-link-active">
-                <a href="">филиалы</a>
-            </div>
-            <div class="header-link">
-                <a href="">Отчёт</a>
-            </div>
-        </div>
-    </div>
-    <div class="header-right">
-        <div class="dropdown">
-            <button
-                    class="dropdown-toggle profile-btn"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-            >
-                {{ user.l_name }} {{ user.f_name }}
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'warehouse:warehouse-login' %}">Выйти</a></li>
-            </ul>
-        </div>
-    </div>
-</header>
-<!-- header ends === -->
 
+{% block content %}
 <!-- navigation starts ====== -->
 <div class="navigation">
     <a href="{% url 'warehouse:warehouse-index' %}">
@@ -86,20 +39,20 @@
             <!-- table body starts ========== -->
             <tbody>
             {% for item in items %}
+
                     <tr class="table-body">
                         <td style="width: 35px">
                             <img src="{% static "/assets/icons/row-left-mini.svg" %}" alt=""/>
                         </td>
-                        <td>{{ item.id }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.company.name }}</td>
-                        <td>{{ item.unit }}</td>
-                        <td style="text-align: end">{{ item.in_pack }}</td>
-                        <td style="text-align: end">{{ item.in_stock.first.quantity }}</td>
-                <a href="{% url 'warehouse:warehouse-medicines' item.id %}">
-                        <td style="text-align: end">{{ item.price }}</td>
-                </a>
+                        <td><a href="{% url 'warehouse:warehouse-medicines' item.id %}">{{ item.id }}</a></td>
+                        <td><a href="{% url 'warehouse:warehouse-medicines' item.id %}">{{ item.name }}</a></td>
+                        <td><a href="{% url 'warehouse:warehouse-medicines' item.id %}">{{ item.company.name }}</a></td>
+                        <td><a href="{% url 'warehouse:warehouse-medicines' item.id %}">{{ item.unit }}</a></td>
+                        <td style="text-align: end"><a href="{% url 'warehouse:warehouse-medicines' item.id %}">{{ item.in_pack }}</a></td>
+                        <td style="text-align: end"><a href="{% url 'warehouse:warehouse-medicines' item.id %}">{{ item.in_stock.first.quantity }}</a></td>
+                        <td style="text-align: end"><a href="{% url 'warehouse:warehouse-medicines' item.id %}">{{ item.price }}</a></td>
                     </tr>
+
             {% endfor %}
 
             </tbody>
@@ -140,26 +93,18 @@
 
             <tbody>
             <!-- table body starts ======================= -->
+            {% for r_item in received_items %}
             <tr class="table-body">
                 <td style="width: 35px">
                     <img src="{% static "/assets/icons/row-left-mini.svg" %}" alt=""/>
                 </td>
-                <td>HAYAT MEDICAL MAIN</td>
-                <td>АМИНОКАПРОНОВАЯ КИСЛОТА 100МЛ \ юРия ФАРМА УКРАИНА</td>
-                <td>1</td>
-                <td>318 363.00</td>
-                <td style="text-align: end">04.02.2023 11:06:21</td>
+                <td>{{ r_item.filial }}</td>
+                <td>{{ r_item.item.name}}</td>
+                <td>{{ r_item.quantity }}</td>
+                <td>{{r_item.item.price}}</td>
+                <td style="text-align: end">{{r_item.created_at}}</td>
             </tr>
-            <tr class="table-body">
-                <td style="width: 35px">
-                    <img src="{% static "/assets/icons/row-left-mini.svg" %}" alt=""/>
-                </td>
-                <td>HAYAT MEDICAL MAIN</td>
-                <td>АМИНОКАПРОНОВАЯ КИСЛОТА 100МЛ \ юРия ФАРМА УКРАИНА</td>
-                <td>1</td>
-                <td>318 363.00</td>
-                <td style="text-align: end">04.02.2023 11:06:21</td>
-            </tr>
+            {% endfor %}
             </tbody>
             <!-- table body ends ======================= -->
 
@@ -187,5 +132,4 @@
         crossorigin="anonymous"
 ></script>
 <script src="{% static "/assets/js/script.js" %}"></script>
-</body>
-</html>
+{% endblock content %}

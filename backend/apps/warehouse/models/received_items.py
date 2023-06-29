@@ -16,3 +16,7 @@ class ReceivedItemsModel(models.Model):
 
     def __str__(self):
         return f"{self.item} - {self.quantity} - {self.received_registry}"
+
+    @property
+    def filial(self):
+        return self.received_registry.send_registry.sender.name

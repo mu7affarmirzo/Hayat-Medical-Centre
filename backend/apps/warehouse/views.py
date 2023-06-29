@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, F
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from apps.warehouse.forms import AccountAuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from apps.account.models import OrganizationModel
-from apps.warehouse.models import ItemsModel, ItemsInStockModel
+from apps.warehouse.models import ItemsModel, ItemsInStockModel, ReceivedItemsModel, IncomeModel, ReceiveRegistryModel
 
 # ------------------------------
 #           TASKS
@@ -20,18 +20,13 @@ from apps.warehouse.models import ItemsModel, ItemsInStockModel
 def login_view(request):
     context = {}
     user = request.user
-    print("started")
     if user.is_authenticated:
         return redirect("warehouse:warehouse-index")
-    print("asdf")
-    print(request.POST)
     if request.POST:
-        print("request.POST")
         form = AccountAuthenticationForm(request.POST)
         if form.is_valid():
             email = request.POST['email']
             password = request.POST['password']
-            print(email, password)
             user = authenticate(email=email, password=password)
 
             if user:
@@ -44,7 +39,7 @@ def login_view(request):
     return render(request, 'warehouse/login.html', context)
 
 
-@login_required
+@login_required(login_url="warehouse:warehouse-login")
 def index_view(request):
     context = {}
     orgs = OrganizationModel.objects.all()
@@ -53,20 +48,28 @@ def index_view(request):
     return render(request, 'warehouse/index.html', context)
 
 
-class IncomeView(TemplateView):
-    template_name = 'warehouse/income.html'
-
-
-@login_required
-def medicines_view(request, pk=None):
-    print(pk)
+def incomes_view(request, pk=None):
     context = {}
+    receive_registry = ReceiveRegistryModel.objects.all()
+
+    context["receive_registry"] = receive_registry
+    return render(request, 'warehouse/income.html', context)
+
+
+@login_required(login_url="warehouse:warehouse-login")
+def medicines_view(request, pk=None):
+    context = {}
+    if pk:
+        item = get_object_or_404(ItemsModel, pk=pk)
+        received_items = ReceivedItemsModel.objects.filter(item=item)
+
+        context["received_items"] = received_items
     items = ItemsModel.objects.all()
     context["items"] = items
     return render(request, 'warehouse/medicines.html', context)
 
 
-@login_required
+@login_required(login_url="warehouse:warehouse-login")
 def logout_view(request):
     logout(request)
     return redirect('warehouse:warehouse-login')
