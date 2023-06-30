@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from apps.warehouse.models import *
 
-# Register your models here.
 
 admin.site.register(ItemsModel)
 admin.site.register(ReceivedItemsModel)
@@ -14,3 +13,5 @@ admin.site.register(ItemsInStockModel)
 admin.site.register(CompanyModel)
 admin.site.register(SentItemsModel)
 admin.site.register(StorePointModel)
+admin.site.register(WarehouseChequeModel)
+admin.site.register(ChequeItemsModel)

@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from apps.warehouse.views import main
+from apps.warehouse.views import main, cheque
 
 app_name = 'warehouse'
 
@@ -12,4 +12,7 @@ urlpatterns = [
     path('incomes/<int:pk>', main.incomes_view, name='warehouse-incomes'),
     path('medicines/', main.medicines_view, name='warehouse-medicines'),
     path('medicines/<int:pk>', main.medicines_view, name='warehouse-medicines'),
+    path('cheque/', cheque.create_cheque_view, name='cheque-create'),
+    path('cheque/<int:pk>', cheque.get_cheque_view, name='cheque-get'),
+    path('cheque/<int:ch_pk>/<int:i_pk>', cheque.add_item_to_cheque_view, name='cheque-item-add'),
 ]
