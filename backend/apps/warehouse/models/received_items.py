@@ -8,7 +8,7 @@ from apps.warehouse.models.receive_registry import ReceiveRegistryModel
 class ReceivedItemsModel(models.Model):
     item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    received_registry = models.ForeignKey(ReceiveRegistryModel, on_delete=models.CASCADE)
+    received_registry = models.ForeignKey(ReceiveRegistryModel, on_delete=models.CASCADE, related_name="received_items")
     created_by = models.ForeignKey(Account, related_name="recevid_items", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

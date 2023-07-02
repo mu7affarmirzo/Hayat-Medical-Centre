@@ -50,9 +50,17 @@ def index_view(request):
 
 def incomes_view(request, pk=None):
     context = {}
-    receive_registry = ReceiveRegistryModel.objects.all()
+    if pk:
+        rec_reg_items = get_object_or_404(ReceiveRegistryModel, pk=pk)
+        context["rec_reg_items"] = rec_reg_items
 
+    receive_registry = ReceiveRegistryModel.objects.all()
+    summa_prices = 0
+    for i in receive_registry:
+        summa_prices += i.summa_prices
     context["receive_registry"] = receive_registry
+    context["summa_prices"] = summa_prices
+
     return render(request, 'warehouse/income.html', context)
 
 
