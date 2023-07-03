@@ -48,7 +48,7 @@ def index_view(request):
     return render(request, 'warehouse/index.html', context)
 
 
-def incomes_view(request, pk=None):
+def receive_registry_view(request, pk=None):
     context = {}
     if pk:
         rec_reg_items = get_object_or_404(ReceiveRegistryModel, pk=pk)
@@ -61,7 +61,7 @@ def incomes_view(request, pk=None):
     context["receive_registry"] = receive_registry
     context["summa_prices"] = summa_prices
 
-    return render(request, 'warehouse/income.html', context)
+    return render(request, 'warehouse/receive_registry.html', context)
 
 
 @login_required(login_url="warehouse:warehouse-login")
@@ -81,3 +81,19 @@ def medicines_view(request, pk=None):
 def logout_view(request):
     logout(request)
     return redirect('warehouse:warehouse-login')
+
+
+def incomes_view(request, pk=None):
+    context = {}
+    if pk:
+        income_with_id = get_object_or_404(IncomeModel, pk=pk)
+        context["income_with_id"] = income_with_id
+
+    incomes = IncomeModel.objects.all()
+    summa_prices = 0
+    for i in incomes:
+        summa_prices += i.summa_prices
+    context["incomes"] = incomes
+    context["summa_prices"] = summa_prices
+
+    return render(request, 'warehouse/incomes.html', context)

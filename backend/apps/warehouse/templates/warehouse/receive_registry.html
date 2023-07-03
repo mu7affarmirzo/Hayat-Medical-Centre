@@ -153,34 +153,34 @@
                                 <img src="{% static "/assets/icons/mail.svg" %}" alt="icon"/>
                             {% endif %}
                         </td>
-                        <td class="text-start"><a href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.id }}</a>
+                        <td class="text-start"><a href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.id }}</a>
                         </td>
                         <td class="text-start">ВНУТРЕНИЙ ПРИХОД</td>
                         <td class="text-start"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.created_at.date }}</a></td>
-                        <td class="text-start">1<a href="{% url 'warehouse:warehouse-incomes' rec.id %}"></a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.created_at.date }}</a></td>
+                        <td class="text-start">1<a href="{% url 'warehouse:warehouse-recreg' rec.id %}"></a></td>
                         <td class="text-start"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.created_at.date }}</a></td>
-                        <td class="text-end"><a href="{% url 'warehouse:warehouse-incomes' rec.id %}">1</a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.created_at.date }}</a></td>
+                        <td class="text-end"><a href="{% url 'warehouse:warehouse-recreg' rec.id %}">1</a></td>
                         <td class="text-start"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.created_at.date }}</a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.created_at.date }}</a></td>
                         <td class="text-start"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.sender }}</a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.sender }}</a></td>
                         <td class="text-end"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.summa_prices }}</a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.summa_prices }}</a></td>
                         <td class="text-end"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.summa_prices }}</a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.summa_prices }}</a></td>
                         <td class="text-end"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.summa_prices }}</a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.summa_prices }}</a></td>
                         <td class="text-end"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.summa_prices }}</a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.summa_prices }}</a></td>
                         <td class="text-start"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.created_by.username }}</a>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.created_by.username }}</a>
                         </td>
                         <td class="text-start"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.created_at }}</a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.created_at }}</a></td>
                         <td class="text-start"><a
-                                href="{% url 'warehouse:warehouse-incomes' rec.id %}">{{ rec.receiver }}</a></td>
+                                href="{% url 'warehouse:warehouse-recreg' rec.id %}">{{ rec.receiver }}</a></td>
                     </tr>
                 {% endfor %}
 

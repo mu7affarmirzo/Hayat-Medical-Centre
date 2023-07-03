@@ -5,7 +5,7 @@ from apps.warehouse.models.items import ItemsModel
 
 
 class IncomeItemsModel(models.Model):
-    income = models.ForeignKey(IncomeModel, on_delete=models.CASCADE)
+    income = models.ForeignKey(IncomeModel, on_delete=models.CASCADE, related_name="income_items")
     item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     created_by = models.ForeignKey(Account, related_name="income_items", on_delete=models.SET_NULL, null=True)
