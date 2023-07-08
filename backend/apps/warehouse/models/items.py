@@ -10,6 +10,7 @@ class ItemsModel(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField()
     unit = models.CharField(max_length=255, default="shtuk")
+    seria = models.CharField(max_length=255, default="")
     is_expired = models.BooleanField(default=False)
     expire_date = models.DateField(null=True)
     created_by = models.ForeignKey(Account, related_name="item", on_delete=models.SET_NULL, null=True)

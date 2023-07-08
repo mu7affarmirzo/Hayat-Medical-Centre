@@ -17,4 +17,11 @@ urlpatterns = [
     path('cheque/<int:ch_pk>/<int:i_pk>', cheque.add_item_to_cheque_view, name='cheque-item-add'),
     path('incomes/', main.receive_registry_view, name='warehouse-incomes'),
     path('incomes/<int:pk>', main.receive_registry_view, name='warehouse-incomes'),
+
+
+
+
+    path('cheque-popup/<int:pk>', cheque.cheque_popup_view, name='cheque-popup'),
+    path('cheque-popup-post/<int:ch_pk>', cheque.cheque_popup_post, name='cheque-popup-post'),
+
 ]

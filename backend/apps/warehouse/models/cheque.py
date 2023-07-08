@@ -24,7 +24,7 @@ class WarehouseChequeModel(models.Model):
 class ChequeItemsModel(models.Model):
     cheque = models.ForeignKey(WarehouseChequeModel, on_delete=models.CASCADE, related_name='cheque_items')
     item = models.ForeignKey(ItemsModel, on_delete=models.SET_NULL, null=True)
-
+    quantity = models.IntegerField(default=1)
     created_by = models.ForeignKey(Account, related_name="warehouse_cheque_item", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
