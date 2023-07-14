@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from apps.warehouse.forms import AddItemToChequeForm
 from django.contrib.auth import authenticate, login, logout
-from apps.account.models import OrganizationModel
+from apps.account.models import OrganizationModel, PatientModel
 from apps.warehouse.models import ItemsModel, ItemsInStockModel, ReceivedItemsModel, IncomeModel, ReceiveRegistryModel, \
     WarehouseChequeModel, ChequeItemsModel
 
@@ -16,12 +16,12 @@ class ChequeView(TemplateView):
     template_name = 'cheque/F-kassa-new-checks.html'
 
 
-@login_required
+@login_required(login_url="warehouse:warehouse-login")
 def cheque_list_view(request):
     pass
 
 
-@login_required
+@login_required(login_url="warehouse:warehouse-login")
 def create_cheque_view(request):
     context = {}
     user = request.user
@@ -30,7 +30,7 @@ def create_cheque_view(request):
     return redirect('warehouse:cheque-get', pk=cheque.pk)
 
 
-@login_required
+@login_required(login_url="warehouse:warehouse-login")
 def get_cheque_view(request, pk):
     context = {}
     cheque_items_summa = 0
@@ -41,14 +41,17 @@ def get_cheque_view(request, pk):
     for i in cheque_items:
         cheque_items_summa += i.quantity * i.item.price
     context['cheque'] = cheque
+    context['patients'] = PatientModel.objects.all()
+    context['orgs'] = OrganizationModel.objects.all()
     context['items'] = items
     context['cheque_items'] = cheque_items
+    context['cheque_items_summa'] = cheque_items_summa
     context['cheque_items_summa'] = cheque_items_summa
 
     return render(request, 'cheque/F-kassa-new-checks.html', context)
 
 
-@login_required
+@login_required(login_url="warehouse:warehouse-login")
 @csrf_exempt
 def add_item_to_cheque_view(request, ch_pk, i_pk):
     context = {}
@@ -85,6 +88,7 @@ def cheque_popup_view(request, pk):
     return JsonResponse(list(cheque), safe=False)
 
 
+@login_required(login_url="warehouse:warehouse-login")
 def cheque_popup_post(request, ch_pk):
     if request.POST:
         form = AddItemToChequeForm(request.POST)
@@ -94,6 +98,23 @@ def cheque_popup_post(request, ch_pk):
             itemid = request.POST["itemid"]
             item = get_object_or_404(ItemsModel, pk=itemid)
             quantity = request.POST["quantity"]
-            ChequeItemsModel.objects.create(cheque=cheque, quantity=quantity, item=item)
+            cheque_item = ChequeItemsModel.objects.filter(cheque=cheque, item=item).first()
+            if cheque_item:
+                cheque_item.quantity = quantity
+                cheque_item.save()
+            else:
+                ChequeItemsModel.objects.create(cheque=cheque, quantity=quantity, item=item)
             print(itemid, quantity)
     return redirect("warehouse:cheque-get", ch_pk)
+
+
+@login_required(login_url="warehouse:warehouse-login")
+def cheque_popup_insurance_post(request, ch_pk):
+    if request.POST:
+        cheque = get_object_or_404(WarehouseChequeModel, pk=ch_pk)
+        patient = request.POST["FIO"]
+        patient = get_object_or_404(PatientModel, pk=patient)
+        cheque.patient = patient
+        cheque.save()
+    return redirect("warehouse:cheque-get", ch_pk)
+

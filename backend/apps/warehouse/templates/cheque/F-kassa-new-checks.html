@@ -766,17 +766,26 @@
                             <img src="{% static "assets/icons/close-circle.svg" %}" alt="icon"/>
                         </button>
                     </div>
-                    <div class="modal-body d-flex flex-column gap-2">
+                    <div class="modal-body d-flex flex-column gap-2" >
+                        <form action="{% url 'warehouse:cheque-popup-insurance-post' cheque.cheque_number %}" method="POST">
+                        {% csrf_token %}
                         <h1>{{ cheque_items_summa}}</h1>
+                            <span id="checks-office-id" style="display: none"></span> {#data ID===#}
                         <div class="d-flex gap-2">
-                            <input type="text" class="form-control">
+                            <input id="checks_office" type="text" class="form-control">
                             <button data-bs-target="#exampleModalToggle12345"
+                                    type="reset"
                                     data-bs-toggle="modal" class="border border-1 border-secondary py-1 px-2 rounded-1">
                                 <img src="{% static "assets/icons/book.svg" %}" alt="icon"></button>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <label for="">Ф.И.0.</label>
-                            <input type="text" class="form-control w-75">
+                            <select  name="FIO" id="" class="form-control w-75">
+                                {% for i in patients %}
+                                <option value="{{ i.id }}">{{ i.full_name }}</option>
+                                {% endfor %}
+
+                            </select>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <label for="">Дата рождения</label>
@@ -798,34 +807,36 @@
                             <label for="">Касса</label>
                             <input type="text" class="form-control w-50 text-end">
                         </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <label for="">Моб.опл.</label>
-                            <input type="text" class="form-control w-50 text-end">
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <label for="">OnLine</label>
-                            <input type="text" class="form-control w-50 text-end">
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <label for="">Click</label>
-                            <input type="text" class="form-control w-50 text-end">
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <label for="">Итого</label>
-                            <input type="text" class="form-control w-50 text-end">
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <label for=""></label>
-                            <input type="text" class="form-control w-50 text-success text-end">
-                        </div>
+{#                        <div class="d-flex align-items-center justify-content-between">#}
+{#                            <label for="">Моб.опл.</label>#}
+{#                            <input type="text" class="form-control w-50 text-end">#}
+{#                        </div>#}
+{#                        <div class="d-flex align-items-center justify-content-between">#}
+{#                            <label for="">OnLine</label>#}
+{#                            <input type="text" class="form-control w-50 text-end">#}
+{#                        </div>#}
+{#                        <div class="d-flex align-items-center justify-content-between">#}
+{#                            <label for="">Click</label>#}
+{#                            <input type="text" class="form-control w-50 text-end">#}
+{#                        </div>#}
+{#                        <div class="d-flex align-items-center justify-content-between">#}
+{#                            <label for="">Итого</label>#}
+{#                            <input type="text" class="form-control w-50 text-end">#}
+{#                        </div>#}
+{#                        <div class="d-flex align-items-center justify-content-between">#}
+{#                            <label for=""></label>#}
+{#                            <input type="text" class="form-control w-50 text-success text-end">#}
+{#                        </div>#}
+
                     </div>
                     <div class="modal-foot">
                         <div class="d-flex gap-2">
                             <button>Печать</button>
-                            <button>Сохранить</button>
+                            <button type="submit">Сохранить</button>
                             <button data-bs-dismiss="modal">Отмена</button>
                         </div>
                     </div>
+                        </form>
                 </div>
             </div>
         </div>
@@ -870,38 +881,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr data-bs-target="#insurance"
+                    {% for i in orgs %}
+                    <tr id="checks-office-modal"
+                        data-item-id="1"
+                        data-bs-target="#insurance"
                         data-bs-toggle="modal">
                         <td style="width: 35px">
                             <img class="more-icon" src="{% static "assets/icons/row-left-mini.svg" %}" alt=""/>
                         </td>
-                        <td>СРОЧНО</td>
+                        <td>{{ i.name }}</td>
                     </tr>
-                    <tr data-bs-target="#insurance"
-                        data-bs-toggle="modal" data-bs-toggle="modal">
-                        <td><img class="more-icon" src="{% static "assets/icons/row-left-mini.svg" %}" alt=""/></td>
-                        <td>ФИЗИОТЕРАПИЯ</td>
-                    </tr>
-                    <tr data-bs-target="#insurance"
-                        data-bs-toggle="modal" data-bs-toggle="modal">
-                        <td><img class="more-icon" src="{% static "assets/icons/row-left-mini.svg" %}" alt=""/></td>
-                        <td>2-ПОСТ</td>
-                    </tr>
-                    <tr data-bs-target="#insurance"
-                        data-bs-toggle="modal" data-bs-toggle="modal">
-                        <td><img class="more-icon" src="{% static "assets/icons/row-left-mini.svg" %}" alt=""/></td>
-                        <td>3-ПOСТ</td>
-                    </tr>
-                    <tr data-bs-target="#insurance"
-                        data-bs-toggle="modal" data-bs-toggle="modal">
-                        <td><img class="more-icon" src="{% static "assets/icons/row-left-mini.svg" %}" alt=""/></td>
-                        <td>ХАЯТ ПРЕМИУМ</td>
-                    </tr>
-                    <tr data-bs-target="#insurance"
-                        data-bs-toggle="modal" data-bs-toggle="modal">
-                        <td><img class="more-icon" src="{% static "assets/icons/row-left-mini.svg" %}" alt=""/></td>
-                        <td>ХАЯТ МЕДИКАЛ</td>
-                    </tr>
+                    {% endfor %}
+
                     </tbody>
                 </table>
             </div>
@@ -1000,6 +991,6 @@
     });
 
 </script>
-<script src="{% static "assets/js/script.js" %}"></script>
+<script src="{% static "/assets/js/script.js" %}"></script>
 </body>
 </html>

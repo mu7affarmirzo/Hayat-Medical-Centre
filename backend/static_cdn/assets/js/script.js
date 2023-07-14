@@ -47,3 +47,17 @@ checkItem.forEach(function (row) {
     });
 });
 
+
+const checksOfficeInput = document.querySelector('#checks_office')
+const checksOfficeModals = document.querySelectorAll('#checks-office-modal')
+const checksOfficeId = document.querySelector('#checks-office-id')
+
+checksOfficeModals.forEach(function (checksOfficeModal) {
+    checksOfficeModal.onclick = () => {
+        var itemId = checksOfficeModal.dataset.itemId;
+        checksOfficeId.textContent = Number(itemId)
+        checksOfficeInput.value = checksOfficeModal.textContent.trim()
+        checksOfficeInput.defaultValue = checksOfficeModal.textContent.trim()
+    }
+})
+

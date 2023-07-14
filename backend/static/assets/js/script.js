@@ -15,12 +15,3 @@ togglePassword.addEventListener('click', function () {
 // loginButton.addEventListener('click', function () {
 //     window.location.href = '/Main/index.html';
 // });
-
-const checkItem = document.querySelectorAll('#check_item')
-const checkItemId = document.querySelectorAll('#check_id')
-const checkItemIdSel = document.querySelector('#check_id-selected')
-
-checkItem.onclick = () => {
-    checkItemIdSel.textContent = checkItemId.textContent;
-    console.log(checkItem)
-}
