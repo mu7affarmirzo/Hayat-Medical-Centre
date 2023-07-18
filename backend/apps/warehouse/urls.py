@@ -1,5 +1,5 @@
 from django.urls import path, include
-
+from apps.warehouse.views import expense_view, expense_register_view
 from apps.warehouse.views import main, cheque
 
 app_name = 'warehouse'
@@ -25,4 +25,6 @@ urlpatterns = [
     path('cheque-popup-post/<int:ch_pk>', cheque.cheque_popup_post, name='cheque-popup-post'),
     path('cheque-popup-insurance-post/<int:ch_pk>', cheque.cheque_popup_insurance_post, name='cheque-popup-insurance-post'),
 
+    path('expense/', expense_view, name='expense'),
+    path('expense-register/', expense_register_view, name='expense-register'),
 ]
