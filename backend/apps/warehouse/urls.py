@@ -27,5 +27,6 @@ urlpatterns = [
 
     path('expense/', create_expense_view, name='expense-create'),
     path('expense/<int:pk>', get_expense_view, name='expense-get'),
+    path('cheque-pdf/<int:pk>', cheque_save_pdf, name='cheque-pdf'),
 
 ]

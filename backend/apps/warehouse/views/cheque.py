@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
@@ -10,6 +9,8 @@ from django.contrib.auth import authenticate, login, logout
 from apps.account.models import OrganizationModel, PatientModel
 from apps.warehouse.models import ItemsModel, ItemsInStockModel, ReceivedItemsModel, IncomeModel, ReceiveRegistryModel, \
     WarehouseChequeModel, ChequeItemsModel
+from rest_framework import status
+from apps.warehouse.utils.render_to_pdf import render_to_pdf
 
 
 class ChequeView(TemplateView):
@@ -93,7 +94,6 @@ def cheque_popup_post(request, ch_pk):
     if request.POST:
         form = AddItemToChequeForm(request.POST)
         cheque = get_object_or_404(WarehouseChequeModel, pk=ch_pk)
-        print(form.is_valid())
         if form.is_valid():
             itemid = request.POST["itemid"]
             item = get_object_or_404(ItemsModel, pk=itemid)
@@ -104,7 +104,6 @@ def cheque_popup_post(request, ch_pk):
                 cheque_item.save()
             else:
                 ChequeItemsModel.objects.create(cheque=cheque, quantity=quantity, item=item)
-            print(itemid, quantity)
     return redirect("warehouse:cheque-get", ch_pk)
 
 
@@ -118,3 +117,14 @@ def cheque_popup_insurance_post(request, ch_pk):
         cheque.save()
     return redirect("warehouse:cheque-get", ch_pk)
 
+
+@login_required(login_url="warehouse:warehouse-login")
+def cheque_save_pdf(request, pk):
+    context = {}
+    cheque = get_object_or_404(WarehouseChequeModel, pk=pk)
+    cheque_items = ChequeItemsModel.objects.filter(cheque=cheque)
+    context['cheque_items'] = cheque_items
+    pdf = render_to_pdf("cheque/pdf-cheque.html", context)
+    if pdf:
+        return pdf
+    return JsonResponse(status=status.HTTP_400_BAD_REQUEST, data={"message": pdf})

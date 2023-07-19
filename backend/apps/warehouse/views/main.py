@@ -21,7 +21,7 @@ def login_view(request):
     context = {}
     user = request.user
     if user.is_authenticated:
-        return redirect("warehouse:warehouse-index")
+        return redirect("warehouse:warehouse-recreg")
     if request.POST:
         form = AccountAuthenticationForm(request.POST)
         if form.is_valid():
@@ -31,7 +31,7 @@ def login_view(request):
 
             if user:
                 login(request, user)
-                return redirect("warehouse:warehouse-index")
+                return redirect("warehouse:warehouse-recreg")
     else:
         form = AccountAuthenticationForm()
 

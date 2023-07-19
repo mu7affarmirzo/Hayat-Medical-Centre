@@ -33,6 +33,10 @@ class ChequeItemsModel(models.Model):
     def __str__(self):
         return f"{self.cheque} - {self.item}"
 
+    @property
+    def price_of_items(self):
+        return self.item.price * self.quantity
+
 
 @receiver(post_save, sender=WarehouseChequeModel)
 def create_warehouse_cheque_number(sender, instance=None, created=False, **kwargs):
