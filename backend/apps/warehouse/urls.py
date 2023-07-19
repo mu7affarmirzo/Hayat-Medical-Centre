@@ -1,5 +1,5 @@
 from django.urls import path, include
-from apps.warehouse.views import expense_view, expense_register_view
+from apps.warehouse.views import *
 from apps.warehouse.views import main, cheque
 
 app_name = 'warehouse'
@@ -12,19 +12,20 @@ urlpatterns = [
     path('rec-reg/<int:pk>', main.receive_registry_view, name='warehouse-recreg'),
     path('medicines/', main.medicines_view, name='warehouse-medicines'),
     path('medicines/<int:pk>', main.medicines_view, name='warehouse-medicines'),
-    path('cheque/', cheque.create_cheque_view, name='cheque-create'),
-    path('cheque/<int:pk>', cheque.get_cheque_view, name='cheque-get'),
-    path('cheque/<int:ch_pk>/<int:i_pk>', cheque.add_item_to_cheque_view, name='cheque-item-add'),
-    path('incomes/', main.receive_registry_view, name='warehouse-incomes'),
-    path('incomes/<int:pk>', main.receive_registry_view, name='warehouse-incomes'),
+    path('cheque/', create_cheque_view, name='cheque-create'),
+    path('cheque/<int:pk>', get_cheque_view, name='cheque-get'),
+    path('cheque/<int:ch_pk>/<int:i_pk>', add_item_to_cheque_view, name='cheque-item-add'),
+    path('incomes/', receive_registry_view, name='warehouse-incomes'),
+    path('incomes/<int:pk>', receive_registry_view, name='warehouse-incomes'),
 
 
 
 
-    path('cheque-popup/<int:pk>', cheque.cheque_popup_view, name='cheque-popup'),
-    path('cheque-popup-post/<int:ch_pk>', cheque.cheque_popup_post, name='cheque-popup-post'),
-    path('cheque-popup-insurance-post/<int:ch_pk>', cheque.cheque_popup_insurance_post, name='cheque-popup-insurance-post'),
+    path('cheque-popup/<int:pk>', cheque_popup_view, name='cheque-popup'),
+    path('cheque-popup-post/<int:ch_pk>', cheque_popup_post, name='cheque-popup-post'),
+    path('cheque-popup-insurance-post/<int:ch_pk>', cheque_popup_insurance_post, name='cheque-popup-insurance-post'),
 
-    path('expense/', expense_view, name='expense'),
-    path('expense-register/', expense_register_view, name='expense-register'),
+    path('expense/', create_expense_view, name='expense-create'),
+    path('expense/<int:pk>', get_expense_view, name='expense-get'),
+
 ]
