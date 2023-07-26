@@ -156,6 +156,33 @@ header {
   color: white;
 }
 
+.header-link--display {
+  display: flex;
+}
+
+.header-link span {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+  padding: 3px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 40px;
+  border: 1px solid #fff;
+  background: #f88078;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0.1px;
+  text-transform: capitalize;
+}
+
 .logo {
   padding: 18px 50px 18px 0;
   cursor: pointer;
@@ -212,6 +239,11 @@ nav {
 table {
   width: 100%;
   border-collapse: collapse;
+}
+
+table a {
+  text-decoration: none;
+  color: black;
 }
 
 table thead {
@@ -1105,15 +1137,18 @@ input[type="number"] {
 .menu-select-modal .modal {
   --bs-modal-width: 700px !important;
 }
+
 .menu-select-modal .modal table tbody tr td {
   outline: none !important;
 }
+
 .menu-select-modal .modal-body-left button {
   padding: 8px;
   background: rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.23);
   border-radius: 4px;
 }
+
 .menu-select-modal .modal-body-left .modal-foot button:nth-child(1) {
   border: none;
   display: flex;
@@ -1132,6 +1167,7 @@ input[type="number"] {
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+
 /* menu select modal ====== */
 /* inscurence-modal starts ======== */
 .insurence-modal .modal {
@@ -1156,6 +1192,7 @@ input[type="number"] {
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+
 .insurence-modal .modal-foot button:nth-child(2) {
   border: none;
   display: flex;
@@ -1186,11 +1223,13 @@ input[type="number"] {
   border-radius: 4px;
   color: black;
 }
+
 /* inscurence-modal starts ======== */
 /* number-modal ===================-- */
 .number-modal .modal {
   --bs-modal-width: 710px !important;
 }
+
 /* number-modal ===================-- */
 @media screen and (min-width: 768px) and (max-width: 1187px) {
   /* login starts ==== */
@@ -1295,12 +1334,12 @@ input[type="number"] {
   width: 100%;
   margin-bottom: 10px;
   padding: 10px 20px;
-  background: var(--background, #F5F5F5);
+  background: var(--background, #f5f5f5);
 }
 
 .form-check-label {
   font-size: 14px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
@@ -1308,9 +1347,9 @@ input[type="number"] {
   color: rgba(0, 0, 0, 0.38);
 }
 
-.form-check-input:checked~.form-check-label {
+/* .form-check-input:checked~.form-check-label {
   color: rgba(0, 0, 0, 0.87);
-}
+} */
 
 .account-patient__filter {
   display: flex;
@@ -1326,7 +1365,7 @@ input[type="number"] {
   align-items: center;
   margin: 0;
   font-size: 15px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 500;
   letter-spacing: 0.5px;
@@ -1345,7 +1384,7 @@ input[type="number"] {
   width: 100%;
   max-width: 360px;
   font-size: 14px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
@@ -1355,18 +1394,22 @@ input[type="number"] {
 
 .account-patient__search-btn {
   padding-left: 30px !important;
-  background-image: url('../icons/search-normal-white.svg');
-  background-repeat: no-repeat;
-  background-position: 10px center;
-  background-size: 18px 18px;
+  background: #2196f3 !important;
+  background-image: url("../icons/search-normal-white.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: 8px center !important;
+  background-size: 18px 18px !important;
+  border: none !important;
 }
 
 .account-patient__close-btn {
   padding-left: 30px !important;
-  background-image: url('../icons/xmark.svg');
-  background-repeat: no-repeat;
-  background-position: 10px center;
-  background-size: 18px 18px;
+  background: #2196f3 !important;
+  background-image: url("../icons/xmark.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: 10px center !important;
+  background-size: 18px 18px !important;
+  border: none !important;
 }
 
 .account-patient__btn-box {
@@ -1380,23 +1423,539 @@ input[type="number"] {
 
 .account-patient__btn {
   display: block !important;
-  background: #F5F5F5 !important;
+  background: #64b6f7 !important;
   font-size: 14px !important;
-  font-family: 'Roboto' !important;
+  font-family: "Roboto" !important;
   font-style: normal !important;
   font-weight: 400 !important;
   line-height: 20px !important;
   letter-spacing: 0.15px !important;
-  color: rgba(0, 0, 0, 0.38) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .account-patient__btn--active {
-  background: #2196F3 !important;
+  background: #2196f3 !important;
   color: #fff !important;
 }
 
 .btn-color {
-  background: #2196F3;
+  background: #2196f3 !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+/* ===== SEARCH PATIENT ===== */
+
+.search-patients__search-details {
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  background: #f5f5f5;
+}
+
+.search-patients__search-advanced-details {
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  background: #f5f5f5;
+}
+
+.hidden {
+  display: none;
+}
+
+.search-details__title-box {
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.search-details__title {
+  display: block;
+  margin: 0;
+  margin-left: 10px;
+  font-size: 14px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0.1px;
+}
+
+.search-details__input-box {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.search-details__input-box .form-control {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  font-size: 14px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.search-details__input-box .form-select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  font-size: 14px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.search-details__form-select {
+  display: flex;
+  align-items: center;
+}
+
+.search-details__form-select .form-select {
+  display: block;
+  width: 100%;
+  max-width: 450px;
+  margin-left: 10px;
+  font-size: 14px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.search-details__select-title {
+  display: block;
+  margin: 0;
+  font-size: 14px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+}
+
+.search__box {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 0px 10px;
+}
+
+.search__input-box {
+  display: flex;
+  width: 100%;
+  max-width: 860px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search__input__title {
+  display: block;
+  margin: 0;
+  font-size: 14px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.search__btn-box {
+  display: flex;
+  width: 100%;
+  max-width: 520px;
+  justify-content: space-between;
+}
+
+.patient__box {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.patient__title {
+  display: block;
+  margin: 0;
+  margin-bottom: 13px;
+  font-size: 14px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0.1px;
+}
+
+.patient__select-box {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.patient__radio-box {
+  padding: 4px 13px !important;
+  padding-left: 30px !important;
+  border-radius: 4px;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.23));
+}
+
+.patient__radio-box .form-check-label {
+  font-size: 12px !important;
+  font-family: "Roboto" !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  letter-spacing: 0.4px !important;
+}
+
+.checked:checked ~ .patient__radio-box {
+  background-color: #4caf50 !important;
+}
+
+.search-advance_details__form-select {
+  display: flex;
+  align-items: center;
+}
+
+.search-advance_details__form-select .form-select {
+  width: 550px;
+  margin-left: 5px;
+}
+
+/* dispatch-side */
+.dispatching-side__btn {
+  display: flex;
+  align-items: center;
+  border-radius: 0.25rem;
+  background: var(--white, #fff);
+  padding: 5px 24px;
   border: none;
-  color: #fff;
+  text-align: start;
+  /* white-space: nowrap; */
+}
+
+.dispatching-side__btn-active {
+  border-radius: 0.25rem;
+  background: var(--05-info-main, #2196f3);
+  color: white;
+}
+
+/* dispatch main ================= */
+.dispatching__main {
+  padding: 0.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.875rem;
+}
+
+.dispatching__main strong {
+  font-weight: 600;
+  line-height: 1.375rem;
+  letter-spacing: 0.00625rem;
+  font-size: 0.875rem;
+  color: var(--text-color-light-mode-primary, rgba(0, 0, 0, 0.87));
+}
+
+.dispatching__main strong span {
+  background: var(--01-primary-light, #3397ff);
+  color: white;
+  padding: 2px;
+}
+
+.dispatching__main-div {
+  padding: 4px;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.23));
+  background: var(--white, #fff);
+  display: flex;
+  gap: 4px;
+}
+
+.dispatching__main-div__btn-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.green__btn {
+  border-radius: 0.25rem;
+  background: var(--06-success-main, #4caf50);
+  color: white;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: 0.00938rem;
+  font-size: 0.875rem;
+  padding: 2px 12px;
+  border: none;
+}
+
+.blue__btn {
+  border-radius: 0.25rem;
+  background: var(--05-info-main, #2196f3) !important;
+  color: white !important;
+  font-weight: 400 !important;
+  line-height: 1.25rem !important;
+  letter-spacing: 0.00938rem !important;
+  font-size: 0.875rem !important;
+  padding: 2px 12px;
+  cursor: pointer;
+  border: none !important;
+}
+
+.blue__btn-disabled {
+  border-radius: 0.25rem;
+  background: var(--05-info-light, #64b6f7);
+  color: white;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: 0.00938rem;
+  font-size: 0.875rem;
+  padding: 2px 12px;
+  border: none;
+}
+
+.range .range-rate {
+  width: 0.3125rem;
+  height: 0.625rem;
+  background: var(--divider, #e0e0e0);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2) inset;
+}
+
+.range {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.range .active {
+  background: var(--06-success-main, #4caf50);
+}
+
+.dispatching__main-div span {
+  color: var(--text-color-light-mode-secondary, rgba(0, 0, 0, 0.54));
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0.00938rem;
+}
+
+/* EVENT */
+
+.form-control--width {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  color: var(--text-color-light-mode-disabled, rgba(0, 0, 0, 0.38));
+  font-size: 14px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+}
+
+.evetn__filter__text {
+  display: block;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 14px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+}
+
+.filter__form-check .form-check-label {
+  color: #212b36;
+  font-size: 14px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+}
+
+.event__search-input {
+  display: block;
+  width: 100% !important;
+  max-width: 900px !important;
+}
+
+/* REGISTER PATIENTS */
+.btn-bg-image {
+  padding-left: 40px !important;
+  background-image: url("../../assets//icons/printer-white.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: 10px center !important;
+}
+
+.naming__inp {
+  display: flex;
+  align-items: center;
+  padding: 3px 6px;
+  border-radius: 4px;
+  gap: 4px;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.23));
+  background: var(--white, #fff);
+  margin-left: 4px;
+}
+.dispatching__main-top__btn {
+  border-radius: 3px;
+  background: var(--05-info-main, #2196f3);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0.1px;
+  color: var(--text-color-dark-mode-primary, #fff);
+  border: none;
+  padding: 2px 4px;
+}
+
+.check__btn {
+  border-radius: 4px;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.23));
+  background: var(--text-color-dark-mode-primary, #fff);
+  color: black;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: 0.00938rem;
+  font-size: 0.875rem;
+  padding: 2px 12px;
+  cursor: pointer;
+}
+
+.dropdown-item--bg1 {
+  display: block;
+  padding-left: 40px !important;
+  background-image: url("../icons/file-pencil-alt.svg");
+  background-repeat: no-repeat;
+  background-position: 5px center;
+}
+
+.dropdown-item--bg2 {
+  display: block;
+  padding-left: 40px !important;
+  background-image: url("../icons/vial.svg");
+  background-repeat: no-repeat;
+  background-position: 5px center;
+}
+
+.dropend-box:hover .droplist {
+  left: 100%;
+  display: block !important;
+}
+
+.btn-padding {
+  padding-left: 30px;
+}
+
+.healing__modal-collapse-btn {
+  display: block;
+  margin-bottom: 5px;
+  padding-left: 30px;
+  font-family: "Roboto";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.4px;
+  color: rgba(0, 0, 0, 0.87);
+  text-decoration: none;
+  background-image: url("../icons/caret-right.svg");
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  background-color: transparent !important;
+  border: none;
+}
+
+.healing_collapse {
+  display: block;
+  margin: 0;
+  margin-bottom: 5px;
+  padding-left: 25px;
+}
+
+.medicines__modal-box {
+  display: block;
+  padding: 3px;
+  background: #f5f5f5;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+}
+
+/* REGISTER */
+.register__btn-bg {
+  padding: 8px 16px !important;
+  padding-left: 30px !important;
+  background-image: url("../icons/book-user.svg");
+  background-repeat: no-repeat;
+  background-position: 8px center;
+  font-family: "Roboto";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.new__label {
+  border-radius: 50px;
+  border: 1px solid var(--06-success-main, #4caf50);
+  color: var(--06-success-main, #4caf50);
+  text-align: center;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  padding: 0 10px;
+}
+.dispatch-list {
+  width: 100%;
+  height: 505px;
+  background: var(--light, rgba(0, 0, 0, 0.1));
+  overflow-y: scroll;
+}
+.dispatch-list-controler {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 10px;
+}
+.dispatching__main__bottom-span {
+  background: var(--background, #f5f5f5);
+  color: var(--text-color-light-mode-primary, rgba(0, 0, 0, 0.87));
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.4px;
+  font-size: 12px;
+  padding: 4px;
+}
+.dispatching__main__bottom-span2 {
+  background: var(--03-error-light, #f79e98);
+  color: var(--text-color-light-mode-primary, rgba(0, 0, 0, 0.87));
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.4px;
+  font-size: 12px;
+  padding: 4px;
 }

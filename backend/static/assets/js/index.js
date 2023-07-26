@@ -1,1 +1,54 @@
-const officeValues=document.querySelectorAll('#office-value')const officeInput=document.getElementById('office-input')officeValues.forEach(function (officeValue){officeValue.onclick=()=>{    officeInput.value=officeValue.textContent.trim()     officeInput.defaultValue=officeValue.textContent.trim()}})const outcomeValues=document.querySelectorAll('#outcome-value')const outcomeInput=document.getElementById('outcome-input')outcomeValues.forEach(function (outcomeValue){outcomeValue.onclick=()=>{    outcomeInput.value=outcomeValue.textContent.trim()     outcomeInput.defaultValue=outcomeValue.textContent.trim()}})const incomeValues=document.querySelectorAll('#income-value')const incomeInput=document.getElementById('income-input')incomeValues.forEach(function (incomeValue){incomeValue.onclick=()=>{    incomeInput.value=incomeValue.textContent.trim()     incomeInput.defaultValue=incomeValue.textContent.trim()}})const wholeProdValues=document.querySelectorAll('#whole-prod-value')const wholeProdInput=document.getElementById('whole-prod-input')wholeProdValues.forEach(function (wholeProdValue){wholeProdValue.onclick=()=>{    wholeProdInput.value=wholeProdValue.textContent.trim()     wholeProdInput.defaultValue=wholeProdValue.textContent.trim()}})const retailProdValues=document.querySelectorAll('#retail-value')const retailProdInput=document.getElementById('retail-input')retailProdValues.forEach(function (retailProdValue){retailProdValue.onclick=()=>{    retailProdInput.value=retailProdValue.textContent.trim()     retailProdInput.defaultValue=retailProdValue.textContent.trim()}})
+const officeInput = document.getElementById('office-input')
+const officeValue = document.getElementById('office-value')
+if (officeValue) {
+  officeValue.onclick = () => {
+    officeInput.value = officeValue.textContent;
+    officeInput.defaultValue = officeValue.textContent;
+  };
+}
+
+// document.onclick = hideMenu;
+// document.oncontextmenu = rightClick;
+
+// function hideMenu() {
+//   document.getElementById("contextMenu").style.display = "none";
+// }
+
+// function rightClick(e) {
+//   e.preventDefault();
+
+//   if (document.getElementById("contextMenu").style.display == "block")
+//     hideMenu();
+//   else {
+//     var menu = document.getElementById("contextMenu");
+
+//     menu.style.display = "block";
+//     menu.style.left = e.pageX + "px";
+//     menu.style.top = e.pageY + "px";
+//   }
+// }
+
+const tableRows = document.querySelectorAll('#income-prod');
+
+// Add event listeners to table row
+tableRows.forEach(function(row) {
+  window.onclick = hideMenu; // Click event
+  row.oncontextmenu = rightClick; // Right-click event
+});
+function hideMenu() {
+  document.getElementById("contextMenu").style.display = "none";
+}
+
+function rightClick(e) {
+  e.preventDefault();
+
+  if (document.getElementById("contextMenu").style.display == "block") {
+    hideMenu();
+  } else {
+    var menu = document.getElementById("contextMenu");
+
+    menu.style.display = "block";
+    menu.style.left = e.pageX + "px";
+    menu.style.top = e.pageY + "px";
+  }
+}
