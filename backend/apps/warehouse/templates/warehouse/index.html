@@ -1,4 +1,5 @@
 {% extends 'snippets/base.html' %}
+
 {% load static %}
 
 {% block content %}
@@ -7,7 +8,7 @@
         <img src="{% static '/assets/icons/briefcase-medical.svg' %}" alt="icon"/>
         <p>
             Реестр <br/>
-            лекарств
+            лекарстa
         </p>
     </a>
     <a href="{% url 'warehouse:warehouse-incomes' %} " class="nav-link">
@@ -72,78 +73,49 @@
                 </button>
             </div>
         </div>
-        <div class="main-left-input">
-            <label for="">Оптовая торговля</label>
-            <div class="main-left-menu">
-                <input type="text" id="whole-prod-input"/>
-                <button data-bs-target="#exampleModalToggl4" data-bs-toggle="modal">
-                    <img src="{% static '/assets/icons/book.svg' %}" alt="icon"/>
-                </button>
-                <button>
-                    <img src="{% static '/assets/icons/search.svg' %}" alt="icon"/>
-                </button>
-                <button>
-                    <img src="{% static '/assets/icons/wallet-money.svg' %}" alt="icon"/>
-                </button>
-            </div>
-        </div>
-        <div class="main-left-input">
-            <label for="">Розничная торговля</label>
-            <div class="main-left-menu">
-                <input type="text" id="retail-input"/>
-                <button data-bs-target="#exampleModalToggle5" data-bs-toggle="modal">
-                    <img src="{% static '/assets/icons/book.svg' %}" alt="icon"/>
-                </button>
-                <button>
-                    <img src="{% static '/assets/icons/search.svg' %}" alt="icon"/>
-                </button>
-                <button>
-                    <img src="{% static '/assets/icons/wallet-money.svg' %}" alt="icon"/>
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="main-right">
-        <table>
-            <thead>
-            <tr>
-                <th></th>
-                <th>Наименование</th>
-                <th>Дата</th>
-            </tr>
-            </thead>
-            <tbody>
 
-            <tr>
-                <td style="width: 35px"></td>
-                <td>...</td>
-                <td>01.05.2021</td>
-            </tr>
-            <tr>
-                <td><img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/></td>
-                <td>Hayat Medical filial</td>
-                <td>03.02.2023</td>
-            </tr>
-            <tr>
-                <td><img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/></td>
-                <td>Hayat medical main</td>
-                <td>03.02.2023</td>
-            </tr>
-            <tr>
-                <td><img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/></td>
-                <td>Hayat Medical filial 2 операционной</td>
-                <td>03.02.2023</td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            </tfoot>
-        </table>
     </div>
+{#    <div class="main-right">#}
+{#        <table>#}
+{#            <thead>#}
+{#            <tr>#}
+{#                <th></th>#}
+{#                <th>Наименование</th>#}
+{#                <th>Дата</th>#}
+{#            </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{##}
+{#            <tr>#}
+{#                <td style="width: 35px"></td>#}
+{#                <td>...</td>#}
+{#                <td>01.05.2021</td>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <td><img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/></td>#}
+{#                <td>Hayat Medical filial</td>#}
+{#                <td>03.02.2023</td>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <td><img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/></td>#}
+{#                <td>Hayat medical main</td>#}
+{#                <td>03.02.2023</td>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <td><img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/></td>#}
+{#                <td>Hayat Medical filial 2 операционной</td>#}
+{#                <td>03.02.2023</td>#}
+{#            </tr>#}
+{#            </tbody>#}
+{#            <tfoot>#}
+{#            <tr>#}
+{#                <td></td>#}
+{#                <td></td>#}
+{#                <td></td>#}
+{#            </tr>#}
+{#            </tfoot>#}
+{#        </table>#}
+{#    </div>#}
 </main>
 <!-- office modal starts ================ -->
 <div
