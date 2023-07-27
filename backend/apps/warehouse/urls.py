@@ -18,9 +18,6 @@ urlpatterns = [
     path('incomes/', receive_registry_view, name='warehouse-incomes'),
     path('incomes/<int:pk>', receive_registry_view, name='warehouse-incomes'),
 
-
-
-
     path('cheque-popup/<int:pk>', cheque_popup_view, name='cheque-popup'),
     path('cheque-popup-post/<int:ch_pk>', cheque_popup_post, name='cheque-popup-post'),
     path('cheque-popup-insurance-post/<int:ch_pk>', cheque_popup_insurance_post, name='cheque-popup-insurance-post'),

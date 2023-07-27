@@ -36,8 +36,8 @@ class MedicalService(models.Model):
 
 class AppointmentsModel(models.Model):
     patient = models.ForeignKey(PatientModel, on_delete=models.CASCADE)
-    receipt = models.ForeignKey(ReceiptModel, blank=True, null=True, on_delete=models.SET_NULL,
-                                related_name='receipt_appointments')
+    # receipt = models.ForeignKey(ReceiptModel, blank=True, null=True, on_delete=models.SET_NULL,
+    #                             related_name='receipt_appointments')
     doctor = models.ForeignKey(DoctorAccountModel, blank=True, null=True, on_delete=models.SET_NULL,
                                related_name='doctor_appointments')
     name = models.CharField(max_length=255, blank=True, null=True)

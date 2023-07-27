@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'apps.cashbox',
     'apps.warehouse',
     'apps.logus',
+    'apps.hospital',
     'rest_framework',
     'rest_framework_simplejwt',
 
