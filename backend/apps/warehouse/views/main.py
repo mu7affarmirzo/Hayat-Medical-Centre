@@ -48,7 +48,7 @@ def index_view(request):
     return render(request, 'warehouse/index.html', context)
 
 
-def receive_registry_view(request, pk=None):
+def main_receive_registry_view(request, pk=None):
     context = {}
     if pk:
         rec_reg_items = get_object_or_404(ReceiveRegistryModel, pk=pk)
