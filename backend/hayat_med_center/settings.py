@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'apps.warehouse',
     'apps.hospital',
     'apps.logus',
-    'apps.hospital',
     'rest_framework',
     'rest_framework_simplejwt',
 
