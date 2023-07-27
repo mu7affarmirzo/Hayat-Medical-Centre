@@ -15,6 +15,7 @@ urlpatterns = [
     path('cheque/', create_cheque_view, name='cheque-create'),
     path('cheque/<int:pk>', get_cheque_view, name='cheque-get'),
     path('cheque/<int:ch_pk>/<int:i_pk>', add_item_to_cheque_view, name='cheque-item-add'),
+    path('cheque-pdf/<int:pk>', cheque_save_pdf, name='cheque-pdf'),
     path('incomes/', receive_registry_view, name='warehouse-incomes'),
     path('incomes/<int:pk>', receive_registry_view, name='warehouse-incomes'),
 
@@ -24,6 +25,7 @@ urlpatterns = [
 
     path('expense/', create_expense_view, name='expense-create'),
     path('expense/<int:pk>', get_expense_view, name='expense-get'),
-    path('cheque-pdf/<int:pk>', cheque_save_pdf, name='cheque-pdf'),
+    path('expense-popup-post/<int:pk>', get_expense_view, name='expense-popup-post'),
+    path('expense-popup-insurance-post/<int:ch_pk>', cheque_popup_insurance_post, name='expense-popup-insurance-post'),
 
 ]
