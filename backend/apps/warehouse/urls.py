@@ -24,9 +24,9 @@ urlpatterns = [
     path('cheque-popup-insurance-post/<int:ch_pk>', cheque_popup_insurance_post, name='cheque-popup-insurance-post'),
 
     path('expense/', create_expense_view, name='expense-create'),
-    path('expense/<int:pk>', get_expense_view, name='expense-get'),
-    path('expense-popup-post/<int:pk>', get_expense_view, name='expense-popup-post'),
-    path('expense-popup-insurance-post/<int:ch_pk>', cheque_popup_insurance_post, name='expense-popup-insurance-post'),
+    path('expense/<int:e_pk>', get_expense_view, name='expense-get'),
+    path('expense-popup-post/<int:e_pk>', expense_popup_post, name='expense-popup-post'),
+    path('expense-popup-insurance-post/<int:e_pk>', expense_popup_insurance_post, name='expense-popup-insurance-post'),
 
 
     path('items/', items_list, name='items-list'),
