@@ -28,4 +28,8 @@ urlpatterns = [
     path('expense-popup-post/<int:pk>', get_expense_view, name='expense-popup-post'),
     path('expense-popup-insurance-post/<int:ch_pk>', cheque_popup_insurance_post, name='expense-popup-insurance-post'),
 
+
+    path('items/', items_list, name='items-list'),
+    path('items/<int:pk>', item_history, name='item-history'),
+    path('item-post/', post_item, name='item-post'),
 ]
