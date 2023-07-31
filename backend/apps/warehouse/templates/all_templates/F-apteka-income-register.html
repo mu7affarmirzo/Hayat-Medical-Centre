@@ -1,28 +1,82 @@
-{% extends 'snippets/base.html' %}
-{% block income_active %}
-    header-link-active
-{% endblock %}
-{% load static %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- header starts ==== -->
+    <header>
+      <div class="header-left">
+        <div class="logo">
+          <a href="./index.html">
+            <img src="/assets/icons/logo.svg" alt="logo" />
+          </a>
+        </div>
+        <div class="header-links">
+          <div class="header-link header-link-active">
+            <a href="./F-apteka-income.html">Приход</a>
+          </div>
+          <div class="header-link">
+            <a href="./F-apteka-expense.html">Расход</a>
+          </div>
+          <div class="header-link">
+            <a href="">Чеки</a>
+          </div>
+          <div class="header-link">
+            <a href="">Смена</a>
+          </div>
+          <div class="header-link">
+            <a href="">Отчет</a>
+          </div>
+          <div class="header-link">
+            <a href="">Перемещение</a>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="dropdown">
+          <button
+            class="dropdown-toggle profile-btn"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Вадим Александров
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="./login.html">Выйти</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
     <!-- header ends === -->
 
     <!-- navigation starts ====== -->
     <div class="navigation">
-      <a href="{% url 'warehouse:warehouse-index' %}">
-        <img src="{% static 'assets/icons/arrow-circle-left.svg' %}" alt="icon" />
+      <a href="./F-apteka-income.html">
+        <img src="/assets/icons/arrow-circle-left.svg" alt="icon" />
         Приход - Реестр
       </a>
       <div class="navigation-right">
         <button>
-          <img src="{% static '/assets/icons/file.svg' %}" alt="icon" />
+          <img src="/assets/icons/file.svg" alt="icon" />
           Новый
         </button>
         <button>
-          <img src="{% static '/assets/icons/file-pencil-alt.svg' %}" alt="icon" />
+          <img src="/assets/icons/file-pencil-alt.svg" alt="icon" />
           Изменить
         </button>
         <button>
-          <img src="{% static '/assets/icons/check.svg' %}" alt="icon" />
+          <img src="/assets/icons/check.svg" alt="icon" />
           Активация
         </button>
         <input type="checkbox" />
@@ -446,12 +500,12 @@
               type="button"
               data-bs-dismiss="modal"
             >
-              <img src="{% static '/assets/icons/close-circle.svg' %}" alt="icon" />
+              <img src="/assets/icons/close-circle.svg" alt="icon" />
             </button>
           </div>
           <div class="modal-body">
             <div class="modal-body-top">
-              <img src="{% static '/assets/icons/search-normal.svg' %}" alt="icon" />
+              <img src="/assets/icons/search-normal.svg" alt="icon" />
               <input
                 class="border-0"
                 type="text"
@@ -465,20 +519,20 @@
               </tr>
               <tr>
                 <td style="width: 35px">
-                  <img src="{% static '/assets/icons/row-left-mini.svg' %}" alt="" />
+                  <img src="/assets/icons/row-left-mini.svg" alt="" />
                 </td>
                 <td>--------</td>
               </tr>
               <tr data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
-                <td><img src="{% static '/assets/icons/row-left-mini.svg' %}" alt="" /></td>
+                <td><img src="/assets/icons/row-left-mini.svg" alt="" /></td>
                 <td>Hayat Medical filial</td>
               </tr>
               <tr data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
-                <td><img src="{% static '/assets/icons/row-left-mini.svg' %}" alt="" /></td>
+                <td><img src="/assets/icons/row-left-mini.svg" alt="" /></td>
                 <td>Hayat medical main</td>
               </tr>
               <tr data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
-                <td><img src="{% static '/assets/icons/row-left-mini.svg' %}" alt="" /></td>
+                <td><img src="/assets/icons/row-left-mini.svg" alt="" /></td>
                 <td>Hayat Medical filial 2 операционной</td>
               </tr>
             </table>
@@ -488,5 +542,12 @@
     </div>
     <!-- office modal ends ========= -->
 
-{% endblock content %}}
-
+    <!-- script ============= -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../assets/js/script.js"></script>
+  </body>
+</html>
