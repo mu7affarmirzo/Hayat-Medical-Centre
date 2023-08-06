@@ -1,4 +1,6 @@
 from django.shortcuts import render
+import datetime
+from apps.account.models import PatientModel
 
 
 # Create your views here.
@@ -37,7 +39,9 @@ def patients_a(requests):
 
 
 def patients_m_p(requests):
-    return render(requests, 'Hospital/patients-my-patients.html', {})
+    patients = PatientModel.objects.all()
+    a = datetime.datetime.today()
+    return render(requests, 'Hospital/patients-my-patients.html', {"patients": patients, "today": a.year})
 
 
 def patients_s(requests):

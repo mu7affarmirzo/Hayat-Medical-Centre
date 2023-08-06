@@ -24,14 +24,14 @@
           <div class="header-link">
             <a href="{% url 'register' %}">Регистрация</a>
           </div>
-          <div class="header-link">
+          <div class="header-link header-link-active">
             <a href="{% url 'dispatching_m_p' %}">Пациенты</a>
           </div>
           <div class="header-link header-link--display">
             <a href="{% url 'events' %}">События</a>
             <span>7</span>
           </div>
-          <div class="header-link header-link-active">
+          <div class="header-link">
             <a href="{% url 'dispatching_m_p' %}">Диспетчеризация</a>
           </div>
         </div>
@@ -83,7 +83,7 @@
 
   <!-- patients search input box -->
   <div class="patients-my-patients__search-box">
-    <input class="patients-my-patients__search-input" type="text" placeholder="Искать в таблице" />
+    <input id="search" class="patients-my-patients__search-input" type="text" placeholder="Искать в таблице" />
     <button class="patients-my-patients__search-btn">Экспорт в Excel</button>
   </div>
 
@@ -94,7 +94,7 @@
         <th>
           <input type="checkbox" name="" id="" />
         </th>
-        <th></th>
+<!--        <th></th>-->
         <th>№</th>
         <th>Пациент</th>
         <th>Возраст</th>
@@ -107,211 +107,24 @@
     </thead>
 
     <tbody>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td></td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>
-          -- - Гипертоническая болезнь III АГIII. риск IV. ИБС-стенокардия
-          напряжения ФК II.
-        </td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>
-          -- - Гипертоническая болезнь III АГIII. риск IV. ИБС-стенокардия
-          напряжения ФК II.
-        </td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td>
-          <img src="{% static 'assets/icons/info-circle.svg' %}" alt="" />
-        </td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>G20 - Паркинсона касаллиги. Титрок формаси.</td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>
-          -- - Гипертоническая болезнь III АГIII. риск IV. ИБС-стенокардия
-          напряжения ФК II.
-        </td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>
-          -- - Гипертоническая болезнь III АГIII. риск IV. ИБС-стенокардия
-          напряжения ФК II.
-        </td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>
-          -- - Гипертоническая болезнь III АГIII. риск IV. ИБС-стенокардия
-          напряжения ФК II.
-        </td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>
-          -- - Гипертоническая болезнь III АГIII. риск IV. ИБС-стенокардия
-          напряжения ФК II.
-        </td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>
-          -- - Гипертоническая болезнь III АГIII. риск IV. ИБС-стенокардия
-          напряжения ФК II.
-        </td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>
-          -- - Гипертоническая болезнь III АГIII. риск IV. ИБС-стенокардия
-          напряжения ФК II.
-        </td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="" id="" />
-        </td>
-        <td></td>
-        <td style="text-align: end">776/2023</td>
-        <td>
-          <a href="" style="color: #0b79d0">Choriyev Muzaffar</a>
-        </td>
-        <td style="text-align: end">26</td>
-        <td style="text-align: end">311(Корпус1)</td>
-        <td>
-          -- - Гипертоническая болезнь III АГIII. риск IV. ИБС-стенокардия
-          напряжения ФК II.
-        </td>
-        <td style="text-align: end">10.06.2023</td>
-        <td style="text-align: end">17.06.2023</td>
-        <td></td>
-      </tr>
+      {% for i in patients %}
+        <tr>
+          <td>
+            <input type="checkbox" name="" id="" />
+          </td>
+  <!--        <td></td>-->
+          <td style="text-align: end">{{i.id}}</td>
+          <td>
+            <a href="" style="color: #0b79d0">{{i.l_name}} {{i.f_name}}</a>
+          </td>
+          <td style="text-align: end">{{ i.date_of_birth.year }} - {{ today }}</td>
+          <td style="text-align: end">311(Корпус1)</td>
+          <td></td>
+          <td style="text-align: end">{{i.created_at}}</td>
+          <td style="text-align: end">17.06.2023</td>
+          <td></td>
+        </tr>
+    {% endfor %}
     </tbody>
   </table>
 
@@ -324,6 +137,24 @@
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
     crossorigin="anonymous"></script>
   <script src="{% static 'assets/js/script.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.js"
+  integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+  crossorigin="anonymous"></script>
+  <script>
+    $( function ($) {
+      $('#search').submit( function (e) {
+        e.preventDefault();
+        $.ajax({
+          type: this.method,
+          url: {% url 'patients_m_p' %},
+          data: { name: $('#search').val() },
+          success: function (response) {
+            console.log(response)
+          },
+        })
+      })
+    })
+  </script>
 </body>
 
 </html>
