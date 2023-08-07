@@ -1,8 +1,9 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html">
 
 <head>
+{% load static %}
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
@@ -83,12 +84,13 @@
 
   <!-- patients search input box -->
   <div class="patients-my-patients__search-box">
-    <input id="search" class="patients-my-patients__search-input" type="text" placeholder="Искать в таблице" />
-    <button class="patients-my-patients__search-btn">Экспорт в Excel</button>
+        {% csrf_token %}
+        <input id="search" class="patients-my-patients__search-input" type="text" placeholder="Искать в таблице" />
+      <button class="patients-my-patients__search-btn">Экспорт в Excel</button>
   </div>
 
   <!-- My patients table -->
-  <table>
+  <table id="myTable">
     <thead>
       <tr>
         <th>
@@ -106,7 +108,9 @@
       </tr>
     </thead>
 
+{{patientsd.f_name}}
     <tbody>
+    {% if request.POST %}
       {% for i in patients %}
         <tr>
           <td>
@@ -125,6 +129,26 @@
           <td></td>
         </tr>
     {% endfor %}
+    {% else %}
+    {% for i in patients %}
+        <tr>
+          <td>
+            <input type="checkbox" name="" id="" />
+          </td>
+  <!--        <td></td>-->
+          <td style="text-align: end">{{i.id}}</td>
+          <td>
+            <a href="" style="color: #0b79d0">{{i.l_name}} {{i.f_name}}</a>
+          </td>
+          <td style="text-align: end">{{ i.date_of_birth.year }} - {{ today }}</td>
+          <td style="text-align: end">311(Корпус1)</td>
+          <td></td>
+          <td style="text-align: end">{{i.created_at}}</td>
+          <td style="text-align: end">17.06.2023</td>
+          <td></td>
+        </tr>
+    {% endfor %}
+    {% endif %}
     </tbody>
   </table>
 
@@ -141,20 +165,72 @@
   integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
   crossorigin="anonymous"></script>
   <script>
-    $( function ($) {
-      $('#search').submit( function (e) {
-        e.preventDefault();
+<!--    console.log('rvds')-->
+<!--    $(function () {-->
+<!--    console.log('fhgj');-->
+<!--    $('#search').onChange('change', function (e) {-->
+<!--        console.log('fhgj');-->
+<!--        e.preventDefault();-->
+<!--        $.ajax({-->
+<!--            type: $(this).attr('method'),-->
+<!--            url: '{% url "patients_m_p" %}',-->
+<!--            data: { name: $('#search').val() },-->
+<!--            success: function (response) {-->
+<!--                console.log(response);-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--});-->
+
+<!--$(document).ready(function() {-->
+<!--    $("#search").on("input", function() {-->
+<!--        var inputValue = $(this).val();-->
+<!--        console.log("Input value changed: " + inputValue);-->
+<!--          $.ajax({-->
+<!--            type: POST,-->
+<!--            url: '{% url "patients_m_p" %}',-->
+<!--            data: { name: $('#search').val() },-->
+<!--            success: function (response) {-->
+<!--                console.log(response);-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--});-->
+
+$(document).ready(function() {
+    $('#search').on('input', function() {
+        const inputValue = $(this).val();
+        const csrfToken = $('{% csrf_token %}').val();
+
         $.ajax({
-          type: this.method,
-          url: {% url 'patients_m_p' %},
-          data: { name: $('#search').val() },
-          success: function (response) {
-            console.log(response)
-          },
-        })
-      })
-    })
+            url: '{% url "patients_m_p" %}',
+            type: 'POST',
+<!--            contentType: 'application/json',-->
+            data: { inputValue },
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success: function(data) {
+              updateTable(data);
+              console.log(data);
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+    function updateTable(results) {
+<!--        const tbody = $('#html');-->
+        const tbody = $('#myTable tbody');
+        tbody.empty(); // Clear existing table body
+
+        for (const result of results) {
+            const row = $('<td>');
+            tbody.append(row);
+        }
+    }
+});
+
   </script>
 </body>
-
 </html>

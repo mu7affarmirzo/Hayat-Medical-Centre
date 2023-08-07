@@ -1,5 +1,8 @@
 from django.shortcuts import render
 import datetime
+
+from rest_framework.response import Response
+
 from apps.account.models import PatientModel
 
 
@@ -39,8 +42,14 @@ def patients_a(requests):
 
 
 def patients_m_p(requests):
-    patients = PatientModel.objects.all().order_by('id')
     a = datetime.datetime.today()
+    # print(requests.method)/
+    if requests.method == "POST":
+        data = requests.POST['inputValue']
+        patient_search = PatientModel.objects.filter(f_name=data)
+        return render(requests, 'Hospital/patients-my-patients.html', {"patientsd": patient_search, "today": a.year})
+
+    patients = PatientModel.objects.all().order_by('id')
     return render(requests, 'Hospital/patients-my-patients.html', {"patients": patients, "today": a.year})
 
 
