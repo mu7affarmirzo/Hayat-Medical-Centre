@@ -39,7 +39,7 @@ def patients_a(requests):
 
 
 def patients_m_p(requests):
-    patients = PatientModel.objects.all()
+    patients = PatientModel.objects.all().order_by('id')
     a = datetime.datetime.today()
     return render(requests, 'Hospital/patients-my-patients.html', {"patients": patients, "today": a.year})
 
