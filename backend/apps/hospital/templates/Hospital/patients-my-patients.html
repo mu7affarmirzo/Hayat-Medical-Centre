@@ -108,28 +108,7 @@
       </tr>
     </thead>
 
-{{patientsd.f_name}}
-    <tbody>
-    {% if request.POST %}
-      {% for i in patients %}
-        <tr>
-          <td>
-            <input type="checkbox" name="" id="" />
-          </td>
-  <!--        <td></td>-->
-          <td style="text-align: end">{{i.id}}</td>
-          <td>
-            <a href="" style="color: #0b79d0">{{i.l_name}} {{i.f_name}}</a>
-          </td>
-          <td style="text-align: end">{{ i.date_of_birth.year }} - {{ today }}</td>
-          <td style="text-align: end">311(Корпус1)</td>
-          <td></td>
-          <td style="text-align: end">{{i.created_at}}</td>
-          <td style="text-align: end">17.06.2023</td>
-          <td></td>
-        </tr>
-    {% endfor %}
-    {% else %}
+    <tbody class="new-list">
     {% for i in patients %}
         <tr>
           <td>
@@ -148,7 +127,6 @@
           <td></td>
         </tr>
     {% endfor %}
-    {% endif %}
     </tbody>
   </table>
 
@@ -232,5 +210,42 @@ $(document).ready(function() {
 });
 
   </script>
+
+<script>
+
+        $(document).ready(function () {
+            window.news_index = '{% url 'patients_m_p_paginator' %}';
+
+            var page = 1;
+            var block_request = false;
+            var end_pagination = false;
+
+            $(window).scroll(function () {
+                var margin = $(document).height() - $(window).height() - 200;
+
+                if ($(window).scrollTop() > margin && end_pagination === false && block_request === false) {
+                    block_request = true;
+                    page += 1;
+
+                    $.ajax({
+                        type: 'GET',
+                        url: window.news_index,
+                        data: {
+                            "page": page
+                        },
+                        success: function (data) {
+                            if (data.end_pagination === true) {
+                                end_pagination = true;
+                            } else {
+                                block_request = false;
+                            }
+                            $('.new-list').append(data.content);
+                        }
+                    })
+                }
+            });
+        })
+    </script>
+
 </body>
 </html>
