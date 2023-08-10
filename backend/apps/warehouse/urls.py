@@ -25,6 +25,7 @@ urlpatterns = [
 
     path('expense/', create_expense_view, name='expense-create'),
     path('expense/<int:e_pk>', get_expense_view, name='expense-get'),
+    path('delete-expense/<int:e_pk>', delete_expense, name='delete-expense'),
     path('expense-popup-post/<int:e_pk>', expense_popup_post, name='expense-popup-post'),
     path('expense-popup-insurance-post/<int:e_pk>', expense_popup_insurance_post, name='expense-popup-insurance-post'),
 

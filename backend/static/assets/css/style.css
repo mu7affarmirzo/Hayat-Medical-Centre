@@ -907,8 +907,9 @@ input[type="number"] {
 /* income first table starts ======================= */
 .income-first-table {
   width: 100%;
-  height: 50%;
-  overflow-y: scroll;
+  height: auto;
+  max-height: 60%;
+  overflow-y: auto;
 }
 
 /* income first table ends ======================= */

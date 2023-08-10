@@ -400,11 +400,11 @@
                     <td
                             style="background: #D5F7FD;"
                             class="text-center"
-                    >1000
+                    >{{ item.in_stock.count }}
                     </td>
                     <td
                             class="text-center"
-                    >018
+                    >{{ item.seria }}
                     </td>
                     <td class="text-center">{{ item.expire_date }}</td>
                     <td class="text-start"></td>
@@ -434,7 +434,7 @@
             <tr>
                 <td></td>
                 <td class="text-start"></td>
-                <td class="text-start">107</td>
+                <td class="text-start">{{ items.count }}</td>
                 <td class="text-end"></td>
                 <td class="text-end"></td>
                 <td class="text-end"></td>
