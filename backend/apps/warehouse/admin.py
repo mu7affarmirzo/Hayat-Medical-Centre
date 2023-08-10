@@ -3,22 +3,26 @@ from import_export.admin import ImportExportModelAdmin
 
 from apps.warehouse.models import *
 
+
 def create_admin_class(model):
     return type(
         f"{model.__name__}Admin",
         (ImportExportModelAdmin, admin.ModelAdmin),
         {'list_display': [field.name for field in model._meta.fields]}
     )
+
+
 for model in [
     ItemsModel, ReceivedItemsModel, ReceiveRegistryModel, SendRegistryModel,
     IncomeModel, IncomeItemsModel, ItemsInStockModel, SentItemsModel,
-    StorePointModel, WarehouseChequeModel, ChequeItemsModel,
+    StorePointModel, WarehouseChequeModel, ChequeItemsModel, ExpenseModel,
 ]:
     admin.site.register(model, admin_class=type(
         f"{model.__name__}Admin",
         (ImportExportModelAdmin, admin.ModelAdmin),
         {'list_display': [field.name for field in model._meta.fields]}
     ))
+
 
 # admin.site.register(ItemsModel, create_admin_class(ItemsModel))
 # admin.site.register(ReceivedItemsModel, create_admin_class(ReceivedItemsModel))
@@ -35,7 +39,6 @@ for model in [
 @admin.register(CompanyModel)
 class CompanyAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in CompanyModel._meta.fields]
-
 
 # @admin.register(CompanyModel)
 # class CompanyAdmin(ImportExportModelAdmin, admin.ModelAdmin):

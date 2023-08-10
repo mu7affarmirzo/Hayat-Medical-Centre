@@ -20,3 +20,8 @@ class ReceivedItemsModel(models.Model):
     @property
     def filial(self):
         return self.received_registry.send_registry.sender.name
+
+    @property
+    def summary_price(self):
+        return self.item.price * self.quantity
+

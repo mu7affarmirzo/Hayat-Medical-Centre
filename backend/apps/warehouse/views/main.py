@@ -51,8 +51,13 @@ def index_view(request):
 def receive_registry_view(request, pk=None):
     context = {}
     if pk:
-        rec_reg_items = get_object_or_404(ReceiveRegistryModel, pk=pk)
+        rec_reg_obj = get_object_or_404(ReceiveRegistryModel, pk=pk)
+        rec_reg_items = ReceivedItemsModel.objects.filter(received_registry=rec_reg_obj)
+        rec_reg_items_sum = 0
+        for i in rec_reg_items:
+            rec_reg_items_sum += i.summary_price
         context["rec_reg_items"] = rec_reg_items
+        context["rec_reg_items_sum"] = rec_reg_items_sum
 
     receive_registry = ReceiveRegistryModel.objects.all()
     summa_prices = 0
