@@ -1,8 +1,8 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core import paginator
 from django.template.loader import render_to_string
-
+import pandas as pd
 from apps.account.models import PatientModel
 
 NEWS_COUNT_PER_PAGE = 5
@@ -33,3 +33,13 @@ def pagination(request):
             "content": content,
             "end_pagination": True if page >= p.num_pages else False,
         })
+
+
+def export_to_exel(request):
+    data = request.GET
+    print(data)
+    a = PatientModel.objects.all()
+    df = pd.DataFrame(a)
+    df.to_excel("tanlangan_malumotlar.xlsx", index=False)
+    df.to_csv("tanlangan_malumotlar.csv", index=False)
+    return redirect("patients_m_p")

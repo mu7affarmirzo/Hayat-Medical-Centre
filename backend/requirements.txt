@@ -12,3 +12,5 @@ django-filter
 passlib==1.7.4
 cryptography~=40.0.2
 xhtml2pdf~=0.2.11
+pandas
+openpyxl

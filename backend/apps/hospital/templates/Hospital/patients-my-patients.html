@@ -86,7 +86,7 @@
   <div class="patients-my-patients__search-box">
         {% csrf_token %}
         <input id="search" class="patients-my-patients__search-input" type="text" placeholder="Искать в таблице" />
-      <button class="patients-my-patients__search-btn">Экспорт в Excel</button>
+        <button class="patients-my-patients__search-btn"><a href="{% url 'export_to_exel' %}">Экспорт в Excel</a></button>
   </div>
 
   <!-- My patients table -->
@@ -94,7 +94,7 @@
     <thead>
       <tr>
         <th>
-          <input type="checkbox" name="" id="" />
+          <input type="checkbox" id="selectAll">
         </th>
 <!--        <th></th>-->
         <th>№</th>
@@ -110,9 +110,10 @@
 
     <tbody class="new-list">
     {% for i in patients %}
+    {% for j in room %}
         <tr>
           <td>
-            <input type="checkbox" name="" id="" />
+            <input type="checkbox" class="rowCheckbox">
           </td>
   <!--        <td></td>-->
           <td style="text-align: end">{{i.id}}</td>
@@ -120,12 +121,13 @@
             <a href="" style="color: #0b79d0">{{i.l_name}} {{i.f_name}}</a>
           </td>
           <td style="text-align: end">{{ i.date_of_birth.year }} - {{ today }}</td>
-          <td style="text-align: end">311(Корпус1)</td>
+          <td style="text-align: end"> {{ j.room.room_number }}(Корпус {{ j.room.floor }})</td>
           <td></td>
-          <td style="text-align: end">{{i.created_at}}</td>
-          <td style="text-align: end">17.06.2023</td>
+          <td style="text-align: end">{{j.start_date}}</td>
+          <td style="text-align: end">{{j.end_date}}</td>
           <td></td>
         </tr>
+    {% endfor %}
     {% endfor %}
     </tbody>
   </table>
@@ -176,6 +178,29 @@
 <!--});-->
 
 $(document).ready(function() {
+$("#selectAll").on("change", function() {
+    $(".rowCheckbox").prop("checked", $(this).prop("checked"));
+  });
+
+  $(".rowCheckbox").on("change", function() {
+    var rowData = $(this).closest("tr"); // Get the parent row
+    var data = {
+      id: rowData.data("id"), // Assuming you have an identifier for each row
+      isChecked: $(this).prop("checked")
+    };
+
+    $.ajax({
+      type: "GET",
+      url: "{% url 'export_to_exel' %}",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+      success: function(response) {
+      },
+      error: function(error) {
+        console.error("Error:", error);
+      }
+    });
+  });
     $('#search').on('input', function() {
         const inputValue = $(this).val();
         const csrfToken = $('{% csrf_token %}').val();

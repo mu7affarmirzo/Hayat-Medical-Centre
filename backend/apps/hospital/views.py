@@ -4,6 +4,7 @@ import datetime
 from rest_framework.response import Response
 
 from apps.account.models import PatientModel
+from apps.logus.models import BookedRoomModel
 
 
 # Create your views here.
@@ -50,7 +51,13 @@ def patients_m_p(requests):
         return render(requests, 'Hospital/patients-my-patients.html', {"patientsd": patient_search, "today": a.year})
 
     patients = PatientModel.objects.all().order_by('id')
-    return render(requests, 'Hospital/patients-my-patients.html', {"patients": patients, "today": a.year})
+    room = BookedRoomModel.objects.select_related('patients').all()
+    ctx = {
+        "patients": patients,
+        "today": a.year,
+        "room": room
+    }
+    return render(requests, 'Hospital/patients-my-patients.html', ctx)
 
 
 def patients_s(requests):
