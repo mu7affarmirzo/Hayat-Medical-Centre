@@ -86,7 +86,11 @@
   <div class="patients-my-patients__search-box">
         {% csrf_token %}
         <input id="search" class="patients-my-patients__search-input" type="text" placeholder="Искать в таблице" />
-        <button class="patients-my-patients__search-btn"><a href="{% url 'export_to_exel' %}">Экспорт в Excel</a></button>
+        <button type="submit" onclick="window.location.href='http://127.0.0.1:8000/media/data_excel/tanlangan_malumotlar.xlsx'" class="patients-my-patients__search-btn">
+          <a href="{% url 'export_to_exel' %}">
+            Экспорт в Excel
+          </a>
+        </button>
   </div>
 
   <!-- My patients table -->
@@ -144,102 +148,19 @@
   <script src="https://code.jquery.com/jquery-3.7.0.js"
   integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
   crossorigin="anonymous"></script>
+
   <script>
-<!--    console.log('rvds')-->
-<!--    $(function () {-->
-<!--    console.log('fhgj');-->
-<!--    $('#search').onChange('change', function (e) {-->
-<!--        console.log('fhgj');-->
-<!--        e.preventDefault();-->
-<!--        $.ajax({-->
-<!--            type: $(this).attr('method'),-->
-<!--            url: '{% url "patients_m_p" %}',-->
-<!--            data: { name: $('#search').val() },-->
-<!--            success: function (response) {-->
-<!--                console.log(response);-->
-<!--            }-->
-<!--        });-->
-<!--    });-->
-<!--});-->
+    downloadCSV: function(data){
+        var MIME_TYPE = "media/data_excel/tanlangan_malumotlar.xlsx";
 
-<!--$(document).ready(function() {-->
-<!--    $("#search").on("input", function() {-->
-<!--        var inputValue = $(this).val();-->
-<!--        console.log("Input value changed: " + inputValue);-->
-<!--          $.ajax({-->
-<!--            type: POST,-->
-<!--            url: '{% url "patients_m_p" %}',-->
-<!--            data: { name: $('#search').val() },-->
-<!--            success: function (response) {-->
-<!--                console.log(response);-->
-<!--            }-->
-<!--        });-->
-<!--    });-->
-<!--});-->
-
-$(document).ready(function() {
-$("#selectAll").on("change", function() {
-    $(".rowCheckbox").prop("checked", $(this).prop("checked"));
-  });
-
-  $(".rowCheckbox").on("change", function() {
-    var rowData = $(this).closest("tr"); // Get the parent row
-    var data = {
-      id: rowData.data("id"), // Assuming you have an identifier for each row
-      isChecked: $(this).prop("checked")
-    };
-
-    $.ajax({
-      type: "GET",
-      url: "{% url 'export_to_exel' %}",
-      data: JSON.stringify(data),
-      contentType: "application/json",
-      success: function(response) {
-      },
-      error: function(error) {
-        console.error("Error:", error);
-      }
-    });
-  });
-    $('#search').on('input', function() {
-        const inputValue = $(this).val();
-        const csrfToken = $('{% csrf_token %}').val();
-
-        $.ajax({
-            url: '{% url "patients_m_p" %}',
-            type: 'POST',
-<!--            contentType: 'application/json',-->
-            data: { inputValue },
-            headers: {
-                'X-CSRFToken': csrfToken
-            },
-            success: function(data) {
-              updateTable(data);
-              console.log(data);
-            },
-            error: function(error) {
-                console.error('Error:', error);
-            }
-        });
-    });
-    function updateTable(results) {
-<!--        const tbody = $('#html');-->
-        const tbody = $('#myTable tbody');
-        tbody.empty(); // Clear existing table body
-
-        for (const result of results) {
-            const row = $('<td>');
-            tbody.append(row);
-        }
-    }
-});
-
+        var blob = new Blob([data], {type: MIME_TYPE});
+        window.location.href = window.URL.createObjectURL(blob);
+}
   </script>
-
 <script>
 
         $(document).ready(function () {
-            window.news_index = '{% url 'patients_m_p_paginator' %}';
+            window.news_index = '{% url "patients_m_p_paginator" %}';
 
             var page = 1;
             var block_request = false;

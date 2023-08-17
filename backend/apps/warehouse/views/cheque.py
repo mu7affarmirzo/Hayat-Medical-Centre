@@ -10,7 +10,7 @@ from apps.account.models import OrganizationModel, PatientModel
 from apps.warehouse.models import ItemsModel, ItemsInStockModel, ReceivedItemsModel, IncomeModel, ReceiveRegistryModel, \
     WarehouseChequeModel, ChequeItemsModel
 from rest_framework import status
-from apps.warehouse.utils.render_to_pdf import render_to_pdf
+# from apps.warehouse.utils.render_to_pdf import render_to_pdf
 
 
 class ChequeView(TemplateView):
