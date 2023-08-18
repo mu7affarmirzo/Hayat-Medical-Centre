@@ -1,13 +1,10 @@
-
 import pandas as pd
 from django.shortcuts import render, redirect
-from apps.account.models import PatientModel
+from apps.logus.models import BookedRoomModel
 
 
 def send_excel_file(request):
-    data = request.GET
-    print(data)
-    a = PatientModel.objects.all()
+    a = BookedRoomModel.objects.all()
     df = pd.DataFrame(a)
 
     file_path = "media/data_excel/tanlangan_malumotlar.xlsx"

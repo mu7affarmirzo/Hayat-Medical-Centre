@@ -87,8 +87,8 @@
         {% csrf_token %}
         <input id="search" class="patients-my-patients__search-input" type="text" placeholder="Искать в таблице" />
         <button type="submit" onclick="window.location.href='http://127.0.0.1:8000/media/data_excel/tanlangan_malumotlar.xlsx'" class="patients-my-patients__search-btn">
-          <a href="{% url 'export_to_exel' %}">
-            Экспорт в Excel
+          <a href="{% url 'export_to_exel' %}" class="text-light text-decoration-none">
+             | Экспорт в Excel
           </a>
         </button>
   </div>
@@ -149,14 +149,7 @@
   integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
   crossorigin="anonymous"></script>
 
-  <script>
-    downloadCSV: function(data){
-        var MIME_TYPE = "media/data_excel/tanlangan_malumotlar.xlsx";
 
-        var blob = new Blob([data], {type: MIME_TYPE});
-        window.location.href = window.URL.createObjectURL(blob);
-}
-  </script>
 <script>
 
         $(document).ready(function () {
