@@ -26,4 +26,5 @@ urlpatterns = [
     path('register_s/', register_s, name='register_s'),
     path('patients_m_p/pagination/', pagination, name='patients_m_p_paginator'),
     path('patients_m_p/exel/', send_excel_file, name='export_to_exel'),
+    # path('patients_m_p/search/', search, name="search"),
 ]

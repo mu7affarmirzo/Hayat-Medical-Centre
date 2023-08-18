@@ -1,13 +1,58 @@
-from django.shortcuts import render
-import datetime
-
 from rest_framework.response import Response
 
 from apps.account.models import PatientModel
 from apps.logus.models import BookedRoomModel
 
-
 # Create your views here.
+
+from django.shortcuts import render
+import datetime
+from django.db.models import Q
+
+
+# def search(requests):
+#     a = datetime.datetime.today()
+#
+#     if requests.method == "POST":
+#         data = requests.POST['inputValue']
+#
+#         p = PatientModel.objects.filter(Q(f_name=data) | Q(l_name=data) | Q(mid_name=data)).first()
+#
+#         room_model = BookedRoomModel.objects.filter(patients=p)
+#         print(room_model)
+#         return render(requests, 'Hospital/patients-my-patients.html',
+#                       {"room": room_model, "room_len": len(room_model), "today": a.year})
+#
+#     room = BookedRoomModel.objects.all().order_by('id')
+#     ctx = {
+#         "today": a.year,
+#         "room": room,
+#         "room_len": len(room),
+#     }
+#     return render(requests, 'Hospital/patients-my-patients.html', ctx)
+#
+
+def patients_m_p(requests):
+    a = datetime.datetime.today()
+
+    if requests.method == "POST":
+        data = requests.POST['inputValue']
+        # p = PatientModel.objects.get(f_name=data)
+        # patient_search = BookedRoomModel.objects.get(patients=p)
+        p = PatientModel.objects.filter(Q(f_name=data) | Q(l_name=data) | Q(mid_name=data)).first()
+        room_model = BookedRoomModel.objects.filter(patients=p)
+        return render(requests, 'Hospital/patients-my-patients.html',
+                      {"room": room_model, "room_len": len(room_model), "today": a.year})
+
+        # return Response({"room": room_model, "room_len": len(room_model), "today": a.year})
+    # patients = PatientModel.objects.all().order_by('id')
+    room = BookedRoomModel.objects.all().order_by('id')
+    ctx = {
+        "today": a.year,
+        "room": room,
+        "room_len": len(room),
+    }
+    return render(requests, 'Hospital/patients-my-patients.html', ctx)
 
 
 def dispatching_m_p(requests):
@@ -40,24 +85,6 @@ def login(requests):
 
 def patients_a(requests):
     return render(requests, 'Hospital/patients-accounts.html', {})
-
-
-def patients_m_p(requests):
-    a = datetime.datetime.today()
-    # print(requests.method)/
-    if requests.method == "POST":
-        data = requests.POST['inputValue']
-        patient_search = PatientModel.objects.filter(f_name=data)
-        return render(requests, 'Hospital/patients-my-patients.html', {"patientsd": patient_search, "today": a.year})
-
-    patients = PatientModel.objects.all().order_by('id')
-    room = BookedRoomModel.objects.select_related('patients').all()
-    ctx = {
-        "patients": patients,
-        "today": a.year,
-        "room": room
-    }
-    return render(requests, 'Hospital/patients-my-patients.html', ctx)
 
 
 def patients_s(requests):

@@ -86,7 +86,7 @@
   <div class="patients-my-patients__search-box">
         {% csrf_token %}
         <input id="search" class="patients-my-patients__search-input" type="text" placeholder="Искать в таблице" />
-        <button type="submit" onclick="window.location.href='http://127.0.0.1:8000/media/data_excel/tanlangan_malumotlar.xlsx'" class="patients-my-patients__search-btn">
+        <button type="submit" onclick="window.location.href='http://localhost:8080/media/data_excel/tanlangan_malumotlar.xlsx'" class="patients-my-patients__search-btn">
           <a href="{% url 'export_to_exel' %}" class="text-light text-decoration-none">
              | Экспорт в Excel
           </a>
@@ -113,31 +113,29 @@
     </thead>
 
     <tbody class="new-list">
-    {% for i in patients %}
-    {% for j in room %}
+    {% for i in room %}
         <tr>
           <td>
             <input type="checkbox" class="rowCheckbox">
           </td>
   <!--        <td></td>-->
-          <td style="text-align: end">{{i.id}}</td>
+          <td style="text-align: end">{{i.patients.id}}</td>
           <td>
-            <a href="" style="color: #0b79d0">{{i.l_name}} {{i.f_name}}</a>
+            <a href="" style="color: #0b79d0">{{i.patients.l_name}} {{i.patients.f_name}}</a>
           </td>
-          <td style="text-align: end">{{ i.date_of_birth.year }} - {{ today }}</td>
-          <td style="text-align: end"> {{ j.room.room_number }}(Корпус {{ j.room.floor }})</td>
-          <td></td>
-          <td style="text-align: end">{{j.start_date}}</td>
-          <td style="text-align: end">{{j.end_date}}</td>
+          <td style="text-align: end">{{ i.patients.date_of_birth.year }} - {{ today }}</td>
+          <td style="text-align: end"> {{ i.room.room_number }}(Корпус {{ i.room.floor }})</td>
+          <td style="text-align: end">{{ i.patients.additional_info }}</td>
+          <td style="text-align: end">{{i.start_date}}</td>
+          <td style="text-align: end">{{i.end_date}}</td>
           <td></td>
         </tr>
     {% endfor %}
-    {% endfor %}
     </tbody>
-  </table>
+    </table>
 
   <p class="patients-my-patients__text">
-    Лечащий врач, количество пациентов: 67
+    Лечащий врач, количество пациентов: {{room_len}}
   </p>
 
   <!-- script ============= -->
@@ -150,40 +148,132 @@
   crossorigin="anonymous"></script>
 
 
-<script>
+<!--<script>-->
 
-        $(document).ready(function () {
-            window.news_index = '{% url "patients_m_p_paginator" %}';
+<!--        $(document).ready(function () {-->
+<!--            console.log("fcgvhbjko");-->
+<!--            window.news_index = '{% url "patients_m_p_paginator" %}';-->
 
-            var page = 1;
-            var block_request = false;
-            var end_pagination = false;
+<!--            var page = 1;-->
+<!--            var block_request = false;-->
+<!--            var end_pagination = false;-->
 
-            $(window).scroll(function () {
-                var margin = $(document).height() - $(window).height() - 200;
+<!--            $(window).scroll(function () {-->
+<!--                var margin = $(document).height() - $(window).height() - 200;-->
 
-                if ($(window).scrollTop() > margin && end_pagination === false && block_request === false) {
-                    block_request = true;
-                    page += 1;
+<!--                if ($(window).scrollTop() > margin && end_pagination === false && block_request === false) {-->
+<!--                    block_request = true;-->
+<!--                    page += 1;-->
 
-                    $.ajax({
-                        type: 'GET',
-                        url: window.news_index,
-                        data: {
-                            "page": page
-                        },
-                        success: function (data) {
-                            if (data.end_pagination === true) {
-                                end_pagination = true;
-                            } else {
-                                block_request = false;
-                            }
-                            $('.new-list').append(data.content);
-                        }
-                    })
-                }
-            });
-        })
+<!--                    $.ajax({-->
+<!--                        type: 'GET',-->
+<!--                        url: window.news_index,-->
+<!--                        data: {-->
+<!--                            "page": page-->
+<!--                        },-->
+<!--                        success: function (data) {-->
+<!--                            if (data.end_pagination === true) {-->
+<!--                                end_pagination = true;-->
+<!--                            } else {-->
+<!--                                block_request = false;-->
+<!--                            }-->
+<!--                            $('.new-list').append(data.content);-->
+<!--                        }-->
+<!--                    })-->
+<!--                }-->
+<!--            });-->
+<!--        })-->
+<!--    </script>-->
+
+    <script>
+<!--    console.log('rvds')-->
+<!--    $(function () {-->
+<!--    console.log('fhgj');-->
+<!--    $('#search').onChange('change', function (e) {-->
+<!--        console.log('fhgj');-->
+<!--        e.preventDefault();-->
+<!--        $.ajax({-->
+<!--            type: $(this).attr('method'),-->
+<!--            url: '{% url "patients_m_p" %}',-->
+<!--            data: { name: $('#search').val() },-->
+<!--            success: function (response) {-->
+<!--                console.log(response);-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--});-->
+
+<!--$(document).ready(function() {-->
+<!--    $("#search").on("input", function() {-->
+<!--        var inputValue = $(this).val();-->
+<!--        console.log("Input value changed: " + inputValue);-->
+<!--          $.ajax({-->
+<!--            type: POST,-->
+<!--            url: '{% url "patients_m_p" %}',-->
+<!--            data: { name: $('#search').val() },-->
+<!--            success: function (response) {-->
+<!--                console.log(response);-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--});-->
+
+$(document).ready(function() {
+$("#selectAll").on("change", function() {
+    $(".rowCheckbox").prop("checked", $(this).prop("checked"));
+  });
+
+  $(".rowCheckbox").on("change", function() {
+    var rowData = $(this).closest("tr"); // Get the parent row
+    var data = {
+      id: rowData.data("id"), // Assuming you have an identifier for each row
+      isChecked: $(this).prop("checked")
+    };
+
+    $.ajax({
+      type: "GET",
+      url: "{% url 'export_to_exel' %}",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+      success: function(response) {
+      },
+      error: function(error) {
+        console.error("Error:", error);
+      }
+    });
+  });
+    $('#search').on('input', function() {
+        const inputValue = $(this).val();
+        const csrfToken = $('{% csrf_token %}').val();
+
+        $.ajax({
+            url: '{% url "patients_m_p" %}',
+            type: 'POST',
+<!--            contentType: 'application/json',-->
+            data: { inputValue },
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success: function(data) {
+              updateTable(data);
+              console.log(data);
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+    function updateTable(results) {
+<!--        const tbody = $('#html');-->
+        const tbody = $('#myTable tbody');
+        tbody.empty(); // Clear existing table body
+
+        for (const result of results) {
+            const row = $('<td>');
+            tbody.append(row);
+        }
+    }
+});
     </script>
 
 </body>
