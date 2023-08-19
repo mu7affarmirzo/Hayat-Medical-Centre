@@ -1,13 +1,10 @@
-from rest_framework.response import Response
-
 from apps.account.models import PatientModel
 from apps.logus.models import BookedRoomModel
 
 # Create your views here.
 
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 import datetime
-from django.db.models import Q
 
 
 # def search(requests):
@@ -34,18 +31,6 @@ from django.db.models import Q
 
 def patients_m_p(requests):
     a = datetime.datetime.today()
-
-    if requests.method == "POST":
-        data = requests.POST['inputValue']
-        # p = PatientModel.objects.get(f_name=data)
-        # patient_search = BookedRoomModel.objects.get(patients=p)
-        p = PatientModel.objects.filter(Q(f_name=data) | Q(l_name=data) | Q(mid_name=data)).first()
-        room_model = BookedRoomModel.objects.filter(patients=p)
-        return render(requests, 'Hospital/patients-my-patients.html',
-                      {"room": room_model, "room_len": len(room_model), "today": a.year})
-
-        # return Response({"room": room_model, "room_len": len(room_model), "today": a.year})
-    # patients = PatientModel.objects.all().order_by('id')
     room = BookedRoomModel.objects.all().order_by('id')
     ctx = {
         "today": a.year,

@@ -1,4 +1,5 @@
 from django.urls import path
+from .all_functions.search import patients_m_p_search
 from .views import *
 from .pagination import pagination
 from .all_functions import send_excel_file
@@ -26,5 +27,5 @@ urlpatterns = [
     path('register_s/', register_s, name='register_s'),
     path('patients_m_p/pagination/', pagination, name='patients_m_p_paginator'),
     path('patients_m_p/exel/', send_excel_file, name='export_to_exel'),
-    # path('patients_m_p/search/', search, name="search"),
+    path('patients_m_p/search/', patients_m_p_search, name="patients_m_p_search"),
 ]

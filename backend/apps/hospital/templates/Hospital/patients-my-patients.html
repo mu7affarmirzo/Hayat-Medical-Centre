@@ -247,7 +247,7 @@ $("#selectAll").on("change", function() {
         const csrfToken = $('{% csrf_token %}').val();
 
         $.ajax({
-            url: '{% url "patients_m_p" %}',
+            url: '{% url "patients_m_p_search" %}',
             type: 'POST',
 <!--            contentType: 'application/json',-->
             data: { inputValue },
