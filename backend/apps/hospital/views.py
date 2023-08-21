@@ -73,7 +73,14 @@ def patients_a(requests):
 
 
 def patients_s(requests):
-    return render(requests, 'Hospital/patients-search.html', {})
+    a = datetime.datetime.today()
+    room = BookedRoomModel.objects.all().order_by('id')
+    ctx = {
+        "today": a.year,
+        "room": room,
+        "room_len": len(room),
+    }
+    return render(requests, 'Hospital/patients-search.html', ctx)
 
 
 def register(requests):

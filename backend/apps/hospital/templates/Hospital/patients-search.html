@@ -630,7 +630,7 @@
 
     <div class="search__box">
       <div class="search__input-box">
-        <p class="search__input__title">Найдено записей: 373</p>
+        <p class="search__input__title">Найдено записей: {{ len_room }}</p>
         <input
           class="patients-my-patients__search-input"
           style="width: 700px"
@@ -643,7 +643,21 @@
         <button class="btn account-patient__btn account-patient__btn--active">
           Выбор колонок
         </button>
-        <button class="patients-my-patients__search-btn">Excel</button>
+
+
+<!--        <button type="submit" onclick="window.location.href='http://localhost:8080/media/data_excel/tanlangan_malumotlar.xlsx'" class="patients-my-patients__search-btn">-->
+<!--          <a href="{% url 'export_to_exel' %}" class="text-light text-decoration-none">-->
+<!--             | Экспорт в Excel-->
+<!--          </a>-->
+<!--        </button>-->
+
+
+                <button type="submit" onclick="window.location.href='http://localhost:8080/media/data_excel/tanlangan_malumotlar.xlsx'" class="patients-my-patients__search-btn">
+              <a href="{% url 'export_to_exel' %}" class="text-light text-decoration-none">
+               |  Excel
+            </a>
+                </button>
+
         <button
           type="button"
           class="btn btn-primary account-patient__search-btn"
@@ -654,7 +668,7 @@
           type="button"
           class="btn btn-primary account-patient__close-btn"
         >
-          Очистить фильтр
+          <a href="{% url 'patients_s' %}" class="text-light text-decoration-none"> Очистить фильтр </a>
         </button>
       </div>
     </div>
@@ -675,217 +689,24 @@
         </tr>
       </thead>
 
+
       <tbody>
+      {% for i in room %}
         <tr>
           <td></td>
-          <td>86/2022 Амб.</td>
+          <td>{{ i.patients.id }}</td>
           <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
+            <a href="" style="color: #0b79d0">{{ i.patients.l_name }} {{ i.patients.f_name }}</a>
           </td>
-          <td>39</td>
-          <td style="text-align: end">амбулаторно</td>
+          <td>{{ i.patients.date_of_birth.year }} - {{ today }}</td>
+          <td style="text-align: end"> {{ i.room.room_number }}(Корпус {{ i.room.floor }})</td>
+          <td>{{ i.patients.additional_info }}</td>
           <td></td>
-          <td></td>
-          <td>28.05.2022</td>
-          <td></td>
+          <td>{{ i.start_date }}</td>
+          <td>{{ i.end_date }}</td>
           <td></td>
         </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">амбулаторно</td>
-          <td></td>
-          <td></td>
-          <td>28.05.2022</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">амбулаторно</td>
-          <td></td>
-          <td></td>
-          <td>28.05.2022</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">215.1 (Корпус 1)</td>
-          <td></td>
-          <td>Хусанов Р.А.</td>
-          <td>28.05.2022</td>
-          <td>07.01.2023</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">215.1 (Корпус 1)</td>
-          <td></td>
-          <td>Хусанов Р.А.</td>
-          <td>28.05.2022</td>
-          <td>07.01.2023</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">215.1 (Корпус 1)</td>
-          <td></td>
-          <td>Хусанов Р.А.</td>
-          <td>28.05.2022</td>
-          <td>07.01.2023</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">215.1 (Корпус 1)</td>
-          <td></td>
-          <td>Хусанов Р.А.</td>
-          <td>28.05.2022</td>
-          <td>07.01.2023</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">215.1 (Корпус 1)</td>
-          <td></td>
-          <td>Хусанов Р.А.</td>
-          <td>28.05.2022</td>
-          <td>07.01.2023</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">215.1 (Корпус 1)</td>
-          <td></td>
-          <td>Хусанов Р.А.</td>
-          <td>28.05.2022</td>
-          <td>07.01.2023</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">215.1 (Корпус 1)</td>
-          <td></td>
-          <td>Хусанов Р.А.</td>
-          <td>28.05.2022</td>
-          <td>07.01.2023</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">амбулаторно</td>
-          <td></td>
-          <td></td>
-          <td>28.05.2022</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">амбулаторно</td>
-          <td></td>
-          <td></td>
-          <td>28.05.2022</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">амбулаторно</td>
-          <td></td>
-          <td></td>
-          <td>28.05.2022</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">амбулаторно</td>
-          <td></td>
-          <td></td>
-          <td>28.05.2022</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>86/2022 Амб.</td>
-          <td>
-            <a href="" style="color: #0b79d0">Щербаков Василий</a>
-          </td>
-          <td>39</td>
-          <td style="text-align: end">амбулаторно</td>
-          <td></td>
-          <td></td>
-          <td>28.05.2022</td>
-          <td></td>
-          <td></td>
-        </tr>
+      {% endfor %}
       </tbody>
     </table>
     <!-- script ============= -->

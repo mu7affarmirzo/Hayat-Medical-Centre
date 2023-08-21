@@ -1,7 +1,7 @@
 from django.urls import path
 from .all_functions.search import patients_m_p_search
 from .views import *
-from .pagination import pagination
+from apps.hospital.all_functions.pagination import pagination
 from .all_functions import send_excel_file
 
 urlpatterns = [
