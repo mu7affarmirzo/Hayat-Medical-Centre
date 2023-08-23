@@ -9,7 +9,7 @@ class SentItemsModel(models.Model):
     item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     send_registry = models.ForeignKey(SendRegistryModel, on_delete=models.CASCADE)
-    is_delivered = models.BooleanField()
+    is_delivered = models.BooleanField(default=False)
     created_by = models.ForeignKey(Account, related_name="sent_items", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

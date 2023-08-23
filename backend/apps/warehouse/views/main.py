@@ -5,15 +5,8 @@ from django.views.generic import TemplateView
 from apps.warehouse.forms import AccountAuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from apps.account.models import OrganizationModel
-from apps.warehouse.models import ItemsModel, ItemsInStockModel, ReceivedItemsModel, IncomeModel, ReceiveRegistryModel
-
-# ------------------------------
-#           TASKS
-# ------------------------------
-"""
-1. 
-
-"""
+from apps.warehouse.models import ItemsModel, ItemsInStockModel, ReceivedItemsModel, IncomeModel, ReceiveRegistryModel, \
+    SendRegistryModel, StorePointModel
 
 
 # Create your views here.
@@ -102,3 +95,6 @@ def incomes_view(request, pk=None):
     context["summa_prices"] = summa_prices
 
     return render(request, 'warehouse/incomes.html', context)
+
+
+

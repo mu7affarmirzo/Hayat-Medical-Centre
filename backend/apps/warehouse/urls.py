@@ -8,8 +8,15 @@ urlpatterns = [
     path('login/', main.login_view, name='warehouse-login'),
     path('logout/', main.logout_view, name='warehouse-logout'),
     path('index/', main.index_view, name='warehouse-index'),
+
     path('rec-reg/', main.receive_registry_view, name='warehouse-recreg'),
     path('rec-reg/<int:pk>', main.receive_registry_view, name='warehouse-recreg'),
+
+    path('send-reg-create/', create_send_reg_view, name='warehouse-create-send-reg'),
+    path('send-reg-create/<int:s_pk>', get_send_reg_view, name='warehouse-create-send-reg'),
+    path('send-reg-popup-post/<int:s_pk>', send_reg_popup_post, name='send-reg-popup-post'),
+    path('send-reg-popup-insurance-post/<int:s_pk>', send_reg_popup_insurance_post, name='send-reg-popup-insurance-post'),
+
     path('medicines/', main.medicines_view, name='warehouse-medicines'),
     path('medicines/<int:pk>', main.medicines_view, name='warehouse-medicines'),
     path('cheque/', create_cheque_view, name='cheque-create'),
@@ -28,7 +35,6 @@ urlpatterns = [
     path('delete-expense/<int:e_pk>', delete_expense, name='delete-expense'),
     path('expense-popup-post/<int:e_pk>', expense_popup_post, name='expense-popup-post'),
     path('expense-popup-insurance-post/<int:e_pk>', expense_popup_insurance_post, name='expense-popup-insurance-post'),
-
 
     path('items/', items_list, name='items-list'),
     path('items/<int:pk>', item_history, name='item-history'),
