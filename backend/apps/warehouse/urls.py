@@ -15,7 +15,8 @@ urlpatterns = [
     path('send-reg-create/', create_send_reg_view, name='warehouse-create-send-reg'),
     path('send-reg-create/<int:s_pk>', get_send_reg_view, name='warehouse-create-send-reg'),
     path('send-reg-popup-post/<int:s_pk>', send_reg_popup_post, name='send-reg-popup-post'),
-    path('send-reg-popup-insurance-post/<int:s_pk>', send_reg_popup_insurance_post, name='send-reg-popup-insurance-post'),
+    path('send-reg-popup-insurance-post/<int:s_pk>', send_reg_popup_insurance_post,
+         name='send-reg-popup-insurance-post'),
 
     path('medicines/', main.medicines_view, name='warehouse-medicines'),
     path('medicines/<int:pk>', main.medicines_view, name='warehouse-medicines'),
