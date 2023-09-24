@@ -2,8 +2,13 @@ import React from "react";
 import "./Header.css";
 
 import Logo from "../../assets/logo/logo.svg";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 function Header() {
+  const navigate = useNavigate();
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
     <header>
       <div className="header-left">
@@ -64,7 +69,9 @@ function Header() {
             Mухиддинов
           </button>
           <ul className="dropdown-menu">
-            <li className="dropdown-item">Выйти</li>
+            <li onClick={handleLogOut} className="dropdown-item cursor-pointer">
+              Выйти
+            </li>
           </ul>
         </div>
       </div>
