@@ -1,0 +1,133 @@
+/* header starts ============ */
+header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  border-bottom: 1px solid rgb(176, 176, 176);
+  font-family: "Roboto";
+  font-style: normal;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-left .header-links {
+  display: flex;
+  align-items: center;
+}
+
+.header-links .header-link {
+  height: 100%;
+  background-color: transparent;
+  padding: 29px 25px;
+  color: #00000061;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.1px;
+  text-transform: capitalize;
+  text-decoration: none;
+}
+
+.header-links .header-link.header-link-active {
+  background-color: #64b6f7;
+  color: white;
+}
+
+.header-link--display {
+  display: flex;
+}
+
+.header-link span {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+  padding: 3px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 40px;
+  border: 1px solid #fff;
+  background: #f88078;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0.1px;
+  text-transform: capitalize;
+}
+
+.logo {
+  padding: 18px 50px 18px 0;
+  cursor: pointer;
+}
+
+.profile-btn {
+  background: transparent;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.1px;
+  color: rgba(0, 0, 0, 0.38);
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+/* header ends ========================== */
+
+/* navbar starts ======= */
+nav {
+  display: flex;
+  /* align-items: center; */
+  padding: 8px 30px 8px 30px;
+  /* gap: 25px; */
+  border-bottom: 1px solid rgb(176, 176, 176);
+}
+
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 0 25px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  letter-spacing: 0.4px;
+  color: rgba(0, 0, 0, 0.87);
+  cursor: pointer;
+}
+
+.nav-link img {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 10px;
+}
+
+/* navbar ends =========================== */
+
+.header-right {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+.header__search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.42);
+  padding: 2px 8px;
+}
