@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../views/Header/Header";
-import Siderbar from "../views/Sidebar/Sidebar";
+import Sidebar from "../views/Sidebar/Sidebar";
 import PageContent from "./PageContent";
 
 function Layout() {
+  const [activeRoutes, setActiveRoutes] = useState([]);
   return (
     <div>
       <Header />
       <div className="d-flex">
-        <Siderbar />
-        <PageContent />
+        <Sidebar
+          activeRoutes={activeRoutes}
+          setActiveRoutes={setActiveRoutes}
+        />
+        <PageContent
+          activeRoutes={activeRoutes}
+          setActiveRoutes={setActiveRoutes}
+        />
       </div>
     </div>
   );

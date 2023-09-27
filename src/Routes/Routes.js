@@ -13,6 +13,9 @@ const Search = lazy(() => import("../pages/Search/Search"));
 const AvailabilityRooms = lazy(() =>
   import("../pages/AvailabilityRooms/AvailabilityRooms")
 );
+const BookingWizard = lazy(() =>
+  import("../pages/BookingWizard/BookingWizard")
+);
 
 const routes = [
   {
@@ -42,6 +45,10 @@ const routes = [
   {
     path: "/availability_of_rooms",
     component: AvailabilityRooms,
+  },
+  {
+    path: "/booking_wizard",
+    component: BookingWizard,
   },
 ];
 export default routes;

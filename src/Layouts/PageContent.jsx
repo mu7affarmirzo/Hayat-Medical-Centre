@@ -4,10 +4,10 @@ import routes from "../Routes/Routes";
 import { Route, Routes } from "react-router-dom";
 
 const Page404 = lazy(() => import("../pages/404/404"));
-function PageContent() {
+function PageContent({ activeRoutes, setActiveRoutes }) {
   return (
-    <div>
-      <main className="q-100">
+    <div className="w-100">
+      <main className="w-100">
         <Suspense fallback={<SuspenseContent />}>
           <Routes>
             {routes.map((route, key) => {
@@ -16,7 +16,12 @@ function PageContent() {
                   key={key}
                   exact={true}
                   path={`${route.path}`}
-                  element={<route.component />}
+                  element={
+                    <route.component
+                      activeRoutes={activeRoutes}
+                      setActiveRoutes={setActiveRoutes}
+                    />
+                  }
                 />
               );
             })}

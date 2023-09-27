@@ -3,10 +3,11 @@ import { LiaUserLockSolid } from "react-icons/lia";
 import { PiSuitcase } from "react-icons/pi";
 import { LiaMoneyCheckAltSolid } from "react-icons/lia";
 import { FiSearch } from "react-icons/fi";
+import { FaUserPen } from "react-icons/fa6";
 // import GridSearch from "../assets/icons/grid-search.svg";
 import { gridSearch } from "../assets/icons/grid-search";
 
-const routes = [
+export const routes = [
   {
     path: "/",
     icon: <PiAirplane />,
@@ -39,4 +40,10 @@ const routes = [
   },
 ];
 
-export default routes;
+export const extraRoutes = [
+  {
+    path: "/booking_wizard",
+    icon: <FaUserPen />,
+    name: "Мастер бронирования",
+  },
+];
