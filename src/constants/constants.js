@@ -1,0 +1,1 @@
+export const BASE_URL="https://n1nurmuhammad.pythonanywhere.com"
