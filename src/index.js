@@ -11,11 +11,11 @@ import SuspenseContent from "./Layouts/SuspenseContent";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-    <Suspense fallback={<SuspenseContent/>}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Suspense>
+  <Suspense fallback={<SuspenseContent />}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Suspense>
   // {/* </React.StrictMode> */}
 );
 

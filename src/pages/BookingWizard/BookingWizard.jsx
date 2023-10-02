@@ -15,7 +15,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
       (route) => route !== location.pathname
     );
     setActiveRoutes(updateActiveRoutes);
-    navigate("/");
+    navigate("/reception");
   };
 
   return (
@@ -47,9 +47,9 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
         </div>
       </div>
       <nav className="p-0 ">
-        <div class="nav nav-tabs gap-1" id="nav-tab" role="tablist">
+        <div className="nav nav-tabs gap-1" id="nav-tab" role="tablist">
           <button
-            class="nav-link active text-align-start"
+            className="nav-link active text-align-start"
             id="nav-home-tab"
             data-bs-toggle="tab"
             data-bs-target="#nav-home"
@@ -89,7 +89,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
             </div>
           </button>
           <button
-            class="nav-link"
+            className="nav-link"
             id="nav-profile-tab"
             data-bs-toggle="tab"
             data-bs-target="#nav-profile"
@@ -117,7 +117,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
             </div>
           </button>
           <button
-            class="nav-link"
+            className="nav-link"
             id="nav-contact-tab"
             data-bs-toggle="tab"
             data-bs-target="#nav-contact"
@@ -135,42 +135,54 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
                 margin: "0",
               }}
             >
-              <CiMoneyBill style={{ fontSize: "24px" }} />
-              <div style={{ textAlign: "start" }}>
-                <p className="m-0">Тип комнаты и тарифы</p>
-                <span className="m-0" style={{ fontSize: "11px" }}>
-                  ПЛЮКС ЛЮКСБ 5 350 000 so’m
-                </span>
-              </div>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12.3212 10.6852L4 19L6 21M7 16L9 18M20 7.5C20 9.98528 17.9853 12 15.5 12C13.0147 12 11 9.98528 11 7.5C11 5.01472 13.0147 3 15.5 3C17.9853 3 20 5.01472 20 7.5Z"
+                  stroke="black"
+                  strokeOpacity="0.87"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              {/* <div style={{ textAlign: "start" }}> */}
+              <p className="m-0">Комната</p>
+              {/* </div> */}
             </div>
           </button>
         </div>
       </nav>
-      <div class="tab-content" id="nav-tabContent" role="tablist">
+      <div className="tab-content" id="nav-tabContent" role="tablist">
         <div
-          class="tab-pane fade show active"
+          className="tab-pane fade show active"
           id="nav-home"
           role="tabpanel"
           aria-labelledby="nav-home-tab"
-          tabindex="0"
+          tabIndex="0"
         >
           <PlacementScheme />
         </div>
         <div
-          class="tab-pane fade"
+          className="tab-pane fade"
           id="nav-profile"
           role="tabpanel"
           aria-labelledby="nav-profile-tab"
-          tabindex="0"
+          tabIndex="0"
         >
           <RoomTypeRates />
         </div>
         <div
-          class="tab-pane fade"
+          className="tab-pane fade"
           id="nav-contact"
           role="tabpanel"
           aria-labelledby="nav-contact-tab"
-          tabindex="0"
+          tabIndex="0"
         >
           <BookingRooms />
         </div>

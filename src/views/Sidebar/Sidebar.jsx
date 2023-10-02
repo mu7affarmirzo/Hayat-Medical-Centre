@@ -1,30 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./Sidebar.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { extraRoutes, routes } from "../../Routes/sidebar";
 function Sidebar({ activeRoutes, setActiveRoutes }) {
   const navigate = useNavigate();
+
   const location = useLocation();
+  const page = location.pathname.match(/\/([^/]+)(\/|$)/)[1];
 
   useEffect(() => {
-    // Add the current location to the active routes array if it's not already there
     if (!activeRoutes.includes(location.pathname)) {
       setActiveRoutes((prevRoutes) => [...prevRoutes, location.pathname]);
     }
   }, [location, activeRoutes]);
-  const sortedRoutes = [...extraRoutes].filter((a, b) =>
+  const sortedRoutes = [...extraRoutes[page]].filter((a, b) =>
     activeRoutes.includes(a.path) ? 1 : activeRoutes.includes(b.path) ? -1 : 0
-  );
+  )
 
   return (
     <aside className="d-flex flex-column justify-content-between">
       <div className="d-flex flex-column gap-1">
         <div className="section__top">
-          <button onClick={() => navigate("/booking_wizard")}>
-            Создать бронь
-          </button>
+          {extraRoutes[page].map((route, k) => {
+            return (
+              <button key={k} onClick={() => navigate(route.path)}>
+                {route.title}
+              </button>
+            );
+          })}
         </div>
-        {routes.map((route, k) => {
+        {routes[page].map((route, k) => {
           return (
             <button
               key={k}

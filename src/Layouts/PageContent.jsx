@@ -6,7 +6,7 @@ import { Route, Routes } from "react-router-dom";
 const Page404 = lazy(() => import("../pages/404/404"));
 function PageContent({ activeRoutes, setActiveRoutes }) {
   return (
-    <div className="w-100">
+    <div className="" style={{ width: "84%" }}>
       <main className="w-100">
         <Suspense fallback={<SuspenseContent />}>
           <Routes>
@@ -25,7 +25,6 @@ function PageContent({ activeRoutes, setActiveRoutes }) {
                 />
               );
             })}
-
             <Route path="*" element={<Page404 />} />
           </Routes>
         </Suspense>

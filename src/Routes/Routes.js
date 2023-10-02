@@ -16,39 +16,68 @@ const AvailabilityRooms = lazy(() =>
 const BookingWizard = lazy(() =>
   import("../pages/BookingWizard/BookingWizard")
 );
+const MyTasks = lazy(() => import("../pages/MyTask/MyTasks"));
+const CreateTasks = lazy(() => import("../pages/CreateTasks/CreateTasks"));
+const TaskSearch = lazy(() => import("../pages/TaskSearch/TaskSearch"));
+
+const NightAudit = lazy(() => import("../pages/NightAudit/NightAudit"));
+const CreateNightAudit = lazy(() =>
+  import("../pages/CreateNightAudit/CreateNightAudit")
+);
 
 const routes = [
   {
     path: "/404",
     component: InternalPage,
   },
+
   {
-    path: "/",
+    path: "/reception",
     component: ExpectedArrival,
   },
   {
-    path: "/residents",
+    path: "/reception/residents",
     component: Residents,
   },
   {
-    path: "/expected_departure",
+    path: "/reception/expected_departure",
     component: ExpectedDeparture,
   },
   {
-    path: "/unpaid",
+    path: "/reception/unpaid",
     component: Unpaid,
   },
   {
-    path: "/search",
+    path: "/reception/search",
     component: Search,
   },
   {
-    path: "/availability_of_rooms",
+    path: "/reception/availability_of_rooms",
     component: AvailabilityRooms,
   },
   {
-    path: "/booking_wizard",
+    path: "/reception/booking_wizard",
     component: BookingWizard,
+  },
+  {
+    path: "/tasks/",
+    component: MyTasks,
+  },
+  {
+    path: "/tasks/create_tasks",
+    component: CreateTasks,
+  },
+  {
+    path: "/tasks/task_search",
+    component: TaskSearch,
+  },
+  {
+    path: "/night_audit",
+    component: NightAudit,
+  },
+  {
+    path: "/night_audit/create_night_audit",
+    component: CreateNightAudit,
   },
 ];
 export default routes;

@@ -16,7 +16,7 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     localStorage.setItem("token", "12345");
-    navigate("/");
+    navigate("/reception");
   };
   return (
     <div className="login">

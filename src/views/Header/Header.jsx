@@ -2,9 +2,13 @@ import React from "react";
 import "./Header.css";
 
 import Logo from "../../assets/logo/logo.svg";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { routes } from "../../Routes/header";
 function Header() {
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const page = location.pathname.match(/\/([^/]+)(\/|$)/)[1];
   const handleLogOut = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -13,18 +17,26 @@ function Header() {
     <header>
       <div className="header-left">
         <div className="logo">
-          <NavLink to={"/"}>
+          <NavLink onClick={() => window.location.reload()}>
             <img src={Logo} alt="logo" />
           </NavLink>
         </div>
         <div className="header-links">
-          <NavLink className={"header-link header-link-active"}>
-            Служба приёма
-          </NavLink>
-          <NavLink className={"header-link"}>Задачи</NavLink>
-          <NavLink className={"header-link"}>Гостиница</NavLink>
-          <NavLink className={"header-link"}>Клиенты</NavLink>
-          <NavLink className={"header-link"}>Oтчёты</NavLink>
+          {routes.map((route, index) => {
+            return (
+              <NavLink
+                key={index}
+                to={`${route.path}`}
+                className={
+                  page === route.title
+                    ? "header-link header-link-active"
+                    : "header-link"
+                }
+              >
+                {route.name}
+              </NavLink>
+            );
+          })}
         </div>
       </div>
       <div className="header-right">
