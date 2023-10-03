@@ -1,13 +1,47 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
+
 from apps.logus.models import *
 
 
-# Register your models here.
-admin.site.register(RoomModel)
-admin.site.register(BookedRoomModel)
-admin.site.register(TariffModel)
-admin.site.register(RoomTypeModel)
-admin.site.register(BookingModel)
-admin.site.register(ServiceModel)
-admin.site.register(TariffServiceModel)
-admin.site.register(RoomPrice)
+@admin.register(RoomModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ["room_number", "is_available", "count", "floor", "view", "room_type", "capacity", "created_by",
+                    # "created_at", "modified_at",
+                    "modified_by"]
+
+
+@admin.register(BookedRoomModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ["room_price", "room", "patients", "discount", "abs_price", "is_checked_out", "start_date",
+                    "end_date", "created_by", "modified_by"]
+
+
+@admin.register(TariffModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in TariffModel._meta.fields]
+
+
+@admin.register(RoomTypeModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in RoomTypeModel._meta.fields]
+
+
+@admin.register(BookingModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in BookingModel._meta.fields]
+
+
+@admin.register(ServiceModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in ServiceModel._meta.fields]
+
+
+@admin.register(TariffServiceModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in TariffServiceModel._meta.fields]
+
+
+@admin.register(RoomPrice)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in RoomPrice._meta.fields]
