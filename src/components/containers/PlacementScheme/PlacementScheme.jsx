@@ -1,6 +1,24 @@
 import React from "react";
 import "./PlacementScheme.css";
 function PlacementScheme() {
+  const days = [
+    { date: "24 апрель", week: "Пн" },
+    { date: "25 апрель", week: "Вт" },
+    { date: "26 апрель", week: "Ср" },
+    { date: "27 апрель", week: "Чт" },
+    { date: "28 апрель", week: "Пт" },
+    { date: "29 апрель", week: "Сб" },
+    { date: "30 апрель", week: "Вс" },
+    { date: "01 май", week: "Вт" },
+    { date: "02 май", week: "Ср" },
+    { date: "03 май", week: "Пт" },
+    { date: "04 май", week: "Сб" },
+    { date: "05 май", week: "Вс" },
+    { date: "06 май", week: "Пн" },
+    { date: "07 май", week: "Вт" },
+    { date: "08 май", week: "Ср" },
+    { date: "09 май", week: "Чт" },
+  ];
   return (
     <>
       <div
@@ -97,7 +115,38 @@ function PlacementScheme() {
         <table className="type_room_table">
           <thead>
             <tr>
-              <th style={{ fontSize: "20px" }}>Тип комнаты</th>
+              <th rowSpan={2} style={{ fontSize: "20px" }}>
+                Тип комнаты
+              </th>
+              {days.map((item, index) => (
+                <th
+                  key={index}
+                  style={{
+                    color: item.week === "Вс" ? "red" : "black",
+                  }}
+                >
+                  {item.date} <br />
+                  {item.week}
+                </th>
+              ))}
+            </tr>
+            <tr>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
+              <th>25</th>
             </tr>
           </thead>
 

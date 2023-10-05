@@ -15,7 +15,7 @@ function Sidebar({ activeRoutes, setActiveRoutes }) {
   }, [location, activeRoutes]);
   const sortedRoutes = [...extraRoutes[page]].filter((a, b) =>
     activeRoutes.includes(a.path) ? 1 : activeRoutes.includes(b.path) ? -1 : 0
-  )
+  );
 
   return (
     <aside className="d-flex flex-column justify-content-between">

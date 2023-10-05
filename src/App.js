@@ -3,8 +3,6 @@ import {
   Navigate,
   Route,
   Routes,
-  useLocation,
-  useNavigate,
 } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/Login/Login";
@@ -18,11 +16,11 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoutes />}>
-          <Route path={`*`} element={<Layout />} />
+          <Route path={`/*`} element={<Layout />} />
         </Route>
         <Route
-          path="*"
-          element={<Navigate to={token ? "/reception" : "/login"} replace />}
+          path="/"
+          element={<Navigate to={token ? "reception" : "login"} replace />}
         />
       </Routes>
     </div>

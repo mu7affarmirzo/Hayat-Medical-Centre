@@ -187,7 +187,54 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
           <BookingRooms />
         </div>
       </div>
-      <button onClick={handleCloseRoute}>close</button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "8px",
+          border: "1px solid var(--light, rgba(0,0, 0, 0.1))",
+          marginTop: "24px",
+        }}
+      >
+        <div>
+          <button className=" green__btn" style={{ padding: "8px 20px" }}>
+            <svg
+              width="15"
+              height="14"
+              viewBox="0 0 18 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1 7.61111L5.92308 12.5L17 1.5"
+                stroke="#fff"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Сохранить
+          </button>
+        </div>
+
+        <div>
+          <button
+            onClick={handleCloseRoute}
+            style={{
+              padding: "8px 16px",
+              fontSize: "14px",
+              fontStyle: "normal",
+              fontWeight: "400",
+              lineHeight: "20px",
+              borderRadius: "4px",
+              border: "1px solid rgba(0, 0, 0, 0.23)",
+              background: "var(--background, #f5f5f5)",
+            }}
+          >
+            Закрыть
+          </button>
+        </div>
+      </div>
     </main>
   );
 }

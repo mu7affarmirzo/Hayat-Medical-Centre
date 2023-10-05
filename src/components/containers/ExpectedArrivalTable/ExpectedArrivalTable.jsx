@@ -1,4 +1,5 @@
 import React from "react";
+import ExpectedArrivalTbody from "./ExpectedArrivalTbody";
 
 function ExpectedArrivalTable({ expectedArrival }) {
   console.log(expectedArrival);
@@ -175,29 +176,9 @@ function ExpectedArrivalTable({ expectedArrival }) {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+              {expectedArrival?.map((item, index) => (
+                <ExpectedArrivalTbody key={index} {...item} />
+              ))}
             </tbody>
           </table>
         </div>

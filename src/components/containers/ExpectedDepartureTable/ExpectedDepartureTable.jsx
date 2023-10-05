@@ -1,4 +1,5 @@
 import React from "react";
+import ExpectedDepartureTbody from "./ExpectedDepartureTbody";
 
 function ExpectedDepartureTable({ expectedDeparture }) {
   console.log(expectedDeparture);
@@ -175,29 +176,9 @@ function ExpectedDepartureTable({ expectedDeparture }) {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+              {expectedDeparture?.map((item, index) => (
+                <ExpectedDepartureTbody key={index} {...item} />
+              ))}
             </tbody>
           </table>
         </div>

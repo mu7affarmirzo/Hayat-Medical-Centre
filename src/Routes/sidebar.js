@@ -84,7 +84,7 @@ export const extraRoutes = {
   ],
   night_audit: [
     {
-      path: "/night_audit/create_nigh_audit",
+      path: "/night_audit/create_night_audit",
       icon: <FaUserPen />,
       name: "Мастер бронирования",
       title: "Ночной аудит",

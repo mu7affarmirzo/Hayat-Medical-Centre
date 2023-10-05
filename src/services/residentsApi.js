@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BASE_URL } from "../constants/constants";
 
-const expectedArrivalApi = createApi({
-  reducerPath: "expectedArrivalApi",
+const residentsApi = createApi({
+  reducerPath: "residentsApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/api/v1/logus`,
     // Set the headers with the authorization token
@@ -12,18 +12,17 @@ const expectedArrivalApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["expectedArrival"],
-
+  tagTypes: ["residents"],
   endpoints: (builder) => ({
-    expectedArrival: builder.query({
+    residentsView: builder.query({
       query: () => ({
-        url: "/expected-arrival/",
+        url: "/residents-view/",
         method: "GET",
       }),
-      providesTags: ["expectedArrival"],
+      providesTags: ["residents"],
     }),
   }),
 });
 
-export const { useExpectedArrivalQuery } = expectedArrivalApi;
-export { expectedArrivalApi };
+export const { useExpectedDepartureQuery } = residentsApi;
+export { residentsApi };

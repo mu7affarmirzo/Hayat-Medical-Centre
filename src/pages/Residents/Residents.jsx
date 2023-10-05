@@ -43,7 +43,6 @@ function Residents() {
               type="checkbox"
               value=""
               id="flexCheckChecked"
-              // checked
             />
             <label className="form-check-label" htmlFor="flexCheckChecked">
               Детализировать по гостям
