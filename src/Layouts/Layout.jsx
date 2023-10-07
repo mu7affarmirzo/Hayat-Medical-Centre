@@ -5,6 +5,9 @@ import PageContent from "./PageContent";
 
 function Layout() {
   const [activeRoutes, setActiveRoutes] = useState([]);
+  const accessToken=localStorage.getItem("access-token")
+  const refreshToken=localStorage.getItem("refresh-token")
+  
   return (
     <div>
       <Header />

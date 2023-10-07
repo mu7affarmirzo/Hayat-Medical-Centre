@@ -10,7 +10,8 @@ function Header() {
   const location = useLocation();
   const page = location.pathname.match(/\/([^/]+)(\/|$)/)[1];
   const handleLogOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("refresh-token");
     navigate("/login");
   };
   return (

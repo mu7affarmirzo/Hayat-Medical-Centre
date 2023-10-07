@@ -9,7 +9,7 @@ import Login from "./pages/Login/Login";
 import ProtectedRoutes from "./Routes/ProtectedRoutes";
 
 const Layout = lazy(() => import("./Layouts/Layout"));
-const token = localStorage.getItem("token");
+const accessToken = localStorage.getItem("access-token");
 function App() {
   return (
     <div className="App">
@@ -20,7 +20,7 @@ function App() {
         </Route>
         <Route
           path="/"
-          element={<Navigate to={token ? "reception" : "login"} replace />}
+          element={<Navigate to={accessToken ? "reception" : "login"} replace />}
         />
       </Routes>
     </div>
