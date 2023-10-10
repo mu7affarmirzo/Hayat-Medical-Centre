@@ -2,17 +2,20 @@ import { configureStore } from "@reduxjs/toolkit";
 import { expectedArrivalApi } from "../services/expectedArrivalApi";
 import { expectedDepartureApi } from "../services/expectedDepartureApi";
 import { residentsApi } from "../services/residentsApi";
+import { roomTypeTariffApi } from "../services/roomType&TariffApi";
 
 export const store = configureStore({
   reducer: {
     [expectedArrivalApi.reducerPath]: expectedArrivalApi.reducer,
     [expectedDepartureApi.reducerPath]: expectedDepartureApi.reducer,
     [residentsApi.reducerPath]: residentsApi.reducer,
+    [roomTypeTariffApi.reducerPath]: roomTypeTariffApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       expectedArrivalApi.middleware,
       expectedDepartureApi.middleware,
-      residentsApi.middleware
+      residentsApi.middleware,
+      roomTypeTariffApi.middleware
     ),
 });

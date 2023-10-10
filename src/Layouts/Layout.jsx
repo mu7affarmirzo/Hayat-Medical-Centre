@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../views/Header/Header";
 import Sidebar from "../views/Sidebar/Sidebar";
 import PageContent from "./PageContent";
+import verifyAccessToken from "../utils/verifyToken";
 
 function Layout() {
   const [activeRoutes, setActiveRoutes] = useState([]);
-  const accessToken=localStorage.getItem("access-token")
-  const refreshToken=localStorage.getItem("refresh-token")
-  
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access-token");
+    verifyAccessToken(accessToken);
+  }, []);
+
   return (
     <div>
       <Header />

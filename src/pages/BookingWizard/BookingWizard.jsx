@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./BookingWizard.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CiMoneyBill } from "react-icons/ci";
 import { FiCalendar } from "react-icons/fi";
-import PlacementScheme from "../../components/containers/PlacementScheme/PlacementScheme";
 import RoomTypeRates from "../../components/containers/RoomTypeRates/RoomTypeRates";
 import BookingRooms from "../../components/containers/BookingRooms/BookingRooms";
+import SearchPatient from "./SearchPatient";
+import PlacementSchemeFetch from "../../components/compositions/PlacementSchemeFetch/PlacementSchemeFetch";
+import RoomTypeRatesFetch from "../../components/compositions/RoomTypeRatesFetch/RoomTypeRatesFetch";
+
+const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 function BookingWizard({ activeRoutes, setActiveRoutes }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -18,6 +28,13 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
     navigate("/reception");
   };
 
+  // BOOKING DATA ============= = = = > > > >
+
+  const [startDate, setStartDate] = useState('');
+  const [leaveDate, setLeaveDate] = useState('');
+  const [selectedPrice, setSelectedPrice] = useState()
+
+
   return (
     <main className="expectation__main">
       <h4 className="mb-3" style={{ fontSize: "20px", fontWeight: "500" }}>
@@ -25,26 +42,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
       </h4>
 
       <div className="booking__detail-box py-2">
-        <div
-          className="d-flex justify-content-between align-items-center"
-          style={{ width: "100%" }}
-        >
-          <label htmlFor="" style={{ fontSize: "14px" }}>
-            ФИО гостя
-          </label>
-          <input
-            className="booking_input_bg"
-            type="text"
-            style={{
-              width: "90%",
-              padding: "4px 10px",
-              background: "#fff",
-              borderRadius: "4px",
-              border: "1px solid rgba(0, 0, 0, 0.23)",
-              backgroundPosition: "99% center !important",
-            }}
-          />
-        </div>
+        <SearchPatient />
       </div>
       <nav className="p-0 ">
         <div className="nav nav-tabs gap-1" id="nav-tab" role="tablist">
@@ -166,7 +164,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
           aria-labelledby="nav-home-tab"
           tabIndex="0"
         >
-          <PlacementScheme />
+          <PlacementSchemeFetch startDate={startDate} setStartDate={setStartDate} setLeaveDate={setLeaveDate} leaveDate={leaveDate} />
         </div>
         <div
           className="tab-pane fade"
@@ -175,7 +173,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
           aria-labelledby="nav-profile-tab"
           tabIndex="0"
         >
-          <RoomTypeRates />
+          <RoomTypeRatesFetch selectedPrice={selectedPrice} setSelectedPrice={setSelectedPrice} />
         </div>
         <div
           className="tab-pane fade"

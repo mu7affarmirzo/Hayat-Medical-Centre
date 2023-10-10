@@ -1,24 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./PlacementScheme.css";
-function PlacementScheme() {
-  const days = [
-    { date: "24 апрель", week: "Пн" },
-    { date: "25 апрель", week: "Вт" },
-    { date: "26 апрель", week: "Ср" },
-    { date: "27 апрель", week: "Чт" },
-    { date: "28 апрель", week: "Пт" },
-    { date: "29 апрель", week: "Сб" },
-    { date: "30 апрель", week: "Вс" },
-    { date: "01 май", week: "Вт" },
-    { date: "02 май", week: "Ср" },
-    { date: "03 май", week: "Пт" },
-    { date: "04 май", week: "Сб" },
-    { date: "05 май", week: "Вс" },
-    { date: "06 май", week: "Пн" },
-    { date: "07 май", week: "Вт" },
-    { date: "08 май", week: "Ср" },
-    { date: "09 май", week: "Чт" },
-  ];
+import axios from "axios";
+import { BASE_URL } from "../../../constants/constants";
+
+
+
+function PlacementScheme({ dates, formatDateWithWeekday, transformedData, overallNumbers, startDate, leaveDate, setStartDate, setLeaveDate, daysDifference }) {
+  const filteredDates = dates.filter((date) => date >= startDate && date <= leaveDate);
+
   return (
     <>
       <div
@@ -65,22 +54,16 @@ function PlacementScheme() {
           <label className="mb-3" htmlFor="stay-period">
             Период проживания
           </label>
-          <select
-            name="stay-period"
-            id="stay-period"
-            style={{
-              width: "100%",
-              padding: "7px",
-              border: "1px solid rgba(0, 0, 0, 0.23)",
-            }}
-          >
-            <option value="">24.04.2023 0:00</option>
-            <option value=""></option>
-          </select>
+          <input type="date" defaultValue={startDate} onChange={(e) => setStartDate(e.target)} style={{
+            width: "100%",
+            padding: "7px",
+            border: "1px solid rgba(0, 0, 0, 0.23)",
+          }} />
         </div>
 
         <div className="d-flex flex-column" style={{ width: "80px" }}>
           <input
+            value={daysDifference}
             type="number"
             style={{
               width: "100%",
@@ -94,64 +77,45 @@ function PlacementScheme() {
           className="d-flex justify-content-between gap-2 align-items-center"
           style={{ width: "250px" }}
         >
-          <label className="" htmlFor="days">
+          <label style={{ whiteSpace: "nowrap" }} className="" htmlFor="days">
             дней по
           </label>
-          <select
-            name="days"
-            id="days"
-            style={{
-              width: "70%",
-              padding: "7px",
-              border: "1px solid rgba(0, 0, 0, 0.23)",
-            }}
-          >
-            <option value="">24.04.2023 0:00</option>
-            <option value=""></option>
-          </select>
+          <input type="date" defaultValue={leaveDate} onChange={(e) => setLeaveDate(e.target.value)} style={{
+            width: "100%",
+            padding: "7px",
+            border: "1px solid rgba(0, 0, 0, 0.23)",
+          }} />
         </div>
       </div>
       <div className="expectation__table m-0" style={{ width: "100%" }}>
         <table className="type_room_table">
           <thead>
             <tr>
-              <th rowSpan={2} style={{ fontSize: "20px" }}>
+              <th rowSpan={2} style={{ fontSize: "20px", position: "sticky", top: "0", left: "0" }}>
                 Тип комнаты
               </th>
-              {days.map((item, index) => (
-                <th
-                  key={index}
-                  style={{
-                    color: item.week === "Вс" ? "red" : "black",
-                  }}
-                >
-                  {item.date} <br />
-                  {item.week}
-                </th>
+              {dates?.map((date, index) => (
+                <th className="free__rooms_dates" key={index}>{formatDateWithWeekday(date)}</th>
               ))}
             </tr>
             <tr>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
-              <th>25</th>
+              {Object.keys(overallNumbers).map((date) => (
+                <th key={date} className="all__free__rooms">
+                  {overallNumbers[date]}
+                </th>
+              ))}
             </tr>
           </thead>
 
           <tbody>
-            <tr></tr>
+            {Object.keys(transformedData).map((roomType, rowIndex) => (
+              <tr key={rowIndex}>
+                <td className="position-sticky start-0 bg-white">{roomType}</td>
+                {dates?.map((date, colIndex) => (
+                  <td className={`${filteredDates.includes(date) ? "freeRoom__selected" : "freeRoomTable"}`} style={{ textAlign: "center" }} key={colIndex}>{transformedData[roomType][date] || 0}</td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

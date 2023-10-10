@@ -1,0 +1,4 @@
+.room__selected__rice {
+  background: var(--06-success-main, #4caf50);
+  color: white;
+}

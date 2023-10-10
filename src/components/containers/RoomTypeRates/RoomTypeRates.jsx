@@ -1,124 +1,27 @@
 import React from "react";
 import "./RoomTypeRates.css";
-function RoomTypeRates() {
-  const thStyle = {
-    textAlign: "start",
+import { HiOutlineBan } from "react-icons/hi"
+function RoomTypeRates({ roomTypeTariff, selectedPrice, setSelectedPrice }) {
+
+  const tariffNames = [...new Set(roomTypeTariff.map(item => item.tariff.name))];
+  const roomTypeNames = [...new Set(roomTypeTariff.map(item => item.room_type.name))];
+
+  // SELECTING PRICE = = = = = >> > >
+  const toggleSelectedPrice = (id) => {
+    setSelectedPrice(id === selectedPrice?.id ? null : id);
   };
 
-  const colorBoxStyle = {
-    display: "inline-block",
-    width: "8px",
-    height: "20px",
-    marginRight: "10px",
-    borderRadius: "2px",
-  };
+  console.log(selectedPrice)
 
-  const headerTextStyle = {
-    fontSize: "12px",
-  };
-
-  const greenTextStyle = {
-    fontSize: "12px",
-    color: "#4CAF50",
-  };
-
-  const orangeTextStyle = {
-    fontSize: "12px",
-    color: "#FF9800",
-  };
-
-  const tableHeaders = [
-    {
-      bgColor: "#BD6E30",
-      text: "ЛЮКСА",
-      greenText: "3",
-      orangeText: "+0",
-    },
-    {
-      bgColor: "#E99A56",
-      text: "ЛЮКСА.К",
-      greenText: "7",
-      orangeText: "+0",
-    },
-    {
-      bgColor: "#3E7D96",
-      text: "ЛЮКСБ",
-      greenText: "4",
-      orangeText: "+0",
-    },
-    {
-      bgColor: "#5DA1BA",
-      text: "ЛЮКСБ.К",
-      greenText: "9",
-      orangeText: "+0",
-    },
-    {
-      bgColor: "#A08AC3",
-      text: "VIPA",
-      greenText: "0",
-      orangeText: "+0",
-    },
-    {
-      bgColor: "#C6B0E9",
-      text: "VIPA.K",
-      greenText: "1",
-      orangeText: "+0",
-    },
-    {
-      bgColor: "#D67B75",
-      text: "VIPБ",
-      greenText: "1",
-      orangeText: "+0",
-    },
-    {
-      bgColor: "#F1A09B",
-      text: "VIPБ.K",
-      greenText: "2",
-      orangeText: "+0",
-    },
-    {
-      bgColor: "#EA3323",
-      text: "РЕАНИМ",
-      greenText: "4",
-      orangeText: "+0",
-    },
-    {
-      bgColor: "#EA3323",
-      text: "РЕАНИМ.К",
-      greenText: "10",
-      orangeText: "+0",
-    },
-  ];
-
-  const data = [
-    {
-      label: "СТД",
-      description: "Стандарт",
-      color: "#98B15D",
-      prices: [
-        { basePrice: "700 000 so`m", discountedPrice: "4 150 000 so`m" },
-        // Add more prices here as needed
-      ],
-    },
-    {
-      label: "СОПР",
-      description: "Сопровождение",
-      color: "#A4CBFA",
-      prices: [
-        { basePrice: "700 000 so`m", discountedPrice: "4 150 000 so`m" },
-        // Add more prices here as needed
-      ],
-    },
-  ];
 
   return (
     <div className="d-flex justify-content-between gap-2 mb-4">
-      <div className="expectation__table m-0" style={{ width: "70%" }}>
+      <div className="expectation__table m-0" style={{ width: "78%" }}>
         <table className="type_room_table">
           <thead>
             <tr>
               <th style={{ textAlign: "start" }}>Тариф</th>
-              <th style={{ textAlign: "start" }}>
+              {/* <th style={{ textAlign: "start" }}>
                 <div className="d-flex">
                   <span
                     style={{
@@ -169,12 +72,15 @@ function RoomTypeRates() {
                     <span style={orangeTextStyle}>{header.orangeText}</span>
                   </div>
                 </th>
+              ))} */}
+              {tariffNames.map(tariffName => (
+                <th key={tariffName}>{tariffName}</th>
               ))}
             </tr>
           </thead>
 
           <tbody>
-            {data.map((item, index) => (
+            {/* {data.map((item, index) => (
               <tr key={index}>
                 <td>
                   <div className="d-flex">
@@ -207,6 +113,34 @@ function RoomTypeRates() {
                   </td>
                 ))}
               </tr>
+            ))} */}
+            {roomTypeNames.map((roomTypeName) => (
+              <tr key={roomTypeName}>
+                <td>{roomTypeName}</td>
+                {tariffNames.map((tariffName) => {
+                  const item = roomTypeTariff.find(
+                    (item) =>
+                      item.room_type.name === roomTypeName &&
+                      item.tariff.name === tariffName
+                  );
+                  const isPriceSelected = selectedPrice?.id === item?.id;
+                  console.log(item)
+
+                  return (
+                    <td
+                      key={tariffName}
+                      // className={isPriceSelected ? '' : ''}
+                      onClick={() => toggleSelectedPrice(item?.id)}
+                    >
+                      {item?.price ? (
+                        `${item.price} so'm`
+                      ) : (
+                        <HiOutlineBan style={{ color: "gray" }} />
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
             ))}
           </tbody>
         </table>
@@ -217,7 +151,7 @@ function RoomTypeRates() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          width: "30%",
+          width: "22%",
           padding: "10px",
           border: "1px solid var(--Light, rgba(0, 0, 0, 0.10))",
         }}
@@ -250,7 +184,7 @@ function RoomTypeRates() {
               borderRadius: "4px",
             }}
           >
-          <option value="">не предоставляется</option>
+            <option value="">не предоставляется</option>
           </select>
 
           <table>

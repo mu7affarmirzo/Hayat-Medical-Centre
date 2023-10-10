@@ -6,3 +6,25 @@
   text-align: center !important;
   padding: 2px 10px !important;
 }
+.free__rooms_dates {
+  color: var(--text-color-light-mode-primary, rgba(0, 0, 0, 0.87));
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 150% */
+  letter-spacing: 0.15px;
+}
+.all__free__rooms {
+  color: var(--text-color-light-mode-disabled, rgba(0, 0, 0, 0.38));
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 150% */
+  letter-spacing: 0.15px;
+}
+.freeRoomTable {
+  background-color: #e3f3e3;
+}
+.freeRoom__selected {
+  background-color: #d1eafd;
+}
