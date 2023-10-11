@@ -52,3 +52,6 @@ aside {
   background: var(--05-info-main, #2196f3);
   color: white;
 }
+.dispatching-side__btn-active svg path {
+  stroke: white;
+}

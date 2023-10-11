@@ -34,13 +34,12 @@ function SearchPatient() {
         } else {
             setResults([]);
         }
-    }, [query]); // This effect will re-run whenever the 'query' state changes
+    }, [query]);
 
     const handleResultSelection = (result) => {
         setSelectedResult(result);
         setQuery(`${result.f_name} ${result.l_name}`)
     };
-    // Handler function to update 'query' state when the input changes
     const handleInputChange = (e) => {
         setQuery(e.target.value);
         setSelectedResult(null);
@@ -101,7 +100,7 @@ function SearchPatient() {
                 />
             </div>
 
-            <div className="patient__search-result cursor-pointer" style={{width:"90%"}}>
+            <div className="patient__search-result cursor-pointer" style={{ width: "90%" }}>
                 {results.length > 0 ? (
                     <ul style={{ width: "90%" }}>
                         {results.map((result) => (

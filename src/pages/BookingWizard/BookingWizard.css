@@ -77,16 +77,16 @@
   margin-top: 10px;
   width: 100%;
   overflow-x: auto;
-  /* Add horizontal scrolling */
   scrollbar-width: thin;
   scrollbar-color: var(--light, rgba(0, 0, 0, 0.1)) #f1f1f1;
   height: 100%;
   border: 1px solid var(--light, rgba(0, 0, 0, 0.1));
+  max-height: 38rem;
+  height: 100%;
 }
 
 .expectation__table .table-container {
   width: max-content;
-  /* Set the container width based on content */
 }
 
 .expectation__table table {
@@ -101,7 +101,6 @@
 
 .expectation__table::-webkit-scrollbar {
   background-color: #ffffff;
-  /* Thumb color */
   border-radius: 2px;
   border: 1px solid var(--light, rgba(0, 0, 0, 0.1));
   scrollbar-width: thin;
@@ -230,6 +229,11 @@
   background-color: #3397ff !important;
   padding: 12px !important;
   color: white !important;
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active svg path {
+  stroke: white;
 }
 .nav-tabs .nav-link {
   border-radius: 5px 5px 0px 0px;

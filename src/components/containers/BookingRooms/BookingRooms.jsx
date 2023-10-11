@@ -1,6 +1,11 @@
 import React from "react";
 import "./BookingRooms.css";
-function BookingRooms() {
+import BookingRoomsTable from "./BookingRoomsTable";
+function BookingRooms({ rooms, selectedRoom, setSelectedRoom }) {
+  console.log(rooms)
+
+
+
   return (
     <>
       <div className="booking__detail-box py-2 gap-2 align-items-end">
@@ -99,100 +104,7 @@ function BookingRooms() {
           </thead>
 
           <tbody>
-            <tr>
-              <td className="d-flex justify-content-between gap-2 align-items-center">
-                <span>202.1</span>
-                <span style={{ color: "rgba(0, 0, 0, 0.38)" }}>202.1</span>
-                <span
-                  style={{
-                    padding: "4px",
-                    color: "rgba(0, 0, 0, 0.54)",
-                    background: "#F8ED8D",
-                  }}
-                >
-                  2
-                </span>
-              </td>
-              <td></td>
-              <td></td>
-              <td>
-                <span
-                  style={{
-                    padding: "4px",
-                    color: "#fff",
-                    backgroundColor: "#3397FF",
-                  }}
-                >
-                  M
-                </span>
-              </td>
-              <td>
-                <span
-                  style={{
-                    padding: "4px",
-                    color: "#000",
-                    backgroundColor: "#E0E0E0",
-                  }}
-                >
-                  85
-                </span>
-              </td>
-              <td>ЖИЛ</td>
-              <td>ГК</td>
-              <td>ГК2</td>
-              <td>Грязный</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td className="text-end">202</td>
-            </tr>
-            <tr>
-              <td className="d-flex justify-content-between gap-2 align-items-center">
-                <span>202.1</span>
-                <span style={{ color: "rgba(0, 0, 0, 0.38)" }}>202.1</span>
-                <span
-                  style={{
-                    padding: "4px",
-                    color: "rgba(0, 0, 0, 0.54)",
-                    background: "#F8ED8D",
-                  }}
-                >
-                  2
-                </span>
-              </td>
-              <td></td>
-              <td></td>
-              <td>
-                <span
-                  style={{
-                    padding: "4px",
-                    color: "#fff",
-                    backgroundColor: "#FF737F",
-                  }}
-                >
-                  Ж
-                </span>
-              </td>
-              <td>
-                <span
-                  style={{
-                    padding: "4px",
-                    color: "#000",
-                    backgroundColor: "#E0E0E0",
-                  }}
-                >
-                  85
-                </span>
-              </td>
-              <td>ЖИЛ</td>
-              <td>ГК</td>
-              <td>ГК2</td>
-              <td>Грязный</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td className="text-end">202</td>
-            </tr>
+            {rooms?.map((item, index) => <BookingRoomsTable key={index} {...item} item={item} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />)}
           </tbody>
         </table>
       </div>

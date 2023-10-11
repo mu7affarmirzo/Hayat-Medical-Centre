@@ -8,6 +8,7 @@ import BookingRooms from "../../components/containers/BookingRooms/BookingRooms"
 import SearchPatient from "./SearchPatient";
 import PlacementSchemeFetch from "../../components/compositions/PlacementSchemeFetch/PlacementSchemeFetch";
 import RoomTypeRatesFetch from "../../components/compositions/RoomTypeRatesFetch/RoomTypeRatesFetch";
+import BookingRoomsFetch from "../../components/compositions/BookingRoomsFetch/BookingRoomsFetch";
 
 const formatDate = (date) => {
   const year = date.getFullYear();
@@ -32,7 +33,8 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
 
   const [startDate, setStartDate] = useState('');
   const [leaveDate, setLeaveDate] = useState('');
-  const [selectedPrice, setSelectedPrice] = useState()
+  const [selectedPrice, setSelectedPrice] = useState({})
+  const [selectedRoom, setSelectedRoom] = useState({})
 
 
   return (
@@ -114,46 +116,50 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
               </div>
             </div>
           </button>
-          <button
-            className="nav-link"
-            id="nav-contact-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#nav-contact"
-            type="button"
-            role="tab"
-            aria-controls="nav-contact"
-            aria-selected="false"
-          >
-            <div
-              className="d-flex justify-content-between gap-2 text-align-baseline"
-              style={{
-                fontFamily: "Roboto",
-                fontSize: "14px",
-                fontWeight: 500,
-                margin: "0",
-              }}
+          {selectedPrice?.id && (
+
+            <button
+              className="nav-link"
+              id="nav-contact-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-contact"
+              type="button"
+              role="tab"
+              aria-controls="nav-contact"
+              aria-selected="false"
             >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+              <div
+                className="d-flex justify-content-between gap-2 text-align-baseline"
+                style={{
+                  fontFamily: "Roboto",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  margin: "0",
+                }}
               >
-                <path
-                  d="M12.3212 10.6852L4 19L6 21M7 16L9 18M20 7.5C20 9.98528 17.9853 12 15.5 12C13.0147 12 11 9.98528 11 7.5C11 5.01472 13.0147 3 15.5 3C17.9853 3 20 5.01472 20 7.5Z"
-                  stroke="black"
-                  strokeOpacity="0.87"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              {/* <div style={{ textAlign: "start" }}> */}
-              <p className="m-0">Комната</p>
-              {/* </div> */}
-            </div>
-          </button>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.3212 10.6852L4 19L6 21M7 16L9 18M20 7.5C20 9.98528 17.9853 12 15.5 12C13.0147 12 11 9.98528 11 7.5C11 5.01472 13.0147 3 15.5 3C17.9853 3 20 5.01472 20 7.5Z"
+                    stroke="black"
+                    strokeOpacity="0.87"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                {/* <div style={{ textAlign: "start" }}> */}
+                <p className="m-0">Комната</p>
+                {/* </div> */}
+              </div>
+            </button>
+          )}
+
         </div>
       </nav>
       <div className="tab-content" id="nav-tabContent" role="tablist">
@@ -182,7 +188,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
           aria-labelledby="nav-contact-tab"
           tabIndex="0"
         >
-          <BookingRooms />
+          <BookingRoomsFetch selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
         </div>
       </div>
       <div
@@ -195,24 +201,57 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
         }}
       >
         <div>
-          <button className=" green__btn" style={{ padding: "8px 20px" }}>
-            <svg
-              width="15"
-              height="14"
-              viewBox="0 0 18 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          {selectedRoom.id ? (
+
+            <button className=" green__btn" style={{ padding: "8px 20px" }}>
+              <svg
+                width="15"
+                height="14"
+                viewBox="0 0 18 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 7.61111L5.92308 12.5L17 1.5"
+                  stroke="#fff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Сохранить
+            </button>
+          ) : (
+            <button
+              style={{
+                padding: "8px 16px",
+                fontSize: "14px",
+                fontStyle: "normal",
+                fontWeight: "400",
+                lineHeight: "20px",
+                borderRadius: "4px",
+                border: "1px solid rgba(0, 0, 0, 0.23)",
+                background: "var(--background, #f5f5f5)",
+              }}
             >
-              <path
-                d="M1 7.61111L5.92308 12.5L17 1.5"
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Сохранить
-          </button>
+              <svg
+                width="15"
+                height="14"
+                viewBox="0 0 18 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 7.61111L5.92308 12.5L17 1.5"
+                  stroke="black"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Сохранить
+            </button>
+          )}
         </div>
 
         <div>
@@ -233,7 +272,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
           </button>
         </div>
       </div>
-    </main>
+    </main >
   );
 }
 

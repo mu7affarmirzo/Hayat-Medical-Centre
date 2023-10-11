@@ -3,6 +3,7 @@ import { expectedArrivalApi } from "../services/expectedArrivalApi";
 import { expectedDepartureApi } from "../services/expectedDepartureApi";
 import { residentsApi } from "../services/residentsApi";
 import { roomTypeTariffApi } from "../services/roomType&TariffApi";
+import { roomsApi } from "../services/roomsApi";
 
 export const store = configureStore({
   reducer: {
@@ -10,12 +11,14 @@ export const store = configureStore({
     [expectedDepartureApi.reducerPath]: expectedDepartureApi.reducer,
     [residentsApi.reducerPath]: residentsApi.reducer,
     [roomTypeTariffApi.reducerPath]: roomTypeTariffApi.reducer,
+    [roomsApi.reducerPath]: roomsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       expectedArrivalApi.middleware,
       expectedDepartureApi.middleware,
       residentsApi.middleware,
-      roomTypeTariffApi.middleware
+      roomTypeTariffApi.middleware,
+      roomsApi.middleware
     ),
 });

@@ -7,8 +7,8 @@ function RoomTypeRates({ roomTypeTariff, selectedPrice, setSelectedPrice }) {
   const roomTypeNames = [...new Set(roomTypeTariff.map(item => item.room_type.name))];
 
   // SELECTING PRICE = = = = = >> > >
-  const toggleSelectedPrice = (id) => {
-    setSelectedPrice(id === selectedPrice?.id ? null : id);
+  const toggleSelectedPrice = (item) => {
+    setSelectedPrice(item.id === selectedPrice?.id ? null : item);
   };
 
   console.log(selectedPrice)
@@ -120,18 +120,17 @@ function RoomTypeRates({ roomTypeTariff, selectedPrice, setSelectedPrice }) {
                 {tariffNames.map((tariffName) => {
                   const item = roomTypeTariff.find(
                     (item) =>
-                      item.room_type.name === roomTypeName &&
-                      item.tariff.name === tariffName
+                      item.room_type?.name === roomTypeName &&
+                      item.tariff?.name === tariffName
                   );
-                  const isPriceSelected = selectedPrice?.id === item?.id;
-                  console.log(item)
+
+                  const isPriceSelected = item && selectedPrice && selectedPrice.id === item.id;
 
                   return (
                     <td
                       key={tariffName}
-                      // className={isPriceSelected ? '' : ''}
-                      onClick={() => toggleSelectedPrice(item?.id)}
-                    >
+                      className={isPriceSelected ? 'room__selected__rice' : ''}
+                      onClick={item?.price ? () => toggleSelectedPrice(item) : null}                    >
                       {item?.price ? (
                         `${item.price} so'm`
                       ) : (
@@ -140,6 +139,7 @@ function RoomTypeRates({ roomTypeTariff, selectedPrice, setSelectedPrice }) {
                     </td>
                   );
                 })}
+
               </tr>
             ))}
           </tbody>

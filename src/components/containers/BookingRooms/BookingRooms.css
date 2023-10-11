@@ -1,0 +1,7 @@
+.room__table {
+  max-width: 100%;
+  max-height: 60%;
+}
+.rooms__list-active {
+  background: var(--06-success-light, #9fd5a1);
+}
