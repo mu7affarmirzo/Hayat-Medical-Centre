@@ -1,7 +1,7 @@
 import React from "react";
 import "./BookingRooms.css";
 import BookingRoomsTable from "./BookingRoomsTable";
-function BookingRooms({ rooms, selectedRoom, setSelectedRoom }) {
+function BookingRooms({ rooms, selectedRoom, setSelectedRoom, }) {
   console.log(rooms)
 
 

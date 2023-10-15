@@ -9,8 +9,8 @@ function BookingRoomsTable({ item, setSelectedRoom, selectedRoom, room_number, l
     return (
         <tr className={`${isRoomSelected ? "rooms__list-active" : ""}`} onClick={() => toggleSelectRoom(item)}>
             <td className="d-flex justify-content-between gap-2 align-items-center">
-                {/* <span>{room_number}</span> */}
-                {/* <span style={{ color: "rgba(0, 0, 0, 0.38)" }}>202.1</span>
+                <span>{room_number}</span>
+                <span style={{ color: "rgba(0, 0, 0, 0.38)" }}>202.1</span>
                 <span
                     style={{
                         padding: "4px",
@@ -19,12 +19,12 @@ function BookingRoomsTable({ item, setSelectedRoom, selectedRoom, room_number, l
                     }}
                 >
                     2
-                </span> */}
+                </span>
             </td>
-            {/* <td>{live_date.start_date}</td> */}
-            {/* <td>{live_date.end_date}</td> */}
+            <td>{live_date?.start_date}</td>
+            <td>{live_date?.end_date}</td>
             <td>
-                <span
+                {/* <span
                     style={{
                         padding: "4px",
                         color: "#fff",
@@ -32,10 +32,10 @@ function BookingRoomsTable({ item, setSelectedRoom, selectedRoom, room_number, l
                     }}
                 >
                     Ж
-                </span>
+                </span> */}
             </td>
             <td>
-                <span
+                {/* <span
                     style={{
                         padding: "4px",
                         color: "#000",
@@ -43,16 +43,16 @@ function BookingRoomsTable({ item, setSelectedRoom, selectedRoom, room_number, l
                     }}
                 >
                     85
-                </span>
+                </span> */}
             </td>
-            <td>ЖИЛ</td>
-            <td>ГК</td>
-            <td>ГК2</td>
-            <td>Грязный</td>
             <td></td>
             <td></td>
             <td></td>
-            <td className="text-end">202</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td className="text-end"></td>
         </tr>
     )
 }

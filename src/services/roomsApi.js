@@ -16,8 +16,8 @@ const roomsApi = createApi({
   tagTypes: ["rooms"],
   endpoints: (builder) => ({
     rooms: builder.query({
-      query: () => ({
-        url: "/room/",
+      query: (id) => ({
+        url: `/get-tariff-rooms/${id}`,
         method: "GET",
       }),
       providesTags: ["rooms"],

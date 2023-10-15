@@ -36,6 +36,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
   const [selectedPrice, setSelectedPrice] = useState({})
   const [selectedRoom, setSelectedRoom] = useState({})
 
+  console.log(selectedPrice)
 
   return (
     <main className="expectation__main">
@@ -188,7 +189,7 @@ function BookingWizard({ activeRoutes, setActiveRoutes }) {
           aria-labelledby="nav-contact-tab"
           tabIndex="0"
         >
-          <BookingRoomsFetch selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
+          <BookingRoomsFetch selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} selectedPrice={selectedPrice} />
         </div>
       </div>
       <div

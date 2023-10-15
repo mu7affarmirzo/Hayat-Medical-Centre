@@ -20,59 +20,6 @@ function RoomTypeRates({ roomTypeTariff, selectedPrice, setSelectedPrice }) {
         <table className="type_room_table">
           <thead>
             <tr>
-              <th style={{ textAlign: "start" }}>Тариф</th>
-              {/* <th style={{ textAlign: "start" }}>
-                <div className="d-flex">
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "8px",
-                      height: "20px",
-                      marginRight: "10px",
-                      borderRadius: "2px",
-                      background: "#2F538B",
-                    }}
-                  ></span>
-                  <span style={{ fontSize: "12px" }}>СТД</span>
-                </div>
-                <div>
-                  <span style={{ fontSize: "12px", color: "#4CAF50" }}>48</span>
-                  <span style={{ fontSize: "12px", color: "#FF9800" }}>+0</span>
-                </div>
-              </th>
-              <th style={{ textAlign: "start" }}>
-                <div className="d-flex">
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "8px",
-                      height: "20px",
-                      marginRight: "10px",
-                      borderRadius: "2px",
-                      background: "#A4CBFA",
-                    }}
-                  ></span>
-                  <span style={{ fontSize: "12px" }}>СТД.К</span>
-                </div>
-                <div>
-                  <span style={{ fontSize: "12px", color: "#4CAF50" }}>48</span>
-                  <span style={{ fontSize: "12px", color: "#FF9800" }}>+0</span>
-                </div>
-              </th>
-              {tableHeaders.map((header, index) => (
-                <th key={index} style={thStyle}>
-                  <div className="d-flex">
-                    <span
-                      style={{ ...colorBoxStyle, background: header.bgColor }}
-                    ></span>
-                    <span style={headerTextStyle}>{header.text}</span>
-                  </div>
-                  <div>
-                    <span style={greenTextStyle}>{header.greenText}</span>
-                    <span style={orangeTextStyle}>{header.orangeText}</span>
-                  </div>
-                </th>
-              ))} */}
               {tariffNames.map(tariffName => (
                 <th key={tariffName}>{tariffName}</th>
               ))}
@@ -80,40 +27,6 @@ function RoomTypeRates({ roomTypeTariff, selectedPrice, setSelectedPrice }) {
           </thead>
 
           <tbody>
-            {/* {data.map((item, index) => (
-              <tr key={index}>
-                <td>
-                  <div className="d-flex">
-                    <span
-                      style={{
-                        display: "inline-block",
-                        width: "8px",
-                        height: "20px",
-                        marginRight: "10px",
-                        borderRadius: "2px",
-                        background: item.color,
-                      }}
-                    ></span>
-                    <span style={{ fontSize: "12px" }}>{item.label}</span>
-                  </div>
-                  <div>
-                    <span
-                      style={{ fontSize: "12px", color: "rgba(0, 0, 0, 0.54)" }}
-                    >
-                      {item.description}
-                    </span>
-                  </div>
-                </td>
-                {item.prices.map((price, priceIndex) => (
-                  <td key={priceIndex} style={{ fontSize: "12px" }}>
-                    <p className="m-0">{price.basePrice}</p>
-                    <p className="m-0" style={{ color: "rgba(0, 0, 0, 0.54)" }}>
-                      {price.discountedPrice}
-                    </p>
-                  </td>
-                ))}
-              </tr>
-            ))} */}
             {roomTypeNames.map((roomTypeName) => (
               <tr key={roomTypeName}>
                 <td>{roomTypeName}</td>
