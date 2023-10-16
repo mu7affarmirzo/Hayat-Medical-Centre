@@ -74,7 +74,6 @@ class EMCDocumentModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in appointments.EMCDocumentModel._meta.fields]
 
 
-
 @admin.register(accounts.ReferringDoctorModel)
 class ReferringDoctorModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in accounts.ReferringDoctorModel._meta.fields]
@@ -95,6 +94,6 @@ class DoctorSpecialityAdmin(admin.ModelAdmin):
     list_display = [field.name for field in specialities.DoctorSpecialityModel._meta.fields]
 
 
-@admin.register(attandance.AttendanceModel)
+@admin.register(ImportExportModelAdmin, attandance.AttendanceModel)
 class AttendanceAdmin(admin.ModelAdmin):
     list_display = [field.name for field in attandance.AttendanceModel._meta.fields]
