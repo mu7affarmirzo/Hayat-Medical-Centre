@@ -94,6 +94,6 @@ class DoctorSpecialityAdmin(admin.ModelAdmin):
     list_display = [field.name for field in specialities.DoctorSpecialityModel._meta.fields]
 
 
-@admin.register(ImportExportModelAdmin, attandance.AttendanceModel)
-class AttendanceAdmin(admin.ModelAdmin):
+@admin.register(attandance.AttendanceModel)
+class AttendanceAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in attandance.AttendanceModel._meta.fields]
