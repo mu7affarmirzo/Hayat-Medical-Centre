@@ -35,7 +35,7 @@ class PatientModel(models.Model):
     mid_name = models.CharField(max_length=255, null=True, blank=True)
     l_name = models.CharField(max_length=255)
     email = models.EmailField(null=True, blank=True)
-    date_of_birth = models.DateTimeField(auto_now=False)
+    date_of_birth = models.DateField(auto_now=False)
     home_phone_number = models.CharField(max_length=255, blank=True, null=True)
     mobile_phone_number = models.CharField(max_length=255, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
