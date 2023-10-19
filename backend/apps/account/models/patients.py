@@ -54,7 +54,7 @@ class PatientModel(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_patient_by_user", on_delete=models.SET_NULL, null=True)
     organization = models.ForeignKey(OrganizationModel, on_delete=models.SET_NULL, null=True)
-    gender = models.BooleanField(null=True, blank=True)
+    gender = models.BooleanField()
 
     @property
     def full_name(self):
