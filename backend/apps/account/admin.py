@@ -90,7 +90,7 @@ class SpecialityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(specialities.DoctorSpecialityModel)
-class DoctorSpecialityAdmin(admin.ModelAdmin):
+class DoctorSpecialityAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = [field.name for field in specialities.DoctorSpecialityModel._meta.fields]
 
 
