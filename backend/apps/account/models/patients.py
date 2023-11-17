@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 from apps.account.models import Account
@@ -55,6 +57,10 @@ class PatientModel(models.Model):
     modified_by = models.ForeignKey(Account, related_name="modf_patient_by_user", on_delete=models.SET_NULL, null=True)
     organization = models.ForeignKey(OrganizationModel, on_delete=models.SET_NULL, null=True)
     gender = models.BooleanField()
+
+    @property
+    def age(self):
+        return datetime.date.today().year - self.date_of_birth.year
 
     @property
     def full_name(self):
