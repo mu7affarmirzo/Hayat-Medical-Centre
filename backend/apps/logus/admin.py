@@ -2,6 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from apps.logus.models import *
+from apps.logus.models.room import TariffXTypeModel
 
 
 @admin.register(RoomModel)
@@ -45,3 +46,8 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(RoomPrice)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in RoomPrice._meta.fields]
+
+
+@admin.register(TariffXTypeModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in TariffXTypeModel._meta.fields]

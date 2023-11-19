@@ -13,6 +13,7 @@ class TariffModel(models.Model):
     color = models.CharField(null=True, blank=True, max_length=20)
     tag = models.CharField(null=True, blank=True, max_length=20)
     name = models.CharField(max_length=255)
+    price = models.PositiveIntegerField(default=0)
     created_by = models.ForeignKey(Account, related_name="tariff", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -70,3 +71,11 @@ class RoomPrice(models.Model):
 
     def __str__(self):
         return f"{self.room.room_number} - {self.tariff.name} - {self.room_type.name} - {self.price}"
+
+
+class TariffXTypeModel(models.Model):
+    tariff = models.ForeignKey(TariffModel, on_delete=models.CASCADE)
+    type = models.ForeignKey(RoomTypeModel, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.tariff.name} - {self.type.name}"
