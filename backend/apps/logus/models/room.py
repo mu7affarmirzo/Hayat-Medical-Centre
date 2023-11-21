@@ -8,6 +8,11 @@ VIEW_CHOICE = (
     ("river", "river"),
 )
 
+STATUS_CLEANEST = (
+    ("clean", "clean"),
+    ("dirty", "dirty")
+)
+
 
 class TariffModel(models.Model):
     color = models.CharField(null=True, blank=True, max_length=20)
@@ -45,7 +50,7 @@ class RoomModel(models.Model):
     view = models.CharField(max_length=200, choices=VIEW_CHOICE, default="residential")
     room_type = models.ForeignKey(RoomTypeModel, on_delete=models.CASCADE)
     capacity = models.IntegerField()
-
+    status_cleanest = models.CharField(choices=STATUS_CLEANEST, default="clean", max_length=30)
     created_by = models.ForeignKey(Account, related_name="room", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
