@@ -1,0 +1,1 @@
+from django.db import modelsclass LogusChequeModel(models.Model):    is_paid = models.BooleanField(default=False)
