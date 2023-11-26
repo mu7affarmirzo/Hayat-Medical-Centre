@@ -62,6 +62,13 @@ class PatientModel(models.Model):
     def age(self):
         return datetime.date.today().year - self.date_of_birth.year
 
+    def to_result(self):
+        return {
+            'age': self.age,
+            'name': self.full_name,
+            'gender': self.gender
+        }
+
     @property
     def full_name(self):
         try:

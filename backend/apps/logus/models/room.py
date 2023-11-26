@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 from apps.account.models import Account
 
@@ -55,6 +56,21 @@ class RoomModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_room", on_delete=models.SET_NULL, null=True)
+
+    # @property
+    # def available_capacity(self, start_date, end_date):
+    #     booked_rooms = BookedRoomModel.objects.filter(
+    #         room=self,
+    #         end_date__gte=start_date,
+    #         start_date__lte=end_date,
+    #     )
+    #
+    #     total_booked_capacity = booked_rooms.aggregate(Sum('room__capacity'))['room__capacity__sum']
+    #     total_booked_capacity = total_booked_capacity or 0  # Handle the case when there are no booked rooms
+    #
+    #     available_capacity = self.capacity - total_booked_capacity
+    #
+    #     return available_capacity if available_capacity > 0 else 0
 
     def __str__(self):
         return f"{self.room_number} - {self.is_available} - {self.room_type} - {self.capacity}"
