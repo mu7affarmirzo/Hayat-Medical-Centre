@@ -45,6 +45,7 @@ class RoomTypeModel(models.Model):
 
 class RoomModel(models.Model):
     room_number = models.CharField(max_length=50)
+    price = models.BigIntegerField(default=0, null=True, blank=True)
     is_available = models.BooleanField(default=False)
     count = models.IntegerField(default=0)
     floor = models.IntegerField(default=1)
