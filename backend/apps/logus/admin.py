@@ -56,3 +56,8 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(LogusChequeModel)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in LogusChequeModel._meta.fields]
+
+
+@admin.register(AdditionallyPurchasedServicesModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in AdditionallyPurchasedServicesModel._meta.fields]

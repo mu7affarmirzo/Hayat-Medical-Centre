@@ -1,1 +1,1 @@
-from .services import ServiceModelfrom .room import RoomModel, TariffModel, RoomTypeModel, RoomPricefrom .logus_cheque import *from .booked_room import BookedRoomModelfrom .booking import BookingModelfrom .tariff_services import TariffServiceModel
+from .services import ServiceModelfrom .room import RoomModel, TariffModel, RoomTypeModel, RoomPricefrom .logus_cheque import *from .booked_room import BookedRoomModelfrom .booking import BookingModelfrom .tariff_services import TariffServiceModel, AdditionallyPurchasedServicesModel
