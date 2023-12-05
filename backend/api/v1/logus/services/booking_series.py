@@ -1,0 +1,1 @@
+import datetimedef generate_seria(user, start_date, end_date):    now = datetime.datetime.now()    return f"creator={user.id}-sd={start_date}-ed={end_date}-t={now}"
