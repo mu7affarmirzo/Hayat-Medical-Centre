@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from api.v1.logus.serializers import BookedRoomModelSerializer, SearchPatientSerializer, BookedRoomCreateSerializer
 from api.v1.organizations.serializers import PatientModelSerializer
 from apps.account.models import PatientModel
-from apps.logus.models import BookedRoomModel, RoomPrice, RoomModel
+from apps.logus.models import BookedRoomModel, RoomPrice, RoomModel, BookingModel
 
 
 @swagger_auto_schema(method="get", tags=["logus-booked-room"])
@@ -35,7 +35,8 @@ def get_booked_room_retrieve_view(request, pk):
 @swagger_auto_schema(method="post", tags=["logus-booked-room"], request_body=BookedRoomCreateSerializer)
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
-def create_booked_room_view(request):
+def create_booked_room_view(request, seria):
+    booking = get_object_or_404(BookingModel, seria=seria)
     data = request.data
     patient = get_object_or_404(PatientModel, pk=data["patients"])
     room = get_object_or_404(RoomModel, pk=data["room"])
@@ -44,6 +45,7 @@ def create_booked_room_view(request):
     try:
         booked_room = BookedRoomModel.objects.create(created_by=request.user, modified_by=request.user,
                                                      patients=patient,
+                                                     booking=booking,
                                                      room_price=room_price, room=room, start_date=data["start_date"],
                                                      end_date=data["end_date"], discount=data["discount"])
     except Exception as e:
