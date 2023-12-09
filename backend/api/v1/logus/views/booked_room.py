@@ -42,6 +42,11 @@ def create_booked_room_view(request, seria):
     room = get_object_or_404(RoomModel, pk=data["room"])
     room_price = get_object_or_404(RoomPrice, pk=data["room_price"])
 
+    # room = RoomModel.objects.filter(room_number=serializer.validated_data['room']).first()
+    # room_type = RoomTypeModel.objects.filter(name=serializer.validated_data['room_type']).first()
+    # patient = PatientModel.objects.filter(id=serializer.validated_data['patients']).first()
+    # tariff = TariffModel.objects.filter(name=serializer.validated_data['tariff']).first()
+
     try:
         booked_room = BookedRoomModel.objects.create(created_by=request.user, modified_by=request.user,
                                                      patients=patient,
