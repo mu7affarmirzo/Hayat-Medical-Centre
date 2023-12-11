@@ -165,3 +165,13 @@ def cancel_booking_view(request, pk):
     booked.stage = "cancelled"
     booked.save(update_fields=["stage"])
     return Response(status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(method="post", tags=["logus-booked-room"])
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def settled_booking_view(request, pk):
+    booked = get_object_or_404(BookedRoomModel, pk=pk)
+    booked.stage = "settled"
+    booked.save(update_fields=["stage"])
+    return Response(status=status.HTTP_200_OK)
