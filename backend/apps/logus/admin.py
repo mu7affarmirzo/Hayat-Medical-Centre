@@ -14,8 +14,9 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(BookedRoomModel)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ["room_price", "room", "patients", "discount", "abs_price", "is_checked_out", "start_date",
-                    "end_date", "created_by", "modified_by"]
+    list_display = [field.name for field in BookedRoomModel._meta.fields]
+    # list_display = ["room_price", "room", "patients", "discount", "abs_price", "is_checked_out", "start_date",
+    #                 "end_date", "created_by", "modified_by"]
 
 
 @admin.register(TariffModel)
