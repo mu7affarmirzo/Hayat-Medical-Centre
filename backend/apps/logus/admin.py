@@ -63,3 +63,15 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in AdditionallyPurchasedServicesModel._meta.fields]
     raw_id_fields = ["booked_room"]
+
+
+@admin.register(BookedRoomTariffsModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in BookedRoomTariffsModel._meta.fields]
+    raw_id_fields = ["booked_room"]
+
+
+@admin.register(BookedRoomRoomModel)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in BookedRoomRoomModel._meta.fields]
+    raw_id_fields = ["booked_room"]
