@@ -1,9 +1,9 @@
 from django.db import models
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from apps.account.models import Account, PatientModel
-from apps.logus.models import RoomPrice, RoomModel, RoomTypeModel, TariffModel, LogusChequeModel, BookingModel
+from apps.logus.models import RoomModel, RoomTypeModel, TariffModel, LogusChequeModel
 
 DISCOUNT_CHOICES = (
     (0, 0),
@@ -15,7 +15,7 @@ DISCOUNT_CHOICES = (
     (30, 30),
 )
 SEGMENT = (
-    ("ОСН","Основной")
+    ("ОСН", "Основной")
 )
 STAGES = (
     ('booked', 'booked'),
@@ -99,6 +99,19 @@ class BookedRoomRoomModel(models.Model):
 def cheque_create_add(sender, instance: BookedRoomModel = None, created=False, **kwargs):
     if created:
         # TODO optimize
+        booked_room_tariff = BookedRoomTariffsModel.objects.create(booked_room=instance, tariff=instance.tariff,
+                                                                   price=instance.tariff.price,
+                                                                   start_date=instance.start_date,
+                                                                   end_date=instance.end_date,
+                                                                   created_by=instance.created_by,
+                                                                   modified_by=instance.modified_by)
+        booked_room_type = BookedRoomRoomModel.objects.create(booked_room=instance, room=instance.room,
+                                                              room_type=instance.room_type,
+                                                              price=instance.room.price,
+                                                              start_date=instance.start_date,
+                                                              end_date=instance.end_date,
+                                                              created_by=instance.created_by,
+                                                              modified_by=instance.modified_by)
         cheque = LogusChequeModel.objects.create(
             patient=instance.patients,
             created_by=instance.created_by,
@@ -114,4 +127,3 @@ def cheque_create_add(sender, instance: BookedRoomModel = None, created=False, *
         )
         instance.cheque = cheque
         instance.save(update_fields=["cheque"])
-
