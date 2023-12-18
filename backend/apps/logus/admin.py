@@ -75,3 +75,8 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in BookedRoomRoomModel._meta.fields]
     raw_id_fields = ["booked_room"]
+
+
+@admin.register(Payments)
+class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in Payments._meta.fields]
