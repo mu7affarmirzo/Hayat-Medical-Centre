@@ -5,7 +5,7 @@ from apps.warehouse.models.store_point import StorePointModel
 
 
 class IncomeModel(models.Model):
-    serial = models.UUIDField(default=uuid.uuid4())
+    serial = models.UUIDField(default=uuid.uuid4)
     receiver = models.ForeignKey(StorePointModel, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Account, related_name="income", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

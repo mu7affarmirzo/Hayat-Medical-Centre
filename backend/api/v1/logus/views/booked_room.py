@@ -1,1 +1,177 @@
-import datetimefrom drf_yasg.utils import swagger_auto_schemafrom rest_framework import statusfrom rest_framework.decorators import api_view, permission_classesfrom rest_framework.permissions import IsAuthenticatedfrom rest_framework.response import Responsefrom django.shortcuts import get_object_or_404from apps.logus.models import BookedRoomModelfrom api.v1.logus.serializers import BookedRoomModelSerializer@permission_classes((IsAuthenticated,))@swagger_auto_schema(method="get", tags=["logus-booked-room"])@api_view(['GET'])def get_booked_room_view(request):    booked_rooms = BookedRoomModel.objects.all()    serializer = BookedRoomModelSerializer(booked_rooms, many=True)    return Response(serializer.data)@permission_classes((IsAuthenticated,))@swagger_auto_schema(method="get", tags=["logus-booked-room"])@api_view(['GET'])def get_booked_room_retrieve_view(request, pk):    booked_room = get_object_or_404(BookedRoomModel, pk=pk)    serializer = BookedRoomModelSerializer(booked_room)    return Response(serializer.data)@permission_classes((IsAuthenticated,))@swagger_auto_schema(method="post", tags=["logus-booked-room"], request_body=BookedRoomModelSerializer)@api_view(['POST'])def create_booked_room_view(request):    booked_room = BookedRoomModel(created_by=request.user, modified_by=request.user)    serializer = BookedRoomModelSerializer(booked_room, data=request.data)    if serializer.is_valid():        serializer.save()        return Response(serializer.data, status=status.HTTP_201_CREATED)    return Response(status=status.HTTP_400_BAD_REQUEST)@permission_classes((IsAuthenticated,))@swagger_auto_schema(method="put", tags=["logus-booked-room"], request_body=BookedRoomModelSerializer)@api_view(['PUT'])def update_booked_room_view(request, pk):    booked_room = get_object_or_404(BookedRoomModel, pk=pk)    booked_room.modified_by = request.user    booked_room.save()    serializer = BookedRoomModelSerializer(booked_room, data=request.data)    if serializer.is_valid():        serializer.save()        return Response(serializer.data, status=status.HTTP_201_CREATED)    return Response(status=status.HTTP_400_BAD_REQUEST)@permission_classes((IsAuthenticated,))@swagger_auto_schema(method="delete", tags=["logus-booked-room"])@api_view(['DELETE'])def delete_booked_room_view(request, pk):    booked_room = get_object_or_404(BookedRoomModel, pk=pk)    booked_room.delete()    return Response(status=status.HTTP_204_NO_CONTENT)@permission_classes((IsAuthenticated,))@swagger_auto_schema(method="get", tags=["logus-booked-room"])@api_view(['GET'])def get_leaving_guests_view(request):    booked_rooms = BookedRoomModel.objects.filter(is_checked_out=False, end_date__lte=datetime.date.today())    serializer = BookedRoomModelSerializer(booked_rooms, many=True)    return Response(serializer.data)
+import datetime
+
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from api.v1.logus.serializers import BookedRoomModelSerializer, SearchPatientSerializer, BookedRoomCreateSerializer
+from api.v1.organizations.serializers import PatientModelSerializer
+from apps.account.models import PatientModel
+from apps.logus.models import BookedRoomModel, RoomPrice, RoomModel, BookingModel
+
+
+@swagger_auto_schema(method="get", tags=["logus-booked-room"])
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_booked_room_view(request):
+    booked_rooms = BookedRoomModel.objects.all()
+    serializer = BookedRoomModelSerializer(booked_rooms, many=True)
+    return Response(serializer.data)
+
+
+@swagger_auto_schema(method="get", tags=["logus-booked-room"])
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_booked_room_retrieve_view(request, pk):
+    booked_room = get_object_or_404(BookedRoomModel, pk=pk)
+    serializer = BookedRoomModelSerializer(booked_room)
+    return Response(serializer.data)
+
+
+@swagger_auto_schema(method="post", tags=["logus-booked-room"], request_body=BookedRoomCreateSerializer)
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def create_booked_room_view(request, seria):
+    booking = get_object_or_404(BookingModel, seria=seria)
+    data = request.data
+    patient = get_object_or_404(PatientModel, pk=data["patients"])
+    room = get_object_or_404(RoomModel, pk=data["room"])
+    room_price = get_object_or_404(RoomPrice, pk=data["room_price"])
+
+    # room = RoomModel.objects.filter(room_number=serializer.validated_data['room']).first()
+    # room_type = RoomTypeModel.objects.filter(name=serializer.validated_data['room_type']).first()
+    # patient = PatientModel.objects.filter(id=serializer.validated_data['patients']).first()
+    # tariff = TariffModel.objects.filter(name=serializer.validated_data['tariff']).first()
+
+    try:
+        booked_room = BookedRoomModel.objects.create(created_by=request.user, modified_by=request.user,
+                                                     patients=patient,
+                                                     booking=booking,
+                                                     room_price=room_price, room=room, start_date=data["start_date"],
+                                                     end_date=data["end_date"], discount=data["discount"])
+    except Exception as e:
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": str(e)})
+    return Response(status=status.HTTP_201_CREATED)
+
+
+@swagger_auto_schema(method="put", tags=["logus-booked-room"], request_body=BookedRoomCreateSerializer)
+@api_view(['PUT'])
+@permission_classes((IsAuthenticated,))
+def update_booked_room_view(request, pk):
+    booked_room = get_object_or_404(BookedRoomModel, pk=pk)
+    booked_room.modified_by = request.user
+    booked_room.save()
+    serializer = BookedRoomCreateSerializer(booked_room, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@swagger_auto_schema(method="delete", tags=["logus-booked-room"])
+@api_view(['DELETE'])
+@permission_classes((IsAuthenticated,))
+def delete_booked_room_view(request, pk):
+    booked_room = get_object_or_404(BookedRoomModel, pk=pk)
+    booked_room.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@swagger_auto_schema(method="get", tags=["logus-booked-room"])
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_leaving_guests_view(request):
+    booked_rooms = BookedRoomModel.objects.filter(is_checked_out=False, end_date=datetime.date.today())
+    # TODO: balance and paid is just a dummy, fix it later
+    serializer = BookedRoomModelSerializer(booked_rooms, many=True)
+    return Response(serializer.data)
+
+
+@swagger_auto_schema(method="get", tags=["logus-booked-room"])
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_incoming_guests_view(request):
+    booked_rooms = BookedRoomModel.objects.filter(is_checked_out=False, start_date=datetime.date.today())
+    # TODO: balance and paid is just a dummy, fix it later
+    serializer = BookedRoomModelSerializer(booked_rooms, many=True)
+    return Response(serializer.data)
+
+
+@swagger_auto_schema(method="get", tags=["logus-booked-room"])
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_living_guests_view(request):
+    currents_bookings = BookedRoomModel.objects.filter(is_checked_out=False, start_date__lt=datetime.date.today(),
+                                                       end_date__gte=datetime.date.today())
+    serializer = BookedRoomModelSerializer(currents_bookings, many=True)
+    return Response(serializer.data)
+
+
+@swagger_auto_schema(method="post", tags=["logus-booked-room"], request_body=SearchPatientSerializer)
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def search_patient(request):
+    word = request.data["word"]
+
+    patients = PatientModel.objects.filter(
+        Q(f_name__icontains=word) | Q(mid_name__icontains=word) | Q(l_name__icontains=word) | Q(email__icontains=word))
+    serializer = PatientModelSerializer(patients, many=True)
+    return Response(serializer.data)
+
+
+@swagger_auto_schema(method="post", tags=["logus-booked-room"], request_body=SearchPatientSerializer)
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def search_booked_room(request):
+    word = request.data["word"]
+
+    books = BookedRoomModel.objects.filter(
+        Q(tariff__name__icontains=word) | Q(room__room_number__icontains=word) | Q(room_type__name__icontains=word) | Q(
+            patients__f_name__icontains=word) | Q(patients__mid_name__icontains=word) |
+        Q(patients__l_name__icontains=word))
+    serializer = BookedRoomModelSerializer(books, many=True)
+    return Response(serializer.data)
+
+
+@swagger_auto_schema(method="get", tags=["logus-booked-room"])
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def unpaid_books(request):
+    books = BookedRoomModel.objects.filter(cheque__is_paid=False)
+    serializer = BookedRoomModelSerializer(books, many=True)
+    return Response(serializer.data)
+
+
+@swagger_auto_schema(method="get", tags=["logus-booked-room"])
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def get_cheque_view(request, pk):
+    cheque = get_object_or_404(BookedRoomModel, id=pk)
+    cheque = cheque.cheque
+    # cheque.
+    print(cheque)
+    return Response('Hello')
+
+
+@swagger_auto_schema(method="post", tags=["logus-booked-room"])
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def cancel_booking_view(request, pk):
+    booked = get_object_or_404(BookedRoomModel, pk=pk)
+    booked.stage = "cancelled"
+    booked.save(update_fields=["stage"])
+    return Response(status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(method="post", tags=["logus-booked-room"])
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+def settled_booking_view(request, pk):
+    booked = get_object_or_404(BookedRoomModel, pk=pk)
+    booked.stage = "settled"
+    booked.save(update_fields=["stage"])
+    return Response(status=status.HTTP_200_OK)

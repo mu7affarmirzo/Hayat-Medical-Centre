@@ -9,6 +9,7 @@ from drf_yasg import openapi
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 
+
 schema_view = get_schema_view(
    openapi.Info(
       title="API Docs",
@@ -18,7 +19,7 @@ schema_view = get_schema_view(
       contact=openapi.Contact(email="hayatmed@gmail.com"),
       license=openapi.License(name="BSD License"),
    ),
-   url=f"https://{config('PRODUCTION_HOST')}/",
+   url=f"{config('PRODUCTION_HOST')}",
    public=True,
    permission_classes=(permissions.AllowAny,),
 )

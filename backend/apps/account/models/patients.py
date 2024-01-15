@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 from apps.account.models import Account
@@ -35,7 +37,7 @@ class PatientModel(models.Model):
     mid_name = models.CharField(max_length=255, null=True, blank=True)
     l_name = models.CharField(max_length=255)
     email = models.EmailField(null=True, blank=True)
-    date_of_birth = models.DateTimeField(auto_now=False)
+    date_of_birth = models.DateField(auto_now=False)
     home_phone_number = models.CharField(max_length=255, blank=True, null=True)
     mobile_phone_number = models.CharField(max_length=255, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
@@ -54,7 +56,18 @@ class PatientModel(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_patient_by_user", on_delete=models.SET_NULL, null=True)
     organization = models.ForeignKey(OrganizationModel, on_delete=models.SET_NULL, null=True)
+    gender = models.BooleanField()
 
+    @property
+    def age(self):
+        return datetime.date.today().year - self.date_of_birth.year
+
+    def to_result(self):
+        return {
+            'age': self.age,
+            'name': self.full_name,
+            'gender': self.gender
+        }
 
     @property
     def full_name(self):
