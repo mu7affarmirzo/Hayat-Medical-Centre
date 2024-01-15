@@ -9,6 +9,7 @@ from drf_yasg import openapi
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 
+
 schema_view = get_schema_view(
    openapi.Info(
       title="API Docs",
