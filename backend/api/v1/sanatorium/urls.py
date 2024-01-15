@@ -1,0 +1,1 @@
+from django.urls.conf import pathfrom api.v1.sanatorium.views import *app_name = "sanatorium"urlpatterns = [    path('get-ibs', illness_history_view),    path('get-ib/<int:pk>', illness_history_id_view),    path('search-ibs', illness_history_search_view),]

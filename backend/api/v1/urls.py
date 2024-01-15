@@ -8,4 +8,5 @@ urlpatterns = [
     path('cashbox/', include('api.v1.cashbox.urls')),
     path('warehouse/', include('api.v1.warehouse.urls')),
     path('logus/', include('api.v1.logus.urls')),
+    path('sanatorium/', include('api.v1.sanatorium.urls')),
 ]

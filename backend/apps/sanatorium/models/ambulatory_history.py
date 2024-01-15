@@ -17,7 +17,7 @@ class AmbulatoryHistory(models.Model):
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name="ambulatory_histories")
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    modified_by = models.ForeignKey(Account, related_name="modf_schedule_by_user", on_delete=models.SET_NULL, null=True)
+    modified_by = models.ForeignKey(Account, related_name="modf_ambulatory_by_user", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         unique_together = ["patient", "booking"]

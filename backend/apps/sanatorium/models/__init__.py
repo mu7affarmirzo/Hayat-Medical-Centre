@@ -1,0 +1,1 @@
+from .ambulatory_history import *from .cheque import *from .diagnosis_template import *from .schedule import *from .parameters import *from .illnes_history import *
