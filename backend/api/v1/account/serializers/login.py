@@ -12,8 +12,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['branch'] = user.branch_id
         a = [x for x in user.account_role_user.all()]
         roles = dict()
+        temp = 0
         for i in a:
-            temp = 0
             roles[temp] = i.role.name
             temp += 1
         token['user_role'] = roles
