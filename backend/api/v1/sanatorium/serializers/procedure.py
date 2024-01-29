@@ -1,0 +1,1 @@
+from rest_framework import serializersfrom apps.sanatorium.models import *class ProcedureSerializer(serializers.ModelSerializer):    class Meta:        model = ProcedureModel        fields = "__all__"        read_only_fields = ["price",]
