@@ -14,3 +14,11 @@ from api.v1.sanatorium.services import dispatch
 def get_patients(request):
     response = dispatch.get_patients(request)
     return Response(response)
+
+
+@swagger_auto_schema(tags=['sanatorium'], method="get", )
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+def get_patients(request):
+    response = dispatch.get_patients(request)
+    return Response(response)
