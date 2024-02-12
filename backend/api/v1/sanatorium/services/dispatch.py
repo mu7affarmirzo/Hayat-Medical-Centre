@@ -54,6 +54,7 @@ def get_patients(request):
 
     for patient in patients:
         patients_response.append({
+            "id": patient.id,
             "cito": None, "no": patient.series_number, "age": patient.patient.age,
             "room": patient.booking.room.room_number, "dispatch": ["", ""],
             "start_date": patient.booking.start_date, "end_date": patient.booking.end_date,
