@@ -8,7 +8,7 @@ class PatientModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PatientModel
-        fields = '__all__'
+        exclude = ["modified_by", "created_by"]
 
 
 class PatientCreateSerializer(serializers.ModelSerializer):
