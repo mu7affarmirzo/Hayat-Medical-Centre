@@ -2,14 +2,14 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 from apps.account.models import Account
-from apps.account.models.otp import OtpModel
+# from apps.account.models.otp import OtpModel
 
 
-class OtpSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = OtpModel
-        fields = ['email']
+# class OtpSerializer(serializers.ModelSerializer):
+#
+#     class Meta:
+#         model = OtpModel
+#         fields = ['email']
 
 
 class StepTwoSerializer(serializers.Serializer):
