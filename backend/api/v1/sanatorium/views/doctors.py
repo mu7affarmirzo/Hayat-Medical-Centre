@@ -1,4 +1,5 @@
 from django.db.models import Q, Count
+from django.forms import model_to_dict
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.generics import get_object_or_404
@@ -15,17 +16,8 @@ from apps.sanatorium.models import *
 def ib_by_id_doctors_view(request, pk):
 
     context = {
-        "patient": {},
         "documents": {},
-        "ib_history": {},
-        "booking": {},
-        "factors": [],
-        "tags": "",
         "regime": "",
-        "first_diagnosis": "",
-        "arrival_diagnosis": "",
-        "actual_diagnosis": "",
-        "risk_factors": [],
         "highlighted_tags": {
             "allergy": False,
             "meteolabel": False,
@@ -35,5 +27,6 @@ def ib_by_id_doctors_view(request, pk):
         }
     }
     ill_his = get_object_or_404(IllnessHistory, pk=pk)
+    serializer = DoctorsIllnessHistorySerializer(ill_his)
 
-    return Response(context)
+    return Response({**serializer.data, **context})
