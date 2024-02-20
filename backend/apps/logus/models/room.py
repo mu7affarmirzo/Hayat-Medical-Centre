@@ -15,6 +15,13 @@ STATUS_CLEANEST = (
 )
 
 
+ROOM_TASK_TYPE = (
+    ("living", "living"),
+    ("service", "service"),
+    ("security", "security"),
+)
+
+
 class TariffModel(models.Model):
     color = models.CharField(null=True, blank=True, max_length=20)
     tag = models.CharField(null=True, blank=True, max_length=20)
@@ -53,10 +60,16 @@ class RoomModel(models.Model):
     room_type = models.ForeignKey(RoomTypeModel, on_delete=models.CASCADE)
     capacity = models.IntegerField()
     status_cleanest = models.CharField(choices=STATUS_CLEANEST, default="clean", max_length=30)
+
+    room_task_type = models.CharField(choices=ROOM_TASK_TYPE, default='living', max_length=30)
+
     created_by = models.ForeignKey(Account, related_name="room", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_room", on_delete=models.SET_NULL, null=True)
+
+
+
 
     # @property
     # def available_capacity(self, start_date, end_date):
