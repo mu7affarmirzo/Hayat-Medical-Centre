@@ -21,9 +21,9 @@ def ib_by_id_doctors_view(request, pk):
         "highlighted_tags": {
             "allergy": False,
             "meteolabel": False,
-            "Food issues": False,
-            "Furniture fault": False,
-            "Pills Drugs": False
+            "food_issues": False,
+            "furniture_fault": False,
+            "pills_drugs": False
         }
     }
     ill_his = get_object_or_404(IllnessHistory, pk=pk)
