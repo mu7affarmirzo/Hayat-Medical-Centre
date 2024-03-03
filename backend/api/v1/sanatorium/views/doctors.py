@@ -1,6 +1,7 @@
 from django.db.models import Q, Count
 from django.forms import model_to_dict
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -30,3 +31,19 @@ def ib_by_id_doctors_view(request, pk):
     serializer = DoctorsIllnessHistorySerializer(ill_his)
 
     return Response({**serializer.data, **context})
+
+
+@swagger_auto_schema(tags=['sanatorium'], method="post", request_body=InitialAppointmentWithDoctorSerializer)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def init_appointment_with_doctor_view(request):
+    doctor = request.user
+    init_app = InitialAppointmentWithDoctorModel(doctor=doctor)
+
+    if request.method == "POST":
+        serializer = InitialAppointmentWithDoctorSerializer(init_app, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
