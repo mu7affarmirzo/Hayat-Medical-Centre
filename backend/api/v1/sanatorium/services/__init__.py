@@ -1,0 +1,1 @@
+from .diagnosis_template_category import *
