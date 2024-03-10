@@ -3,8 +3,10 @@ from apps.account.models import PatientModel, Account
 from apps.logus.models import ServiceModel, RoomModel
 
 STATUS_CHOICES = (
-    ("a", "a"),
-    ("b", "b")
+    ("done", "done"),
+    ("assigned", "assigned"),
+    ("cancel", "cancel"),
+    ("didn't come", "didn't come")
 )
 
 
@@ -15,7 +17,7 @@ class ScheduleModel(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     room = models.ForeignKey(RoomModel, on_delete=models.CASCADE, related_name='service_schedule_room', null=True, blank=True)
-    status = models.CharField(choices=STATUS_CHOICES, max_length=255, default="a")
+    status = models.CharField(choices=STATUS_CHOICES, max_length=255, default="assigned")
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name="schedules")
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
