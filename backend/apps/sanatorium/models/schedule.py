@@ -10,6 +10,7 @@ STATUS_CHOICES = (
 
 class ScheduleModel(models.Model):
     patient = models.ForeignKey(PatientModel, on_delete=models.CASCADE)
+    procedure_doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="doctor_procedures")
     service = models.ForeignKey(ServiceModel, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
