@@ -14,6 +14,8 @@ admin.site.register(ToxicFactorsModel)
 admin.site.register(TagsModel)
 admin.site.register(ScheduleModel)
 admin.site.register(DiagnosisTemplateCategory)
+admin.site.register(InitialAppointmentWithDoctorModel)
+admin.site.register(Consulting)
 
 
 @admin.register(BasicTemplateModel)
