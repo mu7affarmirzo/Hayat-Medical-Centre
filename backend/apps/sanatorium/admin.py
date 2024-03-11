@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
 from apps.sanatorium.models import *
 
@@ -13,4 +14,8 @@ admin.site.register(ToxicFactorsModel)
 admin.site.register(TagsModel)
 admin.site.register(ScheduleModel)
 admin.site.register(DiagnosisTemplateCategory)
-admin.site.register(BasicTemplateModel)
+
+
+@admin.register(BasicTemplateModel)
+class BasicTemplateModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
