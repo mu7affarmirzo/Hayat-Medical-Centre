@@ -55,3 +55,15 @@ def update_init_appointment_with_doctor_view(request, pk):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@swagger_auto_schema(tags=['sanatorium'], method="get")
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+def get_init_appointment_view(request, pk):
+    """
+    pk from illness history
+    """
+    appointment = get_object_or_404(InitialAppointmentWithDoctorModel, pk=pk)
+    serializer = InitialAppointmentWithDoctorSerializer(appointment)
+    return Response(serializer)
