@@ -64,6 +64,9 @@ def get_init_appointment_view(request, pk):
     """
     pk from illness history
     """
-    appointment = get_object_or_404(InitialAppointmentWithDoctorModel, pk=pk)
+    try:
+        appointment = InitialAppointmentWithDoctorModel.objects.get(illness_history_id=pk)
+    except InitialAppointmentWithDoctorModel.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = InitialAppointmentWithDoctorSerializer(appointment)
     return Response(serializer)
