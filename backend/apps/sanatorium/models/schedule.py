@@ -1,6 +1,7 @@
 from django.db import models
 from apps.account.models import PatientModel, Account
 from apps.logus.models import ServiceModel, RoomModel
+from apps.sanatorium.models import IllnessHistory
 
 STATUS_CHOICES = (
     ("done", "done"),
@@ -11,6 +12,7 @@ STATUS_CHOICES = (
 
 
 class ScheduleModel(models.Model):
+    illness_history = models.ForeignKey(IllnessHistory, on_delete=models.CASCADE, null=True)
     patient = models.ForeignKey(PatientModel, on_delete=models.CASCADE)
     procedure_doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="doctor_procedures")
     service = models.ForeignKey(ServiceModel, on_delete=models.CASCADE)
