@@ -9,4 +9,5 @@ urlpatterns = [
     path('warehouse/', include('api.v1.warehouse.urls')),
     path('logus/', include('api.v1.logus.urls')),
     path('sanatorium/', include('api.v1.sanatorium.urls')),
+    path('lis/', include('api.v1.lis.urls')),
 ]
