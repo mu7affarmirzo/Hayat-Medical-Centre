@@ -1,11 +1,12 @@
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.v1.sanatorium.serializers import *
+from apps.account.models import SpecialityModel
 from apps.sanatorium.models import *
 
 
@@ -70,3 +71,14 @@ def get_init_appointment_view(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
     serializer = InitialAppointmentWithDoctorSerializer(appointment)
     return Response(serializer)
+
+
+class MedServicesSpecialtyListAPIView(generics.ListAPIView):
+    queryset = SpecialityModel.objects.all()
+    serializer_class = MedServicesSpecialtyListSerializer
+
+
+class ProcedureListAPIView(generics.ListAPIView):
+    queryset = SpecialityModel.objects.all()
+    serializer_class = ProcedureListSerializer
+

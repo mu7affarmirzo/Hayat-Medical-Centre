@@ -40,7 +40,8 @@ class MedicalService(models.Model):
     name = models.CharField(max_length=255)
     cost = models.BigIntegerField()
     doctor = models.ManyToManyField(DoctorAccountModel, blank=True)
-    speciality = models.ForeignKey(SpecialityModel, on_delete=models.SET_NULL, null=True)
+    speciality = models.ForeignKey(SpecialityModel, on_delete=models.SET_NULL,
+                                   null=True, related_name='med_service_specialty')
     """
     look at sanatorium 
     https://www.figma.com/file/aeByA9WSTeHdobGPmKAxfR/Hayat-Medical-(Project)?type=design&node-id=3595-18579&mode=design&t=5d8fgNQjEiyO1W9h-0
