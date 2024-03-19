@@ -16,6 +16,10 @@ admin.site.register(ScheduleModel)
 admin.site.register(DiagnosisTemplateCategory)
 admin.site.register(InitialAppointmentWithDoctorModel)
 admin.site.register(Consulting)
+admin.site.register(InitialAppointmentMedicalServiceModel)
+admin.site.register(InitialAppointmentProcedureServiceModel)
+admin.site.register(InitialAppointmentLabResearchServiceModel)
+admin.site.register(InitialAppointmentPillsInjectionsModel)
 
 
 @admin.register(BasicTemplateModel)

@@ -35,7 +35,7 @@ def ib_by_id_doctors_view(request, pk):
 @permission_classes((IsAuthenticated,))
 def init_appointment_with_doctor_view(request):
     doctor = request.user
-    init_app = InitialAppointmentWithDoctorModel(doctor=doctor)
+    init_app = InitialAppointmentWithDoctorModel(doctor=doctor, created_by=doctor)
 
     if request.method == "POST":
         serializer = InitialAppointmentWithDoctorSerializer(init_app, data=request.data)

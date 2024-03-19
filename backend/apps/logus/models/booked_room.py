@@ -26,7 +26,8 @@ STAGES = (
 
 
 class BookedRoomModel(models.Model):
-    tariff = models.ForeignKey(TariffModel, on_delete=models.SET_NULL, null=True)
+    tariff = models.ForeignKey(TariffModel, on_delete=models.SET_NULL, null=True,
+                               related_name='booked_room_tariff', blank=True)
     room = models.ForeignKey('RoomModel', on_delete=models.SET_NULL, null=True)
     room_type = models.ForeignKey(RoomTypeModel, on_delete=models.SET_NULL, null=True)
     patients = models.ForeignKey(PatientModel, on_delete=models.SET_NULL, null=True, related_name="booked_rooms")
