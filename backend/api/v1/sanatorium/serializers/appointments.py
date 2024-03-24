@@ -3,8 +3,55 @@ from apps.sanatorium.models import (
     RepeatedAppointmentWithDoctorModel,
     BasePillsInjectionsModel,
     BaseLabResearchServiceModel, BaseMedicalServiceModel, BaseProcedureServiceModel, FinalAppointmentWithDoctorModel,
-    DiagnosisTemplate
+    DiagnosisTemplate, ConsultingWithNeurologistModel
 )
+
+
+def create(validated_data, target_model, model_type: str):
+    medical_services = validated_data.pop('medical_services')
+    lab_research = validated_data.pop('lab_research')
+    procedures = validated_data.pop('procedures')
+    pills = validated_data.pop('pills')
+
+    target = target_model(**validated_data)
+    target.save()
+
+    for med_serv in medical_services:
+        BaseMedicalServiceModel.objects.create(
+            model_type=model_type,
+            model_ref_id=target.id,
+            illness_history=target.illness_history,
+            created_by=target.created_by,
+            **med_serv
+        )
+        for proc in procedures:
+            BaseProcedureServiceModel.objects.create(
+                model_type=model_type,
+                model_ref_id=target.id,
+                illness_history=target.illness_history,
+                created_by=target.created_by,
+                **proc
+            )
+
+        for l in lab_research:
+            BaseLabResearchServiceModel.objects.create(
+                model_type=model_type,
+                model_ref_id=target.id,
+                illness_history=target.illness_history,
+                created_by=target.created_by,
+                **l
+            )
+
+        for pill in pills:
+            BasePillsInjectionsModel.objects.create(
+                model_type=model_type,
+                model_ref_id=target.id,
+                illness_history=target.illness_history,
+                created_by=target.created_by,
+                **pill
+            )
+
+    return target
 
 
 class BaseMedicalServicesSerializer(serializers.ModelSerializer):
@@ -67,50 +114,8 @@ class RepeatedAppointmentSerializer(serializers.ModelSerializer):
         read_only = ['created_at', 'updated_at', 'doctor', 'created_by', 'updated_by']
 
     def create(self, validated_data):
-        medical_services = validated_data.pop('medical_services')
-        lab_research = validated_data.pop('lab_research')
-        procedures = validated_data.pop('procedures')
-        pills = validated_data.pop('pills')
-
-        rep_appointment = RepeatedAppointmentWithDoctorModel(**validated_data)
-        rep_appointment.save()
-
-        for med_serv in medical_services:
-            BaseMedicalServiceModel.objects.create(
-                model_type='repeated_app',
-                model_ref_id=rep_appointment.id,
-                illness_history=rep_appointment.illness_history,
-                created_by=rep_appointment.created_by,
-                **med_serv
-            )
-            for proc in procedures:
-                BaseProcedureServiceModel.objects.create(
-                    model_type='repeated_app',
-                    model_ref_id=rep_appointment.id,
-                    illness_history=rep_appointment.illness_history,
-                    created_by=rep_appointment.created_by,
-                    **proc
-                )
-
-            for l in lab_research:
-                BaseLabResearchServiceModel.objects.create(
-                    model_type='repeated_app',
-                    model_ref_id=rep_appointment.id,
-                    illness_history=rep_appointment.illness_history,
-                    created_by=rep_appointment.created_by,
-                    **l
-                )
-
-            for pill in pills:
-                BasePillsInjectionsModel.objects.create(
-                    model_type='repeated_app',
-                    model_ref_id=rep_appointment.id,
-                    illness_history=rep_appointment.illness_history,
-                    created_by=rep_appointment.created_by,
-                    **pill
-                )
-
-        return rep_appointment
+        result = create(validated_data, RepeatedAppointmentWithDoctorModel, 'repeated_app')
+        return result
 
 
 class FinalAppointmentSerializer(serializers.ModelSerializer):
@@ -136,5 +141,20 @@ class FinalAppointmentDetailedSerializer(serializers.ModelSerializer):
     diagnosis = DiagnosisTemplateSerializer(many=True)
 
     class Meta:
-        fields = '__all__'
         model = FinalAppointmentWithDoctorModel
+        fields = '__all__'
+
+
+class ConsultingWithNeurologistSerializer(serializers.Serializer):
+    medical_services = BaseMedicalServicesSerializer(many=True)
+    lab_research = BaseLabResearchServiceSerializer(many=True)
+    procedures = BaseProceduresSerializer(many=True)
+    pills = BasePPillsInjectionsSerializer(many=True)
+
+    class Meta:
+        model = ConsultingWithNeurologistModel
+        fields = '__all__'
+
+    def create(self, validated_data):
+        result = create(validated_data, ConsultingWithNeurologistModel, 'neurologist')
+        return result

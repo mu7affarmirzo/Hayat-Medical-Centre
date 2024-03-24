@@ -4,7 +4,54 @@ from apps.account.models import Account
 from apps.sanatorium.models import (DiagnosisTemplate, IllnessHistory)
 
 
+STATE_CHOICES = (
+        ('assigned', 'assigned'),
+        ('cancelled', 'cancelled'),
+        ('stopped', 'stopped'),
+        ('dispatched', 'dispatched'),
+        ('dispatched', 'dispatched'),
+    )
+
+
+class ConsultingWithNeurologistModel(models.Model):
+    ST_CHOICES = (
+        ('Показан', 'Показан'),
+        ('Не показан', 'Не показан'),
+        ('Противопоказан', 'Противопоказан'),
+    )
+    state = models.CharField(choices=STATE_CHOICES, max_length=50, default='assigned')
+
+    created_by = models.ForeignKey(Account, related_name='cwn_created', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    modified_by = models.ForeignKey(Account, related_name="modf_cwn", on_delete=models.SET_NULL, null=True)
+
+    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    illness_history = models.ForeignKey(
+        IllnessHistory, on_delete=models.CASCADE,
+        null=True, related_name='neurologist_consulting'
+    )
+    is_familiar_with_anamnesis = models.BooleanField(default=False)
+    complaint = models.TextField(null=True, blank=True)
+    anamnesis = models.TextField(null=True, blank=True)
+
+    #
+    #  OTHER FIELDS
+    #
+
+    cito = models.BooleanField(default=False)
+    for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=50, null=True, blank=True)
+    summary = models.TextField(blank=True, null=True)
+    recommendation = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.id}"
+
+
 class RepeatedAppointmentWithDoctorModel(models.Model):
+
+    state = models.CharField(choices=STATE_CHOICES, max_length=50, default='assigned')
+
     created_by = models.ForeignKey(Account, related_name='rawd_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -32,12 +79,7 @@ class RepeatedAppointmentWithDoctorModel(models.Model):
 
 
 class FinalAppointmentWithDoctorModel(models.Model):
-    STATE_CHOICES = (
-        ('assigned', 'assigned'),
-        ('cancelled', 'cancelled'),
-        ('stopped', 'stopped'),
-        ('dispatched', 'dispatched'),
-    )
+
     RESULT_CHOICES = (
         ('Улучение', 'Улучение'),
         ('Без изменения', 'Без изменения'),
