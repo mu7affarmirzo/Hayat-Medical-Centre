@@ -2,7 +2,8 @@ from rest_framework import serializers
 from apps.sanatorium.models import (
     RepeatedAppointmentWithDoctorModel,
     BasePillsInjectionsModel,
-    BaseLabResearchServiceModel, BaseMedicalServiceModel, BaseProcedureServiceModel
+    BaseLabResearchServiceModel, BaseMedicalServiceModel, BaseProcedureServiceModel, FinalAppointmentWithDoctorModel,
+    DiagnosisTemplate
 )
 
 
@@ -111,47 +112,29 @@ class RepeatedAppointmentSerializer(serializers.ModelSerializer):
 
         return rep_appointment
 
-    # def update(self, rep_appointment, validated_data):
-    #     medical_services = validated_data.pop('medical_services')
-    #     # lab_research = validated_data.pop('lab_research')
-    #     # procedures = validated_data.pop('procedures')
-    #     # pills = validated_data.pop('pills')
-    #
-    #     rep_appointment = RepeatedAppointmentWithDoctorModel(**validated_data)
-    #     rep_appointment.save()
-    #
-    #     for med_serv in medical_services:
-    #         BaseMedicalServiceModel.objects.create(
-    #             model_type='repeated_app',
-    #             model_ref_id=rep_appointment.id,
-    #             illness_history=rep_appointment.illness_history,
-    #             created_by=rep_appointment.created_by,
-    #             **med_serv
-    #         )
-    #     # for proc in procedures:
-    #     #     BaseProcedureServiceModel.objects.create(
-    #     #         model_type='repeated_app',
-    #     #         model_ref_id=rep_appointment.id,
-    #     #         illness_history=rep_appointment.illness_history,
-    #     #         created_by=rep_appointment.created_by,
-    #     #         **proc
-    #     #     )
-    #     #
-    #     # for l in lab_research:
-    #     #     BaseLabResearchServiceModel.objects.create(
-    #     #         model_type='repeated_app',
-    #     #         model_ref_id=rep_appointment.id,
-    #     #         illness_history=rep_appointment.illness_history,
-    #     #         created_by=rep_appointment.created_by,
-    #     #         **l
-    #     #     )
-    #     #
-    #     # for pill in pills:
-    #     #     BasePillsInjectionsModel.objects.create(
-    #     #         model_type='repeated_app',
-    #     #         model_ref_id=rep_appointment.id,
-    #     #         illness_history=rep_appointment.illness_history,
-    #     #         created_by=rep_appointment.created_by,
-    #     #         **pill
-    #     #     )
-    #     return rep_appointment
+
+class FinalAppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = FinalAppointmentWithDoctorModel
+        read_only = [
+            'created_by',
+            'created_at',
+            'modified_at',
+            'modified_by',
+            'state'
+        ]
+
+
+class DiagnosisTemplateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiagnosisTemplate
+        fields = '__all__'
+
+
+class FinalAppointmentDetailedSerializer(serializers.ModelSerializer):
+    diagnosis = DiagnosisTemplateSerializer(many=True)
+
+    class Meta:
+        fields = '__all__'
+        model = FinalAppointmentWithDoctorModel
