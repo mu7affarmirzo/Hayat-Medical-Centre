@@ -48,6 +48,76 @@ class ConsultingWithNeurologistModel(models.Model):
         return f"{self.id}"
 
 
+class ConsultingWithCardiologistModel(models.Model):
+    ST_CHOICES = (
+        ('Показан', 'Показан'),
+        ('Не показан', 'Не показан'),
+        ('Противопоказан', 'Противопоказан'),
+    )
+    state = models.CharField(choices=STATE_CHOICES, max_length=50, default='assigned')
+
+    created_by = models.ForeignKey(Account, related_name='cw_cardio_created', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    modified_by = models.ForeignKey(Account, related_name="modf_cw_cardio", on_delete=models.SET_NULL, null=True)
+
+    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    illness_history = models.ForeignKey(
+        IllnessHistory, on_delete=models.CASCADE,
+        null=True, related_name='cardiologist_consulting'
+    )
+    has_cardio_complaints = models.BooleanField(default=False)
+    has_nerve_complaints = models.BooleanField(default=False)
+    other_complaints = models.TextField(null=True, blank=True)
+    anamnesis = models.TextField(null=True, blank=True)
+
+    #
+    #  OTHER FIELDS
+    #
+
+    cito = models.BooleanField(default=False)
+    for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=50, null=True, blank=True)
+    summary = models.TextField(blank=True, null=True)
+    recommendation = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.id}"
+
+
+class AppointmentWithOnDutyDoctorModel(models.Model):
+    ST_CHOICES = (
+        ('Показан', 'Показан'),
+        ('Не показан', 'Не показан'),
+        ('Противопоказан', 'Противопоказан'),
+    )
+    state = models.CharField(choices=STATE_CHOICES, max_length=50, default='assigned')
+
+    created_by = models.ForeignKey(Account, related_name='aw_on_duty_created', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    modified_by = models.ForeignKey(Account, related_name="modf_aw_on_duty", on_delete=models.SET_NULL, null=True)
+
+    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    illness_history = models.ForeignKey(
+        IllnessHistory, on_delete=models.CASCADE,
+        null=True, related_name='on_duty_doctor_appointment'
+    )
+    complaints = models.TextField(null=True, blank=True)
+    objective_data = models.TextField(null=True, blank=True)
+
+    arterial_high = models.IntegerField(null=True)
+    arterial_low = models.IntegerField(null=True)
+    imt = models.FloatField(null=True)
+
+    cito = models.BooleanField(default=False)
+    for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=50, null=True, blank=True)
+    summary = models.TextField(blank=True, null=True)
+    recommendation = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.id}"
+
+
 class RepeatedAppointmentWithDoctorModel(models.Model):
 
     state = models.CharField(choices=STATE_CHOICES, max_length=50, default='assigned')

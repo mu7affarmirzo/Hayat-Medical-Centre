@@ -3,7 +3,7 @@ from apps.sanatorium.models import (
     RepeatedAppointmentWithDoctorModel,
     BasePillsInjectionsModel,
     BaseLabResearchServiceModel, BaseMedicalServiceModel, BaseProcedureServiceModel, FinalAppointmentWithDoctorModel,
-    DiagnosisTemplate, ConsultingWithNeurologistModel
+    DiagnosisTemplate, ConsultingWithNeurologistModel, ConsultingWithCardiologistModel, AppointmentWithOnDutyDoctorModel
 )
 
 
@@ -143,6 +143,12 @@ class FinalAppointmentDetailedSerializer(serializers.ModelSerializer):
     class Meta:
         model = FinalAppointmentWithDoctorModel
         fields = '__all__'
+        read_only = [
+            'created_by',
+            'created_at',
+            'modified_at',
+            'modified_by',
+        ]
 
 
 class ConsultingWithNeurologistSerializer(serializers.Serializer):
@@ -154,7 +160,62 @@ class ConsultingWithNeurologistSerializer(serializers.Serializer):
     class Meta:
         model = ConsultingWithNeurologistModel
         fields = '__all__'
+        read_only = [
+            'created_by',
+            'created_at',
+            'modified_at',
+            'modified_by',
+        ]
 
     def create(self, validated_data):
         result = create(validated_data, ConsultingWithNeurologistModel, 'neurologist')
         return result
+
+
+class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
+    medical_services = BaseMedicalServicesSerializer(many=True)
+    lab_research = BaseLabResearchServiceSerializer(many=True)
+    procedures = BaseProceduresSerializer(many=True)
+    pills = BasePPillsInjectionsSerializer(many=True)
+
+    class Meta:
+        model = ConsultingWithCardiologistModel
+        fields = '__all__'
+        read_only = [
+            'created_by',
+            'created_at',
+            'modified_at',
+            'modified_by',
+        ]
+
+    def create(self, validated_data):
+        result = create(validated_data, ConsultingWithCardiologistModel, 'cardiologist')
+        return result
+
+
+class AppointmentWithOnDutyDoctorSerializer(serializers.ModelSerializer):
+    medical_services = BaseMedicalServicesSerializer(many=True)
+    lab_research = BaseLabResearchServiceSerializer(many=True)
+    procedures = BaseProceduresSerializer(many=True)
+    pills = BasePPillsInjectionsSerializer(many=True)
+
+    class Meta:
+        model = AppointmentWithOnDutyDoctorModel
+        fields = '__all__'
+        read_only = [
+            'created_by',
+            'created_at',
+            'modified_at',
+            'modified_by',
+            'doctor'
+        ]
+
+    def create(self, validated_data):
+        result = create(validated_data, AppointmentWithOnDutyDoctorModel, 'on_duty_doctor')
+        return result
+
+
+
+
+
+

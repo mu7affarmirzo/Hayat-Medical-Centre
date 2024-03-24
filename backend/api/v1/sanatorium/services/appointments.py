@@ -2,9 +2,10 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from api.v1.sanatorium.serializers.appointments import RepeatedAppointmentSerializer, FinalAppointmentSerializer, \
-    FinalAppointmentDetailedSerializer, ConsultingWithNeurologistSerializer
+    FinalAppointmentDetailedSerializer, ConsultingWithNeurologistSerializer, ConsultingWithCardiologistSerializer, \
+    AppointmentWithOnDutyDoctorSerializer
 from apps.sanatorium.models import RepeatedAppointmentWithDoctorModel, FinalAppointmentWithDoctorModel, \
-    ConsultingWithNeurologistModel
+    ConsultingWithNeurologistModel, ConsultingWithCardiologistModel, AppointmentWithOnDutyDoctorModel
 
 
 def repeated_appointment_post_service(request):
@@ -50,3 +51,36 @@ def consulting_with_neurologist_post_service(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def consulting_with_cardiologist_post_service(request):
+    doctor = request.user
+    rep_app = ConsultingWithCardiologistModel(doctor=doctor, created_by=doctor)
+
+    if request.method == "POST":
+        serializer = ConsultingWithCardiologistSerializer(rep_app, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            # response = FinalAppointmentDetailedSerializer(rep_app)
+            # return Response(response.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def appointment_with_on_duty_doctor_post_service(request):
+    doctor = request.user
+    rep_app = AppointmentWithOnDutyDoctorModel(doctor=doctor, created_by=doctor)
+
+    if request.method == "POST":
+        serializer = AppointmentWithOnDutyDoctorSerializer(rep_app, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
