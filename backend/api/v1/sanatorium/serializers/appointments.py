@@ -151,7 +151,7 @@ class FinalAppointmentDetailedSerializer(serializers.ModelSerializer):
         ]
 
 
-class ConsultingWithNeurologistSerializer(serializers.Serializer):
+class ConsultingWithNeurologistSerializer(serializers.ModelSerializer):
     medical_services = BaseMedicalServicesSerializer(many=True)
     lab_research = BaseLabResearchServiceSerializer(many=True)
     procedures = BaseProceduresSerializer(many=True)
