@@ -21,7 +21,13 @@ admin.site.register(InitialAppointmentProcedureServiceModel)
 admin.site.register(InitialAppointmentLabResearchServiceModel)
 admin.site.register(InitialAppointmentPillsInjectionsModel)
 
+admin.site.register(BaseMedicalServiceModel)
+admin.site.register(BaseProcedureServiceModel)
+admin.site.register(BasePillsInjectionsModel)
+admin.site.register(BaseLabResearchServiceModel)
+
 
 @admin.register(BasicTemplateModel)
 class BasicTemplateModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     pass
+
