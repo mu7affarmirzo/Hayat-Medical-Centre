@@ -118,6 +118,63 @@ class AppointmentWithOnDutyDoctorModel(models.Model):
         return f"{self.id}"
 
 
+class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
+    ST_CHOICES = (
+        ('Показан', 'Показан'),
+        ('Не показан', 'Не показан'),
+        ('Противопоказан', 'Противопоказан'),
+    )
+    state = models.CharField(choices=STATE_CHOICES, max_length=50, default='assigned')
+
+    created_by = models.ForeignKey(Account, related_name='aw_on_duty_on_arr_created', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    modified_by = models.ForeignKey(Account, related_name="modf_aw_on_duty_on_arr", on_delete=models.SET_NULL, null=True)
+
+    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    illness_history = models.ForeignKey(
+        IllnessHistory, on_delete=models.CASCADE,
+        null=True, related_name='on_duty_doctor_on_arr_appointment'
+    )
+    complaints = models.TextField(null=True, blank=True)
+    arv_number = models.CharField(null=True, blank=True, max_length=255)
+    ayes_shells = models.CharField(null=True, blank=True, max_length=255)
+    from_to_sanatorium = models.CharField(null=True, blank=True, max_length=255)
+    road_crossed = models.CharField(null=True, blank=True, max_length=255)
+
+    abroad_for_last_years = models.CharField(null=True, blank=True, max_length=255)
+    virus_hepatitis = models.CharField(null=True, blank=True, max_length=255)
+    tuberculosis = models.CharField(null=True, blank=True, max_length=255)
+    malarias = models.CharField(null=True, blank=True, max_length=255)
+    venerian_illness = models.CharField(null=True, blank=True, max_length=255)
+    dizanteri = models.CharField(null=True, blank=True, max_length=255)
+    helminthic_infestations = models.CharField(null=True, blank=True, max_length=255)
+    had_contact_with_inf_people = models.CharField(null=True, blank=True, max_length=255)
+    had_stul_for = models.BooleanField(default=False)
+
+    allergy = models.CharField(null=True, blank=True, max_length=255)
+    meteolabilisis = models.CharField(null=True, blank=True, max_length=255)
+    non_carrying_prods = models.CharField(null=True, blank=True, max_length=255)
+    stull_issues = models.CharField(null=True, blank=True, max_length=255)
+    has_always_pills = models.CharField(null=True, blank=True, max_length=255)
+
+    objective_data = models.TextField(null=True, blank=True)
+
+    temperature = models.FloatField(null=True, blank=True)
+
+    arterial_high = models.IntegerField(null=True)
+    arterial_low = models.IntegerField(null=True)
+    imt = models.FloatField(null=True)
+
+    cito = models.BooleanField(default=False)
+    for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=50, null=True, blank=True)
+    summary = models.TextField(blank=True, null=True)
+    recommendation = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.id}"
+
+
 class RepeatedAppointmentWithDoctorModel(models.Model):
 
     state = models.CharField(choices=STATE_CHOICES, max_length=50, default='assigned')
@@ -147,6 +204,9 @@ class RepeatedAppointmentWithDoctorModel(models.Model):
     def __str__(self):
         return f"{self.id}"
 
+
+class EkgAppointmentModel(models.Model):
+    pass
 
 class FinalAppointmentWithDoctorModel(models.Model):
 
