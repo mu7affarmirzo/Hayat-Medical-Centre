@@ -208,6 +208,7 @@ class RepeatedAppointmentWithDoctorModel(models.Model):
 class EkgAppointmentModel(models.Model):
     pass
 
+
 class FinalAppointmentWithDoctorModel(models.Model):
 
     RESULT_CHOICES = (
@@ -238,7 +239,7 @@ class FinalAppointmentWithDoctorModel(models.Model):
     imt = models.FloatField()
     imt_interpretation = models.FloatField()
 
-    diagnosis = models.ManyToManyField(DiagnosisTemplate, null=True)
+    diagnosis = models.ManyToManyField(DiagnosisTemplate)
     summary = models.TextField(blank=True, null=True)
 
     treatment_results = models.CharField(choices=RESULT_CHOICES, max_length=50, default='Улучение')

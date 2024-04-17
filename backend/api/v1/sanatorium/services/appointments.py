@@ -3,9 +3,10 @@ from rest_framework.response import Response
 
 from api.v1.sanatorium.serializers.appointments import RepeatedAppointmentSerializer, FinalAppointmentSerializer, \
     FinalAppointmentDetailedSerializer, ConsultingWithNeurologistSerializer, ConsultingWithCardiologistSerializer, \
-    AppointmentWithOnDutyDoctorSerializer
+    AppointmentWithOnDutyDoctorSerializer, AppointmentWithOnDutyDoctorOnArrivalSerializer
 from apps.sanatorium.models import RepeatedAppointmentWithDoctorModel, FinalAppointmentWithDoctorModel, \
-    ConsultingWithNeurologistModel, ConsultingWithCardiologistModel, AppointmentWithOnDutyDoctorModel
+    ConsultingWithNeurologistModel, ConsultingWithCardiologistModel, AppointmentWithOnDutyDoctorModel, \
+    AppointmentWithOnDutyDoctorOnArrivalModel
 
 
 def repeated_appointment_post_service(request):
@@ -83,4 +84,15 @@ def appointment_with_on_duty_doctor_post_service(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+def appointment_with_on_duty_doctor_on_arrival_service(request):
+    doctor = request.user
+    rep_app = AppointmentWithOnDutyDoctorOnArrivalModel(doctor=doctor, created_by=doctor)
 
+    if request.method == "POST":
+        serializer = AppointmentWithOnDutyDoctorOnArrivalSerializer(rep_app, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
