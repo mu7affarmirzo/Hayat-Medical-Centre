@@ -31,3 +31,34 @@ admin.site.register(BaseLabResearchServiceModel)
 class BasicTemplateModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     pass
 
+
+@admin.register(ConsultingWithNeurologistModel)
+class ConsultingWithNeurologistAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in ConsultingWithNeurologistModel._meta.fields]
+
+
+@admin.register(ConsultingWithCardiologistModel)
+class ConsultingWithCardiologistAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in ConsultingWithCardiologistModel._meta.fields]
+
+
+@admin.register(AppointmentWithOnDutyDoctorModel)
+class AppointmentWithOnDutyDoctorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in AppointmentWithOnDutyDoctorModel._meta.fields]
+
+
+@admin.register(AppointmentWithOnDutyDoctorOnArrivalModel)
+class AppointmentWithOnDutyDoctorOnArrivalAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in AppointmentWithOnDutyDoctorOnArrivalModel._meta.fields]
+
+
+@admin.register(RepeatedAppointmentWithDoctorModel)
+class RepeatedAppointmentWithDoctorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in RepeatedAppointmentWithDoctorModel._meta.fields]
+
+
+@admin.register(FinalAppointmentWithDoctorModel)
+class FinalAppointmentWithDoctorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in FinalAppointmentWithDoctorModel._meta.fields]
+
+
