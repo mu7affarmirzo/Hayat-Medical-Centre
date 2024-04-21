@@ -7,7 +7,8 @@ from api.v1.sanatorium.serializers.appointments import (RepeatedAppointmentSeria
                                                         ConsultingWithCardiologistSerializer,
                                                         AppointmentWithOnDutyDoctorSerializer,
                                                         AppointmentWithOnDutyDoctorOnArrivalModel,
-                                                        AppointmentWithOnDutyDoctorOnArrivalSerializer)
+                                                        AppointmentWithOnDutyDoctorOnArrivalSerializer,
+                                                        EkgAppointmentSerializer)
 from api.v1.sanatorium.services.appointments import repeated_appointment_post_service, final_appointment_post_service, \
     consulting_with_neurologist_post_service, consulting_with_cardiologist_post_service, \
     appointment_with_on_duty_doctor_post_service, appointment_with_on_duty_doctor_on_arrival_service
@@ -53,3 +54,10 @@ def appointment_with_on_duty_doctor_view(request):
 @permission_classes((IsAuthenticated,))
 def appointment_with_on_duty_doctor_on_arrival_view(request):
     return appointment_with_on_duty_doctor_on_arrival_service(request)
+
+
+@swagger_auto_schema(tags=['sanatorium'], method="post", request_body=EkgAppointmentSerializer)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def ekg_appointment_view(request):
+    return ekg_appointment_service(request)

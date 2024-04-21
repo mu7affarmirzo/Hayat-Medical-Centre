@@ -3,10 +3,10 @@ from rest_framework.response import Response
 
 from api.v1.sanatorium.serializers.appointments import RepeatedAppointmentSerializer, FinalAppointmentSerializer, \
     FinalAppointmentDetailedSerializer, ConsultingWithNeurologistSerializer, ConsultingWithCardiologistSerializer, \
-    AppointmentWithOnDutyDoctorSerializer, AppointmentWithOnDutyDoctorOnArrivalSerializer
+    AppointmentWithOnDutyDoctorSerializer, AppointmentWithOnDutyDoctorOnArrivalSerializer, EkgAppointmentSerializer
 from apps.sanatorium.models import RepeatedAppointmentWithDoctorModel, FinalAppointmentWithDoctorModel, \
     ConsultingWithNeurologistModel, ConsultingWithCardiologistModel, AppointmentWithOnDutyDoctorModel, \
-    AppointmentWithOnDutyDoctorOnArrivalModel
+    AppointmentWithOnDutyDoctorOnArrivalModel, EkgAppointmentModel
 
 
 def repeated_appointment_post_service(request):
@@ -90,6 +90,20 @@ def appointment_with_on_duty_doctor_on_arrival_service(request):
 
     if request.method == "POST":
         serializer = AppointmentWithOnDutyDoctorOnArrivalSerializer(rep_app, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def ekg_appointment_service(request):
+    doctor = request.user
+    app = EkgAppointmentModel(doctor=doctor, created_by=doctor)
+
+    if request.method == "POST":
+        serializer = EkgAppointmentSerializer(app, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

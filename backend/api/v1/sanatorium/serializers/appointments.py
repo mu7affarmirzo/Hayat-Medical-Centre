@@ -3,8 +3,9 @@ from apps.sanatorium.models import (
     RepeatedAppointmentWithDoctorModel,
     BasePillsInjectionsModel,
     BaseLabResearchServiceModel, BaseMedicalServiceModel, BaseProcedureServiceModel, FinalAppointmentWithDoctorModel,
-    DiagnosisTemplate, ConsultingWithNeurologistModel, ConsultingWithCardiologistModel, AppointmentWithOnDutyDoctorModel,
-    AppointmentWithOnDutyDoctorOnArrivalModel
+    DiagnosisTemplate, ConsultingWithNeurologistModel, ConsultingWithCardiologistModel,
+    AppointmentWithOnDutyDoctorModel,
+    AppointmentWithOnDutyDoctorOnArrivalModel, EkgAppointmentModel
 )
 
 
@@ -229,6 +230,19 @@ class AppointmentWithOnDutyDoctorOnArrivalSerializer(serializers.ModelSerializer
             'doctor'
         ]
 
+
+class EkgAppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EkgAppointmentModel
+        fields = '__all__'
+
+        read_only = [
+            'created_by',
+            'created_at',
+            'modified_at',
+            'modified_by',
+            'doctor'
+        ]
 
 
 
