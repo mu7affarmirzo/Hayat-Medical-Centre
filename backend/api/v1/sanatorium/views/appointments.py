@@ -11,7 +11,8 @@ from api.v1.sanatorium.serializers.appointments import (RepeatedAppointmentSeria
                                                         EkgAppointmentSerializer)
 from api.v1.sanatorium.services.appointments import repeated_appointment_post_service, final_appointment_post_service, \
     consulting_with_neurologist_post_service, consulting_with_cardiologist_post_service, \
-    appointment_with_on_duty_doctor_post_service, appointment_with_on_duty_doctor_on_arrival_service
+    appointment_with_on_duty_doctor_post_service, appointment_with_on_duty_doctor_on_arrival_service, \
+    ekg_appointment_service
 
 
 @swagger_auto_schema(tags=['sanatorium'], method="post", request_body=RepeatedAppointmentSerializer)

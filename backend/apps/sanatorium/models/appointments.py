@@ -146,6 +146,16 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
         ('Не показан', 'Не показан'),
         ('Противопоказан', 'Противопоказан'),
     )
+    PULSE_CHOICES = (
+        ('ритмичный', 'ритмичный'),
+        ('аритмичный', 'аритмичный'),
+    )
+    REGIME_CHOICES = (
+        ('Щадящий', 'Щадящий'),
+        ('Постельный', 'Постельный'),
+        ('Тонизирующий', 'Тонизирующий'),
+        ('Тренирующий', 'Тренирующий'),
+    )
     state = models.CharField(choices=STATE_CHOICES, max_length=50, default='assigned')
 
     created_by = models.ForeignKey(Account, related_name='aw_on_duty_on_arr_created', on_delete=models.SET_NULL, null=True)
@@ -186,12 +196,11 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
 
     arterial_high = models.IntegerField(null=True)
     arterial_low = models.IntegerField(null=True)
-    imt = models.FloatField(null=True)
+    imt = models.IntegerField(null=True)
 
-    cito = models.BooleanField(default=False)
-    for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=50, null=True, blank=True)
-    summary = models.TextField(blank=True, null=True)
-    recommendation = models.TextField(blank=True, null=True)
+    pulse = models.CharField(choices=PULSE_CHOICES, null=True, blank=True, max_length=255)
+    diet = models.CharField(null=True, blank=True, max_length=255)
+    regime = models.CharField(choices=REGIME_CHOICES, null=True, blank=True, max_length=255)
 
     def __str__(self):
         return f"{self.id}"

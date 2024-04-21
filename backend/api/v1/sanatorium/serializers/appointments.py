@@ -232,6 +232,11 @@ class AppointmentWithOnDutyDoctorOnArrivalSerializer(serializers.ModelSerializer
 
 
 class EkgAppointmentSerializer(serializers.ModelSerializer):
+    medical_services = BaseMedicalServicesSerializer(many=True)
+    lab_research = BaseLabResearchServiceSerializer(many=True)
+    procedures = BaseProceduresSerializer(many=True)
+    pills = BasePPillsInjectionsSerializer(many=True)
+
     class Meta:
         model = EkgAppointmentModel
         fields = '__all__'
@@ -244,5 +249,7 @@ class EkgAppointmentSerializer(serializers.ModelSerializer):
             'doctor'
         ]
 
-
+    def create(self, validated_data):
+        result = create(validated_data, EkgAppointmentModel, 'ekg')
+        return result
 
