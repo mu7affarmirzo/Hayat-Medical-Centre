@@ -22,11 +22,25 @@ def repeated_appointment_with_doctor_view(request):
     return repeated_appointment_post_service(request)
 
 
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
+@api_view(['PATCH', 'GET'])
+@permission_classes((IsAuthenticated,))
+def get_update_repeated_appointment_with_doctor_view(request, pk):
+    return repeated_appointment_post_service(request, pk)
+
+
 @swagger_auto_schema(tags=['sanatorium'], method="post", request_body=FinalAppointmentSerializer)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def final_appointment_with_doctor_view(request):
     return final_appointment_post_service(request)
+
+
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
+@api_view(['PATCH', 'GET'])
+@permission_classes((IsAuthenticated,))
+def get_update_final_appointment_with_doctor_view(request, pk):
+    return final_appointment_post_service(request, pk)
 
 
 @swagger_auto_schema(tags=['sanatorium'], method="post", request_body=ConsultingWithNeurologistSerializer)
@@ -36,11 +50,25 @@ def consulting_with_neurologist_view(request):
     return consulting_with_neurologist_post_service(request)
 
 
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
+@api_view(['PATCH', 'GET'])
+@permission_classes((IsAuthenticated,))
+def get_update_consulting_with_neurologist_view(request, pk):
+    return consulting_with_neurologist_post_service(request, pk)
+
+
 @swagger_auto_schema(tags=['sanatorium'], method="post", request_body=ConsultingWithCardiologistSerializer)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def consulting_with_cardiologist_view(request):
     return consulting_with_cardiologist_post_service(request)
+
+
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
+@api_view(['PATCH', 'GET'])
+@permission_classes((IsAuthenticated,))
+def get_update_consulting_with_cardiologist_view(request, pk):
+    return consulting_with_cardiologist_post_service(request, pk)
 
 
 @swagger_auto_schema(tags=['sanatorium'], method="post", request_body=AppointmentWithOnDutyDoctorSerializer)
@@ -50,6 +78,13 @@ def appointment_with_on_duty_doctor_view(request):
     return appointment_with_on_duty_doctor_post_service(request)
 
 
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
+@api_view(['PATCH', 'GET'])
+@permission_classes((IsAuthenticated,))
+def get_update_appointment_with_on_duty_doctor_view(request, pk):
+    return appointment_with_on_duty_doctor_post_service(request, pk)
+
+
 @swagger_auto_schema(tags=['sanatorium'], method="post", request_body=AppointmentWithOnDutyDoctorOnArrivalSerializer)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
@@ -57,8 +92,23 @@ def appointment_with_on_duty_doctor_on_arrival_view(request):
     return appointment_with_on_duty_doctor_on_arrival_service(request)
 
 
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
+@api_view(['PATCH', 'GET'])
+@permission_classes((IsAuthenticated,))
+def get_update_appointment_with_on_duty_doctor_on_arrival_view(request, pk):
+    return appointment_with_on_duty_doctor_on_arrival_service(request, pk)
+
+
 @swagger_auto_schema(tags=['sanatorium'], method="post", request_body=EkgAppointmentSerializer)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def ekg_appointment_view(request):
     return ekg_appointment_service(request)
+
+
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
+@api_view(['PATCH', 'GET'])
+@permission_classes((IsAuthenticated,))
+def get_update_ekg_appointment_view(request, pk):
+    return ekg_appointment_service(request, pk)
+
