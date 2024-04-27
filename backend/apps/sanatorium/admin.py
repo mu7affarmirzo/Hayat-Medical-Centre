@@ -66,3 +66,5 @@ class FinalAppointmentWithDoctorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class EkgAppointmentAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in EkgAppointmentModel._meta.fields]
 
+
+
