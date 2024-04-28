@@ -191,10 +191,10 @@ def ekg_appointment_service(request, pk=None):
 
 def get_list_of_appointments_service(request, pk):
     ill_history = get_object_or_404(IllnessHistory, pk=pk)
-    med_services = BaseMedicalServiceModel.objects.filter(ill_history=ill_history)
-    procedures_services = BaseProcedureServiceModel.objects.filter(ill_history=ill_history)
-    labs = BaseLabResearchServiceModel.objects.filter(ill_history=ill_history)
-    pill_injections = BasePillsInjectionsModel.objects.filter(ill_history=ill_history)
+    med_services = BaseMedicalServiceModel.objects.filter(illness_history=ill_history)
+    procedures_services = BaseProcedureServiceModel.objects.filter(illness_history=ill_history)
+    labs = BaseLabResearchServiceModel.objects.filter(illness_history=ill_history)
+    pill_injections = BasePillsInjectionsModel.objects.filter(illness_history=ill_history)
 
     med_services_serializer = BaseMedicalServicesDetailSerializer(med_services, many=True)
     procedures_services_serializer = BaseProceduresServicesDetailSerializer(procedures_services, many=True)
