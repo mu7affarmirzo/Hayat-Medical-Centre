@@ -286,7 +286,7 @@ class BaseLabResearchServiceModelDetailSerializer(serializers.ModelSerializer):
     def get_labs(self, obj):
         return {
             "name": obj.lab.name,
-            "name": obj.lab.category.name,
+            "category": obj.lab.category.name,
         }
 
 
