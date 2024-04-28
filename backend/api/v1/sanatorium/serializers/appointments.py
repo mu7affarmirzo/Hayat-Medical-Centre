@@ -255,17 +255,25 @@ class EkgAppointmentSerializer(serializers.ModelSerializer):
 
 
 class BaseMedicalServicesDetailSerializer(serializers.ModelSerializer):
+    medical_service = serializers.SerializerMethodField("get_medical_service")
 
     class Meta:
         model = BaseMedicalServiceModel
         fields = '__all__'
 
+    def get_medical_service(self, obj):
+        return obj.medical_service.name
+
 
 class BaseProceduresServicesDetailSerializer(serializers.ModelSerializer):
+    medical_service = serializers.SerializerMethodField("get_medical_service")
 
     class Meta:
         model = BaseProcedureServiceModel
         fields = '__all__'
+
+    def get_medical_service(self, obj):
+        return obj.medical_service.name
 
 
 class BaseLabResearchServiceModelDetailSerializer(serializers.ModelSerializer):
@@ -276,14 +284,19 @@ class BaseLabResearchServiceModelDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_labs(self, obj):
-        return obj.lab.name
-
+        return {
+            "name": obj.lab.name,
+            "name": obj.lab.category.name,
+        }
 
 
 class BasePillsInjectionsModelDetailSerializer(serializers.ModelSerializer):
+    pills_injections = serializers.SerializerMethodField("get_pills_injections")
 
     class Meta:
         model = BasePillsInjectionsModel
         fields = '__all__'
 
+    def get_pills_injections(self, obj):
+        return obj.pills_injections.name
 
