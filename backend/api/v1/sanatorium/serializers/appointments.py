@@ -269,10 +269,15 @@ class BaseProceduresServicesDetailSerializer(serializers.ModelSerializer):
 
 
 class BaseLabResearchServiceModelDetailSerializer(serializers.ModelSerializer):
+    lab = serializers.SerializerMethodField("get_labs")
 
     class Meta:
         model = BaseLabResearchServiceModel
         fields = '__all__'
+
+    def get_labs(self, obj):
+        return obj.lab.name
+
 
 
 class BasePillsInjectionsModelDetailSerializer(serializers.ModelSerializer):
