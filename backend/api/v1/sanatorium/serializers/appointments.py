@@ -253,3 +253,32 @@ class EkgAppointmentSerializer(serializers.ModelSerializer):
         result = create(validated_data, EkgAppointmentModel, 'ekg')
         return result
 
+
+class BaseMedicalServicesDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BaseMedicalServiceModel
+        fields = '__all__'
+
+
+class BaseProceduresServicesDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BaseProcedureServiceModel
+        fields = '__all__'
+
+
+class BaseLabResearchServiceModelDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BaseLabResearchServiceModel
+        fields = '__all__'
+
+
+class BasePillsInjectionsModelDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BasePillsInjectionsModel
+        fields = '__all__'
+
+

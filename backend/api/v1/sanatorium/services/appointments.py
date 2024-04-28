@@ -4,10 +4,13 @@ from rest_framework.response import Response
 
 from api.v1.sanatorium.serializers.appointments import RepeatedAppointmentSerializer, FinalAppointmentSerializer, \
     FinalAppointmentDetailedSerializer, ConsultingWithNeurologistSerializer, ConsultingWithCardiologistSerializer, \
-    AppointmentWithOnDutyDoctorSerializer, AppointmentWithOnDutyDoctorOnArrivalSerializer, EkgAppointmentSerializer
+    AppointmentWithOnDutyDoctorSerializer, AppointmentWithOnDutyDoctorOnArrivalSerializer, EkgAppointmentSerializer, \
+    BasePillsInjectionsModelDetailSerializer, BaseLabResearchServiceModelDetailSerializer, \
+    BaseProceduresServicesDetailSerializer, BaseMedicalServicesDetailSerializer
 from apps.sanatorium.models import RepeatedAppointmentWithDoctorModel, FinalAppointmentWithDoctorModel, \
     ConsultingWithNeurologistModel, ConsultingWithCardiologistModel, AppointmentWithOnDutyDoctorModel, \
-    AppointmentWithOnDutyDoctorOnArrivalModel, EkgAppointmentModel
+    AppointmentWithOnDutyDoctorOnArrivalModel, EkgAppointmentModel, IllnessHistory, BaseMedicalServiceModel, \
+    BaseProcedureServiceModel, BaseLabResearchServiceModel, BasePillsInjectionsModel
 
 
 def repeated_appointment_post_service(request, pk=None):
@@ -184,3 +187,24 @@ def ekg_appointment_service(request, pk=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def get_list_of_appointments_service(request, pk):
+    ill_history = get_object_or_404(IllnessHistory, pk=pk)
+    med_services = BaseMedicalServiceModel.objects.filter(ill_history=ill_history)
+    procedures_services = BaseProcedureServiceModel.objects.filter(ill_history=ill_history)
+    labs = BaseLabResearchServiceModel.objects.filter(ill_history=ill_history)
+    pill_injections = BasePillsInjectionsModel.objects.filter(ill_history=ill_history)
+
+    med_services_serializer = BaseMedicalServicesDetailSerializer(med_services, many=True)
+    procedures_services_serializer = BaseProceduresServicesDetailSerializer(procedures_services, many=True)
+    labs_serializer = BaseLabResearchServiceModelDetailSerializer(labs, many=True)
+    pill_injections_serializer = BasePillsInjectionsModelDetailSerializer(pill_injections, many=True)
+
+    return Response({
+        'med_services': med_services_serializer.data,
+        'procedures_services': procedures_services_serializer.data,
+        'labs': labs_serializer.data,
+        'pill_injections': pill_injections_serializer.data,
+    })
+
