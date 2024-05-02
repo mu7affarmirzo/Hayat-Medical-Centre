@@ -5,11 +5,9 @@ from apps.sanatorium.models import (DiagnosisTemplate, IllnessHistory)
 
 
 STATE_CHOICES = (
-        ('assigned', 'assigned'),
-        ('cancelled', 'cancelled'),
-        ('stopped', 'stopped'),
-        ('dispatched', 'dispatched'),
-        ('dispatched', 'dispatched'),
+        ('Приём завершён', 'Приём завершён'),
+        ('Пациент на прием не явился', 'Пациент на прием не явился'),
+        ('Не завершено', 'Не завершено'),
     )
 
 
@@ -20,7 +18,7 @@ class FinalAppointmentWithDoctorModel(models.Model):
         ('Без изменения', 'Без изменения'),
         ('Ухудшение', 'Ухудшение'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='assigned')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
 
     created_by = models.ForeignKey(Account, related_name='fawd_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -58,7 +56,7 @@ class ConsultingWithNeurologistModel(models.Model):
         ('Не показан', 'Не показан'),
         ('Противопоказан', 'Противопоказан'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='assigned')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
 
     created_by = models.ForeignKey(Account, related_name='cwn_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -238,7 +236,7 @@ class ConsultingWithCardiologistModel(models.Model):
     PLEURAL_FRICTION_RUB_CHOICES = (
         ('шум трения плевры', 'шум трения плевры'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='assigned')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
 
     created_by = models.ForeignKey(Account, related_name='cw_cardio_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -334,7 +332,7 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
         ('Тонизирующий', 'Тонизирующий'),
         ('Тренирующий', 'Тренирующий'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='assigned')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
 
     created_by = models.ForeignKey(Account, related_name='aw_on_duty_on_arr_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -386,7 +384,7 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
 
 class RepeatedAppointmentWithDoctorModel(models.Model):
 
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='assigned')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
 
     created_by = models.ForeignKey(Account, related_name='rawd_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -420,7 +418,7 @@ class AppointmentWithOnDutyDoctorModel(models.Model):
         ('Не показан', 'Не показан'),
         ('Противопоказан', 'Противопоказан'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='assigned')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
 
     created_by = models.ForeignKey(Account, related_name='aw_on_duty_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -463,7 +461,7 @@ class EkgAppointmentModel(models.Model):
         ('Противопоказан', 'Противопоказан'),
     )
 
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='assigned')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
 
     created_by = models.ForeignKey(Account, related_name='ekg_app_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
