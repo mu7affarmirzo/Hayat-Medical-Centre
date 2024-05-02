@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
+from api.v1.sanatorium.serializers import InitialAppointmentWithDoctorSerializer
 from api.v1.sanatorium.serializers.appointments import RepeatedAppointmentSerializer, FinalAppointmentSerializer, \
     FinalAppointmentDetailedSerializer, ConsultingWithNeurologistSerializer, ConsultingWithCardiologistSerializer, \
     AppointmentWithOnDutyDoctorSerializer, AppointmentWithOnDutyDoctorOnArrivalSerializer, EkgAppointmentSerializer, \
@@ -10,7 +11,7 @@ from api.v1.sanatorium.serializers.appointments import RepeatedAppointmentSerial
 from apps.sanatorium.models import RepeatedAppointmentWithDoctorModel, FinalAppointmentWithDoctorModel, \
     ConsultingWithNeurologistModel, ConsultingWithCardiologistModel, AppointmentWithOnDutyDoctorModel, \
     AppointmentWithOnDutyDoctorOnArrivalModel, EkgAppointmentModel, IllnessHistory, BaseMedicalServiceModel, \
-    BaseProcedureServiceModel, BaseLabResearchServiceModel, BasePillsInjectionsModel
+    BaseProcedureServiceModel, BaseLabResearchServiceModel, BasePillsInjectionsModel, InitialAppointmentWithDoctorModel
 
 
 def repeated_appointment_post_service(request, pk=None):
@@ -189,7 +190,7 @@ def ekg_appointment_service(request, pk=None):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-def get_list_of_appointments_service(request, pk):
+def get_list_of_appointments_sheet_service(request, pk):
     ill_history = get_object_or_404(IllnessHistory, pk=pk)
     med_services = BaseMedicalServiceModel.objects.filter(illness_history=ill_history)
     procedures_services = BaseProcedureServiceModel.objects.filter(illness_history=ill_history)
@@ -208,3 +209,34 @@ def get_list_of_appointments_service(request, pk):
         'pill_injections': pill_injections_serializer.data,
     })
 
+
+def get_list_of_appointments_service(request, pk):
+    ill_history = get_object_or_404(IllnessHistory, pk=pk)
+    initial = InitialAppointmentWithDoctorModel.objects.filter(illness_history=ill_history)
+    final_appointment = FinalAppointmentWithDoctorModel.objects.filter(illness_history=ill_history)
+    neurologist = ConsultingWithNeurologistModel.objects.filter(illness_history=ill_history)
+    cardiologist = ConsultingWithCardiologistModel.objects.filter(illness_history=ill_history)
+    on_duty_doctor_on_arrival = AppointmentWithOnDutyDoctorOnArrivalModel.objects.filter(illness_history=ill_history)
+    repeated_appointment = RepeatedAppointmentWithDoctorModel.objects.filter(illness_history=ill_history)
+    on_duty_doctor = AppointmentWithOnDutyDoctorModel.objects.filter(illness_history=ill_history)
+    ekg_appointment = EkgAppointmentModel.objects.filter(illness_history=ill_history)
+
+    initial = InitialAppointmentWithDoctorSerializer(initial)
+    final_appointment = FinalAppointmentSerializer(final_appointment, many=True)
+    neurologist = ConsultingWithNeurologistSerializer(neurologist, many=True)
+    cardiologist = ConsultingWithCardiologistSerializer(cardiologist, many=True)
+    on_duty_doctor_on_arrival = AppointmentWithOnDutyDoctorOnArrivalSerializer(on_duty_doctor_on_arrival, many=True)
+    repeated_appointment = RepeatedAppointmentSerializer(repeated_appointment, many=True)
+    on_duty_doctor = AppointmentWithOnDutyDoctorSerializer(on_duty_doctor, many=True)
+    ekg_appointment = EkgAppointmentSerializer(ekg_appointment, many=True)
+
+    return Response({
+        'initial': initial.data,
+        'final_appointment': final_appointment.data,
+        'neurologist': neurologist.data,
+        'cardiologist': cardiologist.data,
+        'on_duty_doctor_on_arrival': on_duty_doctor_on_arrival.data,
+        'repeated_appointment': repeated_appointment.data,
+        'on_duty_doctor': on_duty_doctor.data,
+        'ekg_appointment': ekg_appointment.data,
+    })
