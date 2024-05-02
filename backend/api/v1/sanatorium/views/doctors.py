@@ -62,15 +62,10 @@ def update_init_appointment_with_doctor_view(request, pk):
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
 def get_init_appointment_view(request, pk):
-    """
-    pk from illness history
-    """
-    try:
-        appointment = InitialAppointmentWithDoctorModel.objects.get(illness_history_id=pk)
-    except InitialAppointmentWithDoctorModel.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    serializer = InitialAppointmentWithDoctorSerializer(appointment)
-    return Response(serializer)
+
+    appointment = get_object_or_404(InitialAppointmentWithDoctorModel, illness_history_id=pk)
+    serializer = GetInitialAppointmentWithDoctorSerializer(appointment)
+    return Response(serializer.data)
 
 
 class MedServicesSpecialtyListAPIView(generics.ListAPIView):

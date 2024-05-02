@@ -120,6 +120,38 @@ class RepeatedAppointmentSerializer(serializers.ModelSerializer):
         return result
 
 
+class GetRepeatedAppointmentSerializer(serializers.ModelSerializer):
+    medical_services = serializers.SerializerMethodField('get_medical_services')
+    lab_research = serializers.SerializerMethodField('get_lab_research')
+    procedures = serializers.SerializerMethodField('get_procedures')
+    pills = serializers.SerializerMethodField('get_pills')
+
+    class Meta:
+        model = RepeatedAppointmentWithDoctorModel
+        fields = '__all__'
+        read_only = ['created_at', 'updated_at', 'doctor', 'created_by', 'updated_by']
+
+    def get_medical_services(self, obj):
+        tr = BaseMedicalServiceModel.objects.filter(model_type='repeated_app', model_ref_id=obj.id)
+        medical_services = BaseMedicalServicesSerializer(tr, many=True)
+        return medical_services.data
+
+    def get_lab_research(self, obj):
+        tr = BaseLabResearchServiceModel.objects.filter(model_type='repeated_app', model_ref_id=obj.id)
+        lab_research = BaseLabResearchServiceSerializer(tr, many=True)
+        return lab_research.data
+
+    def get_procedures(self, obj):
+        tr = BaseProcedureServiceModel.objects.filter(model_type='repeated_app', model_ref_id=obj.id)
+        procedures = BaseProceduresSerializer(tr, many=True)
+        return procedures.data
+
+    def get_pills(self, obj):
+        tr = BasePillsInjectionsModel.objects.filter(model_type='repeated_app', model_ref_id=obj.id)
+        pills = BasePPillsInjectionsSerializer(tr, many=True)
+        return pills.data
+
+
 class FinalAppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
@@ -174,6 +206,38 @@ class ConsultingWithNeurologistSerializer(serializers.ModelSerializer):
         return result
 
 
+class GetConsultingWithNeurologistSerializer(serializers.ModelSerializer):
+    medical_services = serializers.SerializerMethodField('get_medical_services')
+    lab_research = serializers.SerializerMethodField('get_lab_research')
+    procedures = serializers.SerializerMethodField('get_procedures')
+    pills = serializers.SerializerMethodField('get_pills')
+
+    class Meta:
+        model = ConsultingWithNeurologistModel
+        fields = '__all__'
+        read_only = ['created_at', 'updated_at', 'doctor', 'created_by', 'updated_by']
+
+    def get_medical_services(self, obj):
+        tr = BaseMedicalServiceModel.objects.filter(model_type='neurologist', model_ref_id=obj.id)
+        medical_services = BaseMedicalServicesSerializer(tr, many=True)
+        return medical_services.data
+
+    def get_lab_research(self, obj):
+        tr = BaseLabResearchServiceModel.objects.filter(model_type='neurologist', model_ref_id=obj.id)
+        lab_research = BaseLabResearchServiceSerializer(tr, many=True)
+        return lab_research.data
+
+    def get_procedures(self, obj):
+        tr = BaseProcedureServiceModel.objects.filter(model_type='neurologist', model_ref_id=obj.id)
+        procedures = BaseProceduresSerializer(tr, many=True)
+        return procedures.data
+
+    def get_pills(self, obj):
+        tr = BasePillsInjectionsModel.objects.filter(model_type='neurologist', model_ref_id=obj.id)
+        pills = BasePPillsInjectionsSerializer(tr, many=True)
+        return pills.data
+
+
 class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
     medical_services = BaseMedicalServicesSerializer(many=True)
     lab_research = BaseLabResearchServiceSerializer(many=True)
@@ -193,6 +257,38 @@ class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         result = create(validated_data, ConsultingWithCardiologistModel, 'cardiologist')
         return result
+
+
+class GetConsultingWithCardiologistSerializer(serializers.ModelSerializer):
+    medical_services = serializers.SerializerMethodField('get_medical_services')
+    lab_research = serializers.SerializerMethodField('get_lab_research')
+    procedures = serializers.SerializerMethodField('get_procedures')
+    pills = serializers.SerializerMethodField('get_pills')
+
+    class Meta:
+        model = ConsultingWithCardiologistModel
+        fields = '__all__'
+        read_only = ['created_at', 'updated_at', 'doctor', 'created_by', 'updated_by']
+
+    def get_medical_services(self, obj):
+        tr = BaseMedicalServiceModel.objects.filter(model_type='cardiologist', model_ref_id=obj.id)
+        medical_services = BaseMedicalServicesSerializer(tr, many=True)
+        return medical_services.data
+
+    def get_lab_research(self, obj):
+        tr = BaseLabResearchServiceModel.objects.filter(model_type='cardiologist', model_ref_id=obj.id)
+        lab_research = BaseLabResearchServiceSerializer(tr, many=True)
+        return lab_research.data
+
+    def get_procedures(self, obj):
+        tr = BaseProcedureServiceModel.objects.filter(model_type='cardiologist', model_ref_id=obj.id)
+        procedures = BaseProceduresSerializer(tr, many=True)
+        return procedures.data
+
+    def get_pills(self, obj):
+        tr = BasePillsInjectionsModel.objects.filter(model_type='cardiologist', model_ref_id=obj.id)
+        pills = BasePPillsInjectionsSerializer(tr, many=True)
+        return pills.data
 
 
 class AppointmentWithOnDutyDoctorSerializer(serializers.ModelSerializer):
@@ -215,6 +311,38 @@ class AppointmentWithOnDutyDoctorSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         result = create(validated_data, AppointmentWithOnDutyDoctorModel, 'on_duty_doctor')
         return result
+
+
+class GetAppointmentWithOnDutyDoctorSerializer(serializers.ModelSerializer):
+    medical_services = serializers.SerializerMethodField('get_medical_services')
+    lab_research = serializers.SerializerMethodField('get_lab_research')
+    procedures = serializers.SerializerMethodField('get_procedures')
+    pills = serializers.SerializerMethodField('get_pills')
+
+    class Meta:
+        model = AppointmentWithOnDutyDoctorModel
+        fields = '__all__'
+        read_only = ['created_at', 'updated_at', 'doctor', 'created_by', 'updated_by']
+
+    def get_medical_services(self, obj):
+        tr = BaseMedicalServiceModel.objects.filter(model_type='on_duty_doctor', model_ref_id=obj.id)
+        medical_services = BaseMedicalServicesSerializer(tr, many=True)
+        return medical_services.data
+
+    def get_lab_research(self, obj):
+        tr = BaseLabResearchServiceModel.objects.filter(model_type='on_duty_doctor', model_ref_id=obj.id)
+        lab_research = BaseLabResearchServiceSerializer(tr, many=True)
+        return lab_research.data
+
+    def get_procedures(self, obj):
+        tr = BaseProcedureServiceModel.objects.filter(model_type='on_duty_doctor', model_ref_id=obj.id)
+        procedures = BaseProceduresSerializer(tr, many=True)
+        return procedures.data
+
+    def get_pills(self, obj):
+        tr = BasePillsInjectionsModel.objects.filter(model_type='on_duty_doctor', model_ref_id=obj.id)
+        pills = BasePPillsInjectionsSerializer(tr, many=True)
+        return pills.data
 
 
 class AppointmentWithOnDutyDoctorOnArrivalSerializer(serializers.ModelSerializer):
@@ -252,6 +380,38 @@ class EkgAppointmentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         result = create(validated_data, EkgAppointmentModel, 'ekg')
         return result
+
+
+class GetEkgAppointmentSerializer(serializers.ModelSerializer):
+    medical_services = serializers.SerializerMethodField('get_medical_services')
+    lab_research = serializers.SerializerMethodField('get_lab_research')
+    procedures = serializers.SerializerMethodField('get_procedures')
+    pills = serializers.SerializerMethodField('get_pills')
+
+    class Meta:
+        model = EkgAppointmentModel
+        fields = '__all__'
+        read_only = ['created_at', 'updated_at', 'doctor', 'created_by', 'updated_by']
+
+    def get_medical_services(self, obj):
+        tr = BaseMedicalServiceModel.objects.filter(model_type='ekg', model_ref_id=obj.id)
+        medical_services = BaseMedicalServicesSerializer(tr, many=True)
+        return medical_services.data
+
+    def get_lab_research(self, obj):
+        tr = BaseLabResearchServiceModel.objects.filter(model_type='ekg', model_ref_id=obj.id)
+        lab_research = BaseLabResearchServiceSerializer(tr, many=True)
+        return lab_research.data
+
+    def get_procedures(self, obj):
+        tr = BaseProcedureServiceModel.objects.filter(model_type='ekg', model_ref_id=obj.id)
+        procedures = BaseProceduresSerializer(tr, many=True)
+        return procedures.data
+
+    def get_pills(self, obj):
+        tr = BasePillsInjectionsModel.objects.filter(model_type='ekg', model_ref_id=obj.id)
+        pills = BasePPillsInjectionsSerializer(tr, many=True)
+        return pills.data
 
 
 class BaseMedicalServicesDetailSerializer(serializers.ModelSerializer):
