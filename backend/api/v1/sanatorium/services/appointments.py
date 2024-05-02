@@ -233,10 +233,10 @@ def get_list_of_appointments_service(request, pk):
     return Response({
         'initial': initial.data,
         'final_appointment': final_appointment.data,
-        # 'neurologist': neurologist.data,
-        # 'cardiologist': cardiologist.data,
-        # 'on_duty_doctor_on_arrival': on_duty_doctor_on_arrival.data,
-        # 'repeated_appointment': repeated_appointment.data,
-        # 'on_duty_doctor': on_duty_doctor.data,
-        # 'ekg_appointment': ekg_appointment.data,
+        'neurologist': neurologist.data,
+        'cardiologist': cardiologist.data,
+        'on_duty_doctor_on_arrival': on_duty_doctor_on_arrival.data,
+        'repeated_appointment': repeated_appointment.data,
+        'on_duty_doctor': on_duty_doctor.data,
+        'ekg_appointment': ekg_appointment.data,
     })
