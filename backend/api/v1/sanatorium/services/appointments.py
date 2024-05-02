@@ -212,7 +212,7 @@ def get_list_of_appointments_sheet_service(request, pk):
 
 def get_list_of_appointments_service(request, pk):
     ill_history = get_object_or_404(IllnessHistory, pk=pk)
-    initial = InitialAppointmentWithDoctorModel.objects.filter(illness_history=ill_history)
+    initial_app = InitialAppointmentWithDoctorModel.objects.filter(illness_history=ill_history)
     final_appointment = FinalAppointmentWithDoctorModel.objects.filter(illness_history=ill_history)
     neurologist = ConsultingWithNeurologistModel.objects.filter(illness_history=ill_history)
     cardiologist = ConsultingWithCardiologistModel.objects.filter(illness_history=ill_history)
@@ -221,7 +221,7 @@ def get_list_of_appointments_service(request, pk):
     on_duty_doctor = AppointmentWithOnDutyDoctorModel.objects.filter(illness_history=ill_history)
     ekg_appointment = EkgAppointmentModel.objects.filter(illness_history=ill_history)
 
-    initial = InitialAppointmentWithDoctorSerializer(initial)
+    initial = InitialAppointmentWithDoctorSerializer(initial_app, many=True)
     final_appointment = FinalAppointmentSerializer(final_appointment, many=True)
     neurologist = ConsultingWithNeurologistSerializer(neurologist, many=True)
     cardiologist = ConsultingWithCardiologistSerializer(cardiologist, many=True)
