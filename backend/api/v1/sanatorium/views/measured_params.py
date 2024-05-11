@@ -12,7 +12,7 @@ from api.v1.sanatorium.serializers.measured_params import (
 from api.v1.sanatorium.services.measured_params import (
     measured_params_temperature_service, measured_params_saturation_service,
     measured_params_pulse_service, measured_params_arterial_service,
-    measured_params_glucometer_service
+    measured_params_glucometer_service, list_measured_params_arterial_service
 )
 
 
@@ -21,6 +21,13 @@ from api.v1.sanatorium.services.measured_params import (
 @permission_classes((IsAuthenticated,))
 def measured_params_arterial_view(request):
     return measured_params_arterial_service(request)
+
+
+@swagger_auto_schema(tags=['sanatorium'], method="et", request_body=ArterialPressureSerializer)
+@api_view(['GET', ])
+@permission_classes((IsAuthenticated,))
+def list_measured_params_arterial_view(request, pk):
+    return list_measured_params_arterial_service(request, pk)
 
 
 @swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])

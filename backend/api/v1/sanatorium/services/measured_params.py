@@ -5,7 +5,7 @@ from apps.sanatorium.models import (
     GlucometerModel,
     PulseModel,
     SaturationModel,
-    TemperatureModel
+    TemperatureModel, IllnessHistory
 )
 
 from rest_framework import status
@@ -43,6 +43,16 @@ def measured_params_arterial_service(request, pk=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def list_measured_params_arterial_service(request, pk):
+    ill_hist = get_object_or_404(IllnessHistory, pk=pk)
+    arterial = ill_hist.arterial_pressure.all()
+    serializer = ArterialPressureSerializer(arterial, many=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def measured_params_glucometer_service(request, pk=None):
