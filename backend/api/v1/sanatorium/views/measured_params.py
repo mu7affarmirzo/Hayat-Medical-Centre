@@ -23,7 +23,7 @@ def measured_params_arterial_view(request):
     return measured_params_arterial_service(request)
 
 
-@swagger_auto_schema(tags=['sanatorium'], method="et", request_body=ArterialPressureSerializer)
+@swagger_auto_schema(tags=['sanatorium'], method="get")
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
 def list_measured_params_arterial_view(request, pk):
