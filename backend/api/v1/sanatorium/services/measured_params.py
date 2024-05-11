@@ -77,6 +77,13 @@ def measured_params_glucometer_service(request, pk=None):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+def list_measured_params_glucometer_service(request, pk):
+    ill_hist = get_object_or_404(IllnessHistory, pk=pk)
+    arterial = ill_hist.glucometer_model.all()
+    serializer = GlucometerSerializer(arterial, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 def measured_params_pulse_service(request, pk=None):
     doctor = request.user
     measurement = PulseModel(created_by=doctor)
@@ -100,6 +107,13 @@ def measured_params_pulse_service(request, pk=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def list_measured_params_pulse_service(request, pk):
+    ill_hist = get_object_or_404(IllnessHistory, pk=pk)
+    arterial = ill_hist.pulse_model.all()
+    serializer = PulseSerializer(arterial, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 def measured_params_saturation_service(request, pk=None):
@@ -127,6 +141,13 @@ def measured_params_saturation_service(request, pk=None):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+def list_measured_params_saturation_service(request, pk):
+    ill_hist = get_object_or_404(IllnessHistory, pk=pk)
+    arterial = ill_hist.saturation_model.all()
+    serializer = SaturationSerializer(arterial, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 def measured_params_temperature_service(request, pk=None):
     doctor = request.user
     measurement = TemperatureModel(created_by=doctor)
@@ -150,4 +171,11 @@ def measured_params_temperature_service(request, pk=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def list_measured_params_temperature_service(request, pk):
+    ill_hist = get_object_or_404(IllnessHistory, pk=pk)
+    arterial = ill_hist.temperature.all()
+    serializer = TemperatureSerializer(arterial, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
