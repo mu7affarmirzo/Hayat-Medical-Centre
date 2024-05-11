@@ -30,17 +30,17 @@ def measured_params_arterial_service(request, pk=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # elif request.method == "GET" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = GetEkgmeasurementointmentSerializer(rep_measurement)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-    # elif request.method == "PATCH" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = EkgmeasurementointmentSerializer(rep_measurement, data=request.data, partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "GET" and pk:
+        rep_measurement = get_object_or_404(ArterialPressureModel, pk=pk)
+        serializer = ArterialPressureSerializer(rep_measurement)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "PATCH" and pk:
+        rep_measurement = get_object_or_404(ArterialPressureModel, pk=pk)
+        serializer = ArterialPressureSerializer(rep_measurement, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -55,17 +55,17 @@ def measured_params_glucometer_service(request, pk=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # elif request.method == "GET" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = GetEkgmeasurementointmentSerializer(rep_measurement)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-    # elif request.method == "PATCH" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = EkgmeasurementointmentSerializer(rep_measurement, data=request.data, partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "GET" and pk:
+        rep_measurement = get_object_or_404(GlucometerModel, pk=pk)
+        serializer = GlucometerSerializer(rep_measurement)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "PATCH" and pk:
+        rep_measurement = get_object_or_404(GlucometerModel, pk=pk)
+        serializer = GlucometerSerializer(rep_measurement, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -80,17 +80,17 @@ def measured_params_pulse_service(request, pk=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # elif request.method == "GET" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = GetEkgmeasurementointmentSerializer(rep_measurement)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-    # elif request.method == "PATCH" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = EkgmeasurementointmentSerializer(rep_measurement, data=request.data, partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "GET" and pk:
+        rep_measurement = get_object_or_404(PulseModel, pk=pk)
+        serializer = PulseSerializer(rep_measurement)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "PATCH" and pk:
+        rep_measurement = get_object_or_404(PulseModel, pk=pk)
+        serializer = PulseSerializer(rep_measurement, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -105,17 +105,17 @@ def measured_params_saturation_service(request, pk=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # elif request.method == "GET" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = GetEkgmeasurementointmentSerializer(rep_measurement)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-    # elif request.method == "PATCH" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = EkgmeasurementointmentSerializer(rep_measurement, data=request.data, partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "GET" and pk:
+        rep_measurement = get_object_or_404(SaturationModel, pk=pk)
+        serializer = SaturationSerializer(rep_measurement)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "PATCH" and pk:
+        rep_measurement = get_object_or_404(SaturationModel, pk=pk)
+        serializer = SaturationSerializer(rep_measurement, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -130,17 +130,17 @@ def measured_params_temperature_service(request, pk=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # elif request.method == "GET" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = GetEkgmeasurementointmentSerializer(rep_measurement)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-    # elif request.method == "PATCH" and pk:
-    #     rep_measurement = get_object_or_404(EkgmeasurementointmentModel, pk=pk)
-    #     serializer = EkgmeasurementointmentSerializer(rep_measurement, data=request.data, partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "GET" and pk:
+        rep_measurement = get_object_or_404(TemperatureModel, pk=pk)
+        serializer = TemperatureSerializer(rep_measurement)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "PATCH" and pk:
+        rep_measurement = get_object_or_404(TemperatureModel, pk=pk)
+        serializer = TemperatureSerializer(rep_measurement, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
