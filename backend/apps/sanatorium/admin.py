@@ -67,4 +67,28 @@ class EkgAppointmentAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in EkgAppointmentModel._meta.fields]
 
 
+# MEASURED PARAMS
 
+@admin.register(ArterialPressureModel)
+class ArterialPressureAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in ArterialPressureModel._meta.fields]
+
+
+@admin.register(GlucometerModel)
+class GlucometerAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in GlucometerModel._meta.fields]
+
+
+@admin.register(PulseModel)
+class PulseAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in PulseModel._meta.fields]
+
+
+@admin.register(SaturationModel)
+class SaturationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in SaturationModel._meta.fields]
+
+
+@admin.register(TemperatureModel)
+class TemperatureAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in TemperatureModel._meta.fields]
