@@ -32,8 +32,8 @@ def list_measured_params_arterial_view(request, pk):
     return list_measured_params_arterial_service(request, pk)
 
 
-@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
-@api_view(['PATCH', 'GET'])
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get", "delete"])
+@api_view(['PATCH', 'GET', 'DELETE'])
 @permission_classes((IsAuthenticated,))
 def patch_measured_params_arterial_view(request, pk):
     return measured_params_arterial_service(request, pk)
@@ -53,8 +53,8 @@ def list_measured_params_glucometer_view(request, pk):
     return list_measured_params_glucometer_service(request, pk)
 
 
-@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
-@api_view(['PATCH', 'GET'])
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get", "delete"])
+@api_view(['PATCH', 'GET', 'DELETE'])
 @permission_classes((IsAuthenticated,))
 def patch_measured_params_glucometer_view(request, pk):
     return measured_params_glucometer_service(request, pk)
@@ -74,8 +74,8 @@ def list_measured_params_pulse_view(request, pk):
     return list_measured_params_pulse_service(request, pk)
 
 
-@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
-@api_view(['PATCH', 'GET'])
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get", "delete"])
+@api_view(['PATCH', 'GET', 'DELETE'])
 @permission_classes((IsAuthenticated,))
 def patch_measured_params_pulse_view(request, pk):
     return measured_params_pulse_service(request, pk)
@@ -95,8 +95,8 @@ def list_measured_params_saturation_view(request, pk):
     return list_measured_params_saturation_service(request, pk)
 
 
-@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
-@api_view(['PATCH', 'GET'])
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get", "delete"])
+@api_view(['PATCH', 'GET', 'DELETE'])
 @permission_classes((IsAuthenticated,))
 def patch_measured_params_saturation_view(request, pk):
     return measured_params_saturation_service(request, pk)
@@ -116,8 +116,8 @@ def list_measured_params_temperature_view(request, pk):
     return list_measured_params_temperature_service(request, pk)
 
 
-@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get"])
-@api_view(['PATCH', 'GET'])
+@swagger_auto_schema(tags=['sanatorium'], methods=["patch", "get", "delete"])
+@api_view(['PATCH', 'GET', 'DELETE'])
 @permission_classes((IsAuthenticated,))
 def patch_measured_params_temperature_view(request, pk):
     return measured_params_temperature_service(request, pk)

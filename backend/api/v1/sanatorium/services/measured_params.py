@@ -34,6 +34,10 @@ def measured_params_arterial_service(request, pk=None):
         rep_measurement = get_object_or_404(ArterialPressureModel, pk=pk)
         serializer = ArterialPressureSerializer(rep_measurement)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "DELETE" and pk:
+        rep_measurement = get_object_or_404(ArterialPressureModel, pk=pk)
+        rep_measurement.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     elif request.method == "PATCH" and pk:
         rep_measurement = get_object_or_404(ArterialPressureModel, pk=pk)
         serializer = ArterialPressureSerializer(rep_measurement, data=request.data, partial=True)
@@ -66,6 +70,10 @@ def measured_params_glucometer_service(request, pk=None):
         rep_measurement = get_object_or_404(GlucometerModel, pk=pk)
         serializer = GlucometerSerializer(rep_measurement)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "DELETE" and pk:
+        rep_measurement = get_object_or_404(GlucometerModel, pk=pk)
+        rep_measurement.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     elif request.method == "PATCH" and pk:
         rep_measurement = get_object_or_404(GlucometerModel, pk=pk)
         serializer = GlucometerSerializer(rep_measurement, data=request.data, partial=True)
@@ -98,6 +106,10 @@ def measured_params_pulse_service(request, pk=None):
         rep_measurement = get_object_or_404(PulseModel, pk=pk)
         serializer = PulseSerializer(rep_measurement)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "DELETE" and pk:
+        rep_measurement = get_object_or_404(PulseModel, pk=pk)
+        rep_measurement.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     elif request.method == "PATCH" and pk:
         rep_measurement = get_object_or_404(PulseModel, pk=pk)
         serializer = PulseSerializer(rep_measurement, data=request.data, partial=True)
@@ -130,6 +142,10 @@ def measured_params_saturation_service(request, pk=None):
         rep_measurement = get_object_or_404(SaturationModel, pk=pk)
         serializer = SaturationSerializer(rep_measurement)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "DELETE" and pk:
+        rep_measurement = get_object_or_404(SaturationModel, pk=pk)
+        rep_measurement.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     elif request.method == "PATCH" and pk:
         rep_measurement = get_object_or_404(SaturationModel, pk=pk)
         serializer = SaturationSerializer(rep_measurement, data=request.data, partial=True)
@@ -162,6 +178,10 @@ def measured_params_temperature_service(request, pk=None):
         rep_measurement = get_object_or_404(TemperatureModel, pk=pk)
         serializer = TemperatureSerializer(rep_measurement)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "DELETE" and pk:
+        rep_measurement = get_object_or_404(TemperatureModel, pk=pk)
+        rep_measurement.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     elif request.method == "PATCH" and pk:
         rep_measurement = get_object_or_404(TemperatureModel, pk=pk)
         serializer = TemperatureSerializer(rep_measurement, data=request.data, partial=True)
