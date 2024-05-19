@@ -40,3 +40,20 @@ class OrderedLabResearchModel(models.Model):
 
     def __str__(self):
         return f'{self.order_number}'
+
+
+class TestResultModel(models.Model):
+    STATUS_CHOICES = (
+        ('выше нормы', 'выше нормы'),
+        ('в норме', 'в норме'),
+        ('отменена', 'отменена'),
+    )
+    ordered_lab_research = models.ForeignKey(OrderedLabResearchModel, on_delete=models.CASCADE, related_name='test_results')
+    lab_research_test = models.ForeignKey('LabResearchTestModel', on_delete=models.CASCADE)
+    container = models.ForeignKey('ContainerModel', on_delete=models.CASCADE)
+    result = models.TextField()
+    result_date = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(choices=STATUS_CHOICES, null=True, blank=True, max_length=255)
+
+    def __str__(self):
+        return f"Result for {self.lab_research_test.name} - {self.ordered_lab_research.order_number}"

@@ -17,4 +17,5 @@ admin.site.register(OrderedLabResearchModel)
 admin.site.register(ContainerColorModel)
 admin.site.register(ContainerGroupModel)
 admin.site.register(ContainerModel)
+admin.site.register(TestResultModel)
 
