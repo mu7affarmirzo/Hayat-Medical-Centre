@@ -65,6 +65,11 @@ class ListLabResearchSerializer(serializers.ModelSerializer):
 
 
 class TestResultModelSerializer(serializers.ModelSerializer):
+    norma = serializers.SerializerMethodField('get_norma')
+
+    def get_norma(self, obj):
+        return obj.lab_research_test.standard_result
+
     class Meta:
         model = TestResultModel
         fields = "__all__"
