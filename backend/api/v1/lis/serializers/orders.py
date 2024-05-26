@@ -35,3 +35,4 @@ class OrderedLabResearchFilterSerializer(serializers.Serializer):
 
 class UpdateContainerCodeSerializer(serializers.Serializer):
     container_code = serializers.CharField()
+    container_id = serializers.IntegerField(required=False)

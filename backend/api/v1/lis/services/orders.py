@@ -2,7 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 
-from api.v1.lis.serializers.orders import OrderedLabResearchSerializer, OrderedLabResearchFilterSerializer
+from api.v1.lis.serializers.orders import OrderedLabResearchSerializer, OrderedLabResearchFilterSerializer, \
+    UpdateContainerCodeSerializer
 from apps.lis.models import OrderedLabResearchModel, TestResultModel
 
 
@@ -33,7 +34,15 @@ def get_list_ordered_researches_service(request, pk=None):
 def update_test_container_code(request, pk):
     user = request.user
     test = get_object_or_404(TestResultModel, id=pk)
-    container_code = request.data.get('container_code')
+    container_data = UpdateContainerCodeSerializer(data=request.data)
+    if container_data.is_valid(raise_exception=True):
+        container_code = container_data.data.get('container_code')
+
+        #  TODO: add container id update
+        container_id = container_data.data.get('container_id')
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
     if container_code and type(container_code) is str:
         test.container_code = container_code
         test.modified_by = user
