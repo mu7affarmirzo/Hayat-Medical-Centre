@@ -1,5 +1,6 @@
 # serializers.py
 from rest_framework import serializers
+from rest_framework.pagination import PageNumberPagination
 
 from api.v1.organizations.serializers import PatientModelSerializer
 from apps.lis.models import OrderedLabResearchModel, TestResultModel
@@ -74,3 +75,30 @@ class TestResultModelSerializer(serializers.ModelSerializer):
         model = TestResultModel
         fields = "__all__"
 
+
+class OrderedLabResearchSerializer(serializers.ModelSerializer):
+    patient = PatientModelSerializer()
+    results = serializers.SerializerMethodField("get_test_results")
+
+    class Meta:
+        model = OrderedLabResearchModel
+        fields = [
+            'patient',
+            'created_at',
+            'order_number',
+            'lab',
+            'branch_name',
+            'results'
+        ]
+
+    def get_test_results(self, obj: OrderedLabResearchModel):
+        test_results = TestResultModel.objects.filter(ordered_lab_research=obj)
+        serializer = TestResultModelSerializer(test_results, many=True)
+        return serializer.data
+
+
+
+class OrderedResearchPaginator(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100

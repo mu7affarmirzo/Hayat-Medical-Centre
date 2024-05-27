@@ -19,6 +19,7 @@ def upload_location(instance, filename):
 class ContainerColorModel(models.Model):
     color = models.CharField(max_length=255)
     color_hex = models.CharField(max_length=255, null=True, blank=True)
+    img = models.ImageField(upload_to=upload_location, blank=True, null=True)
 
     def __str__(self):
         return self.color
@@ -44,7 +45,7 @@ class ContainerModel(models.Model):
 
     suffix = models.CharField(max_length=255, blank=True, null=True)
     nomenclature_name = models.CharField(max_length=255, blank=True, null=True)
-    img = models.ImageField(upload_to=upload_location, blank=True, null=True)
+
 
     def __str__(self):
         return self.name

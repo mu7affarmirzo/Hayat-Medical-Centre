@@ -23,7 +23,8 @@ class LabMeasurementUnitModel(models.Model):
 
 
 class LabWorkingStation(models.Model):
-    branch = models.ForeignKey(BranchModel, related_name='lab_working_stations', on_delete=models.SET_NULL, null=True, blank=True)
+    branch = models.ForeignKey(BranchModel, related_name='lab_working_stations', on_delete=models.SET_NULL, null=True,
+                               blank=True)
     name = models.CharField(max_length=255)
 
     def __str__(self):

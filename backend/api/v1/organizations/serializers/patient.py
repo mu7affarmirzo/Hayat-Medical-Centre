@@ -12,6 +12,7 @@ class PatientModelSerializer(serializers.ModelSerializer):
 
 
 class PatientCreateSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = PatientModel
         fields = '__all__'

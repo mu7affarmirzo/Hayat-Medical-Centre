@@ -31,6 +31,9 @@ class OrderedLabResearchFilterSerializer(serializers.Serializer):
     end = serializers.DateField(required=False)
     branch = serializers.CharField(required=False)
     barcode = serializers.CharField(required=False)
+    lab = serializers.CharField(required=False)
+    container = serializers.CharField(required=False)
+    category = serializers.CharField(required=False)
 
 
 class UpdateContainerCodeSerializer(serializers.Serializer):

@@ -27,7 +27,7 @@ class OrderedLabResearchModel(models.Model):
     branch_name = models.ForeignKey(BranchModel, on_delete=models.SET_NULL, null=True, blank=True)
     staging = models.CharField(max_length=255, null=True, blank=True)
     delivery_point = models.ForeignKey(BranchModel, on_delete=models.SET_NULL, null=True, blank=True, related_name='lab_delivery_point')
-
+    is_valid = models.BooleanField(default=False)
     delivery_date = models.DateTimeField(null=True, blank=True)
     queue_number = models.CharField(max_length=255, null=True, blank=True)
     lab_assistant_comment = models.TextField(null=True, blank=True)
