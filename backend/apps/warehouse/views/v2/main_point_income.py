@@ -22,6 +22,15 @@ def income_view(request):
     return render(request, 'v2/main_point/income_list.html', context)
 
 
+def income_create_view(request):
+    income = get_object_or_404(IncomeModel, pk=1)
+    context = {
+        "income": income,
+        "details": income.income_items.all()
+    }
+    return render(request, 'v2/main_point/create_income.html', context)
+
+
 def income_detailed_view(request, pk):
     income = get_object_or_404(IncomeModel, pk=pk)
     context = {

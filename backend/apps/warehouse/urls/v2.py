@@ -12,6 +12,7 @@ urlpatterns = [
     path('items/items-list', items.items_list_view, name='v2-items-list'),
 
     path('main-point/income/', main_point_income.income_view, name='v2-mp-income'),
+    path('main-point/income/create', main_point_income.income_create_view, name='v2-mp-income-create'),
     path('main-point/income/detailed/<int:pk>', main_point_income.income_detailed_view, name='v2-mp-income-detailed'),
 
     path('main-point/cheque/', main_point_income.cheque_view, name='cheque'),

@@ -1,58 +1,119 @@
-<!-- templates/register_income.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Register Income</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<meta charset="UTF-8">
+<title>Interactive Tables</title>
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    button {
+        margin-top: 10px;
+    }
+</style>
 </head>
 <body>
-    <h1>Register New Income</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <h2>Income Items</h2>
-        <div id="items-container">
-            {{ formset.management_form }}
-            {% for form in formset %}
-                <div class="item-form">
-                    {{ form.item.label }}: <input type="text" class="item-search" data-index="{{ forloop.counter0 }}">
-                    <div class="item-results" id="results-{{ forloop.counter0 }}"></div>
-                    {{ form.quantity.label }}: {{ form.quantity }}
-                </div>
-            {% endfor %}
-        </div>
-        <button type="submit">Register Income</button>
-    </form>
+<h2>Form Table</h2>
+<table id="formTable">
+    <tr>
+        <th>Data</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Action</th>
+    </tr>
+</table>
+<button onclick="addRow()">Add Row</button>
+<button onclick="deleteRow()">Delete Last Row</button>
 
-    <script>
-        $(document).ready(function() {
-            $('.item-search').on('keyup', function() {
-                let index = $(this).data('index');
-                let query = $(this).val();
-                if (query.length > 2) {
-                    $.ajax({
-                        url: "{% url 'warehouse_v2:v2-mp-item-search' %}",
-                        data: {'q': query},
-                        success: function(data) {
-                            let resultsContainer = $('#results-' + index);
-                            resultsContainer.empty();
-                            data.forEach(item => {
-                                resultsContainer.append(
-                                    '<div class="result-item" data-id="' + item.id + '" data-name="' + item.name + '">' + item.name + ' - ' + item.price + '</div>'
-                                );
-                            });
-                            $('.result-item').on('click', function() {
-                                let selectedItem = $(this).data('name');
-                                let itemId = $(this).data('id');
-                                $('.item-search[data-index="' + index + '"]').val(selectedItem);
-                                $('input[name="form-' + index + '-item"]').val(itemId);  // Setting the hidden input
-                                resultsContainer.empty();
-                            });
-                        }
-                    });
-                }
+<h2>Data Table</h2>
+<input type="text" id="searchBox" oninput="searchData()" placeholder="Search...">
+<table id="dataTable">
+    <tr>
+        <th>Data</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+    </tr>
+    <!-- Example row -->
+    <tr onclick="addRowToForm(this)">
+        <td>001</td>
+        <td>Example Item</td>
+        <td>$10</td>
+        <td>5</td>
+    </tr>
+</table>
+
+<script>
+function addRow() {
+    var table = document.getElementById("formTable");
+    var row = table.insertRow(-1);
+    var dataCell = row.insertCell(0);
+    var nameCell = row.insertCell(1);
+    var priceCell = row.insertCell(2);
+    var quantityCell = row.insertCell(3);
+    var actionCell = row.insertCell(4);
+
+    dataCell.innerHTML = '<input type="text" name="data">';
+    nameCell.innerHTML = '<input type="text" name="name">';
+    priceCell.innerHTML = '<input type="text" name="price">';
+    quantityCell.innerHTML = '<input type="number" name="quantity" min="1">';
+    actionCell.innerHTML = '<button onclick="deleteThisRow(this)">Delete</button>';
+}
+
+function deleteRow() {
+    var table = document.getElementById("formTable");
+    var rowCount = table.rows.length;
+    if (rowCount > 1) table.deleteRow(rowCount - 1);
+}
+
+function deleteThisRow(button) {
+    var row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
+
+function addRowToForm(row) {
+    var cells = row.getElementsByTagName("td");
+    var table = document.getElementById("formTable");
+    var newRow = table.insertRow(-1);
+
+    for (var i = 0; i < cells.length; i++) {
+        var newCell = newRow.insertCell(i);
+        newCell.innerHTML = '<input type="text" name="' + cells[i].parentNode.parentNode.getElementsByTagName("th")[i].textContent.toLowerCase() + '" value="' + cells[i].textContent + '">';
+    }
+
+    var actionCell = newRow.insertCell(-1);
+    actionCell.innerHTML = '<button onclick="deleteThisRow(this)">Delete</button>';
+}
+function searchData() {
+    var input = document.getElementById('searchBox').value;
+    var table = document.getElementById('dataTable');
+    table.innerHTML = '<tr><th>Data</th><th>Name</th><th>Price</th><th>Quantity</th></tr>'; // Reset table
+
+    // Perform AJAX call to server to get data
+    fetch('{% url 'warehouse_v2:v2-mp-item-search' %}?q=' + encodeURIComponent(input))
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(item => {
+                var row = table.insertRow();
+                row.innerHTML = '<td>' + item.data + '</td><td>' + item.name + '</td><td>' + item.price + '</td><td>' + item.quantity + '</td>';
+                row.onclick = function() { addRowToForm(item); };
             });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to fetch data.');
         });
-    </script>
+}
+</script>
 </body>
 </html>
+
+
+
