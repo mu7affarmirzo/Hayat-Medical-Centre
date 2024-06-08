@@ -10,7 +10,6 @@ from apps.warehouse.models import ItemsModel, ItemsInStockModel, ReceivedItemsMo
 
 
 def login_view(request):
-    print('Hello')
     context = {}
     user = request.user
     if user.is_authenticated:

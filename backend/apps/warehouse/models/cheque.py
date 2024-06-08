@@ -20,6 +20,13 @@ class WarehouseChequeModel(models.Model):
     def __str__(self):
         return self.cheque_number
 
+    @property
+    def total_price(self):
+        summ = 0
+        for i in self.cheque_items.all():
+            summ += (i.item.price * i.quantity)
+        return summ
+
 
 class ChequeItemsModel(models.Model):
     cheque = models.ForeignKey(WarehouseChequeModel, on_delete=models.CASCADE, related_name='cheque_items')

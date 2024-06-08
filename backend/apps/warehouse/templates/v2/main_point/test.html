@@ -1,0 +1,58 @@
+<!-- templates/register_income.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Income</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Register New Income</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <h2>Income Items</h2>
+        <div id="items-container">
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div class="item-form">
+                    {{ form.item.label }}: <input type="text" class="item-search" data-index="{{ forloop.counter0 }}">
+                    <div class="item-results" id="results-{{ forloop.counter0 }}"></div>
+                    {{ form.quantity.label }}: {{ form.quantity }}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit">Register Income</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('.item-search').on('keyup', function() {
+                let index = $(this).data('index');
+                let query = $(this).val();
+                if (query.length > 2) {
+                    $.ajax({
+                        url: "{% url 'warehouse_v2:v2-mp-item-search' %}",
+                        data: {'q': query},
+                        success: function(data) {
+                            let resultsContainer = $('#results-' + index);
+                            resultsContainer.empty();
+                            data.forEach(item => {
+                                resultsContainer.append(
+                                    '<div class="result-item" data-id="' + item.id + '" data-name="' + item.name + '">' + item.name + ' - ' + item.price + '</div>'
+                                );
+                            });
+                            $('.result-item').on('click', function() {
+                                let selectedItem = $(this).data('name');
+                                let itemId = $(this).data('id');
+                                $('.item-search[data-index="' + index + '"]').val(selectedItem);
+                                $('input[name="form-' + index + '-item"]').val(itemId);  // Setting the hidden input
+                                resultsContainer.empty();
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

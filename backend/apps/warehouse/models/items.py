@@ -12,7 +12,6 @@ class ItemsModel(models.Model):
     unit = models.CharField(max_length=255, default="shtuk")
     seria = models.CharField(max_length=255, default="")
     is_expired = models.BooleanField(default=False)
-    expire_date = models.DateField(null=True)
     created_by = models.ForeignKey(Account, related_name="item", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -27,3 +26,14 @@ class ItemsModel(models.Model):
         # ebeb17 - yellow
         # #171716 - black
         return 1
+
+
+class ItemsInStockModel(models.Model):
+    income_seria = models.CharField(max_length=255, null=True, blank=True)
+    item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE, related_name="in_stock")
+    quantity = models.IntegerField()
+    expire_date = models.DateField(null=True)
+    warehouse = models.ForeignKey('StorePointModel', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('item', 'warehouse')
