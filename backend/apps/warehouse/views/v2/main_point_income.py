@@ -1,43 +1,13 @@
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
-from apps.warehouse.forms import AccountAuthenticationForm, ItemForm
-from django.contrib.auth import authenticate, login, logout
-from apps.account.models import OrganizationModel
-from apps.warehouse.models import ItemsModel, ItemsInStockModel, ReceivedItemsModel, IncomeModel, ReceiveRegistryModel, \
-    SendRegistryModel, StorePointModel, IncomeItemsModel, WarehouseChequeModel
+
+from apps.warehouse.forms import ItemForm
+from apps.warehouse.models import ItemsModel, WarehouseChequeModel
 
 
 def main_screen_view(request):
     return render(request, 'v2/main_point/mainsreen.html', context={})
-
-
-def income_view(request):
-    incomes = IncomeModel.objects.all()
-    context = {
-        "incomes": incomes
-    }
-    return render(request, 'v2/main_point/income_list.html', context)
-
-
-def income_create_view(request):
-    income = get_object_or_404(IncomeModel, pk=1)
-    context = {
-        "income": income,
-        "details": income.income_items.all()
-    }
-    return render(request, 'v2/main_point/create_income.html', context)
-
-
-def income_detailed_view(request, pk):
-    income = get_object_or_404(IncomeModel, pk=pk)
-    context = {
-        "income": income,
-        "details": income.income_items.all()
-    }
-    return render(request, 'v2/main_point/income_details.html', context)
 
 
 def search_items(request):

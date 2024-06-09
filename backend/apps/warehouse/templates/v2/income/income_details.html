@@ -74,8 +74,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Список приходов</h3>
-
+                  <h3 class="card-title"><b>Серия:</b> {{ income.serial}}</h3>
+                  <br>
+                    <h2 class="card-title"><b>Поставщик:</b> {{ income.delivery_company.name}}</h2>
+                  <br>
+                  <h2 class="card-title"><b>Дата:</b> {{ income.created_at}}</h2>
                   <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -88,41 +91,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </div>
                 </div>
               </div>
-              <br>
-            <form action="{% url 'warehouse_v2:v2-mp-income-create' %}" method="post">
-                {% csrf_token %}
-                <div class="col-md-1">
-                  <button id="myButton" type="button" class="btn btn-block btn-success">
-                      + Добавить
-                  </button>
-              </div>
-            </form>
-
               <!-- /.card-header -->
               <div class="card-body">
                 <table class="table table-bordered">
                   <thead>
                     <tr>
                       <th style="width: 10px">#</th>
-                      <th>Серия Наклодная</th>
-                      <th>Дата</th>
-                      <th>Поставщик</th>
+                      <th>Полное наименование</th>
+                      <th>Срок год.</th>
+                      <th>Количество</th>
+                      <th>Базовая цена</th>
                       <th>Сумма</th>
                       <th>Пользователь</th>
-                      <th>Дата ввода</th>
+                      <th style="width: 40px">Label</th>
                     </tr>
                   </thead>
                   <tbody>
 
-                  {% for i in incomes %}
+                  {% for i in details %}
                       <tr>
-                      <td>*</td>
-                          <td><a href="{% url 'warehouse_v2:v2-mp-income-detailed' i.pk %}">{{ i.serial}}</a></td>
-                      <td>{{ i.created_at}}</td>
-                      <td>{{ i.delivery_company.name}}</td>
-                      <td>{{ i.bill_amount}}</td>
-                      <td>{{ i.created_by.full_name}}</td>
-                      <td>{{ i.modified_at}}</td>
+                      <td></td>
+                          <td>{{ i.item.name}}</td>
+                      <td>{{ i.item}}</td>
+                      <td>{{ i.quantity}}</td>
+                      <td>{{ i.price}}</td>
+                      <td>{{ i.overall_price}}</td>
+                      <td>{{ i.created_by}}</td>
+                      <td>
+                        <div class="progress progress-xs">
+                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                        </div>
+                      </td>
                       <td><span class="badge bg-danger">55%</span></td>
                     </tr>
                   {% endfor %}
@@ -131,54 +130,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </table>
               </div>
               <!-- /.card-body -->
-              <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>
 
-
-{#    <div class="row">#}
-{#          <div class="col-12">#}
-{#            <div class="card">#}
-{#              <div class="card-header">#}
-{#                <h3 class="card-title">DataTable with minimal features & hover style</h3>#}
-{#              </div>#}
-{#              <!-- /.card-header -->#}
-{#              <div class="card-body">#}
-{#                <table id="example2" class="table table-bordered table-hover">#}
-{#                  <thead>#}
-{#                    <tr>#}
-{#                      <th>Name</th>#}
-{#                      <th>Age</th>#}
-{#                      <th>Country</th>#}
-{#                      <th>Action</th>#}
-{#                    </tr>#}
-{#                  </thead>#}
-{#                  <tbody id="example2-tbody">#}
-{#                  </tbody>#}
-{#                  <!-- <tfoot>#}
-{#                    <tr>#}
-{#                      <th colspan="12"><button>Add</button></th>#}
-{#                    </tr>#}
-{#                  </tfoot> -->#}
-{#                </table>#}
-{#                <button id="add-item" class="btn btn-primary mt-4">Add</button>#}
-{#              </div>#}
-{#              <!-- /.card-body -->#}
-{#            </div>#}
-{#            <!-- /.card -->#}
-{##}
-{#          </div>#}
-{#          <!-- /.col -->#}
-{#        </div>#}
         </div>
 
     </section>
@@ -229,11 +184,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="{% static "adminlte3_assets/dist/js/adminlte.min.js" %}"></script>
 <!-- Page specific script -->
-<script>
-document.getElementById('myButton').addEventListener('click', function() {
-    window.location.href = "{% url 'warehouse_v2:v2-mp-income-create' %}";
-});
-</script>
 <script>
   $(function () {
     $("#example1").DataTable({

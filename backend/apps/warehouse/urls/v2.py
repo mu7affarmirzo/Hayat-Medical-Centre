@@ -1,6 +1,5 @@
 from django.urls import path
-from apps.warehouse.views.v2 import auth, items
-from apps.warehouse.views.v2 import auth, main_point_income, test, items
+from apps.warehouse.views.v2 import auth, main_point_income, test, items, income
 
 app_name = 'warehouse_v2'
 
@@ -11,9 +10,10 @@ urlpatterns = [
     path('main_screen/', main_point_income.main_screen_view, name='v2-mainscreen'),
     path('items/items-list', items.items_list_view, name='v2-items-list'),
 
-    path('main-point/income/', main_point_income.income_view, name='v2-mp-income'),
-    path('main-point/income/create', main_point_income.income_create_view, name='v2-mp-income-create'),
-    path('main-point/income/detailed/<int:pk>', main_point_income.income_detailed_view, name='v2-mp-income-detailed'),
+    path('main-point/income/', income.income_view, name='v2-mp-income'),
+    path('main-point/income/create', income.income_create_view, name='v2-mp-income-create'),
+    path('main-point/income/companies', income.load_delivery_companies, name='load-companies'),
+    path('main-point/income/detailed/<int:pk>', income.income_detailed_view, name='v2-mp-income-detailed'),
 
     path('main-point/cheque/', main_point_income.cheque_view, name='cheque'),
     path('main-point/cheque/detailed/<int:pk>', main_point_income.cheque_detailed_view, name='cheque-detailed'),
