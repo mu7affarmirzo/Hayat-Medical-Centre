@@ -19,13 +19,19 @@ def get_list_ordered_researches_service(request, pk=None):
         if serializer.is_valid(raise_exception=True):
             data = serializer.data
         if data.get("start"):
-            filters["created_at__date__gte"] = data.get("start")
+            filters["created_at__date__lte"] = data.get("start")
         if data.get("end"):
-            filters["created_at__date__lte"] = data.get("end")
+            filters["created_at__date__gte"] = data.get("end")
         if data.get("barcode"):
-            filters["barcode"] = data.get("barcode")
+            filters["lab_code"] = data.get("barcode")
+        if data.get("lab"):
+            filters["lab__id"] = data.get("lab")
+        if data.get("container"):
+            filters["container_id"] = data.get("container")
         if data.get("branch"):
             filters["branch_name__id"] = data.get("branch")
+        if data.get("category"):
+            filters["lab__category__id"] = data.get("category")
         queryset = OrderedLabResearchModel.objects.filter(**filters)
         serializer_class = OrderedLabResearchSerializer(queryset, many=True)
         return Response(serializer_class.data)
