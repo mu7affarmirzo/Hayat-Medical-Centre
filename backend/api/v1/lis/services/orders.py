@@ -1,10 +1,15 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from api.v1.lis.serializers.orders import OrderedLabResearchSerializer, OrderedLabResearchFilterSerializer, \
     UpdateContainerCodeSerializer
 from apps.lis.models import OrderedLabResearchModel, TestResultModel
+
+
+class ResearchesPaginator(PageNumberPagination):
+    page_size = 10
 
 
 def get_list_ordered_researches_service(request, pk=None):
@@ -32,9 +37,13 @@ def get_list_ordered_researches_service(request, pk=None):
             filters["branch_name__id"] = data.get("branch")
         if data.get("category"):
             filters["lab__category__id"] = data.get("category")
+        if data.get("patient"):
+            filters["patient__id"] = data.get("patient")
         queryset = OrderedLabResearchModel.objects.filter(**filters)
-        serializer_class = OrderedLabResearchSerializer(queryset, many=True)
-        return Response(serializer_class.data)
+        paginator = ResearchesPaginator()
+        paginated_page = paginator.paginate_queryset(queryset, request)
+        serializer_class = OrderedLabResearchSerializer(paginated_page, many=True)
+        return paginator.get_paginated_response(serializer_class.data)
 
 
 def update_test_container_code(request, pk):
