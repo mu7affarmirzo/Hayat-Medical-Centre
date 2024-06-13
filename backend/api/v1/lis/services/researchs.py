@@ -2,7 +2,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 from api.v1.lis.serializers.labs import ListLabResearchSerializer, OrderedLabResearchSerializer, OrderedResearchPaginator
-from api.v1.lis.serializers.orders import OrderedLabResearchFilterSerializer
+from api.v1.lis.serializers.orders import OrderedLabResearchFilterSerializer, ValidateStatusesSerializer
 from apps.lis.models import LabResearchModel, OrderedLabResearchModel
 
 
@@ -50,8 +50,9 @@ def get_list_ordered_researches_service(request, pk=None):
 
 
 def validate_ordered_research_service(request, pk):
+    ValidateStatusesSerializer(data=request.data).is_valid(raise_exception=True)
     research = get_object_or_404(OrderedLabResearchModel, pk=pk)
-    research.is_valid = True
+    research.validate_status = request.data["choice"]
     research.validated_by = request.user
-    research.save(update_fields=["is_valid", "validated_by"])
+    research.save(update_fields=["validate_status", "validated_by"])
     return Response({"message": "Success"}, status=200)
