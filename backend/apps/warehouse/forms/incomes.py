@@ -7,7 +7,7 @@ from apps.warehouse.models import IncomeModel, IncomeItemsModel
 class IncomeForm(forms.ModelForm):
     class Meta:
         model = IncomeModel
-        fields = ['delivery_company', 'receiver', 'bill_amount', 'created_by']
+        fields = ['delivery_company', 'receiver', 'bill_amount']
 
 
 class IncomeItemsForm(forms.ModelForm):

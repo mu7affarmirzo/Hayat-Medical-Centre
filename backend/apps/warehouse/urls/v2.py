@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.warehouse.views.v2 import auth, main_point_income, test, items, income
+from apps.warehouse.views.v2 import auth, main_point_income, test, items, income, income_test
 
 app_name = 'warehouse_v2'
 
@@ -12,6 +12,7 @@ urlpatterns = [
 
     path('main-point/income/', income.income_view, name='v2-mp-income'),
     path('main-point/income/create', income.income_create_view, name='v2-mp-income-create'),
+    path('main-point/income/create/test', income_test.ProductCreate.as_view(), name='income-create-test'),
     path('main-point/income/companies', income.load_delivery_companies, name='load-companies'),
     path('main-point/income/detailed/<int:pk>', income.income_detailed_view, name='v2-mp-income-detailed'),
 
