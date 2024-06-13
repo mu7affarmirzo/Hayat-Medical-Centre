@@ -34,6 +34,8 @@ class OrderedLabResearchFilterSerializer(serializers.Serializer):
     lab = serializers.CharField(required=False)
     container = serializers.CharField(required=False)
     category = serializers.CharField(required=False)
+    patient = serializers.CharField(required=False)
+
 
 
 class UpdateContainerCodeSerializer(serializers.Serializer):
