@@ -106,9 +106,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <input type="number" id="inputSubject" class="form-control" name="bill_amount" disabled placeholder="000"/>
                     </div>
                     </div>
-
-                    <div class="card-body">
-                        <table class="table table-bordered" id="formTable">
+                    <h3>Детали</h3>
+                    <div class="form-group">
+                        <table class="table table-rounded" id="formTable">
                           <thead>
                             <tr>
                               <th>Полное наименование</th>
@@ -186,20 +186,43 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- Page specific script -->
 <script>
 function addRow() {
+    const items = [
+        {% for item in items %}
+        {
+            id: "{{ item.id }}",
+            name: "{{ item.name }}"
+        },
+        {% endfor %}
+    ];
+
     var table = document.getElementById("formTable");
     var row = table.insertRow(-1);
-    var fullNameCell = row.insertCell(0);
+    var itemCell = row.insertCell(0);
     var quantityCell = row.insertCell(1);
     var priceCell = row.insertCell(2);
     var sumCell = row.insertCell(3);
     var deteleCell = row.insertCell(4);
 
-    fullNameCell.innerHTML = "";
-    quantityCell.innerHTML = '<input type="number" name="data">';
-    priceCell.innerHTML = '<input type="number" name="name">';
-    sumCell.innerHTML = '<input type="number" name="name" disabled>';
+    let selectHtml = '<select class="custom-select" name="item">';
+    items.forEach(function(item) {
+        selectHtml += `<option value="${item.id}">${item.name}</option>`;
+    });
+    selectHtml += '</select>';
+
+    itemCell.innerHTML = selectHtml;
+    quantityCell.innerHTML = '<input class="form-control" type="number" name="quantity" oninput="updateSum(this)">';
+    priceCell.innerHTML = '<input class="form-control" type="number" name="price" oninput="updateSum(this)">';
+    sumCell.innerHTML = '<input class="form-control" type="number" name="sum" disabled>';
     deteleCell.innerHTML = '<button type="button" class="btn btn-danger" onclick="deleteThisRow(this)">Delete</button>';
 }
+function updateSum(input) {
+    var row = input.closest('tr');
+    var quantity = row.querySelector('input[name="quantity"]').value;
+    var price = row.querySelector('input[name="price"]').value;
+    var sum = row.querySelector('input[name="overall_price"]');
+    sum.value = quantity * price;
+}
+
 function deleteThisRow(btn) {
     var row = btn.parentNode.parentNode;
     row.parentNode.removeChild(row);
