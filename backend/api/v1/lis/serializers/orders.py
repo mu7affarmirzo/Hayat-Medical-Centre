@@ -37,7 +37,10 @@ class OrderedLabResearchFilterSerializer(serializers.Serializer):
     patient = serializers.CharField(required=False)
 
 
-
 class UpdateContainerCodeSerializer(serializers.Serializer):
     container_code = serializers.CharField()
     container_id = serializers.IntegerField(required=False)
+
+
+class ValidateStatusesSerializer(serializers.Serializer):
+    choice = serializers.ChoiceField(choices=OrderedLabResearchModel.ValidateStatus.choices)
