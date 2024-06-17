@@ -22,6 +22,7 @@ urlpatterns = [
     path('main-point/income/', main_point_income.search_items, name='v2-mp-items'),
     path('main-point/item-list/', main_point_income.item_list, name='v2-mp-item-list'),
     path('main-point/register-income/', test.register_income, name='v2-mp-income-register'),
+    path('main-point/register-income/dynamic', test.register_income_dynamic, name='v2-mp-income-register-dynamic'),
     path('main-point/item-search/', test.item_search, name='v2-mp-item-search'),
 
 ]

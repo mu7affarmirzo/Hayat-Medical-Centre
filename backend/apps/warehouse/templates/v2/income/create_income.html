@@ -118,11 +118,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                               <th>Action</th>
                             </tr>
                           </thead>
-                            {{ formset.management_form }}
-                            {% for form in formset %}
-                             <tbody>
-                             </tbody>
-                           {% endfor %}
+                            {% with named_formsets.variants as formset %}
+                                {{ formset.management_form }}
+                                 <tbody>
+                                 </tbody>
+                            {% endwith %}
                         </table>
                         <button type="button" class="btn btn-success" onclick="addRow()">+ Добавить</button>
                     </div>
@@ -185,6 +185,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{% static "adminlte3_assets/dist/js/adminlte.min.js" %}"></script>
 <!-- Page specific script -->
 <script>
+let formIdx = {{ formset.total_form_count }};
+
 function addRow() {
     const items = [
         {% for item in items %}
@@ -195,6 +197,10 @@ function addRow() {
         {% endfor %}
     ];
 
+    var totalForms = document.getElementById("id_income_items-TOTAL_FORMS");
+    var formIdx = totalForms.value; // Get the current number of items
+    totalForms.value = parseInt(formIdx) + 1; // Increment the form count
+
     var table = document.getElementById("formTable");
     var row = table.insertRow(-1);
     var itemCell = row.insertCell(0);
@@ -203,17 +209,20 @@ function addRow() {
     var sumCell = row.insertCell(3);
     var deteleCell = row.insertCell(4);
 
-    let selectHtml = '<select class="custom-select" name="item">';
+    {#let selectHtml = '<select class="custom-select" name="item">';#}
+    let selectHtml = `<select class="custom-select" name="income_items-${formIdx}-item">`;
     items.forEach(function(item) {
         selectHtml += `<option value="${item.id}">${item.name}</option>`;
     });
     selectHtml += '</select>';
 
     itemCell.innerHTML = selectHtml;
-    quantityCell.innerHTML = '<input class="form-control" type="number" name="quantity" oninput="updateSum(this)">';
-    priceCell.innerHTML = '<input class="form-control" type="number" name="price" oninput="updateSum(this)">';
-    sumCell.innerHTML = '<input class="form-control" type="number" name="sum" disabled>';
+    quantityCell.innerHTML = '<input class="form-control" type="number" name="form-${formIdx}-quantity" oninput="updateSum(this)">';
+    priceCell.innerHTML = '<input class="form-control" type="number" name="form-${formIdx}-price" oninput="updateSum(this)">';
+    sumCell.innerHTML = '<input class="form-control" type="number" name="form-${formIdx}-overall_price" disabled>';
     deteleCell.innerHTML = '<button type="button" class="btn btn-danger" onclick="deleteThisRow(this)">Delete</button>';
+
+    document.getElementById('id_form-TOTAL_FORMS').value = ++formIdx;
 }
 function updateSum(input) {
     var row = input.closest('tr');

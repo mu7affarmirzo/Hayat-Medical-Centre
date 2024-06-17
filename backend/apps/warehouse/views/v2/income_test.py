@@ -1,8 +1,8 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import CreateView, UpdateView
 
 from apps.warehouse.forms.income_test import ProductForm, VariantFormSet
-from apps.warehouse.models import IncomeModel
+from apps.warehouse.models import IncomeModel, CompanyModel, StorePointModel, ItemsModel
 
 
 class ProductInline():
@@ -44,8 +44,16 @@ class ProductInline():
 class ProductCreate(ProductInline, CreateView):
 
     def get_context_data(self, **kwargs):
+        companies = CompanyModel.objects.all()
+        stores = StorePointModel.objects.all()
+        items = ItemsModel.objects.all()
+
         ctx = super(ProductCreate, self).get_context_data(**kwargs)
         ctx['named_formsets'] = self.get_named_formsets()
+        ctx['companies'] = companies
+        ctx['stores'] = stores
+        ctx['items'] = items
+
         return ctx
 
     def get_named_formsets(self):

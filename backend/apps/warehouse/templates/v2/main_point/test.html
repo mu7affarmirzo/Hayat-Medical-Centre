@@ -2,118 +2,114 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Interactive Tables</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Item Management</title>
 <style>
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-        padding: 8px;
-        text-align: left;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-    button {
-        margin-top: 10px;
-    }
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+  input[type="number"], input[type="text"], button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .search-results {
+    cursor: pointer;
+  }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('#searchInput').on('input', function() {
+    var searchQuery = $(this).val();
+    if (searchQuery.length > 2) {
+      $.ajax({
+        url: '{% url 'warehouse_v2:v2-mp-item-search' %}?q=',
+        data: { 'query': searchQuery },
+        success: function(data) {
+          $('#searchResults').empty();
+          data.forEach(function(item) {
+            $('#searchResults').append(
+              `<tr class="search-results" data-item="${item.name}" data-company="${item.company}"
+                  data-price="${item.price}" data-seria="${item.seria}" data-inpack="${item.in_pack}"
+                  data-unit="${item.unit}">
+                <td>${item.name}</td>
+                <td>${item.company}</td>
+                <td>${item.price}</td>
+                <td>${item.seria}</td>
+                <td>${item.in_pack}</td>
+                <td>${item.unit}</td>
+              </tr>`
+            );
+          });
+        }
+      });
+    }
+
+  });
+
+  $(document).on('dblclick', '.search-results', function() {
+    var item = $(this).data('item');
+    var company = $(this).data('company');
+    var price = $(this).data('price');
+    var expireDate = new Date().toISOString().slice(0, 10); // Example expire date
+    $('#itemsList').append(
+      `<tr>
+        <td>${item}</td>
+        <td><input type="number" value="1" min="1" style="width: 60px;"></td> <!-- Editable quantity -->
+        <td><input type="text" value="${price}" style="width: 80px;"></td> <!-- Editable price -->
+        <td>${expireDate}</td>
+        <td><button type="button" onclick="removeRow(this)">Remove</button></td>
+      </tr>`
+    );
+  });
+  window.removeRow = function(button) {
+    $(button).closest('tr').remove();
+  };
+});
+</script>
 </head>
 <body>
-<h2>Form Table</h2>
-<table id="formTable">
-    <tr>
-        <th>Data</th>
-        <th>Name</th>
-        <th>Price</th>
+<h1>Item Management</h1>
+<form method="post" action="{% url 'warehouse_v2:v2-mp-income-register-dynamic' %}">
+  {% csrf_token %}
+  <h2>Items List</h2>
+  <table id="itemsList">
+    <thead>
+      <tr>
+        <th>Item</th>
         <th>Quantity</th>
+        <th>Price</th>
+        <th>Expire Date</th>
         <th>Action</th>
-    </tr>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Items will be added here dynamically -->
+    </tbody>
+  </table>
+  <button type="submit">Submit Items</button>
+</form>
+
+<h2>Search Items</h2>
+<input type="text" id="searchInput" placeholder="Search for items...">
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Company</th>
+    <th>Price</th>
+    <th>Seria</th>
+    <th>In Pack</th>
+    <th>Unit</th>
+  </tr>
+  <tbody id="searchResults">
+    <!-- Search results will be populated here -->
+  </tbody>
 </table>
-<button onclick="addRow()">Add Row</button>
-<button onclick="deleteRow()">Delete Last Row</button>
 
-<h2>Data Table</h2>
-<input type="text" id="searchBox" oninput="searchData()" placeholder="Search...">
-<table id="dataTable">
-    <tr>
-        <th>Data</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
-    </tr>
-    <!-- Example row -->
-    <tr onclick="addRowToForm(this)">
-        <td>001</td>
-        <td>Example Item</td>
-        <td>$10</td>
-        <td>5</td>
-    </tr>
-</table>
-
-<script>
-function addRow() {
-    var table = document.getElementById("formTable");
-    var row = table.insertRow(-1);
-    var dataCell = row.insertCell(0);
-    var nameCell = row.insertCell(1);
-    var priceCell = row.insertCell(2);
-    var quantityCell = row.insertCell(3);
-    var actionCell = row.insertCell(4);
-
-    dataCell.innerHTML = '<input type="text" name="data">';
-    nameCell.innerHTML = '<input type="text" name="name">';
-    priceCell.innerHTML = '<input type="text" name="price">';
-    quantityCell.innerHTML = '<input type="number" name="quantity" min="1">';
-    actionCell.innerHTML = '<button onclick="deleteThisRow(this)">Delete</button>';
-}
-
-function deleteRow() {
-    var table = document.getElementById("formTable");
-    var rowCount = table.rows.length;
-    if (rowCount > 1) table.deleteRow(rowCount - 1);
-}
-
-function deleteThisRow(button) {
-    var row = button.parentNode.parentNode;
-    row.parentNode.removeChild(row);
-}
-
-function addRowToForm(row) {
-    var cells = row.getElementsByTagName("td");
-    var table = document.getElementById("formTable");
-    var newRow = table.insertRow(-1);
-
-    for (var i = 0; i < cells.length; i++) {
-        var newCell = newRow.insertCell(i);
-        newCell.innerHTML = '<input type="text" name="' + cells[i].parentNode.parentNode.getElementsByTagName("th")[i].textContent.toLowerCase() + '" value="' + cells[i].textContent + '">';
-    }
-
-    var actionCell = newRow.insertCell(-1);
-    actionCell.innerHTML = '<button onclick="deleteThisRow(this)">Delete</button>';
-}
-function searchData() {
-    var input = document.getElementById('searchBox').value;
-    var table = document.getElementById('dataTable');
-    table.innerHTML = '<tr><th>Data</th><th>Name</th><th>Price</th><th>Quantity</th></tr>'; // Reset table
-
-    // Perform AJAX call to server to get data
-    fetch('{% url 'warehouse_v2:v2-mp-item-search' %}?q=' + encodeURIComponent(input))
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(item => {
-                var row = table.insertRow();
-                row.innerHTML = '<td>' + item.data + '</td><td>' + item.name + '</td><td>' + item.price + '</td><td>' + item.quantity + '</td>';
-                row.onclick = function() { addRowToForm(item); };
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to fetch data.');
-        });
-}
-</script>
 </body>
 </html>
-
-
-
