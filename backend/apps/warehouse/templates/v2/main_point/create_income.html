@@ -217,7 +217,7 @@ function searchData() {
     table.innerHTML = '<tr><th>Data</th><th>Name</th><th>Price</th><th>Quantity</th></tr>'; // Reset table
 
     // Perform AJAX call to server to get data
-    fetch('{% url 'warehouse_v2:v2-mp-item-search' %}?q=' + encodeURIComponent(input))
+    fetch('{% url 'warehouse_v2:v2-mp-item-search' %}' + encodeURIComponent(input))
         .then(response => response.json())
         .then(data => {
             data.forEach(item => {
