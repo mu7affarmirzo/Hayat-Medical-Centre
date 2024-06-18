@@ -1,4 +1,6 @@
 # views.py
+from itertools import chain
+
 from django.shortcuts import render, redirect
 
 from apps.warehouse.forms import IncomeForm, IncomeItemsFormSet
@@ -68,6 +70,8 @@ def item_search(request):
     if 'q' in request.GET:
         query = request.GET.get('q')
         items = ItemsModel.objects.filter(name__icontains=query)
+        items_with_series = ItemsModel.objects.filter(seria__icontains=query)
+        items = list(chain(items, items_with_series))
         results = [{'id': item.id, 'name': item.name, 'price': item.price,
                     'seria': item.seria, 'company': item.company.name} for item in items]
         print(results)

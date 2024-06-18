@@ -87,7 +87,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             {#                            <div class="form-group card-body">#}
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    {% if field.label == 'Series' %}
+                                    {% if field.label == 'Delivery company' %}
+                                        <label>Поставщик</label>
+                                    {% elif field.label == 'Serial' %}
                                         <label>Серия</label>
                                     {% elif field.label == 'Bill amount' %}
                                         <label>Общая Сумма</label>
@@ -136,11 +138,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </div>
                             <table class="table card-header">
                                 <thead class="text-secondary">
-                                    <th>Лекарства <span style="color: red;" class="required">*</span></th>
-                                    <th>Количество <span style="color: red;" class="required">*</span></th>
-                                    <th>Срок годности <span style="color: red;" class="required">*</span></th>
-                                    <th>Удалить(Не добавить) ?</th>
-                                    <th>Удалить</th>
+                                <th>Лекарства <span style="color: red;" class="required">*</span></th>
+                                <th>Количество <span style="color: red;" class="required">*</span></th>
+                                <th>Цена <span style="color: red;" class="required">*</span></th>
+                                <th>Удалить(Не добавить) ?</th>
+                                <th>Удалить</th>
                                 </thead>
                                 <tbody id="item-variants">  <!-- id="item-inlineformsetname" -->
                                 <!-- formset non forms errors -->
@@ -189,7 +191,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                                 </button>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <a href="{% url 'warehouse_v2:transfers-detailed' formss.instance.pk %}"
+                                                                <a href="{% url 'warehouse_v2:v2-mp-income-detailed' formss.instance.pk %}"
                                                                    type="button" class="btn btn-primary">Yes, Delete</a>
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Close
@@ -219,7 +221,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                         <!-- Main content -->
                         <div class="col-md-8 offset-md-2">
-                            <form action="#">
+                            <form action="simple-results.html">
                                 <div class="input-group">
                                     <input id="search-product" type="search" class="form-control form-control-lg"
                                            placeholder="Введите ключевые слова здесь">
@@ -245,11 +247,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <th>Юнит</th>
                                 </tr>
                                 </thead>
-                                <tbody id="search-result" autofocus >
+                                <tbody id="search-result">
 
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </form>

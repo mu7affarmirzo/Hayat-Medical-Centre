@@ -1,21 +1,44 @@
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import CreateView, UpdateView
 
-from apps.warehouse.forms.income_test import ProductForm, VariantFormSet
-from apps.warehouse.models import IncomeModel, CompanyModel, StorePointModel, ItemsModel
+from apps.warehouse.models import SendRegistryModel
 
 
-class ProductInline():
-    form_class = ProductForm
-    model = IncomeModel
-    template_name = "v2/income/income_create_test_3.html"
+from apps.warehouse.forms.transfers import TransferForm, VariantFormSet
+from apps.warehouse.models import CompanyModel, StorePointModel, ItemsModel
+
+
+def transfers_view(request):
+    transfers = SendRegistryModel.objects.all()
+    context = {
+        "transfers": transfers
+    }
+    return render(request, 'v2/transfers/transfers_list.html', context)
+
+
+def transfers_detailed_view(request, pk):
+    transfer = get_object_or_404(SendRegistryModel, pk=pk)
+    context = {
+        "transfer": transfer,
+        "details": transfer.send_registry_items.all()
+    }
+    return render(request, 'v2/transfers/transfer_details.html', context)
+
+
+class TransferInline():
+    form_class = TransferForm
+    model = SendRegistryModel
+    template_name = "v2/transfers/transfer_create.html"
 
     def form_valid(self, form):
         named_formsets = self.get_named_formsets()
         if not all((x.is_valid() for x in named_formsets.values())):
             return self.render_to_response(self.get_context_data(form=form))
 
-        self.object = form.save()
+        self.object = form.save(commit=False)
+        self.object.created_by = self.request.user
+        self.object.sender_id = 1
+        self.object.save()
 
         # for every formset, attempt to find a specific formset save function
         # otherwise, just save.
@@ -25,7 +48,7 @@ class ProductInline():
                 formset_save_func(formset)
             else:
                 formset.save()
-        return redirect('warehouse_v2:v2-mp-income')
+        return redirect('warehouse_v2:transfers')
 
     def formset_variants_valid(self, formset):
         """
@@ -37,20 +60,20 @@ class ProductInline():
         for obj in formset.deleted_objects:
             obj.delete()
         for variant in variants:
-            variant.income = self.object
+            variant.send_registry = self.object
+            variant.created_by = self.request.user
             variant.save()
 
 
-class ProductCreate(ProductInline, CreateView):
-
+class TransferCreate(TransferInline, CreateView):
     def get_context_data(self, **kwargs):
-        companies = CompanyModel.objects.all()
+        receivers = StorePointModel.objects.all()
         stores = StorePointModel.objects.all()
         items = ItemsModel.objects.all()
 
-        ctx = super(ProductCreate, self).get_context_data(**kwargs)
+        ctx = super(TransferCreate, self).get_context_data(**kwargs)
         ctx['named_formsets'] = self.get_named_formsets()
-        ctx['companies'] = companies
+        ctx['companies'] = receivers
         ctx['stores'] = stores
         ctx['items'] = items
 
@@ -67,10 +90,10 @@ class ProductCreate(ProductInline, CreateView):
             }
 
 
-class ProductUpdate(ProductInline, UpdateView):
+class TransferUpdate(TransferInline, UpdateView):
 
     def get_context_data(self, **kwargs):
-        ctx = super(ProductUpdate, self).get_context_data(**kwargs)
+        ctx = super(TransferUpdate, self).get_context_data(**kwargs)
         ctx['named_formsets'] = self.get_named_formsets()
         return ctx
 

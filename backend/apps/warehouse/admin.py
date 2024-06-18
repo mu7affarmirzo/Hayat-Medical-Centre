@@ -13,8 +13,8 @@ def create_admin_class(model):
 
 
 for model in [
-    ItemsModel, ReceivedItemsModel, ReceiveRegistryModel, SendRegistryModel,
-    IncomeModel, IncomeItemsModel, ItemsInStockModel, SentItemsModel,
+    ItemsModel, ReceivedItemsModel, ReceiveRegistryModel,
+    IncomeModel, IncomeItemsModel, ItemsInStockModel,
     StorePointModel, WarehouseChequeModel, ChequeItemsModel, ExpenseModel,
 ]:
     admin.site.register(model, admin_class=type(
@@ -23,6 +23,16 @@ for model in [
         {'list_display': [field.name for field in model._meta.fields]}
     ))
 
+
+class SentItemsModelInlineAdmin(admin.StackedInline):
+    model = SentItemsModel
+
+
+@admin.register(SendRegistryModel)
+class SendRegistryModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    inlines = [SentItemsModelInlineAdmin]
+    field = '__all__'
+    search_fields = ['series']
 
 # admin.site.register(ItemsModel, create_admin_class(ItemsModel))
 # admin.site.register(ReceivedItemsModel, create_admin_class(ReceivedItemsModel))
@@ -35,6 +45,7 @@ for model in [
 # admin.site.register(StorePointModel, create_admin_class(StorePointModel))
 # admin.site.register(WarehouseChequeModel, create_admin_class(WarehouseChequeModel))
 # admin.site.register(ChequeItemsModel, create_admin_class(ChequeItemsModel))
+
 
 @admin.register(CompanyModel)
 class CompanyAdmin(ImportExportModelAdmin, admin.ModelAdmin):

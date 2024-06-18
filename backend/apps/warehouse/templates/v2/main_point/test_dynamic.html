@@ -110,8 +110,8 @@
             var searchQuery = $(this).val();
             if (searchQuery.length > 2) {
                 $.ajax({
-                    url: '{% url 'warehouse_v2:v2-mp-item-search' %}?q=',
-                    data: {'query': searchQuery},
+                    url: '{% url 'warehouse_v2:v2-mp-item-search' %}',
+                    data: {'?q': searchQuery},
                     success: function (data) {
                         $('#searchResults').empty();
                         data.forEach(function (item) {

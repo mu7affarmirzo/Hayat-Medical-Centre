@@ -121,7 +121,11 @@
 
                                         {% for i in transfers %}
                                             <tr>
-                                                <td>*</td>
+                                                <td>
+                                                    <a class="badge-pill" href="{% url 'warehouse_v2:transfer-update' i.pk %}">
+                                                      <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </td>
                                                 <td>
                                                     <a href="{% url 'warehouse_v2:transfers-detailed' i.pk %}">{{ i.series }}</a>
                                                 </td>
@@ -155,41 +159,6 @@
                         </div>
                     </div>
 
-
-                    {#    <div class="row">#}
-                    {#          <div class="col-12">#}
-                    {#            <div class="card">#}
-                    {#              <div class="card-header">#}
-                    {#                <h3 class="card-title">DataTable with minimal features & hover style</h3>#}
-                    {#              </div>#}
-                    {#              <!-- /.card-header -->#}
-                    {#              <div class="card-body">#}
-                    {#                <table id="example2" class="table table-bordered table-hover">#}
-                    {#                  <thead>#}
-                    {#                    <tr>#}
-                    {#                      <th>Name</th>#}
-                    {#                      <th>Age</th>#}
-                    {#                      <th>Country</th>#}
-                    {#                      <th>Action</th>#}
-                    {#                    </tr>#}
-                    {#                  </thead>#}
-                    {#                  <tbody id="example2-tbody">#}
-                    {#                  </tbody>#}
-                    {#                  <!-- <tfoot>#}
-                    {#                    <tr>#}
-                    {#                      <th colspan="12"><button>Add</button></th>#}
-                    {#                    </tr>#}
-                    {#                  </tfoot> -->#}
-                    {#                </table>#}
-                    {#                <button id="add-item" class="btn btn-primary mt-4">Add</button>#}
-                    {#              </div>#}
-                    {#              <!-- /.card-body -->#}
-                    {#            </div>#}
-                    {#            <!-- /.card -->#}
-                    {##}
-                    {#          </div>#}
-                    {#          <!-- /.col -->#}
-                    {#        </div>#}
                 </div>
 
             </section>
@@ -243,7 +212,7 @@
     <!-- Page specific script -->
     <script>
         document.getElementById('myButton').addEventListener('click', function () {
-            window.location.href = "{% url 'warehouse_v2:income-create' %}";
+            window.location.href = "{% url 'warehouse_v2:transfer-create' %}";
         });
     </script>
     <script>
