@@ -2,7 +2,7 @@ from django.urls import path
 
 from api.v1.lis.views.labs import LabResearchCategoryListAPIView, get_list_research
 from api.v1.lis.views.orders import get_list_ordered_researches, update_test_container_code_view, \
-    validate_ordered_research_view, validate_ordered_research_choices
+    validate_ordered_research_view, validate_ordered_research_choices, order_status_filter_ordered_research_choices
 
 app_name = 'lis'
 
@@ -15,5 +15,6 @@ urlpatterns = [
     path('orders/update-test-container/<int:pk>', update_test_container_code_view, name='labs'),
     path('orders/validate-research-test/<int:pk>', validate_ordered_research_view, name='labs'),
     path('orders/validate-research-choices', validate_ordered_research_choices, name='labs'),
+    path('orders/order-filter-validate-research-choices', order_status_filter_ordered_research_choices, name='labs'),
 
 ]

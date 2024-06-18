@@ -39,3 +39,10 @@ def validate_ordered_research_view(request, pk=None):
 @permission_classes((IsAuthenticated,))
 def validate_ordered_research_choices(request):
     return Response({"choices": OrderedLabResearchModel.ValidateStatus.values})
+
+
+@swagger_auto_schema(tags=['lis'], methods=["get"])
+@api_view(["get"])
+@permission_classes((IsAuthenticated,))
+def order_status_filter_ordered_research_choices(request):
+    return Response({"choices": OrderedLabResearchModel.OrderStatus.values})

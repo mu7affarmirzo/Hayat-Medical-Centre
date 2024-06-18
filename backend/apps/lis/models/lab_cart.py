@@ -18,6 +18,13 @@ class OrderedLabResearchModel(models.Model):
         ('отменена', 'отменена'),
     )
 
+    class OrderStatus(models.TextChoices):
+        done = "готово"
+        in_progress = "в процессе"
+        cancelled = "отменена"
+        not_printed = "готовые но не распечатан"
+        printed = "распечатан"
+
     class ValidateStatus(models.TextChoices):
         green = "Невалидированные(Зеленые)"
         blue = "Валидированные(Синие)"
@@ -49,7 +56,7 @@ class OrderedLabResearchModel(models.Model):
     pathology = models.BooleanField(default=True)
 
     payment_status = models.CharField(choices=PAYMENT_STATUS_CHOICES, max_length=255, null=True, blank=True)
-    order_status = models.CharField(choices=ORDER_STATUS_CHOICES, max_length=255, default='в процессе')
+    order_status = models.CharField(choices=OrderStatus.choices, max_length=255, default='в процессе')
 
     validated_by = models.ForeignKey(Account, related_name="validated_cart_lab_research", on_delete=models.SET_NULL,
                                      null=True)

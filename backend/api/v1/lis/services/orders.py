@@ -39,6 +39,8 @@ def get_list_ordered_researches_service(request, pk=None):
             filters["lab__category__id"] = data.get("category")
         if data.get("patient"):
             filters["patient__id"] = data.get("patient")
+        if data.get("order_status"):
+            filters["order_status"] = data.get("oder_status")
         queryset = OrderedLabResearchModel.objects.filter(**filters)
         paginator = ResearchesPaginator()
         paginated_page = paginator.paginate_queryset(queryset, request)
