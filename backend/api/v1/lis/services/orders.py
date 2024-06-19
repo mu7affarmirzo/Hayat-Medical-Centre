@@ -10,6 +10,10 @@ from apps.lis.models import OrderedLabResearchModel, TestResultModel
 
 class ResearchesPaginator(PageNumberPagination):
     page_size = 10
+    page_size_query_param = "page_size"
+    page_query_param = "page"
+
+
 
 
 def get_list_ordered_researches_service(request, pk=None):
