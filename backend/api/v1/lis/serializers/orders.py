@@ -37,6 +37,7 @@ class OrderedLabResearchFilterSerializer(serializers.Serializer):
     patient = serializers.CharField(required=False)
     order_status = serializers.ChoiceField(required=False, choices=OrderedLabResearchModel.OrderStatus.choices)
     date_birth = serializers.DateField(required=False)
+    container_connected = serializers.BooleanField(required=False)
 
 
 class UpdateContainerCodeSerializer(serializers.Serializer):
