@@ -28,7 +28,7 @@ $(document).ready(function() {
     var searchQuery = $(this).val();
     if (searchQuery.length > 2) {
       $.ajax({
-        url: '{% url 'warehouse_v2:v2-mp-item-search' %}?q=',
+        url: '{% url 'warehouse_v2:mp-item-search' %}?q=',
         data: { 'query': searchQuery },
         success: function(data) {
           $('#searchResults').empty();
@@ -75,7 +75,7 @@ $(document).ready(function() {
 </head>
 <body>
 <h1>Item Management</h1>
-<form method="post" action="{% url 'warehouse_v2:v2-mp-income-register-dynamic' %}">
+<form method="post" action="{% url 'warehouse_v2:mp-income-register-dynamic' %}">
   {% csrf_token %}
   <h2>Items List</h2>
   <table id="itemsList">

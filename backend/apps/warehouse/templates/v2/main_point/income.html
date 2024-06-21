@@ -276,7 +276,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       let query = $(this).val();
       if (query.length > 2) {
         $.ajax({
-          url: '{% url "warehouse_v2:v2-mp-income" %}',
+          url: '{% url "warehouse_v2:mp-income" %}',
           data: {
             'term': query
           },
@@ -366,7 +366,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 {#      if (query.length > 2) {#}
 {#        timer = setTimeout(function() {#}
 {#          $.ajax({#}
-{#            url: '{% url "warehouse_v2:v2-mp-items" %}',#}
+{#            url: '{% url "warehouse_v2:mp-items" %}',#}
 {#            data: {#}
 {#              'term': query#}
 {#            },#}

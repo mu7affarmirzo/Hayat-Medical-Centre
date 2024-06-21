@@ -3,6 +3,13 @@ from django.db import models
 from apps.account.models import Account
 
 
+class StorePointRolesModel(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.name)
+
+
 class StorePointModel(models.Model):
     main = models.BooleanField(default=False)
     name = models.CharField(max_length=255)
@@ -15,3 +22,12 @@ class StorePointModel(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.address} - {self.main}"
+
+
+class StorePointStaffModel(models.Model):
+    staff = models.ManyToManyField(Account, related_name="store_staff")
+    store_point = models.ForeignKey(StorePointModel, related_name="store_point_staff", on_delete=models.SET_NULL, null=True, blank=True)
+    role = models.ForeignKey(StorePointRolesModel, related_name="store_point_role", on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.store_point} - {self.role}"

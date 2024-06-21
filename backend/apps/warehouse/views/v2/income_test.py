@@ -25,7 +25,7 @@ class ProductInline():
                 formset_save_func(formset)
             else:
                 formset.save()
-        return redirect('warehouse_v2:v2-mp-income')
+        return redirect('warehouse_v2:mp-income')
 
     def formset_variants_valid(self, formset):
         """

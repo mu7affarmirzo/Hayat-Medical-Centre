@@ -29,6 +29,7 @@ class ItemsModel(models.Model):
 
 
 class ItemsInStockModel(models.Model):
+    income_registry = models.ForeignKey('IncomeModel', on_delete=models.SET_NULL, null=True)
     income_seria = models.CharField(max_length=255, null=True, blank=True)
     item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE, related_name="in_stock")
     quantity = models.IntegerField()
@@ -37,3 +38,4 @@ class ItemsInStockModel(models.Model):
 
     class Meta:
         unique_together = ('item', 'warehouse')
+        

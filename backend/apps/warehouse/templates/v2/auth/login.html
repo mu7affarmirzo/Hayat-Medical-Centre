@@ -25,7 +25,7 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
-        <form method="POST" action="{% url 'warehouse_v2:v2-login' %}"  class="mt-3">
+        <form method="POST" action="{% url 'warehouse_v2:login' %}"  class="mt-3">
         {% csrf_token %}
         <div class="input-group mb-3">
           <input

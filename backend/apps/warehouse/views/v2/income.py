@@ -38,9 +38,9 @@ def income_view(request):
 #         if form.is_valid():
 #             form.created_by = user
 #             form.save()
-#             return redirect('warehouse_v2:v2-mp-income')
+#             return redirect('warehouse_v2:mp-income')
 #         else:
-#             return redirect('warehouse_v2:v2-mp-income')
+#             return redirect('warehouse_v2:mp-income')
 #     return render(request, 'v2/income/create_income.html', context)
 
 def income_create_view(request):
@@ -64,10 +64,10 @@ def income_create_view(request):
             for item in income_items:
                 item.income = income
                 item.save()
-            return redirect('warehouse_v2:v2-mp-income')  # Replace with your success URL
+            return redirect('warehouse_v2:mp-income')  # Replace with your success URL
         else:
             print(formset, '------formset')
-            return redirect('warehouse_v2:v2-mp-income')  # Replace with your success URL
+            return redirect('warehouse_v2:mp-income')  # Replace with your success URL
 
     else:
         form = IncomeForm()
