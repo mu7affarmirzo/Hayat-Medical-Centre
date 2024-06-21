@@ -33,9 +33,7 @@ class ItemsInStockModel(models.Model):
     income_seria = models.CharField(max_length=255, null=True, blank=True)
     item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE, related_name="in_stock")
     quantity = models.IntegerField()
+    price = models.IntegerField()
     expire_date = models.DateField(null=True)
     warehouse = models.ForeignKey('StorePointModel', on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('item', 'warehouse')
         

@@ -13,7 +13,7 @@ def login_view(request):
     context = {}
     user = request.user
     if user.is_authenticated:
-        return redirect("warehouse:warehouse-recreg")
+        return redirect("warehouse_v2:mainscreen")
     if request.POST:
         form = AccountAuthenticationForm(request.POST)
         if form.is_valid():
@@ -23,7 +23,7 @@ def login_view(request):
 
             if user:
                 login(request, user)
-                return redirect("warehouse:warehouse-recreg")
+                return redirect("warehouse_v2:mainscreen")
     else:
         form = AccountAuthenticationForm()
 
