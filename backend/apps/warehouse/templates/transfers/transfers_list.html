@@ -1,0 +1,294 @@
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <!--
+    This is a starter template page. Use this page to start your new project from
+    scratch. This page gets rid of all links and provides the needed markup only.
+    -->
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Hayat Medical Centre</title>
+
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/fontawesome-free/css/all.min.css' %}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{% static 'adminlte3_assets/dist/css/adminlte.min.css' %}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body class="hold-transition sidebar-collapse layout-top-nav">
+
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+            <div class="container">
+                <a href="{% url "warehouse_v2:mainscreen" %}" class="navbar-brand">
+                    <img src="{% static 'adminlte3_assets/dist/img/hayat_logo.png' %}" alt="AdminLTE Logo"
+                         class="brand-image img" style="opacity: .8">
+                    <span class="brand-text font-weight-light"></span>
+                </a>
+
+                <button class="navbar-toggler order-1" type="button" data-toggle="collapse"
+                        data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+                    <!-- Left navbar links -->
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item">
+                            <a href="{% url 'warehouse_v2:mainscreen' %}" class="nav-link">Главное</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Контакт</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false" class="nav-link dropdown-toggle">Dropdown</a>
+                            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                <li><a href="#" class="dropdown-item">Some action </a></li>
+                                <li><a href="#" class="dropdown-item">Some other action</a></li>
+                                <li></li>
+                                <button type="button" class="dropdown-item" data-toggle="modal"
+                                        data-target="#modal-danger">
+                                    Log out
+                                </button>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-divider"></li>
+
+                        <!-- Level two dropdown-->
+                        <!-- End Level two -->
+                    </ul>
+                    </li>
+                    </ul>
+                </div>
+                <!-- SEARCH FORM -->
+            </div>
+        </nav>
+        <!-- Right navbar links -->
+    </div>
+    <!-- /.navbar -->
+
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Список перемещений</h3>
+
+                                <div class="card-tools">
+                                    <form method="get" action="">
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <input type="text" name="table_search" class="form-control float-right"
+                                                   placeholder="Search" value="{{ query }}">
+
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-default">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <br>
+                            <form action="{% url 'warehouse_v2:transfer-create' %}" method="post">
+                                {% csrf_token %}
+                                <div class="col-md-1">
+                                    <button id="myButton" type="button" class="btn btn-block btn-success">
+                                        + Добавить
+                                    </button>
+                                </div>
+                            </form>
+
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Серия Наклодная</th>
+                                        <th>Дата</th>
+                                        <th>Приниматель</th>
+                                        <th>Пользователь</th>
+                                        <th>Статус</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {% for i in transfers %}
+                                        <tr>
+                                            <td>
+                                                <a class="badge-pill"
+                                                   href="{% url 'warehouse_v2:transfer-update' i.pk %}">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'warehouse_v2:transfers-detailed' i.pk %}">{{ i.series }}</a>
+                                            </td>
+                                            <td>{{ i.created_at }}</td>
+                                            <td>{{ i.receiver.name }}</td>
+                                            <td>{{ i.created_by.full_name }}</td>
+                                            {% if i.state == 'в ожидании' %}
+                                                <td><span class="badge bg-warning">{{ i.state }}</span></td>
+                                            {% elif i.state == 'доставлено' %}
+                                                <td><span class="badge bg-success">{{ i.state }}</span></td>
+                                            {% elif i.state == 'отказоно' %}
+                                                <td><span class="badge bg-danger">{{ i.state }}</span></td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer clearfix">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    {% if transfers.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ transfers.previous_page_number }}">&laquo;</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for i in transfers.paginator.page_range %}
+                                        {% if transfers.number == i %}
+                                            <li class="page-item active"><a class="page-link">{{ i }}</a></li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?{% if query %}q={{ query }}&{% endif %}page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if transfers.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ transfers.next_page_number }}">Next</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ transfers.paginator.num_pages }}">Last
+                                                &raquo;</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+        <!-- /.content -->
+    </div>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Keep your health!
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2024 <a href="https://adminlte.io">Hayat Medical Centre</a>.</strong> All
+        rights reserved.
+    </footer>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+
+    <!-- jQuery -->
+    <script src="{% static 'adminlte3_assets/plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'adminlte3_assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <div class="modal fade" id="modal-danger" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Log Out</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ketyapsizmi muncha tez?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Oтмена</button>
+                    <button type="button" class="btn btn-outline-light"><a href="{% url 'warehouse_v2:logout' %}"
+                                                                           class="dropdown-item">ВЫХОД</a></button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- jQuery -->
+    <!-- DataTables  & Plugins -->
+    <script src="{% static "adminlte3_assets/plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/dataTables.responsive.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/dataTables.buttons.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/jszip/jszip.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/pdfmake/pdfmake.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/pdfmake/vfs_fonts.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.html5.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.print.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.colVis.min.js" %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static "adminlte3_assets/dist/js/adminlte.min.js" %}"></script>
+    <!-- Page specific script -->
+    <script>
+        document.getElementById('myButton').addEventListener('click', function () {
+            window.location.href = "{% url 'warehouse_v2:transfer-create' %}";
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+
+    </body>
+    </html>
+
+{% endblock %}

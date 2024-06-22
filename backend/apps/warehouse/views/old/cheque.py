@@ -14,7 +14,7 @@ from apps.warehouse.utils.render_to_pdf import render_to_pdf
 
 
 class ChequeView(TemplateView):
-    template_name = 'cheque/F-kassa-new-checks.html'
+    template_name = 'old/cheque/F-kassa-new-checks.html'
 
 
 @login_required(login_url="warehouse:warehouse-login")
@@ -49,7 +49,7 @@ def get_cheque_view(request, pk):
     context['cheque_items_summa'] = cheque_items_summa
     context['cheque_items_summa'] = cheque_items_summa
 
-    return render(request, 'cheque/F-kassa-new-checks.html', context)
+    return render(request, 'old/cheque/F-kassa-new-checks.html', context)
 
 
 @login_required(login_url="warehouse:warehouse-login")

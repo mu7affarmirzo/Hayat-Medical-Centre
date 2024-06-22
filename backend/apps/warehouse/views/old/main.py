@@ -29,7 +29,7 @@ def login_view(request):
         form = AccountAuthenticationForm()
 
     context['login_form'] = form
-    return render(request, 'warehouse/login.html', context)
+    return render(request, 'old/warehouse/login.html', context)
 
 
 @login_required(login_url="warehouse:warehouse-login")
@@ -38,7 +38,7 @@ def index_view(request):
     orgs = OrganizationModel.objects.all()
     print(request.POST)
     context["orgs"] = orgs
-    return render(request, 'warehouse/index.html', context)
+    return render(request, 'old/warehouse/index.html', context)
 
 
 def receive_registry_view(request, pk=None):
@@ -59,7 +59,7 @@ def receive_registry_view(request, pk=None):
     context["receive_registry"] = receive_registry
     context["summa_prices"] = summa_prices
 
-    return render(request, 'warehouse/receive_registry.html', context)
+    return render(request, 'old/warehouse/receive_registry.html', context)
 
 
 @login_required(login_url="warehouse:warehouse-login")
@@ -72,7 +72,7 @@ def medicines_view(request, pk=None):
         context["received_items"] = received_items
     items = ItemsModel.objects.all()
     context["items"] = items
-    return render(request, 'warehouse/medicines.html', context)
+    return render(request, 'old/warehouse/medicines.html', context)
 
 
 @login_required(login_url="warehouse:warehouse-login")
@@ -94,7 +94,7 @@ def incomes_view(request, pk=None):
     context["incomes"] = incomes
     context["summa_prices"] = summa_prices
 
-    return render(request, 'warehouse/incomes.html', context)
+    return render(request, 'old/warehouse/incomes.html', context)
 
 
 

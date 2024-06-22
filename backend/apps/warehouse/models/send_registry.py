@@ -36,7 +36,7 @@ class SentItemsModel(models.Model):
         ('принято', 'принято'),
 
     )
-    item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE)
+    item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE, related_name="send_registry_items")
     expire_date = models.DateField(null=True)
     state = models.CharField(choices=STATE_CHOICES, default='принято', max_length=50)
     quantity = models.IntegerField()

@@ -9,8 +9,15 @@ from apps.warehouse.models import ItemsModel
 
 
 class WarehouseChequeModel(models.Model):
+    STATE_CHOICES = (
+        ('оплачено', 'оплачено'),
+        ('отменена', 'отменена'),
+        ('не оплачено', 'не оплачено'),
+    )
+
     cheque_number = models.CharField(max_length=15, blank=True, unique=True)
     patient = models.ForeignKey(PatientModel, related_name='w_cheque_p', on_delete=models.SET_NULL, null=True, blank=True)
+    state = models.CharField(choices=STATE_CHOICES, default='не оплачено', max_length=50)
 
     created_by = models.ForeignKey(Account, related_name="warehouse_cheque", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
