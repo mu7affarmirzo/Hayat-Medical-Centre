@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 
 from apps.account.models import Account
@@ -33,7 +35,17 @@ class ItemsInStockModel(models.Model):
     income_seria = models.CharField(max_length=255, null=True, blank=True)
     item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE, related_name="in_stock")
     quantity = models.IntegerField()
-    price = models.IntegerField()
+    price = models.IntegerField(default=0)
     expire_date = models.DateField(null=True)
     warehouse = models.ForeignKey('StorePointModel', on_delete=models.CASCADE)
-        
+
+    def __str__(self):
+        return f"{self.income_seria}"
+
+    @property
+    def days_until_expire(self):
+        if self.expire_date:
+            delta = self.expire_date - date.today()
+            return delta.days
+        return 0
+
