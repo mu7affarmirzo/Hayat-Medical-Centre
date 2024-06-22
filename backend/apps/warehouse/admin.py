@@ -2,6 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from apps.warehouse.models import *
+from apps.warehouse.models.store_point import StorePointStaffModel, StorePointRolesModel
 
 
 def create_admin_class(model):
@@ -15,7 +16,7 @@ def create_admin_class(model):
 for model in [
     ItemsModel, ReceivedItemsModel, ReceiveRegistryModel,
     IncomeModel, IncomeItemsModel, ItemsInStockModel,
-    StorePointModel, WarehouseChequeModel, ChequeItemsModel, ExpenseModel,
+    StorePointModel, WarehouseChequeModel, ChequeItemsModel, ExpenseModel,StorePointStaffModel,StorePointRolesModel
 ]:
     admin.site.register(model, admin_class=type(
         f"{model.__name__}Admin",

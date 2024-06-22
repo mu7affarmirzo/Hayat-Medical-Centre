@@ -5,6 +5,7 @@ app_name = 'warehouse_v2'
 
 urlpatterns = [
     path('login/', auth.login_view, name='login'),
+    path('logout/', auth.logout_view, name='logout'),
     path('items/', items.get_items, name='items'),
     path('items-search/', items.search_items, name='items-search'),
 

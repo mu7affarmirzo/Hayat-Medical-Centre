@@ -1,19 +1,24 @@
+from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+
 from apps.warehouse.forms import AccountAuthenticationForm
-from django.contrib.auth import authenticate, login, logout
-from apps.account.models import OrganizationModel
-from apps.warehouse.models import ItemsModel, ItemsInStockModel, ReceivedItemsModel, IncomeModel, ReceiveRegistryModel, \
-    SendRegistryModel, StorePointModel
+from apps.warehouse.models.store_point import StorePointStaffModel
+
+
+def user_redirect(user):
+    role_page = StorePointStaffModel.objects.filter(staff__in=[user]).first()
+    if role_page:
+        return redirect(role_page.role.name)
+    else:
+        return redirect("warehouse_v2:mainscreen")
 
 
 def login_view(request):
     context = {}
     user = request.user
     if user.is_authenticated:
-        return redirect("warehouse_v2:mainscreen")
+        return user_redirect(user)
     if request.POST:
         form = AccountAuthenticationForm(request.POST)
         if form.is_valid():
@@ -22,10 +27,15 @@ def login_view(request):
             user = authenticate(email=email, password=password)
 
             if user:
-                login(request, user)
-                return redirect("warehouse_v2:mainscreen")
-    else:
-        form = AccountAuthenticationForm()
+                return user_redirect(user)
+
+    form = AccountAuthenticationForm()
 
     context['login_form'] = form
     return render(request, 'v2/auth/login.html', context)
+
+
+@login_required(login_url="warehouse_v2:login")
+def logout_view(request):
+    logout(request)
+    return redirect('warehouse:warehouse-login')
