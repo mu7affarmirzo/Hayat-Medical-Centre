@@ -132,14 +132,14 @@
                                     </div>
                                 </div>
                                 <br>
-{#                                <form action="{% url 'warehouse_v2:income-create' %}" method="post">#}
-{#                                    {% csrf_token %}#}
-{#                                    <div class="col-md-1">#}
-{#                                        <button id="myButton" type="button" class="btn btn-block btn-success">#}
-{#                                            + Добавить#}
-{#                                        </button>#}
-{#                                    </div>#}
-{#                                </form>#}
+                                <form action="{% url 'warehouse_v2:income-create' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="col-md-2">
+                                        <button id="myButton" type="button" class="btn btn-block btn-success">
+                                            + Добавить новый приход
+                                        </button>
+                                    </div>
+                                </form>
 
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -158,8 +158,10 @@
                                             <th>MX</th>
                                             <th style="width: 40px">Годен до</th>
                                         </tr>
+
                                         </thead>
                                         <tbody>
+
 
                                         {% for i in items %}
                                             <tr>
@@ -274,6 +276,11 @@
     <!-- ./wrapper -->
 
     <!-- REQUIRED SCRIPTS -->
+    <script>
+        document.getElementById('myButton').addEventListener('click', function () {
+            window.location.href = "{% url 'warehouse_v2:income-create' %}";
+        });
+    </script>
 
     <!-- jQuery -->
     <script src="{% static 'adminlte3_assets/plugins/jquery/jquery.min.js' %}"></script>
