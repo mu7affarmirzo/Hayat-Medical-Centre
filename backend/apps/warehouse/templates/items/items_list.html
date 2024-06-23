@@ -62,6 +62,48 @@
                 </div>
                 <!-- Right navbar links -->
             </div>
+
+            <ul class="navbar-nav ml-auto">
+                <!-- Navbar Search -->
+                <li class="nav-item dropdown user-menu">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <img src="{% static 'adminlte3_assets/dist/img/user2-160x160.jpg' %}" class="user-image img-circle elevation-2"
+                             alt="User Image">
+                        <span class="d-none d-md-inline">Alexander Pierce</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <!-- User image -->
+                        <li class="user-header bg-primary">
+                            <img src="{% static 'adminlte3_assets/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+
+                            <p>
+                                Alexander Pierce - Web Developer
+{#                                <small>Member since Nov. 2012</small>#}
+                            </p>
+                        </li>
+                        <!-- Menu Body -->
+{#                        <li class="user-body">#}
+{#                            <div class="row">#}
+{#                                <div class="col-4 text-center">#}
+{#                                    <a href="#">Followers</a>#}
+{#                                </div>#}
+{#                                <div class="col-4 text-center">#}
+{#                                    <a href="#">Sales</a>#}
+{#                                </div>#}
+{#                                <div class="col-4 text-center">#}
+{#                                    <a href="#">Friends</a>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <!-- /.row -->#}
+{#                        </li>#}
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <a href="#" class="btn btn-default btn-flat"> Профил</a>
+                            <a href="#" class="btn btn-default btn-flat float-right">Выйти</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </nav>
         <!-- /.navbar -->
 
@@ -90,14 +132,14 @@
                                     </div>
                                 </div>
                                 <br>
-                                <form action="{% url 'warehouse_v2:income-create' %}" method="post">
-                                    {% csrf_token %}
-                                    <div class="col-md-1">
-                                        <button id="myButton" type="button" class="btn btn-block btn-success">
-                                            + Добавить
-                                        </button>
-                                    </div>
-                                </form>
+{#                                <form action="{% url 'warehouse_v2:income-create' %}" method="post">#}
+{#                                    {% csrf_token %}#}
+{#                                    <div class="col-md-1">#}
+{#                                        <button id="myButton" type="button" class="btn btn-block btn-success">#}
+{#                                            + Добавить#}
+{#                                        </button>#}
+{#                                    </div>#}
+{#                                </form>#}
 
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -107,6 +149,7 @@
                                             <th style="width: 10px">#</th>
                                             <th>Название</th>
                                             <th>Серия прихода N:</th>
+                                            <th>Находиться в</th>
                                             <th>УП</th>
                                             <th>Цена</th>
                                             <th>Остаток</th>
@@ -121,10 +164,14 @@
                                         {% for i in items %}
                                             <tr>
                                                 <td>*</td>
+{#                                                <td>#}
+{#                                                    <a href="{% url 'warehouse_v2:mainscreen' %}">{{ i.item.name }}</a>#}
+{#                                                </td>#}
                                                 <td>
-                                                    <a href="{% url 'warehouse_v2:mainscreen' %}">{{ i.item.name }}</a>
+                                                   {{ i.item.name }}
                                                 </td>
                                                 <td>{{ i.income_seria }}</td>
+                                                <td>{{ i.warehouse.name }}</td>
                                                 <td>{{ i.item.unit }}</td>
                                                 <td>{{ i.item.price }}</td>
                                                 <td>{{ i.quantity }}</td>
@@ -222,15 +269,7 @@
         <!-- /.control-sidebar -->
 
         <!-- Main Footer -->
-        <footer class="main-footer">
-            <!-- To the right -->
-            <div class="float-right d-none d-sm-inline">
-                Keep your health!
-            </div>
-            <!-- Default to the left -->
-            <strong>Copyright &copy; 2014-2024 <a href="https://adminlte.io">Hayat Medical Centre</a>.</strong> All
-            rights reserved.
-        </footer>
+        {% include 'snippets/footer.html' %}
     </div>
     <!-- ./wrapper -->
 
@@ -245,25 +284,26 @@
     <!-- AdminLTE for demo purposes -->
     <div class="modal fade" id="modal-danger" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content bg-danger">
-            <div class="modal-header">
-              <h4 class="modal-title">Log Out</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Log Out</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ketyapsizmi muncha tez?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Oтмена</button>
+                    <button type="button" class="btn btn-outline-light"><a href="{% url 'warehouse_v2:logout' %}"
+                                                                           class="dropdown-item">ВЫХОД</a></button>
+                </div>
             </div>
-            <div class="modal-body">
-              <p>Ketyapsizmi muncha tez?</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-outline-light" data-dismiss="modal">Oтмена</button>
-              <button type="button" class="btn btn-outline-light"><a href="{% url 'warehouse_v2:logout' %}" class="dropdown-item">ВЫХОД</a></button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
+            <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div>
+    </div>
     <!-- jQuery -->
     <!-- DataTables  & Plugins -->
     <script src="{% static "adminlte3_assets/plugins/datatables/jquery.dataTables.min.js" %}"></script>

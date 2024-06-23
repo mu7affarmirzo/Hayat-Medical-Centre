@@ -44,32 +44,21 @@
                     <ul class="navbar-nav">
 
                         <li class="nav-item">
-                            <a href="{% url 'warehouse_v2:mainscreen' %}" class="nav-link">Главное</a>
+                            <a href="#" class="nav-link">Филиалы</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Контакт</a>
+                            <a href="{% url 'warehouse_v2:mp-income' %}" class="nav-link">Реестр прихода</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false" class="nav-link dropdown-toggle">Dropdown</a>
-                            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                                <li><a href="#" class="dropdown-item">Some action </a></li>
-                                <li><a href="#" class="dropdown-item">Some other action</a></li>
-                                <li></li>
-                                <button type="button" class="dropdown-item" data-toggle="modal"
-                                        data-target="#modal-danger">
-                                    Log out
-                                </button>
-                            </ul>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Реестр расхода</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'warehouse_v2:items-list' %}" class="nav-link">Реестр лекарств</a>
                         </li>
 
-                        <li class="dropdown-divider"></li>
+                    </ul>
 
-                        <!-- Level two dropdown-->
-                        <!-- End Level two -->
-                    </ul>
-                    </li>
-                    </ul>
+                    <!-- SEARCH FORM -->
                 </div>
                 <!-- SEARCH FORM -->
             </div>
@@ -118,24 +107,19 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th style="width: 10px">#</th>
                                         <th>Серия Наклодная</th>
                                         <th>Дата</th>
                                         <th>Приниматель</th>
                                         <th>Пользователь</th>
                                         <th>Статус</th>
+                                        <th style="width: 10px"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
 
                                     {% for i in transfers %}
                                         <tr>
-                                            <td>
-                                                <a class="badge-pill"
-                                                   href="{% url 'warehouse_v2:transfer-update' i.pk %}">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                            </td>
+
                                             <td>
                                                 <a href="{% url 'warehouse_v2:transfers-detailed' i.pk %}">{{ i.series }}</a>
                                             </td>
@@ -149,6 +133,12 @@
                                             {% elif i.state == 'отказоно' %}
                                                 <td><span class="badge bg-danger">{{ i.state }}</span></td>
                                             {% endif %}
+                                            <td>
+                                                <a class="badge-pill"
+                                                   href="{% url 'warehouse_v2:transfer-update' i.pk %}">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     {% endfor %}
 

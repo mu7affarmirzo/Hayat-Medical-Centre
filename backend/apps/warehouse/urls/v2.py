@@ -12,6 +12,7 @@ urlpatterns = [
     # ITEMS PATHS
     path('items-search/', items.item_search, name='mp-item-search'),
     path('items/items-list', items.items_list_view, name='items-list'),
+    path('items/items-list', items.items_list_view, name='items-list'),
     # ITEMS END HERE
 
     path('main-point/income/', income.income_view, name='mp-income'),

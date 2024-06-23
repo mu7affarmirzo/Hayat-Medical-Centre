@@ -1,232 +1,187 @@
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hayat Medical Centre</title>
+    <!DOCTYPE html>
+    <!--
+    This is a starter template page. Use this page to start your new project from
+    scratch. This page gets rid of all links and provides the needed markup only.
+    -->
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Hayat Medical Centre</title>
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/fontawesome-free/css/all.min.css' %}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{% static 'adminlte3_assets/dist/css/adminlte.min.css' %}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body class="hold-transition sidebar-collapse layout-top-nav">
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/fontawesome-free/css/all.min.css' %}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{% static 'adminlte3_assets/dist/css/adminlte.min.css' %}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body class="hold-transition sidebar-collapse layout-top-nav">
 
-<div class="wrapper">
+    <div class="wrapper">
 
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
-    <div class="container">
-      <a href="{% url "warehouse_v2:mainscreen" %}" class="navbar-brand">
-        <img src="{% static 'adminlte3_assets/dist/img/hayat_logo.png' %}" alt="AdminLTE Logo" class="brand-image img" style="opacity: .8">
-        <span class="brand-text font-weight-light"></span>
-      </a>
+        <!-- Navbar -->
+        {% include 'snippets/navbar.html' %}
+        <!-- /.navbar -->
 
-      <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title"><b>Серия:</b> {{ income.serial }}</h3>
+                                    <br>
+                                    <h2 class="card-title"><b>Поставщик:</b> {{ income.delivery_company.name }}</h2>
+                                    <br>
+                                    <h2 class="card-title"><b>Дата:</b> {{ income.created_at }}</h2>
+                                    <div class="card-tools">
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <input type="text" name="table_search" class="form-control float-right"
+                                                   placeholder="Search">
 
-      <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-default">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Полное наименование</th>
+                                            <th>Срок год.</th>
+                                            <th>Количество</th>
+                                            <th>Базовая цена</th>
+                                            <th>Сумма</th>
+                                            <th>Пользователь</th>
+                                            <th style="width: 40px">Label</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
-          <li class="nav-item">
-            <a href="{% url 'warehouse_v2:mainscreen' %}" class="nav-link">Home</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Contact</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Dropdown</a>
-            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              <li><a href="#" class="dropdown-item">Some action </a></li>
-              <li><a href="#" class="dropdown-item">Some other action</a></li>
-                <li></li><button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal-danger">
-                  Log out
-                </button></li>
+                                        {% for i in details %}
+                                            <tr>
+                                                <td></td>
+                                                <td>{{ i.item.name }}</td>
+                                                <td>{{ i.item }}</td>
+                                                <td>{{ i.quantity }}</td>
+                                                <td>{{ i.price }}</td>
+                                                <td>{{ i.overall_price }}</td>
+                                                <td>{{ i.created_by }}</td>
+                                                <td>
+                                                    <div class="progress progress-xs">
+                                                        <div class="progress-bar progress-bar-danger"
+                                                             style="width: 55%"></div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-danger">55%</span></td>
+                                            </tr>
+                                        {% endfor %}
 
-              <li class="dropdown-divider"></li>
-
-              <!-- Level two dropdown-->
-              <!-- End Level two -->
-            </ul>
-          </li>
-        </ul>
-
-        <!-- SEARCH FORM -->
-      </div>
-      <!-- Right navbar links -->
-    </div>
-  </nav>
-  <!-- /.navbar -->
-
-  <div class="content-wrapper">
-      <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                  <h3 class="card-title"><b>Серия:</b> {{ income.serial}}</h3>
-                  <br>
-                    <h2 class="card-title"><b>Поставщик:</b> {{ income.delivery_company.name}}</h2>
-                  <br>
-                  <h2 class="card-title"><b>Дата:</b> {{ income.created_at}}</h2>
-                  <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Полное наименование</th>
-                      <th>Срок год.</th>
-                      <th>Количество</th>
-                      <th>Базовая цена</th>
-                      <th>Сумма</th>
-                      <th>Пользователь</th>
-                      <th style="width: 40px">Label</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                  {% for i in details %}
-                      <tr>
-                      <td></td>
-                          <td>{{ i.item.name}}</td>
-                      <td>{{ i.item}}</td>
-                      <td>{{ i.quantity}}</td>
-                      <td>{{ i.price}}</td>
-                      <td>{{ i.overall_price}}</td>
-                      <td>{{ i.created_by}}</td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
                         </div>
-                      </td>
-                      <td><span class="badge bg-danger">55%</span></td>
-                    </tr>
-                  {% endfor %}
+                    </div>
 
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-          </div>
+                </div>
+
+            </section>
+            <!-- /.content -->
         </div>
 
-        </div>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
 
-    </section>
-    <!-- /.content -->
-  </div>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Keep your health!
+        <!-- Main Footer -->
+        {% include 'snippets/footer.html' %}
     </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2024 <a href="https://adminlte.io">Hayat Medical Centre</a>.</strong> All rights reserved.
-  </footer>
-</div>
-<!-- ./wrapper -->
+    <!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
+    <!-- REQUIRED SCRIPTS -->
 
-<!-- jQuery -->
-<script src="{% static 'adminlte3_assets/plugins/jquery/jquery.min.js' %}"></script>
-<!-- Bootstrap 4 -->
-<script src="{% static 'adminlte3_assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
-<!-- AdminLTE for demo purposes -->
-<div class="modal fade" id="modal-danger" style="display: none;" aria-hidden="true">
+    <!-- jQuery -->
+    <script src="{% static 'adminlte3_assets/plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'adminlte3_assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <div class="modal fade" id="modal-danger" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content bg-danger">
-            <div class="modal-header">
-              <h4 class="modal-title">Log Out</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Log Out</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ketyapsizmi muncha tez?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Oтмена</button>
+                    <button type="button" class="btn btn-outline-light"><a href="{% url 'warehouse_v2:logout' %}"
+                                                                           class="dropdown-item">ВЫХОД</a></button>
+                </div>
             </div>
-            <div class="modal-body">
-              <p>Ketyapsizmi muncha tez?</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-outline-light" data-dismiss="modal">Oтмена</button>
-              <button type="button" class="btn btn-outline-light"><a href="{% url 'warehouse_v2:logout' %}" class="dropdown-item">ВЫХОД</a></button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
+            <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div>
-<!-- jQuery -->
-<!-- DataTables  & Plugins -->
-<script src="{% static "adminlte3_assets/plugins/datatables/jquery.dataTables.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/dataTables.responsive.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/dataTables.buttons.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/jszip/jszip.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/pdfmake/pdfmake.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/pdfmake/vfs_fonts.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.html5.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.print.min.js" %}"></script>
-<script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.colVis.min.js" %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static "adminlte3_assets/dist/js/adminlte.min.js" %}"></script>
-<!-- Page specific script -->
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-</script>
+    </div>
+    <!-- jQuery -->
+    <!-- DataTables  & Plugins -->
+    <script src="{% static "adminlte3_assets/plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/dataTables.responsive.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/dataTables.buttons.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/jszip/jszip.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/pdfmake/pdfmake.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/pdfmake/vfs_fonts.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.html5.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.print.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.colVis.min.js" %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static "adminlte3_assets/dist/js/adminlte.min.js" %}"></script>
+    <!-- Page specific script -->
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
 
-</body>
-</html>
+    </body>
+    </html>
 
 {% endblock %}

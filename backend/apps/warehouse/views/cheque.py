@@ -12,7 +12,6 @@ ITEMS_PER_PAGE = 30
 
 
 def cheque_view(request):
-    cheques = WarehouseChequeModel.objects.all()
     query = request.GET.get('q', '')
     search_query = request.GET.get('table_search')
     if search_query:

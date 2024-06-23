@@ -61,13 +61,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <!-- Right navbar links -->
         </div>
+
+        <ul class="navbar-nav ml-auto">
+            <!-- Navbar Search -->
+            <li class="nav-item dropdown user-menu">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <img src="{% static 'adminlte3_assets/dist/img/user2-160x160.jpg' %}"
+                         class="user-image img-circle elevation-2"
+                         alt="User Image">
+                    <span class="d-none d-md-inline">Alexander Pierce</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <!-- User image -->
+                    <li class="user-header bg-primary">
+                        <img src="{% static 'adminlte3_assets/dist/img/user2-160x160.jpg' %}"
+                             class="img-circle elevation-2" alt="User Image">
+
+                        <p>
+                            Alexander Pierce - Web Developer
+                        </p>
+                    </li>
+                    <!-- Menu Body -->
+
+                    <li class="user-footer">
+                        <a href="#" class="btn btn-default btn-flat"> Профил</a>
+                        <a href="#" class="btn btn-default btn-flat float-right">Выйти</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </nav>
     <!-- /.navbar -->
 
-    {% block content %}
-        
-        
-    {% endblock %}
+    <div class="content-wrapper">
+        <!-- Main content -->
+        {% block content %}
+
+        {% endblock %}
+        <!-- /.content -->
+    </div>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">

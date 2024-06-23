@@ -25,52 +25,7 @@
     <div class="wrapper">
 
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
-            <div class="container">
-                <a href="{% url "warehouse_v2:mainscreen" %}" class="navbar-brand">
-                    <img src="{% static 'adminlte3_assets/dist/img/hayat_logo.png' %}" alt="AdminLTE Logo"
-                         class="brand-image img" style="opacity: .8">
-                    <span class="brand-text font-weight-light"></span>
-                </a>
-
-                <button class="navbar-toggler order-1" type="button" data-toggle="collapse"
-                        data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-                    <!-- Left navbar links -->
-                    <ul class="navbar-nav">
-
-                        <li class="nav-item">
-                            <a href="{% url 'warehouse_v2:mainscreen' %}" class="nav-link">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Contact</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false" class="nav-link dropdown-toggle">Dropdown</a>
-                            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                                <li><a href="#" class="dropdown-item">Some action </a></li>
-                                <li><a href="#" class="dropdown-item">Some other action</a></li>
-                                <li>
-                                    <button type="button" class="dropdown-item" data-toggle="modal"
-                                            data-target="#modal-danger">
-                                        Log out
-                                    </button>
-                                </li>
-                                <li class="dropdown-divider"></li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <!-- SEARCH FORM -->
-                </div>
-                <!-- Right navbar links -->
-            </div>
-        </nav>
+        {% include 'snippets/navbar.html' %}
         <!-- /.navbar -->
 
         <div class="content-wrapper">
@@ -115,10 +70,10 @@
                                         <tr>
                                             <th style="width: 10px">#</th>
                                             <th>Серия Наклодная</th>
-                                            <th>Дата</th>
-                                            <th>Пользователь</th>
+                                            <th>Пациент</th>
                                             <th>Сумма</th>
                                             <th>Персонал</th>
+                                            <th>Дата</th>
                                             <th>Статус</th>
                                         </tr>
                                         </thead>
@@ -130,10 +85,10 @@
                                                 <td>
                                                     <a href="{% url 'warehouse_v2:cheque-detailed' i.pk %}">{{ i.cheque_number }}</a>
                                                 </td>
-                                                <td>{{ i.created_at }}</td>
                                                 <td>{{ i.patient.full_name }}</td>
                                                 <td>{{ i.total_price }}</td>
                                                 <td>{{ i.created_by.full_name }}</td>
+                                                <td>{{ i.created_at }}</td>
                                                 {% if i.state == 'не оплачено' %}
                                                     <td><span class="badge bg-warning">{{ i.state }}</span></td>
                                                 {% elif i.state == 'оплачено' %}
@@ -183,42 +138,6 @@
                             </div>
                         </div>
                     </div>
-
-
-                    {#    <div class="row">#}
-                    {#          <div class="col-12">#}
-                    {#            <div class="card">#}
-                    {#              <div class="card-header">#}
-                    {#                <h3 class="card-title">DataTable with minimal features & hover style</h3>#}
-                    {#              </div>#}
-                    {#              <!-- /.card-header -->#}
-                    {#              <div class="card-body">#}
-                    {#                <table id="example2" class="table table-bordered table-hover">#}
-                    {#                  <thead>#}
-                    {#                    <tr>#}
-                    {#                      <th>Name</th>#}
-                    {#                      <th>Age</th>#}
-                    {#                      <th>Country</th>#}
-                    {#                      <th>Action</th>#}
-                    {#                    </tr>#}
-                    {#                  </thead>#}
-                    {#                  <tbody id="example2-tbody">#}
-                    {#                  </tbody>#}
-                    {#                  <!-- <tfoot>#}
-                    {#                    <tr>#}
-                    {#                      <th colspan="12"><button>Add</button></th>#}
-                    {#                    </tr>#}
-                    {#                  </tfoot> -->#}
-                    {#                </table>#}
-                    {#                <button id="add-item" class="btn btn-primary mt-4">Add</button>#}
-                    {#              </div>#}
-                    {#              <!-- /.card-body -->#}
-                    {#            </div>#}
-                    {#            <!-- /.card -->#}
-                    {##}
-                    {#          </div>#}
-                    {#          <!-- /.col -->#}
-                    {#        </div>#}
                 </div>
 
             </section>
@@ -232,15 +151,7 @@
         <!-- /.control-sidebar -->
 
         <!-- Main Footer -->
-        <footer class="main-footer">
-            <!-- To the right -->
-            <div class="float-right d-none d-sm-inline">
-                Keep your health!
-            </div>
-            <!-- Default to the left -->
-            <strong>Copyright &copy; 2014-2024 <a href="https://adminlte.io">Hayat Medical Centre</a>.</strong> All
-            rights reserved.
-        </footer>
+        {% include 'snippets/footer.html' %}
     </div>
     <!-- ./wrapper -->
 
