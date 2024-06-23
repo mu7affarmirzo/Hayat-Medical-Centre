@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.warehouse.views import transfers, items, income, main_point_income, auth, cheque
+from apps.warehouse.views import transfers, items, income, main_point_income, auth, cheque, expanses
 
 app_name = 'warehouse_v2'
 
@@ -18,9 +18,15 @@ urlpatterns = [
     path('main-point/income/', income.income_view, name='mp-income'),
     path('main-point/income/create', income.ProductCreate.as_view(), name='income-create'),
     path('main-point/income/update/test/<int:pk>', income.ProductUpdate.as_view(), name='income-update-test'),
-    path('main-point/income/companies', income.load_delivery_companies, name='load-companies'),
     path('main-point/income/detailed/<int:pk>', income.income_detailed_view, name='mp-income-detailed'),
     # INCOMES ENDS HERE
+
+    # EXPANSES PATHS
+    path('main-point/expanses/', expanses.expanses_view, name='expanses'),
+    path('main-point/expanses/create', expanses.ExpanseCreate.as_view(), name='expanses-create'),
+    path('main-point/expanses/update/test/<int:pk>', expanses.ExpanseUpdate.as_view(), name='expanses-update'),
+    path('main-point/expanses/detailed/<int:pk>', expanses.expanses_detailed_view, name='expanses-detailed'),
+    # EXPANSES ENDS HERE
 
     # CHEQUE PATHS
     path('main-point/cheque/', cheque.cheque_view, name='cheque'),
