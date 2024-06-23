@@ -115,7 +115,8 @@ def expanses_view(request):
         expanses = expanses_paginator.page(expanses_paginator.num_pages)
 
     context = {
-        "expanses": expanses
+        "expanses": expanses,
+        "notifications": [1, 2, 3]
     }
     return render(request, 'expanses/expanse_list.html', context)
 

@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
@@ -25,9 +25,10 @@ def login_view(request):
             email = request.POST['email']
             password = request.POST['password']
             user = authenticate(email=email, password=password)
-
             if user:
-                return user_redirect(user)
+                login(request, user)
+                # return user_redirect(user)
+                return redirect("warehouse_v2:mainscreen")
 
     form = AccountAuthenticationForm()
 
@@ -38,4 +39,4 @@ def login_view(request):
 @login_required(login_url="warehouse_v2:login")
 def logout_view(request):
     logout(request)
-    return redirect('warehouse:warehouse-login')
+    return redirect('warehouse_v2:login')
