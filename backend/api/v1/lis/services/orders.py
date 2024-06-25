@@ -44,7 +44,7 @@ def get_list_ordered_researches_service(request, pk=None):
         if data.get("patient"):
             filters["patient__id"] = data.get("patient")
         if data.get("order_status"):
-            filters["order_status"] = data.get("oder_status")
+            filters["order_status"] = data.get("order_status")
         if data.get("date_birth"):
             filters["patient__date_of_birth"] = data.get("date_birth")
         if data.get("container_connected"):
