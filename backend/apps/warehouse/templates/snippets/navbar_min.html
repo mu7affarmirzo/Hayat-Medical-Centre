@@ -17,11 +17,9 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
 
+
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Филиалы</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'warehouse_v2:mp-income' %}" class="nav-link">Реестр прихода</a>
+                    <a href="{% url 'warehouse_branch:income-list' %}" class="nav-link">Реестр прихода</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Реестр расхода</a>
@@ -30,7 +28,7 @@
                     <a href="{% url 'warehouse_v2:items-list' %}" class="nav-link">Реестр лекарств</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'warehouse_v2:cheque' %}" class="nav-link">Чеки</a>
+                    <a href="#" class="nav-link">Чеки</a>
                 </li>
 
             </ul>
@@ -48,16 +46,16 @@
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 {% for note in notifications %}
-                    <a href="#" class="dropdown-item">
+                    <a href="{{ note.generated_url }}" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
-                                    Brad Diesel
+                                    {{ note.sender }}
                                     <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
                                 </h3>
-                                <p class="text-sm">Call me whenever you can...</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                <p class="text-sm">{{ note.message }}</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{ note.created_at }}</p>
                             </div>
                         </div>
                         <!-- Message End -->

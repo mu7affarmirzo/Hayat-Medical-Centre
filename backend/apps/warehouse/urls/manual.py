@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.warehouse.views import manual
+from apps.warehouse.views.headquerter import manual
 
 app_name = 'warehouse_manual'
 

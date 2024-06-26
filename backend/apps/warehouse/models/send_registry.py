@@ -1,11 +1,16 @@
+from decouple import config
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from api.v1.account.services.email import send_email
+from apps.account.models import NotificationModel
 from apps.account.models.accounts import Account
 from apps.warehouse.models import ItemsModel
-from apps.warehouse.models.store_point import StorePointModel
+from apps.warehouse.models.store_point import StorePointModel, StorePointStaffModel
+from datetime import date
+
+HOST = config('PRODUCTION_HOST')
 
 
 class SendRegistryModel(models.Model):
@@ -26,6 +31,10 @@ class SendRegistryModel(models.Model):
 
     def __str__(self):
         return f"{self.receiver} - {self.sender} - {self.is_delivered}"
+
+    def __init__(self, *args, **kwargs):
+        super(SendRegistryModel, self).__init__(*args, **kwargs)
+        self.__original_state = f"{self.state}"
 
 
 class SentItemsModel(models.Model):
@@ -50,6 +59,41 @@ class SentItemsModel(models.Model):
     def __str__(self):
         return f"{self.item} - {self.quantity} - {self.quantity}"
 
+    @property
+    def days_until_expire(self):
+        if self.expire_date:
+            delta = self.expire_date - date.today()
+            return delta.days
+        return 0
+
+
+@receiver(post_save, sender=SendRegistryModel)
+def create_notification_to_receiver(sender, instance: SendRegistryModel = None, created=False, **kwargs):
+    if created:
+        receiver = instance.receiver
+        target_receivers = StorePointStaffModel.objects.filter(
+            store_point=receiver
+        )
+        for user in target_receivers:
+            NotificationModel.objects.create(
+                sender=instance.created_by,
+                receiver=user.staff,
+                message='Вам отправили новый <<Приход>>!',
+                generated_url=f'{HOST}render/warehouse/branch/income/detailed/{instance.id}'
+            )
+
+
+@receiver(pre_save, sender=SendRegistryModel)
+def send_registry_state_changed(sender, instance,**kwargs):
+    # Fetch the original instance from the database
+    # original_instance = SendRegistryModel.objects.get(pk=instance.pk)
+    print('Before saving this')
+    # Check if the state changed to 'принято'
+    # if instance.state != instance.__original_state:
+    #     print(instance.state)
+    #     print(instance.__original_state)
+    #     # Perform your desired actions here
+    #     print(f"State changed to 'доставлено' for {instance}")
 
 # @receiver(post_save, sender=SendRegistryModel)
 # def send_email_to_receiver(sender, instance: SendRegistryModel = None, created=False, **kwargs):

@@ -132,12 +132,6 @@ def income_detailed_view(request, pk):
     return render(request, 'income/income_details.html', context)
 
 
-def load_delivery_companies(request):
-    company_id = request.GET.get('company_id')
-    companies = CompanyModel.objects.filter(pk=company_id).all()
-    return render(request, 'income/create_income.html', {'companies': companies})
-
-
 def get_incomes_queryset(query=None):
     queryset = []
     queries = query.split(" ")
