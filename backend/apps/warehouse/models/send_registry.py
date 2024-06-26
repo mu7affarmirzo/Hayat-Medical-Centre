@@ -7,7 +7,8 @@ from api.v1.account.services.email import send_email
 from apps.account.models import NotificationModel
 from apps.account.models.accounts import Account
 from apps.warehouse.models import ItemsModel
-from apps.warehouse.models.store_point import StorePointModel, StorePointStaffModel
+# from apps.warehouse.models.store_point import StorePointModel, StorePointStaffModel
+from apps.warehouse.models.store_point import StorePointModel
 from datetime import date
 
 HOST = config('PRODUCTION_HOST')
@@ -66,21 +67,21 @@ class SentItemsModel(models.Model):
             return delta.days
         return 0
 
-
-@receiver(post_save, sender=SendRegistryModel)
-def create_notification_to_receiver(sender, instance: SendRegistryModel = None, created=False, **kwargs):
-    if created:
-        receiver = instance.receiver
-        target_receivers = StorePointStaffModel.objects.filter(
-            store_point=receiver
-        )
-        for user in target_receivers:
-            NotificationModel.objects.create(
-                sender=instance.created_by,
-                receiver=user.staff,
-                message='Вам отправили новый <<Приход>>!',
-                generated_url=f'{HOST}render/warehouse/branch/income/detailed/{instance.id}'
-            )
+#
+# @receiver(post_save, sender=SendRegistryModel)
+# def create_notification_to_receiver(sender, instance: SendRegistryModel = None, created=False, **kwargs):
+#     if created:
+#         receiver = instance.receiver
+#         target_receivers = StorePointStaffModel.objects.filter(
+#             store_point=receiver
+#         )
+#         for user in target_receivers:
+#             NotificationModel.objects.create(
+#                 sender=instance.created_by,
+#                 receiver=user.staff,
+#                 message='Вам отправили новый <<Приход>>!',
+#                 generated_url=f'{HOST}render/warehouse/branch/income/detailed/{instance.id}'
+#             )
 
 
 @receiver(pre_save, sender=SendRegistryModel)
