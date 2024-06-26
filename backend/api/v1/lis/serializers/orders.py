@@ -17,7 +17,10 @@ class OrderedLabResearchSerializer(serializers.ModelSerializer):
             'order_number',
             'lab',
             'branch_name',
-            'results'
+            'results',
+            'validate_status',
+            'order_status'
+
         ]
 
     def get_test_results(self, obj: OrderedLabResearchModel):
