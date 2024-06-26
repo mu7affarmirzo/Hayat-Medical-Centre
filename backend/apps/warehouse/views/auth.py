@@ -4,15 +4,15 @@ from django.shortcuts import render, redirect
 
 from apps.account.models import NotificationModel
 from apps.warehouse.forms import AccountAuthenticationForm
-# from apps.warehouse.models.store_point import StorePointStaffModel
+from apps.warehouse.models.store_point import StorePointStaffModel
 
 
-# def user_redirect(user):
-#     role_page = StorePointStaffModel.objects.filter(staff__in=[user]).first()
-#     if role_page:
-#         return redirect(role_page.role.name)
-#     else:
-#         return redirect("warehouse_v2:mainscreen")
+def user_redirect(user):
+    role_page = StorePointStaffModel.objects.filter(staff__in=[user]).first()
+    if role_page:
+        return redirect(role_page.role.name)
+    else:
+        return redirect("warehouse_v2:mainscreen")
 
 
 def login_view(request):
@@ -47,20 +47,19 @@ def logout_view(request):
 def main_screen_view(request):
     context = {}
     staff = request.user
-    # store_point = StorePointStaffModel.objects.filter(staff=staff)
+    store_point = StorePointStaffModel.objects.filter(staff=staff)
 
-    # if not store_point:
-    #     return redirect('warehouse_v2:logout')
+    if not store_point:
+        return redirect('warehouse_v2:logout')
 
     notifications = NotificationModel.objects.filter(receiver=request.user, state=False)
     context['notifications'] = notifications
     print(notifications)
 
-    # store_point = store_point.first()
-    # context['store_point'] = store_point
-    # context['user'] = staff
-    # if store_point.store_point.is_main:
-    #     return render(request, 'main_screen/main_screen.html', context)
-    # else:
-    #     return render(request, 'main_screen/branches_main_screen.html', context)
-    return render(request, 'main_screen/branches_main_screen.html', context)
+    store_point = store_point.first()
+    context['store_point'] = store_point
+    context['user'] = staff
+    if store_point.store_point.is_main:
+        return render(request, 'main_screen/main_screen.html', context)
+    else:
+        return render(request, 'main_screen/branches_main_screen.html', context)
