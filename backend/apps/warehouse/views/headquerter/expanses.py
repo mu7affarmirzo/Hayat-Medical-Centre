@@ -89,6 +89,12 @@ class ExpanseCreate(ExpanseInline, CreateView):
 
 class ExpanseUpdate(ExpanseInline, UpdateView):
 
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.state == 'доставлено':
+            return redirect('warehouse_v2:expanses')
+        return super(ExpanseUpdate, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         ctx = super(ExpanseUpdate, self).get_context_data(**kwargs)
         ctx['named_formsets'] = self.get_named_formsets()

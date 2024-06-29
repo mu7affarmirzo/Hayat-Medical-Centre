@@ -1,0 +1,364 @@
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <!--
+    This is a starter template page. Use this page to start your new project from
+    scratch. This page gets rid of all links and provides the needed markup only.
+    -->
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Hayat Medical Centre</title>
+
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/fontawesome-free/css/all.min.css' %}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{% static 'adminlte3_assets/dist/css/adminlte.min.css' %}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body class="hold-transition sidebar-collapse layout-top-nav">
+
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        {% include 'snippets/navbar_min.html' %}
+        <!-- /.navbar -->
+
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header p-2">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item"><a class="nav-link active" href="#activity"
+                                                                data-toggle="tab">Входящие</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="#timeline"
+                                                                data-toggle="tab">Исходящие</a></li>
+                                    </ul>
+                                </div><!-- /.card-header -->
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <div class="active tab-pane" id="activity">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="card-tools">
+                                                        <form method="get" action="">
+                                                            <div class="input-group input-group-sm"
+                                                                 style="width: 150px;">
+                                                                <input type="text" name="table_search"
+                                                                       class="form-control float-right"
+                                                                       placeholder="Search" value="{{ query }}">
+
+                                                                <div class="input-group-append">
+                                                                    <button type="submit" class="btn btn-default">
+                                                                        <i class="fas fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <form action="{% url 'warehouse_v2:income-create' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <div class="col-md-1">
+                                                        <button id="myButton" type="button"
+                                                                class="btn btn-block btn-success">
+                                                            + Добавить
+                                                        </button>
+                                                    </div>
+                                                </form>
+
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th style="width: 10px">#</th>
+                                                            <th>Серия Наклодная</th>
+                                                            <th>Дата</th>
+                                                            <th>Поставщик</th>
+                                                            <th>Пользователь</th>
+                                                            <th>Дата ввода</th>
+                                                            <th>Статус</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        {% for i in incoming_transfers %}
+                                                            <tr>
+                                                                <td>*</td>
+                                                                <td>
+                                                                    <a href="{% url 'warehouse_branch:transfers-detailed' i.pk %}">{{ i.series }}</a>
+                                                                </td>
+                                                                <td>{{ i.created_at }}</td>
+                                                                <td>{{ i.sender.name }}</td>
+                                                                <td>{{ i.created_by.full_name }}</td>
+                                                                <td>{{ i.modified_at }}</td>
+                                                                {% if i.state == 'доставлено' %}
+                                                                    <td><span
+                                                                            class="badge bg-success">{{ i.state }}</span>
+                                                                    </td>
+                                                                {% elif i.state == 'в ожидании' %}
+                                                                    <td><span
+                                                                            class="badge bg-warning">{{ i.state }}</span>
+                                                                    </td>
+                                                                {% elif i.state == 'отказоно' %}
+                                                                    <td><span
+                                                                            class="badge bg-danger">{{ i.state }}</span>
+                                                                    </td>
+                                                                {% else %}
+                                                                    <td><span
+                                                                            class="badge bg-black">{{ i.state }}</span>
+                                                                    </td>
+                                                                {% endif %}
+
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- /.card-body -->
+                                                <div class="card-footer clearfix">
+                                                    <ul class="pagination pagination-sm m-0 float-right">
+                                                        {% if incomes.has_previous %}
+                                                            <li class="page-item">
+                                                                <a class="page-link"
+                                                                   href="?{% if query %}q={{ query }}&{% endif %}page={{ incomes.previous_page_number }}">&laquo;</a>
+                                                            </li>
+                                                        {% endif %}
+
+                                                        {% for i in incomes.paginator.page_range %}
+                                                            {% if incomes.number == i %}
+                                                                <li class="page-item active"><a
+                                                                        class="page-link">{{ i }}</a></li>
+                                                            {% else %}
+                                                                <li class="page-item"><a class="page-link"
+                                                                                         href="?{% if query %}q={{ query }}&{% endif %}page={{ i }}">{{ i }}</a>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+
+                                                        {% if incomes.has_next %}
+                                                            <li class="page-item">
+                                                                <a class="page-link"
+                                                                   href="?{% if query %}q={{ query }}&{% endif %}page={{ incomes.next_page_number }}">Next</a>
+                                                            </li>
+                                                            <li class="page-item">
+                                                                <a class="page-link"
+                                                                   href="?{% if query %}q={{ query }}&{% endif %}page={{ incomes.paginator.num_pages }}">Last
+                                                                    &raquo;</a>
+                                                            </li>
+                                                        {% endif %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!-- Post -->
+                                            {#                                            <div class="post">#}
+                                            {#                                                <div class="user-block">#}
+                                            {#                                                    <img class="img-circle img-bordered-sm"#}
+                                            {#                                                         src="../../dist/img/user1-128x128.jpg" alt="user image">#}
+                                            {#                                                    <span class="username">#}
+                                            {#                                                      <a href="#">Jonathan Burke Jr.</a>#}
+                                            {#                                                      <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>#}
+                                            {#                                                    </span>#}
+                                            {#                                                    <span class="description">Shared publicly - 7:30 PM today</span>#}
+                                            {#                                                </div>#}
+                                            {#                                                <!-- /.user-block -->#}
+                                            {#                                                <p>#}
+                                            {#                                                    Lorem ipsum represents a long-held tradition for designers,#}
+                                            {#                                                    typographers and the like. Some people hate it and argue for#}
+                                            {#                                                    its demise, but others ignore the hate as they create awesome#}
+                                            {#                                                    tools to help create filler text for everyone from bacon lovers#}
+                                            {#                                                    to Charlie Sheen fans.#}
+                                            {#                                                </p>#}
+                                            {##}
+                                            {#                                                <p>#}
+                                            {#                                                    <a href="#" class="link-black text-sm mr-2"><i#}
+                                            {#                                                            class="fas fa-share mr-1"></i> Share</a>#}
+                                            {#                                                    <a href="#" class="link-black text-sm"><i#}
+                                            {#                                                            class="far fa-thumbs-up mr-1"></i> Like</a>#}
+                                            {#                                                    <span class="float-right">#}
+                                            {#                                                      <a href="#" class="link-black text-sm">#}
+                                            {#                                                        <i class="far fa-comments mr-1"></i> Comments (5)#}
+                                            {#                                                      </a>#}
+                                            {#                                                    </span>#}
+                                            {#                                                </p>#}
+                                            {##}
+                                            {#                                                <input class="form-control form-control-sm" type="text" placeholder="Type a comment">#}
+                                            {#                                            </div>#}
+                                            <!-- /.post -->
+                                        </div>
+                                        <!-- /.tab-pane -->
+                                        <div class="tab-pane" id="timeline">
+                                            <!-- The timeline -->
+                                            <div class="timeline timeline-inverse">
+                                                <!-- timeline time label -->
+                                                <div class="time-label">
+                                                    <span class="bg-danger">
+                                                      10 Feb. 2014
+                                                    </span>
+                                                </div>
+                                                <!-- /.timeline-label -->
+                                                <!-- timeline item -->
+                                                <div>
+                                                    <i class="fas fa-envelope bg-primary"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i class="far fa-clock"></i> 12:05</span>
+
+                                                        <h3 class="timeline-header">
+                                                            <a href="#">Support Team</a>
+                                                            sent you an email
+                                                        </h3>
+
+                                                        <div class="timeline-body">
+                                                            Etsy doostang zoodles disqus groupon greplin oooj voxy
+                                                            zoodles,
+                                                            weebly ning heekya handango imeem plugg dopplr jibjab,
+                                                            movity
+                                                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo
+                                                            kaboodle
+                                                            quora plaxo ideeli hulu weebly balihoo...
+                                                        </div>
+                                                        <div class="timeline-footer">
+                                                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                                                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END timeline item -->
+                                                <!-- timeline item -->
+                                                <div>
+                                                    <i class="fas fa-user bg-info"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i
+                                                                class="far fa-clock"></i> 5 mins ago</span>
+
+                                                        <h3 class="timeline-header border-0"><a href="#">Sarah Young</a>
+                                                            accepted your friend request
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <!-- END timeline item -->
+                                                <!-- timeline item -->
+                                                <div>
+                                                    <i class="fas fa-comments bg-warning"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i
+                                                                class="far fa-clock"></i> 27 mins ago</span>
+
+                                                        <h3 class="timeline-header"><a href="#">Jay White</a> commented
+                                                            on
+                                                            your post</h3>
+
+                                                        <div class="timeline-body">
+                                                            Take me to your leader!
+                                                            Switzerland is small and neutral!
+                                                            We are more like Germany, ambitious and misunderstood!
+                                                        </div>
+                                                        <div class="timeline-footer">
+                                                            <a href="#" class="btn btn-warning btn-flat btn-sm">View
+                                                                comment</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END timeline item -->
+                                                <!-- timeline time label -->
+                                                <div class="time-label">
+                        <span class="bg-success">
+                          3 Jan. 2014
+                        </span>
+                                                </div>
+                                                <!-- /.timeline-label -->
+                                                <!-- timeline item -->
+                                                <div>
+                                                    <i class="fas fa-camera bg-purple"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i
+                                                                class="far fa-clock"></i> 2 days ago</span>
+
+                                                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded
+                                                            new
+                                                            photos</h3>
+
+                                                        <div class="timeline-body">
+                                                            <img src="https://placehold.it/150x100" alt="...">
+                                                            <img src="https://placehold.it/150x100" alt="...">
+                                                            <img src="https://placehold.it/150x100" alt="...">
+                                                            <img src="https://placehold.it/150x100" alt="...">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END timeline item -->
+                                                <div>
+                                                    <i class="far fa-clock bg-gray"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.tab-pane -->
+                                    </div>
+                                    <!-- /.tab-content -->
+                                </div><!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            <!-- /.content -->
+        </div>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+
+        <!-- Main Footer -->
+        {% include 'snippets/footer_min.html' %}
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="{% static 'adminlte3_assets/plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'adminlte3_assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <!-- jQuery -->
+    <!-- DataTables  & Plugins -->
+    <script src="{% static "adminlte3_assets/plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/dataTables.responsive.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/dataTables.buttons.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/jszip/jszip.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/pdfmake/pdfmake.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/pdfmake/vfs_fonts.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.html5.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.print.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.colVis.min.js" %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static "adminlte3_assets/dist/js/adminlte.min.js" %}"></script>
+    <!-- Page specific script -->
+    </body>
+    </html>
+
+{% endblock %}

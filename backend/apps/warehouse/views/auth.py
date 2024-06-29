@@ -56,10 +56,8 @@ def main_screen_view(request):
     context['store_point'] = store_point
     context['user'] = staff
     if store_point.store_point.is_main:
-        print('IS MAIN')
         return render(request, 'main_screen/main_screen.html', context)
     else:
-        print('NOT MAIN')
         return render(request, 'main_screen/branches_main_screen.html', context)
 
 

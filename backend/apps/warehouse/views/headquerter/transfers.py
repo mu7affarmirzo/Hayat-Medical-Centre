@@ -114,6 +114,11 @@ class TransferCreate(TransferInline, CreateView):
 
 
 class TransferUpdate(TransferInline, UpdateView):
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.state == 'доставлено':
+            return redirect('warehouse_v2:transfers')
+        return super(TransferUpdate, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         ctx = super(TransferUpdate, self).get_context_data(**kwargs)
