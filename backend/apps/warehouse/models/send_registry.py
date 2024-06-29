@@ -2,6 +2,7 @@ from decouple import config
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 from api.v1.account.services.email import send_email
 from apps.account.models import NotificationModel
@@ -75,11 +76,13 @@ def create_notification_to_receiver(sender, instance: SendRegistryModel = None, 
             store_point=receiver
         )
         for user in target_receivers:
+            url = reverse('warehouse_v2:transfers-detailed', args=[instance.id])
+
             NotificationModel.objects.create(
                 sender=instance.created_by,
                 receiver=user.staff,
                 message='Вам отправили новый <<Приход>>!',
-                generated_url=f'{HOST}render/warehouse/branch/income/detailed/{instance.id}'
+                generated_url=url
             )
 
 

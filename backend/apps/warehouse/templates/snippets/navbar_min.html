@@ -42,11 +42,11 @@
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-comments"></i>
-                <span class="badge badge-danger navbar-badge">{{ notifications|length }}</span>
+                <span class="badge badge-danger navbar-badge">{{ user.unread_notifications|length }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                {% for note in notifications %}
-                    <a href="{{ note.generated_url }}" class="dropdown-item">
+                {% for note in user.unread_notifications %}
+                    <a href="{% url 'warehouse_v2:note_redirect' note.pk %}" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
                             <div class="media-body">
@@ -62,7 +62,7 @@
                     </a>
                     <div class="dropdown-divider"></div>
                 {% endfor %}
-                {% if notifications %}
+                {% if user.unread_notifications %}
                     <a href="#" class="dropdown-item dropdown-footer">Просмотреть все сообщении</a>
                 {% else %}
                     <a href="#" class="dropdown-item dropdown-footer">Нет сообщений</a>
@@ -91,7 +91,7 @@
 
                 <li class="user-footer">
                     <a href="#" class="btn btn-default btn-flat"> Профил</a>
-                    <a href="#" class="btn btn-default btn-flat float-right">Выйти</a>
+                    <a href="{% url 'warehouse_v2:logout' %}" class="btn btn-default btn-flat float-right">Выйти</a>
                 </li>
             </ul>
         </li>

@@ -10,10 +10,16 @@ from apps.warehouse.models.store_point import StorePointModel
 
 
 class IncomeModel(models.Model):
+    STATE_CHOICES = (
+        ('в ожидании', 'в ожидании'),
+        ('принято', 'принято'),
+        ('отказоно', 'отказоно'),
+    )
     serial = models.UUIDField(default=uuid.uuid4)
     delivery_company = models.ForeignKey('CompanyModel', on_delete=models.SET_NULL, null=True, blank=True)
     receiver = models.ForeignKey(StorePointModel, on_delete=models.CASCADE)
     bill_amount = models.BigIntegerField(default=0, null=True, blank=True)
+    state = models.CharField(choices=STATE_CHOICES, max_length=50, default='принято')
     created_by = models.ForeignKey(Account, related_name="income", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

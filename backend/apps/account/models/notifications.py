@@ -1,11 +1,9 @@
 from django.db import models
 
-from apps.account.models import Account
-
 
 class NotificationModel(models.Model):
-    sender = models.ForeignKey(Account, related_name='sent_notifications', on_delete=models.SET_NULL, null=True, blank=True)
-    receiver = models.ForeignKey(Account, related_name='notifications', on_delete=models.SET_NULL, null=True, blank=True)
+    sender = models.ForeignKey('Account', related_name='sent_notifications', on_delete=models.SET_NULL, null=True, blank=True)
+    receiver = models.ForeignKey('Account', related_name='notifications', on_delete=models.SET_NULL, null=True, blank=True)
     message = models.TextField()
     state = models.BooleanField(default=False)
 

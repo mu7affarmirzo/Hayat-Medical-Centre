@@ -74,6 +74,7 @@
                                             <th>Получатель</th>
                                             <th>Пользователь</th>
                                             <th>Статус</th>
+                                            <th style="width: 10px"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -89,12 +90,23 @@
                                                 <td>{{ i.created_by.full_name }}</td>
                                                 {% if i.state == 'в ожидании' %}
                                                     <td><span class="badge bg-warning">{{ i.state }}</span></td>
+                                                    <td>
+                                                        <a class="badge-pill"
+                                                           href="{% url 'warehouse_v2:expanses-update' i.pk %}">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                    </td>
                                                 {% elif i.state == 'доставлено' %}
                                                     <td><span class="badge bg-success">{{ i.state }}</span></td>
+                                                    <td>
+                                                        <i class="fas fa-edit"></i>
+                                                    </td>
                                                 {% elif i.state == 'отказоно' %}
                                                     <td><span class="badge bg-danger">{{ i.state }}</span></td>
+                                                    <td>
+                                                        <i class="fas fa-edit"></i>
+                                                    </td>
                                                 {% endif %}
-                                                <td><span class="badge bg-danger">55%</span></td>
                                             </tr>
                                         {% endfor %}
 

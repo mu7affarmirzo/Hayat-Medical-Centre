@@ -26,6 +26,11 @@ class IncomeForm(forms.ModelForm):
                     'class': 'form-control'
                 }
             ),
+            'state': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
             'bill_amount': forms.NumberInput(
                 attrs={
                     'class': 'form-control'

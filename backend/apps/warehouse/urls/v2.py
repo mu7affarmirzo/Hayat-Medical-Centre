@@ -7,6 +7,7 @@ app_name = 'warehouse_v2'
 urlpatterns = [
     path('login/', auth.login_view, name='login'),
     path('logout/', auth.logout_view, name='logout'),
+    path('notification_redirect_view/<int:pk>', auth.notification_redirect_view, name='note_redirect'),
 
     path('main_screen/', auth.main_screen_view, name='mainscreen'),
 

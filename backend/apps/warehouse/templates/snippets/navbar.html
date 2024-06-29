@@ -24,15 +24,17 @@
                     <a href="{% url 'warehouse_v2:mp-income' %}" class="nav-link">Реестр прихода</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Реестр расхода</a>
+                    <a href="{% url "warehouse_v2:expanses" %}" class="nav-link">Реестр расхода</a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'warehouse_v2:items-list' %}" class="nav-link">Реестр лекарств</a>
                 </li>
                 <li class="nav-item">
+                    <a href="{% url 'warehouse_v2:transfers' %}" class="nav-link">Реестр перемещений</a>
+                </li>
+                <li class="nav-item">
                     <a href="{% url 'warehouse_v2:cheque' %}" class="nav-link">Чеки</a>
                 </li>
-
             </ul>
 
             <!-- SEARCH FORM -->
@@ -44,27 +46,27 @@
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-comments"></i>
-                <span class="badge badge-danger navbar-badge">{{ notifications|length }}</span>
+                <span class="badge badge-danger navbar-badge">{{ user.unread_notifications|length }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                {% for note in notifications %}
-                    <a href="#" class="dropdown-item">
+                {% for note in user.unread_notifications %}
+                    <a href="{% url 'warehouse_v2:note_redirect' note.pk %}" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
-                                    Brad Diesel
+                                    {{ note.sender }}
                                     <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
                                 </h3>
-                                <p class="text-sm">Call me whenever you can...</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                <p class="text-sm">{{ note.message }}</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{ note.created_at }}</p>
                             </div>
                         </div>
                         <!-- Message End -->
                     </a>
                     <div class="dropdown-divider"></div>
                 {% endfor %}
-                {% if notifications %}
+                {% if unread_notifications %}
                     <a href="#" class="dropdown-item dropdown-footer">Просмотреть все сообщении</a>
                 {% else %}
                     <a href="#" class="dropdown-item dropdown-footer">Нет сообщений</a>
@@ -86,14 +88,17 @@
                          class="img-circle elevation-2" alt="User Image">
 
                     <p>
-                        Alexander Pierce - Web Developer
+                        {{ user.full_name}}
+                    </p>
+                    <p>
+                        {{ user.email}}
                     </p>
                 </li>
                 <!-- Menu Body -->
 
                 <li class="user-footer">
                     <a href="#" class="btn btn-default btn-flat"> Профил</a>
-                    <a href="#" class="btn btn-default btn-flat float-right">Выйти</a>
+                    <a href="{% url 'warehouse_v2:logout' %}" class="btn btn-default btn-flat float-right">Выйти</a>
                 </li>
             </ul>
         </li>

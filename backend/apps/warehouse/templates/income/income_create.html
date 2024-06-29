@@ -55,6 +55,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <label>Общая Сумма</label>
                                     {% elif field.label == 'Receiver' %}
                                         <label>Получатель</label>
+                                    {% elif field.label == 'State' %}
+                                        <label>Статус</label>
                                     {% endif %}
                                     {% if field.field.required %}
                                         <span style="color: red;" class="required">*</span>

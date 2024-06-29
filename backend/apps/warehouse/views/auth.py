@@ -52,14 +52,26 @@ def main_screen_view(request):
     if not store_point:
         return redirect('warehouse_v2:logout')
 
-    notifications = NotificationModel.objects.filter(receiver=request.user, state=False)
-    context['notifications'] = notifications
-    print(notifications)
-
     store_point = store_point.first()
     context['store_point'] = store_point
     context['user'] = staff
     if store_point.store_point.is_main:
+        print('IS MAIN')
         return render(request, 'main_screen/main_screen.html', context)
     else:
+        print('NOT MAIN')
         return render(request, 'main_screen/branches_main_screen.html', context)
+
+
+@login_required
+def notification_redirect_view(request, pk):
+    staff = request.user
+
+    target_notification = NotificationModel.objects.get(pk=pk)
+    if target_notification.receiver == staff:
+        target_notification.state = True
+        target_notification.save()
+
+        return redirect(target_notification.generated_url)
+    else:
+        return redirect('warehouse_v2:mainscreen')

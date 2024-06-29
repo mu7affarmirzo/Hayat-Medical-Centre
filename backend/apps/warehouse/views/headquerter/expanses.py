@@ -18,6 +18,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
+from apps.warehouse.models.store_point import StorePointStaffModel
 
 INCOMES_PER_PAGE = 30
 
@@ -33,7 +34,11 @@ class ExpanseInline():
             return self.render_to_response(self.get_context_data(form=form))
 
         self.object = form.save()
+        sender = self.request.user
+        store_point = StorePointStaffModel.objects.get(staff=sender)
+
         self.object.created_by = self.request.user
+        self.object.store_point = store_point.store_point
         self.object.save()
 
         # for every formset, attempt to find a specific formset save function

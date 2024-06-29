@@ -36,11 +36,11 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title"><b>Серия:</b> {{ income.serial }}</h3>
+                                    <h3 class="card-title"><b>Серия:</b> {{ expanses.series }}</h3>
                                     <br>
-                                    <h2 class="card-title"><b>Поставщик:</b> {{ income.delivery_company.name }}</h2>
+                                    <h2 class="card-title"><b>Поставщик:</b> {{ expanses.store_point.name }}</h2>
                                     <br>
-                                    <h2 class="card-title"><b>Дата:</b> {{ income.created_at }}</h2>
+                                    <h2 class="card-title"><b>Дата:</b> {{ expanses.created_at }}</h2>
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 150px;">
                                             <input type="text" name="table_search" class="form-control float-right"
@@ -66,7 +66,6 @@
                                             <th>Базовая цена</th>
                                             <th>Сумма</th>
                                             <th>Пользователь</th>
-                                            <th style="width: 40px">Label</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -80,13 +79,7 @@
                                                 <td>{{ i.price }}</td>
                                                 <td>{{ i.overall_price }}</td>
                                                 <td>{{ i.created_by }}</td>
-                                                <td>
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar progress-bar-danger"
-                                                             style="width: 55%"></div>
-                                                    </div>
-                                                </td>
-                                                <td><span class="badge bg-danger">55%</span></td>
+
                                             </tr>
                                         {% endfor %}
 

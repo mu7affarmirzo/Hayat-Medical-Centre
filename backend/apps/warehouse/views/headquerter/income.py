@@ -37,7 +37,7 @@ class ProductInline():
 
         # for every formset, attempt to find a specific formset save function
         # otherwise, just save.
-        for name, formset in named_formsets.incomes():
+        for name, formset in named_formsets.items():
             formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
             if formset_save_func is not None:
                 formset_save_func(formset)
