@@ -20,7 +20,7 @@ class ItemsModel(models.Model):
     modified_by = models.ForeignKey(Account, related_name="modf_item", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"{self.company} - {self.name} - {self.is_expired}"
+        return f"{self.name} - {self.company}"
 
     @property
     def validity_color(self):
@@ -40,7 +40,7 @@ class ItemsInStockModel(models.Model):
     warehouse = models.ForeignKey('StorePointModel', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.income_seria}"
+        return f"{self.item}-{self.income_seria}"
 
     @property
     def days_until_expire(self):
@@ -48,4 +48,8 @@ class ItemsInStockModel(models.Model):
             delta = self.expire_date - date.today()
             return delta.days
         return 0
+
+    class Meta:
+        unique_together = ('item', 'warehouse')
+        ordering = ('-expire_date', )
 

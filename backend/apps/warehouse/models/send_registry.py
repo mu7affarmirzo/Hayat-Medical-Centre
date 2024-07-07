@@ -7,7 +7,8 @@ from django.urls import reverse
 from api.v1.account.services.email import send_email
 from apps.account.models import NotificationModel
 from apps.account.models.accounts import Account
-from apps.warehouse.models import ItemsModel
+from apps.warehouse.models import ItemsModel, ItemsInStockModel
+from apps.warehouse.models.crud.items import in_stock_by_item_sender
 from apps.warehouse.models.store_point import StorePointModel, StorePointStaffModel
 from datetime import date
 
@@ -46,7 +47,7 @@ class SentItemsModel(models.Model):
         ('принято', 'принято'),
 
     )
-    item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE, related_name="send_registry_items")
+    item = models.ForeignKey(ItemsInStockModel, on_delete=models.CASCADE, related_name="send_registry_items")
     expire_date = models.DateField(null=True)
     state = models.CharField(choices=STATE_CHOICES, default='принято', max_length=50)
     quantity = models.IntegerField()
@@ -86,17 +87,14 @@ def create_notification_to_receiver(sender, instance: SendRegistryModel = None, 
             )
 
 
-@receiver(pre_save, sender=SendRegistryModel)
-def send_registry_state_changed(sender, instance,**kwargs):
-    # Fetch the original instance from the database
-    # original_instance = SendRegistryModel.objects.get(pk=instance.pk)
-    print('Before saving this')
-    # Check if the state changed to 'принято'
-    # if instance.state != instance.__original_state:
-    #     print(instance.state)
-    #     print(instance.__original_state)
-    #     # Perform your desired actions here
-    #     print(f"State changed to 'доставлено' for {instance}")
+@receiver(post_save, sender=SentItemsModel)
+def update_items_in_stock(sender, instance: SentItemsModel = None, created=False, **kwargs):
+
+    if created:
+        senders_item = instance.item
+        senders_item.quantity -= instance.quantity
+        senders_item.save()
+
 
 # @receiver(post_save, sender=SendRegistryModel)
 # def send_email_to_receiver(sender, instance: SendRegistryModel = None, created=False, **kwargs):

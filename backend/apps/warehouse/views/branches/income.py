@@ -1,5 +1,6 @@
 from operator import attrgetter
 
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.db.models import Q
@@ -12,7 +13,7 @@ from apps.warehouse.models.store_point import StorePointStaffModel
 ITEMS_PER_PAGE = 30
 
 
-@login_required
+@login_required(login_url="warehouse_v2:login")
 def branch_income_view(request):
     staff = request.user
     query = request.GET.get('q', '')
@@ -20,7 +21,8 @@ def branch_income_view(request):
 
     store_point = StorePointStaffModel.objects.filter(staff=staff)
     if not store_point:
-        return redirect('warehouse_v2:logout')
+        logout(request)
+        return redirect('warehouse_v2:login')
 
     store_point = store_point.first()
 
@@ -48,6 +50,7 @@ def branch_income_view(request):
     return render(request, 'branches/income_list.html', context)
 
 
+@login_required(login_url="warehouse_v2:login")
 def detailed_income_view(request, pk):
     income = get_object_or_404(SendRegistryModel, pk=pk)
     notifications = NotificationModel.objects.filter(receiver=request.user, state=False)

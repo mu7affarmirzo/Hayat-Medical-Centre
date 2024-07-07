@@ -27,8 +27,8 @@ class ProductInline():
     template_name = "income/income_create.html"
 
     def form_valid(self, form):
-        if self.object.state == 'принято':
-            return redirect('warehouse_v2:mp-income')
+        # if self.object.state == 'принято':
+        #     return redirect('warehouse_v2:mp-income')
 
         named_formsets = self.get_named_formsets()
         if not all((x.is_valid() for x in named_formsets.values())):
@@ -92,8 +92,8 @@ class ProductUpdate(ProductInline, UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.state == 'принято':
-            return redirect('warehouse_v2:mp-income')
+        # if self.object.state == 'принято':
+        #     return redirect('warehouse_v2:mp-income')
         return super(ProductUpdate, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):

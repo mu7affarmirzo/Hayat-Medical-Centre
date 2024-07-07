@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView, UpdateView
 
 from apps.warehouse.forms.transfers import TransferForm, VariantFormSet
-from apps.warehouse.models import ItemsModel
+from apps.warehouse.models import ItemsModel, StorePointStaffModel
 from apps.warehouse.models import SendRegistryModel
 from apps.warehouse.models import StorePointModel
 
@@ -58,9 +58,14 @@ class TransferInline():
         if not all((x.is_valid() for x in named_formsets.values())):
             return self.render_to_response(self.get_context_data(form=form))
 
+        store_point = StorePointStaffModel.objects.filter(staff=self.request.user)
+
+        store_point = store_point.first()
+        warehouse = store_point.store_point
+
         self.object = form.save(commit=False)
         self.object.created_by = self.request.user
-        self.object.sender_id = 1
+        self.object.sender = warehouse
         self.object.save()
 
         # for every formset, attempt to find a specific formset save function

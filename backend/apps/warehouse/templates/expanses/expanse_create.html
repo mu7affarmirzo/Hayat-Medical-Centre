@@ -49,7 +49,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="form-group">
                                     {% if field.label == 'Delivery company' %}
                                         <label>Поставщик</label>
-                                    {% elif field.label == 'Serial' %}
+                                    {% elif field.label == 'Series' %}
                                         <label>Серия</label>
                                     {% elif field.label == 'Bill amount' %}
                                         <label>Общая Сумма</label>
@@ -205,6 +205,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <th>Серия</th>
                                     <th>В каробке</th>
                                     <th>Юнит</th>
+                                    <th>Срок год.</th>
                                 </tr>
                                 </thead>
                                 <tbody id="search-result">
@@ -257,7 +258,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 var searchQuery = $(this).val();
                 if (searchQuery.length > 2) {
                     $.ajax({
-                        url: '{% url 'warehouse_v2:mp-item-search' %}',
+                        url: '{% url 'warehouse_v2:in-stock-search' %}',
                         data: {'q': searchQuery},
                         success: function (data) {
                             $('#search-result').empty();
@@ -272,6 +273,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <td>${item.seria}</td>
                 <td>${item.in_pack}</td>
                 <td>${item.unit}</td>
+                <td>${item.expire_date}</td>
               </tr>`
                                 );
                             });

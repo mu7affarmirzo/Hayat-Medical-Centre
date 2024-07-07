@@ -13,12 +13,13 @@ urlpatterns = [
 
     # ITEMS PATHS
     path('items-search/', items.item_search, name='mp-item-search'),
+    path('items-in-stock-search/', items.items_in_stock_search, name='in-stock-search'),
     path('items/items-list', items.items_list_view, name='items-list'),
     # ITEMS END HERE
 
     path('main-point/income/', income.income_view, name='mp-income'),
     path('main-point/income/create', income.ProductCreate.as_view(), name='income-create'),
-    path('main-point/income/update/<int:pk>', income.ProductUpdate.as_view(), name='income-update-test'),
+    path('main-point/income/update/<int:pk>', income.ProductUpdate.as_view(), name='income-update'),
     path('main-point/income/detailed/<int:pk>', income.income_detailed_view, name='mp-income-detailed'),
     # INCOMES ENDS HERE
 

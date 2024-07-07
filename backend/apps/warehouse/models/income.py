@@ -50,17 +50,15 @@ def income_item_overall_price(sender, instance, **kwargs):
     instance.overall_price = instance.quantity * instance.price
 
 
-@receiver(post_save, sender=IncomeModel)
-def items_to_stock(sender, instance: IncomeModel, created, **kwargs):
+@receiver(post_save, sender=IncomeItemsModel)
+def items_to_stock(sender, instance: IncomeItemsModel, created, **kwargs):
     if created:
-        income_items = IncomeItemsModel.objects.filter(income=instance)
-        for income_item in income_items:
-            ItemsInStockModel.objects.create(
-                item=income_item,
-                income_seria=instance.serial,
-                income_registry=instance,
-                quantity=income_item.quantity,
-                expire_date=income_item.expire_date,
-                warehouse=instance.receiver,
-                price=income_item.price
-            )
+        ItemsInStockModel.objects.create(
+            item=instance.item,
+            income_seria=instance.income.serial,
+            income_registry=instance.income,
+            quantity=instance.quantity,
+            expire_date=instance.expire_date,
+            warehouse=instance.income.receiver,
+            price=instance.price
+        )

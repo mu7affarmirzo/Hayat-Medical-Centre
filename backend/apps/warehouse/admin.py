@@ -36,6 +36,10 @@ class SendRegistryModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     field = '__all__'
     search_fields = ['series']
 
+
+@admin.register(SentItemsModel)
+class SendRegistryItemModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    field = '__all__'
 # admin.site.register(ItemsModel, create_admin_class(ItemsModel))
 # admin.site.register(ReceivedItemsModel, create_admin_class(ReceivedItemsModel))
 # admin.site.register(ReceiveRegistryModel, create_admin_class(ReceiveRegistryModel))

@@ -99,6 +99,28 @@
                                                     <td><span class="badge bg-black">{{ i.state }}</span></td>
                                                 {% endif %}
 
+{#                                                {% if i.state == 'в ожидании' %}#}
+{#                                                    <td><span class="badge bg-warning">{{ i.state }}</span></td>#}
+{#                                                    <td>#}
+{#                                                        <a class="badge-pill"#}
+{#                                                           href="{% url 'warehouse_v2:income-update' i.pk %}">#}
+{#                                                            <i class="fas fa-edit"></i>#}
+{#                                                        </a>#}
+{#                                                    </td>#}
+{#                                                {% elif i.state == 'принято' %}#}
+{#                                                    <td><span class="badge bg-success">{{ i.state }}</span></td>#}
+{#                                                    <td>#}
+{#                                                        <i class="fas fa-edit"></i>#}
+{#                                                        </a>#}
+{#                                                    </td>#}
+{#                                                {% elif i.state == 'отказоно' %}#}
+{#                                                    <td><span class="badge bg-danger">{{ i.state }}</span></td>#}
+{#                                                    <td>#}
+{#                                                        <i class="fas fa-edit"></i>#}
+{#                                                        </a>#}
+{#                                                    </td>#}
+{#                                                {% endif %}#}
+
                                             </tr>
                                         {% endfor %}
 
