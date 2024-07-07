@@ -43,7 +43,7 @@ def logout_view(request):
     return redirect('warehouse_v2:login')
 
 
-@login_required
+@login_required(login_url="warehouse_v2:login")
 def main_screen_view(request):
     context = {}
     staff = request.user
@@ -61,7 +61,7 @@ def main_screen_view(request):
         return render(request, 'main_screen/branches_main_screen.html', context)
 
 
-@login_required
+@login_required(login_url="warehouse_v2:login")
 def notification_redirect_view(request, pk):
     staff = request.user
 
