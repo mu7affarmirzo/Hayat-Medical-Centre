@@ -270,19 +270,15 @@ class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
 
         instance = super().update(instance, validated_data)
 
-        instance.medical_services.all().delete()
         for medical_service in medical_services_data:
             BaseMedicalServiceModel.objects.create(consulting_with_cardiologist=instance, **medical_service)
 
-        instance.lab_research.all().delete()
         for lab_research in lab_research_data:
             BaseLabResearchServiceModel.objects.create(consulting_with_cardiologist=instance, **lab_research)
 
-        instance.procedures.all().delete()
         for procedure in procedures_data:
             BaseProcedureServiceModel.objects.create(consulting_with_cardiologist=instance, **procedure)
 
-        instance.pills.all().delete()
         for pill in pills_data:
             BasePillsInjectionsModel.objects.create(consulting_with_cardiologist=instance, **pill)
 
