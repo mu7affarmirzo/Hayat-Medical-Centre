@@ -112,7 +112,7 @@ def consulting_with_cardiologist_post_service(request, pk=None):
         rep_app = get_object_or_404(ConsultingWithCardiologistModel, pk=pk)
         serializer = ConsultingWithCardiologistSerializer(rep_app, data=request.data, partial=True)
         if serializer.is_valid():
-            print(serializer.pills)
+            print(serializer.validated_data)
             print('good PACTCH')
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
