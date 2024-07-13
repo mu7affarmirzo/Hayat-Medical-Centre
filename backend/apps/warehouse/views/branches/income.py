@@ -4,6 +4,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, UpdateView
 
@@ -84,6 +85,7 @@ class IncomeInline:
         self.object = form.save(commit=False)
         self.object.modified_by = self.request.user
         self.object.receiver = warehouse
+        print(self.object.state, '-checking', form.cleaned_data['state'])
         self.object.save()
 
         # for every formset, attempt to find a specific formset save function
@@ -132,6 +134,13 @@ class IncomeCreate(IncomeInline, CreateView):
 
 
 class IncomeUpdate(IncomeInline, UpdateView):
+
+    # def form_valid(self, form):
+    #     instance = form.save(commit=False)
+    #     print(instance.state)
+    #     instance.save()
+    #     # super(IncomeUpdate, self).save(form)
+    #     return HttpResponseRedirect(self.get_success_url())
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()

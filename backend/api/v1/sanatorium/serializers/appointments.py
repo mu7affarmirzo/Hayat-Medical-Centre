@@ -60,6 +60,7 @@ class BaseMedicalServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseMedicalServiceModel
         fields = [
+            'id',
             'medical_service',
             'consulted_doctor',
             'state',
@@ -70,6 +71,7 @@ class BaseProceduresSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseProcedureServiceModel
         fields = [
+            'id',
             'medical_service',
             'quantity',
             'start_date',
@@ -82,6 +84,7 @@ class BaseLabResearchServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseLabResearchServiceModel
         fields = [
+            'id',
             'lab',
             'start_date',
             'comments',
@@ -92,6 +95,7 @@ class BasePPillsInjectionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BasePillsInjectionsModel
         fields = [
+            'id',
             'pills_injections',
             'state',
             'quantity',

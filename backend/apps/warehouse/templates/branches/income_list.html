@@ -91,11 +91,17 @@
                                                 <td>{{ i.created_by.full_name }}</td>
                                                 <td>{{ i.modified_at }}</td>
                                                 {% if i.state == 'доставлено' %}
+                                                    <td><span class="badge bg-success">{{ i.state }}</span></td>
+{#                                                    <td>#}
+{#                                                        <i class="fas fa-edit"></i>#}
+{#                                                        </a>#}
+{#                                                    </td>#}
                                                     <td>
-                                                        <i class="fas fa-edit"></i>
+                                                        <a class="badge-pill"
+                                                           href="{% url 'warehouse_branch:income-update' i.pk %}">
+                                                            <i class="fas fa-edit"></i>
                                                         </a>
                                                     </td>
-                                                    <td><span class="badge bg-success">{{ i.state }}</span></td>
                                                 {% elif i.state == 'в ожидании' %}
                                                     <td><span class="badge bg-warning">{{ i.state }}</span></td>
                                                     <td>
