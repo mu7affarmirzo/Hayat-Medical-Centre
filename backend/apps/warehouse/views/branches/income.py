@@ -85,7 +85,6 @@ class IncomeInline:
         self.object = form.save(commit=False)
         self.object.modified_by = self.request.user
         self.object.receiver = warehouse
-        print(self.object.state, '-checking', form.cleaned_data['state'])
         self.object.save()
 
         # for every formset, attempt to find a specific formset save function
@@ -110,7 +109,6 @@ class IncomeInline:
         for variant in variants:
             variant.send_registry = self.object
             variant.modified_by = self.request.user
-            print(variant.state)
             variant.save()
 
 

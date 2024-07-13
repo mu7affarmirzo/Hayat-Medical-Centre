@@ -110,11 +110,17 @@ class TransferCreate(TransferInline, CreateView):
     def get_named_formsets(self):
         if self.request.method == "GET":
             return {
-                'variants': VariantFormSet(prefix='variants'),
+                'variants': VariantFormSet(
+                    prefix='variants',
+                    form_kwargs={'user': self.request.user}
+                ),
             }
         else:
             return {
-                'variants': VariantFormSet(self.request.POST or None, self.request.FILES or None, prefix='variants'),
+                'variants': VariantFormSet(
+                    self.request.POST or None, self.request.FILES or None, prefix='variants',
+                    form_kwargs={'user': self.request.user}
+                ),
             }
 
 
@@ -132,7 +138,10 @@ class TransferUpdate(TransferInline, UpdateView):
 
     def get_named_formsets(self):
         return {
-            'variants': VariantFormSet(self.request.POST or None, self.request.FILES or None, instance=self.object, prefix='variants'),
+            'variants': VariantFormSet(
+                self.request.POST or None, self.request.FILES or None, instance=self.object,
+                prefix='variants', form_kwargs={'user': self.request.user}
+            ),
         }
 
 

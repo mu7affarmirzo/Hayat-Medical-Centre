@@ -25,7 +25,7 @@
     <div class="wrapper">
 
         <!-- Navbar -->
-        {% include 'snippets/navbar.html' %}
+        {% include 'snippets/navbar_min.html' %}
         <!-- /.navbar -->
 
         <div class="content-wrapper">
@@ -43,6 +43,19 @@
                                     <h2 class="card-title"><b>Ответственный:</b> {{ income.created_by.full_name }}</h2>
                                     <br>
                                     <h2 class="card-title"><b>Дата:</b> {{ income.created_at }}</h2>
+                                    <br>
+                                    <h2 class="card-title">
+                                        <b>Статус: </b>
+                                        {% if income.state == 'доставлено' %}
+                                            <td><span class="badge bg-success">{{ income.state }}</span></td>
+                                        {% elif income.state == 'в ожидании' %}
+                                            <td><span class="badge bg-warning">{{ income.state }}</span></td>
+                                        {% elif income.state == 'отказоно' %}
+                                            <td><span class="badge bg-danger">{{ income.state }}</span></td>
+                                        {% else %}
+                                            <td><span class="badge bg-black">{{ income.state }}</span></td>
+                                        {% endif %}
+                                    </h2>
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 150px;">
                                             <input type="text" name="table_search" class="form-control float-right"
@@ -63,9 +76,9 @@
                                         <tr>
                                             <th style="width: 10px">#</th>
                                             <th>Полное наименование</th>
-                                            <th>Срок год.</th>
-                                            <th>Количество</th>
                                             <th>Отправитель</th>
+                                            <th>Количество</th>
+                                            <th>Статус</th>
                                             <th style="width: 40px">Срок год.</th>
                                             <th style="width: 40px">Label</th>
                                             <th style="width: 40px">Годен до</th>
@@ -76,10 +89,18 @@
                                         {% for i in details %}
                                             <tr>
                                                 <td></td>
-                                                <td>{{ i.item.name }}</td>
-                                                <td>{{ i.item }}</td>
+                                                <td>{{ i.item.item.name }}</td>
+                                                <td>{{ i.created_by.full_name }}</td>
                                                 <td>{{ i.quantity }}</td>
-                                                <td>{{ i.created_by }}</td>
+                                                {% if i.state == 'принято' %}
+                                                    <td><span class="badge bg-success">{{ i.state }}</span></td>
+                                                {% elif i.state == 'в ожидании' %}
+                                                    <td><span class="badge bg-warning">{{ i.state }}</span></td>
+                                                {% elif i.state == 'отменена' %}
+                                                    <td><span class="badge bg-danger">{{ i.state }}</span></td>
+                                                {% else %}
+                                                    <td><span class="badge bg-black">{{ i.state }}</span></td>
+                                                {% endif %}
                                                 {% if i.days_until_expire > 180 %}
                                                     <td><span class="badge bg-success">{{ i.expire_date }}</span></td>
                                                     <td>

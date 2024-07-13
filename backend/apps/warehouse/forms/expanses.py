@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from apps.warehouse.models import ExpenseItemsModel, ExpenseModel
+from apps.warehouse.models import ExpenseItemsModel, ExpenseModel, StorePointStaffModel, ItemsInStockModel
 
 
 class ExpanseForm(forms.ModelForm):
@@ -50,6 +50,16 @@ class VariantForm(forms.ModelForm):
                 }
             ),
         }
+
+    def __init__(self, *args, **kwargs):
+        # Get additional parameters if provided
+        user = kwargs.pop('user', None)
+        store_point = StorePointStaffModel.objects.filter(staff=user)
+
+        store_point = store_point.first()
+        warehouse = store_point.store_point
+        super().__init__(*args, **kwargs)
+        self.fields['item'].queryset = ItemsInStockModel.objects.filter(warehouse=warehouse)
 
 
 VariantFormSet = inlineformset_factory(

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from apps.warehouse.models import SendRegistryModel, SentItemsModel
+from apps.warehouse.models import SendRegistryModel, SentItemsModel, ItemsInStockModel, StorePointStaffModel
 
 
 class TransferForm(forms.ModelForm):
@@ -42,14 +42,17 @@ class VariantForm(forms.ModelForm):
                     'class': 'form-control'
                     }
                 ),
-            # 'expire_date': forms.DateInput(
-            #     format='%Y-%m-%d',  # Adjust the format as per your model field and locale preferences
-            #     attrs={
-            #         'class': 'form-control',
-            #         'type': 'date'  # This makes the browser use the native date picker
-            #     }
-            # ),
         }
+
+    def __init__(self, *args, **kwargs):
+        # Get additional parameters if provided
+        user = kwargs.pop('user', None)
+        store_point = StorePointStaffModel.objects.filter(staff=user)
+
+        store_point = store_point.first()
+        warehouse = store_point.store_point
+        super().__init__(*args, **kwargs)
+        self.fields['item'].queryset = ItemsInStockModel.objects.filter(warehouse=warehouse)
 
 
 VariantFormSet = inlineformset_factory(

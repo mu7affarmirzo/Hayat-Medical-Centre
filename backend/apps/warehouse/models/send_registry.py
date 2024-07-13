@@ -49,7 +49,7 @@ class SentItemsModel(models.Model):
     )
     item = models.ForeignKey(ItemsInStockModel, on_delete=models.CASCADE, related_name="send_registry_items")
     expire_date = models.DateField(null=True)
-    state = models.CharField(choices=STATE_CHOICES, default='принято', max_length=50)
+    state = models.CharField(choices=STATE_CHOICES, default='в ожидании', max_length=50)
     quantity = models.IntegerField()
     send_registry = models.ForeignKey(SendRegistryModel, on_delete=models.CASCADE, related_name='send_registry_items')
     is_delivered = models.BooleanField(default=False)
@@ -60,6 +60,10 @@ class SentItemsModel(models.Model):
 
     def __str__(self):
         return f"{self.item} - {self.quantity} - {self.quantity}"
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.cached_state = self.state
 
     @property
     def days_until_expire(self):
@@ -85,6 +89,20 @@ def create_notification_to_receiver(sender, instance: SendRegistryModel = None, 
                 message='Вам отправили новый <<Приход>>!',
                 generated_url=url
             )
+    else:
+        send_registry_items = instance.send_registry_items.all()
+        if instance.state == 'доставлено':
+            for item in send_registry_items:
+                if item.state == 'в ожидании':
+                    instance.state = 'в ожидании'
+                    instance.save()
+        elif instance.state == 'отказоно':
+            for item in send_registry_items:
+                item.item.quantity += item.quantity
+                item.item.save()
+
+                item.state = 'отменена'
+                item.save()
 
 
 @receiver(post_save, sender=SentItemsModel)
@@ -94,6 +112,28 @@ def update_items_in_stock(sender, instance: SentItemsModel = None, created=False
         senders_item = instance.item
         senders_item.quantity -= instance.quantity
         senders_item.save()
+    else:
+        if instance.cached_state == 'в ожидании' and instance.state == 'принято':
+            target = ItemsInStockModel.objects.filter(
+                warehouse=instance.send_registry.receiver,
+                item=instance.item.item, expire_date=instance.expire_date,
+            )
+            if target.first():
+                target = target.first()
+                target.quantity += instance.quantity
+                target.save()
+            else:
+                ItemsInStockModel.objects.create(
+                    income_registry=instance.send_registry,
+                    income_seria=instance.send_registry.series,
+                    warehouse=instance.send_registry.receiver,
+                    item=instance.item.item, expire_date=instance.expire_date,
+                    quantity=instance.quantity
+                )
+        elif instance.cached_state == 'в ожидании' and (instance.state == 'отменена' or instance.state == 'не найдено'):
+            senders_item = instance.item
+            senders_item.quantity += instance.quantity
+            senders_item.save()
 
 
 # @receiver(post_save, sender=SendRegistryModel)

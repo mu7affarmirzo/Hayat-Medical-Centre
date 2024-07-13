@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 
-from apps.warehouse.models import IncomeModel, IncomeItemsModel
+from apps.warehouse.models import IncomeModel, IncomeItemsModel, StorePointStaffModel, ItemsInStockModel
 
 
 class IncomeForm(forms.ModelForm):
@@ -28,7 +28,8 @@ class IncomeForm(forms.ModelForm):
             ),
             'state': forms.Select(
                 attrs={
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'readonly': 'readonly'
                 }
             ),
             'bill_amount': forms.NumberInput(

@@ -56,11 +56,11 @@
                                 <br>
                                 <form action="{% url 'warehouse_v2:income-create' %}" method="post">
                                     {% csrf_token %}
-                                    <div class="col-md-1">
-                                        <button id="myButton" type="button" class="btn btn-block btn-success">
-                                            + Добавить
-                                        </button>
-                                    </div>
+{#                                    <div class="col-md-1">#}
+{#                                        <button id="myButton" type="button" class="btn btn-block btn-success">#}
+{#                                            + Добавить#}
+{#                                        </button>#}
+{#                                    </div>#}
                                 </form>
 
                                 <!-- /.card-header -->
@@ -92,14 +92,8 @@
                                                 <td>{{ i.modified_at }}</td>
                                                 {% if i.state == 'доставлено' %}
                                                     <td><span class="badge bg-success">{{ i.state }}</span></td>
-{#                                                    <td>#}
-{#                                                        <i class="fas fa-edit"></i>#}
-{#                                                        </a>#}
-{#                                                    </td>#}
                                                     <td>
-                                                        <a class="badge-pill"
-                                                           href="{% url 'warehouse_branch:income-update' i.pk %}">
-                                                            <i class="fas fa-edit"></i>
+                                                        <i class="fas fa-edit"></i>
                                                         </a>
                                                     </td>
                                                 {% elif i.state == 'в ожидании' %}
