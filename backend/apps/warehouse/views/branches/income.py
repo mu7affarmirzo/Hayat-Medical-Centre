@@ -5,8 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import CreateView, UpdateView
 
 from apps.account.models import NotificationModel
+from apps.warehouse.forms.branch.incomes import AcceptIncomesForm, AcceptVariantForm, AcceptVariantFormSet
 from apps.warehouse.models import SendRegistryModel
 from apps.warehouse.models.store_point import StorePointStaffModel
 
@@ -62,6 +64,90 @@ def detailed_income_view(request, pk):
     }
 
     return render(request, 'branches/income_details.html', context)
+
+
+class IncomeInline:
+    form_class = AcceptIncomesForm
+    model = SendRegistryModel
+    template_name = "branches/income_update.html"
+
+    def form_valid(self, form):
+        named_formsets = self.get_named_formsets()
+        if not all((x.is_valid() for x in named_formsets.values())):
+            return self.render_to_response(self.get_context_data(form=form))
+
+        store_point = StorePointStaffModel.objects.filter(staff=self.request.user)
+
+        store_point = store_point.first()
+        warehouse = store_point.store_point
+
+        self.object = form.save(commit=False)
+        self.object.modified_by = self.request.user
+        self.object.receiver = warehouse
+        self.object.save()
+
+        # for every formset, attempt to find a specific formset save function
+        # otherwise, just save.
+        for name, formset in named_formsets.items():
+            formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
+            if formset_save_func is not None:
+                formset_save_func(formset)
+            else:
+                formset.save()
+        return redirect('warehouse_branch:income-list')
+
+    def formset_variants_valid(self, formset):
+        """
+        Hook for custom formset saving.Useful if you have multiple formsets
+        """
+        variants = formset.save(commit=False)  # self.save_formset(formset, contact)
+        # add this 2 lines, if you have can_delete=True parameter
+        # set in inlineformset_factory func
+        for obj in formset.deleted_objects:
+            obj.delete()
+        for variant in variants:
+            variant.send_registry = self.object
+            variant.modified_by = self.request.user
+            print(variant.state)
+            variant.save()
+
+
+class IncomeCreate(IncomeInline, CreateView):
+    def get_context_data(self, **kwargs):
+
+        ctx = super(IncomeCreate, self).get_context_data(**kwargs)
+        ctx['named_formsets'] = self.get_named_formsets()
+
+        return ctx
+
+    def get_named_formsets(self):
+        if self.request.method == "GET":
+            return {
+                'variants': AcceptVariantFormSet(prefix='variants'),
+            }
+        else:
+            return {
+                'variants': AcceptVariantFormSet(self.request.POST or None, self.request.FILES or None, prefix='variants'),
+            }
+
+
+class IncomeUpdate(IncomeInline, UpdateView):
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.state == 'доставлено':
+            return redirect('warehouse_branch:income-list')
+        return super(IncomeUpdate, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(IncomeUpdate, self).get_context_data(**kwargs)
+        ctx['named_formsets'] = self.get_named_formsets()
+        return ctx
+
+    def get_named_formsets(self):
+        return {
+            'variants': AcceptVariantFormSet(self.request.POST or None, self.request.FILES or None, instance=self.object, prefix='variants'),
+        }
 
 
 def get_transfers_queryset(store_point, query=None):
