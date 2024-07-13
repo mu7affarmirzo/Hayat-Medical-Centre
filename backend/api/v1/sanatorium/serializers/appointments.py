@@ -262,6 +262,32 @@ class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
         result = create(validated_data, ConsultingWithCardiologistModel, 'cardiologist')
         return result
 
+    def update(self, instance, validated_data):
+        medical_services_data = validated_data.pop('medical_services', [])
+        lab_research_data = validated_data.pop('lab_research', [])
+        procedures_data = validated_data.pop('procedures', [])
+        pills_data = validated_data.pop('pills', [])
+
+        instance = super().update(instance, validated_data)
+
+        instance.medical_services.all().delete()
+        for medical_service in medical_services_data:
+            BaseMedicalServiceModel.objects.create(consulting_with_cardiologist=instance, **medical_service)
+
+        instance.lab_research.all().delete()
+        for lab_research in lab_research_data:
+            BaseLabResearchServiceModel.objects.create(consulting_with_cardiologist=instance, **lab_research)
+
+        instance.procedures.all().delete()
+        for procedure in procedures_data:
+            BaseProcedureServiceModel.objects.create(consulting_with_cardiologist=instance, **procedure)
+
+        instance.pills.all().delete()
+        for pill in pills_data:
+            BasePillsInjectionsModel.objects.create(consulting_with_cardiologist=instance, **pill)
+
+        return instance
+
 
 class GetConsultingWithCardiologistSerializer(serializers.ModelSerializer):
     medical_services = serializers.SerializerMethodField('get_medical_services')
