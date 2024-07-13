@@ -262,9 +262,9 @@ class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
         result = create(validated_data, ConsultingWithCardiologistModel, 'cardiologist')
         return result
 
-    def update(self, instance, validated_data):
-        result = create(validated_data, ConsultingWithCardiologistModel, 'cardiologist')
-        return result
+    # def update(self, instance, validated_data):
+    #     result = create(validated_data, ConsultingWithCardiologistModel, 'cardiologist')
+    #     return result
         # medical_services_data = validated_data.pop('medical_services', [])
         # lab_research_data = validated_data.pop('lab_research', [])
         # procedures_data = validated_data.pop('procedures', [])
