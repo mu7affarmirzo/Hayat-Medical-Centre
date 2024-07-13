@@ -270,17 +270,40 @@ class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
 
         instance = super().update(instance, validated_data)
 
-        for medical_service in medical_services_data:
-            BaseMedicalServiceModel.objects.create(consulting_with_cardiologist=instance, **medical_service)
+        for med_serv in medical_services_data:
+            BaseMedicalServiceModel.objects.create(
+                model_type='cardiologist',
+                model_ref_id=instance.id,
+                illness_history=instance.illness_history,
+                created_by=instance.created_by,
+                **med_serv
+            )
+            for proc in procedures_data:
+                BaseProcedureServiceModel.objects.create(
+                    model_type='cardiologist',
+                    model_ref_id=instance.id,
+                    illness_history=instance.illness_history,
+                    created_by=instance.created_by,
+                    **proc
+                )
 
-        for lab_research in lab_research_data:
-            BaseLabResearchServiceModel.objects.create(consulting_with_cardiologist=instance, **lab_research)
+            for l in lab_research_data:
+                BaseLabResearchServiceModel.objects.create(
+                    model_type='cardiologist',
+                    model_ref_id=instance.id,
+                    illness_history=instance.illness_history,
+                    created_by=instance.created_by,
+                    **l
+                )
 
-        for procedure in procedures_data:
-            BaseProcedureServiceModel.objects.create(consulting_with_cardiologist=instance, **procedure)
-
-        for pill in pills_data:
-            BasePillsInjectionsModel.objects.create(consulting_with_cardiologist=instance, **pill)
+            for pill in pills_data:
+                BasePillsInjectionsModel.objects.create(
+                    model_type='cardiologist',
+                    model_ref_id=instance.id,
+                    illness_history=instance.illness_history,
+                    created_by=instance.created_by,
+                    **pill
+                )
 
         return instance
 
