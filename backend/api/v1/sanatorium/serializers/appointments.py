@@ -262,16 +262,21 @@ class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
         result = create(validated_data, ConsultingWithCardiologistModel, 'cardiologist')
         return result
 
-    # def update(self, instance, validated_data):
-    #     result = create(validated_data, ConsultingWithCardiologistModel, 'cardiologist')
-    #     return result
-        # medical_services_data = validated_data.pop('medical_services', [])
-        # lab_research_data = validated_data.pop('lab_research', [])
-        # procedures_data = validated_data.pop('procedures', [])
-        # pills_data = validated_data.pop('pills', [])
-        #
-        # instance = super().update(instance, validated_data)
-        #
+    def update(self, instance, validated_data):
+        medical_services_data = validated_data.pop('medical_services', [])
+        lab_research_data = validated_data.pop('lab_research', [])
+        procedures_data = validated_data.pop('procedures', [])
+        pills_data = validated_data.pop('pills', [])
+
+        print(medical_services_data)
+        print(lab_research_data)
+        print(procedures_data)
+        print(pills_data)
+        print(validated_data)
+
+        instance = instance(**validated_data)
+        instance.save()
+
         # for med_serv in medical_services_data:
         #     BaseMedicalServiceModel.objects.create(
         #         model_type='cardiologist',
@@ -280,34 +285,34 @@ class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
         #         created_by=instance.created_by,
         #         **med_serv
         #     )
-        #     for proc in procedures_data:
-        #         BaseProcedureServiceModel.objects.create(
-        #             model_type='cardiologist',
-        #             model_ref_id=instance.id,
-        #             illness_history=instance.illness_history,
-        #             created_by=instance.created_by,
-        #             **proc
-        #         )
+        # for proc in procedures_data:
+        #     BaseProcedureServiceModel.objects.create(
+        #         model_type='cardiologist',
+        #         model_ref_id=instance.id,
+        #         illness_history=instance.illness_history,
+        #         created_by=instance.created_by,
+        #         **proc
+        #     )
         #
-        #     for l in lab_research_data:
-        #         BaseLabResearchServiceModel.objects.create(
-        #             model_type='cardiologist',
-        #             model_ref_id=instance.id,
-        #             illness_history=instance.illness_history,
-        #             created_by=instance.created_by,
-        #             **l
-        #         )
+        # for l in lab_research_data:
+        #     BaseLabResearchServiceModel.objects.create(
+        #         model_type='cardiologist',
+        #         model_ref_id=instance.id,
+        #         illness_history=instance.illness_history,
+        #         created_by=instance.created_by,
+        #         **l
+        #     )
         #
-        #     for pill in pills_data:
-        #         BasePillsInjectionsModel.objects.create(
-        #             model_type='cardiologist',
-        #             model_ref_id=instance.id,
-        #             illness_history=instance.illness_history,
-        #             created_by=instance.created_by,
-        #             **pill
-        #         )
-        #
-        # return instance
+        # for pill in pills_data:
+        #     BasePillsInjectionsModel.objects.create(
+        #         model_type='cardiologist',
+        #         model_ref_id=instance.id,
+        #         illness_history=instance.illness_history,
+        #         created_by=instance.created_by,
+        #         **pill
+        #     )
+
+        return instance
 
 
 class GetConsultingWithCardiologistSerializer(serializers.ModelSerializer):
