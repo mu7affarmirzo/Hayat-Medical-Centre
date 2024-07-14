@@ -274,8 +274,7 @@ class ConsultingWithCardiologistSerializer(serializers.ModelSerializer):
         print(pills_data)
         print(validated_data)
 
-        instance = instance(**validated_data)
-        instance.save()
+        instance = super().update(instance, validated_data)
 
         # for med_serv in medical_services_data:
         #     BaseMedicalServiceModel.objects.create(
