@@ -1,9 +1,11 @@
 from django.urls import path
-from apps.warehouse.views.branches import income, transfers
+from apps.warehouse.views.branches import income, transfers, items
 
 app_name = 'warehouse_branch'
 
 urlpatterns = [
+    path('items/items-list', items.items_list_view, name='items-list'),
+
     path('income/', income.branch_income_view, name='income-list'),
     path('income/detailed/<int:pk>', income.detailed_income_view, name='income-detailed'),
     path('income/update/<int:pk>', income.IncomeUpdate.as_view(), name='income-update'),

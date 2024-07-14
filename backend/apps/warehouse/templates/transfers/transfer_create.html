@@ -96,11 +96,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </div>
                             <table class="table card-header">
                                 <thead class="text-secondary">
-                                    <th>Лекарства <span style="color: red;" class="required">*</span></th>
-                                    <th>Количество <span style="color: red;" class="required">*</span></th>
-{#                                    <th>Срок годности <span style="color: red;" class="required">*</span></th>#}
-                                    <th>Удалить(Не добавить) ?</th>
-                                    <th>Удалить</th>
+                                <th>Лекарства <span style="color: red;" class="required">*</span></th>
+                                <th>Количество <span style="color: red;" class="required">*</span></th>
+                                {#                                    <th>Срок годности <span style="color: red;" class="required">*</span></th>#}
+                                <th>Удалить(Не добавить) ?</th>
+                                <th>Удалить</th>
                                 </thead>
                                 <tbody id="item-variants">  <!-- id="item-inlineformsetname" -->
                                 <!-- formset non forms errors -->
@@ -203,9 +203,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <th>Серия</th>
                                     <th>В каробке</th>
                                     <th>Юнит</th>
+                                    <th>Срок год.</th>
+                                    <th style="width: 40px">Годен до</th>
+
                                 </tr>
                                 </thead>
-                                <tbody id="search-result" autofocus >
+                                <tbody id="search-result" autofocus>
 
                                 </tbody>
                             </table>
@@ -220,27 +223,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
-<div class="modal fade" id="modal-danger" style="display: none;" aria-hidden="true">
+    <div class="modal fade" id="modal-danger" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content bg-danger">
-            <div class="modal-header">
-              <h4 class="modal-title">Log Out</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Log Out</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ketyapsizmi muncha tez?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Oтмена</button>
+                    <button type="button" class="btn btn-outline-light"><a href="{% url 'warehouse_v2:logout' %}"
+                                                                           class="dropdown-item">ВЫХОД</a></button>
+                </div>
             </div>
-            <div class="modal-body">
-              <p>Ketyapsizmi muncha tez?</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-outline-light" data-dismiss="modal">Oтмена</button>
-              <button type="button" class="btn btn-outline-light"><a href="{% url 'warehouse_v2:logout' %}" class="dropdown-item">ВЫХОД</a></button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
+            <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div>
+    </div>
     <!-- Main Footer -->
     {% include 'snippets/footer.html' %}
 
@@ -259,6 +263,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         success: function (data) {
                             $('#search-result').empty();
                             data.forEach(function (item) {
+                                var daysUntilExpireContent;
+                                if (item.days_until_expire > 180) {
+                                    daysUntilExpireContent = `<span class="badge bg-success">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-success">${item.expire_date}</span>`;
+                                } else if (item.days_until_expire > 90) {
+                                    daysUntilExpireContent = `<span class="badge bg-warning">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-warning">${item.expire_date}</span>`;
+                                } else {
+                                    daysUntilExpireContent = `<span class="badge bg-balck">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-balck">${item.expire_date}</span>`;
+                                }
                                 $('#search-result').append(
                                     `<tr class="result-item" data-item="${item.name}" data-id="${item.id}" data-company="${item.company}"
                   data-price="${item.price}" data-seria="${item.seria}" data-inpack="${item.in_pack}"
@@ -269,6 +284,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <td>${item.seria}</td>
                 <td>${item.in_pack}</td>
                 <td>${item.unit}</td>
+                <td>${daysUntilExpireContent}</td>
+                <td>${expireDateContent}</td>
               </tr>`
                                 );
                             });

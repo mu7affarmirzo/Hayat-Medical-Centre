@@ -25,7 +25,7 @@
     <div class="wrapper">
 
         <!-- Navbar -->
-        {% include 'snippets/navbar.html' %}
+        {% include 'snippets/navbar_min.html' %}
         <!-- /.navbar -->
 
         <div class="content-wrapper">
@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <form action="{% url 'warehouse_v2:income-create' %}" method="post">
+                                <form action="{% url 'warehouse_branch:items-list' %}" method="post">
                                     {% csrf_token %}
                                     <div class="col-md-2">
                                         <button id="myButton" type="button" class="btn btn-block btn-success">
@@ -87,6 +87,9 @@
                                         {% for i in items %}
                                             <tr>
                                                 <td>*</td>
+{#                                                <td>#}
+{#                                                    <a href="{% url 'warehouse_v2:mainscreen' %}">{{ i.item.name }}</a>#}
+{#                                                </td>#}
                                                 <td>
                                                    {{ i.item.name }}
                                                 </td>
@@ -189,14 +192,14 @@
         <!-- /.control-sidebar -->
 
         <!-- Main Footer -->
-        {% include 'snippets/footer.html' %}
+        {% include 'snippets/footer_min.html' %}
     </div>
     <!-- ./wrapper -->
 
     <!-- REQUIRED SCRIPTS -->
     <script>
         document.getElementById('myButton').addEventListener('click', function () {
-            window.location.href = "{% url 'warehouse_v2:income-create' %}";
+            window.location.href = "{% url 'warehouse_branch:income-list' %}";
         });
     </script>
 

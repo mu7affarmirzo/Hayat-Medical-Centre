@@ -108,11 +108,9 @@ def consulting_with_cardiologist_post_service(request, pk=None):
         serializer = GetConsultingWithCardiologistSerializer(rep_app)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == "PATCH" and pk:
-
         rep_app = get_object_or_404(ConsultingWithCardiologistModel, pk=pk)
         serializer = ConsultingWithCardiologistSerializer(rep_app, data=request.data, partial=True)
         if serializer.is_valid():
-            print('good PACTCH')
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -80,9 +80,10 @@ def create_notification_to_receiver(sender, instance: SendRegistryModel = None, 
         target_receivers = StorePointStaffModel.objects.filter(
             store_point=receiver
         )
-        for user in target_receivers:
+        url = reverse('warehouse_branch:transfers-detailed', args=[instance.id])
+        if target_receivers.store_point.is_main:
             url = reverse('warehouse_v2:transfers-detailed', args=[instance.id])
-
+        for user in target_receivers:
             NotificationModel.objects.create(
                 sender=instance.created_by,
                 receiver=user.staff,

@@ -50,6 +50,6 @@ class ItemsInStockModel(models.Model):
         return 0
 
     class Meta:
-        unique_together = ('item', 'warehouse')
-        ordering = ('-expire_date', )
+        unique_together = ('item', 'warehouse', 'expire_date', 'income_registry', 'income_seria')
+        ordering = ('expire_date', )
 
