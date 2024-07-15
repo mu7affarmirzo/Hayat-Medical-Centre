@@ -23,12 +23,12 @@ def get_list_of_appointments_actions_service(request, pk):
     procedures = BaseProceduresSerializer(procedures, many=True)
     pills = BasePPillsInjectionsSerializer(pills, many=True)
 
-    return {
+    return Response({
         "medical_services": medical_services.data,
         "lab_research": lab_research.data,
         "procedures": procedures.data,
         "pills": pills.data,
-    }
+    })
 
 
 def create_appointments_actions_medical_services_service(request):
