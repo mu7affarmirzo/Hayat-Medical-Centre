@@ -1,6 +1,6 @@
 from django.urls import path
 from apps.warehouse.views.headquerter import cheque, expanses, items, transfers, income
-from apps.warehouse.views import auth
+from apps.warehouse.views import auth, emergency
 
 app_name = 'warehouse_v2'
 
@@ -16,6 +16,10 @@ urlpatterns = [
     path('items-in-stock-search/', items.items_in_stock_search, name='in-stock-search'),
     path('items/items-list', items.items_list_view, name='items-list'),
     # ITEMS END HERE
+
+    # EMERGENCY PATHS
+    path('emergency/', emergency.emergency_items_view, name='emergency'),
+    # EMERGENCY END HERE
 
     path('main-point/income/', income.income_view, name='mp-income'),
     path('main-point/income/create', income.ProductCreate.as_view(), name='income-create'),

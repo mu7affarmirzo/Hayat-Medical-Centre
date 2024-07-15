@@ -21,7 +21,7 @@ from django.shortcuts import render, redirect
 INCOMES_PER_PAGE = 30
 
 
-class ProductInline():
+class ProductInline:
     form_class = IncomeForm
     model = IncomeModel
     template_name = "income/income_create.html"

@@ -201,8 +201,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <th>Компания</th>
                                     <th>Базовая цена</th>
                                     <th>Серия</th>
-                                    <th>В каробке</th>
+                                    <th>Количество</th>
                                     <th>Юнит</th>
+                                    <th>Срок год.</th>
+                                    <th style="width: 40px">Годен до</th>
                                 </tr>
                                 </thead>
                                 <tbody id="search-result" autofocus >
@@ -259,6 +261,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         success: function (data) {
                             $('#search-result').empty();
                             data.forEach(function (item) {
+                                var daysUntilExpireContent;
+                                if (item.days_until_expire > 180) {
+                                    daysUntilExpireContent = `<span class="badge bg-success">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-success">${item.expire_date}</span>`;
+                                } else if (item.days_until_expire > 90) {
+                                    daysUntilExpireContent = `<span class="badge bg-warning">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-warning">${item.expire_date}</span>`;
+                                } else {
+                                    daysUntilExpireContent = `<span class="badge bg-balck">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-balck">${item.expire_date}</span>`;
+                                }
                                 $('#search-result').append(
                                     `<tr class="result-item" data-item="${item.name}" data-id="${item.id}" data-company="${item.company}"
                   data-price="${item.price}" data-seria="${item.seria}" data-inpack="${item.in_pack}"
@@ -267,8 +280,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <td>${item.company}</td>
                 <td>${item.price}</td>
                 <td>${item.seria}</td>
-                <td>${item.in_pack}</td>
+                <td>${item.quantity}</td>
                 <td>${item.unit}</td>
+                <td>${daysUntilExpireContent}</td>
+                <td>${expireDateContent}</td>
               </tr>`
                                 );
                             });

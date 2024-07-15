@@ -11,6 +11,7 @@ class StorePointRolesModel(models.Model):
 
 class StorePointModel(models.Model):
     is_main = models.BooleanField(default=False)
+    is_emergency = models.BooleanField(default=False)
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     created_by = models.ForeignKey(Account, related_name="store", on_delete=models.SET_NULL, null=True)

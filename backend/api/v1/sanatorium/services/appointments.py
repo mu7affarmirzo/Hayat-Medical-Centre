@@ -10,7 +10,8 @@ from api.v1.sanatorium.serializers.appointments import RepeatedAppointmentSerial
     BasePillsInjectionsModelDetailSerializer, BaseLabResearchServiceModelDetailSerializer, \
     BaseProceduresServicesDetailSerializer, BaseMedicalServicesDetailSerializer, GetEkgAppointmentSerializer, \
     GetAppointmentWithOnDutyDoctorSerializer, GetConsultingWithCardiologistSerializer, \
-    GetConsultingWithNeurologistSerializer, GetRepeatedAppointmentSerializer
+    GetConsultingWithNeurologistSerializer, GetRepeatedAppointmentSerializer, BaseMedicalServicesSerializer, \
+    BaseLabResearchServiceSerializer, BaseProceduresSerializer, BasePPillsInjectionsSerializer
 from apps.sanatorium.models import RepeatedAppointmentWithDoctorModel, FinalAppointmentWithDoctorModel, \
     ConsultingWithNeurologistModel, ConsultingWithCardiologistModel, AppointmentWithOnDutyDoctorModel, \
     AppointmentWithOnDutyDoctorOnArrivalModel, EkgAppointmentModel, IllnessHistory, BaseMedicalServiceModel, \
@@ -243,3 +244,4 @@ def get_list_of_appointments_service(request, pk):
         'on_duty_doctor': on_duty_doctor.data,
         'ekg_appointment': ekg_appointment.data,
     })
+

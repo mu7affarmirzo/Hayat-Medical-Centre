@@ -56,6 +56,30 @@ def create(validated_data, target_model, model_type: str):
     return target
 
 
+class CreateBaseMedicalServicesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BaseMedicalServiceModel
+        exclude = ('state', )
+
+
+class CreateBaseProceduresSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BaseProcedureServiceModel
+        exclude = ('state', )
+
+
+class CreateBaseLabResearchServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BaseLabResearchServiceModel
+        exclude = ('state', )
+
+
+class CreateBasePPillsInjectionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BasePillsInjectionsModel
+        exclude = ('state', )
+
+
 class BaseMedicalServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseMedicalServiceModel
