@@ -33,48 +33,71 @@ def get_list_of_appointments_actions_service(request, pk):
 
 def create_appointments_actions_medical_services_service(request):
     doctor = request.user
-    rep_app = BaseMedicalServiceModel(created_by=doctor)
+    ctx = []
+    data_target = request.data
 
     if request.method == "POST":
-        serializer = CreateBaseMedicalServicesSerializer(rep_app, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        for data in data_target:
+            rep_app = BaseMedicalServiceModel(created_by=doctor)
+            serializer = CreateBaseMedicalServicesSerializer(rep_app, data=data)
+
+            if serializer.is_valid():
+                serializer.save()
+                ctx.append(serializer.data)
+            else:
+                ctx.append(serializer.errors)
+    return Response(ctx)
 
 
 def create_appointments_actions_lab_research_service(request):
     doctor = request.user
-    rep_app = BaseProcedureServiceModel(created_by=doctor)
+    ctx = []
+    data_target = request.data
 
     if request.method == "POST":
-        serializer = CreateBaseProceduresSerializer(rep_app, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        for data in data_target:
+            rep_app = BaseLabResearchServiceModel(created_by=doctor)
+            serializer = CreateBaseLabResearchServiceSerializer(rep_app, data=data)
+
+            if serializer.is_valid():
+                serializer.save()
+                ctx.append(serializer.data)
+            else:
+                ctx.append(serializer.errors)
+    return Response(ctx)
 
 
 def create_appointments_actions_procedures_service(request):
     doctor = request.user
-    rep_app = BaseLabResearchServiceModel(created_by=doctor)
+    ctx = []
+    data_target = request.data
 
     if request.method == "POST":
-        serializer = CreateBaseLabResearchServiceSerializer(rep_app, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        for data in data_target:
+            rep_app = BaseProcedureServiceModel(created_by=doctor)
+            serializer = CreateBaseProceduresSerializer(rep_app, data=data)
+
+            if serializer.is_valid():
+                serializer.save()
+                ctx.append(serializer.data)
+            else:
+                ctx.append(serializer.errors)
+    return Response(ctx)
 
 
 def create_appointments_actions_pills_service(request):
     doctor = request.user
-    rep_app = BasePillsInjectionsModel(created_by=doctor)
+    ctx = []
+    data_target = request.data
 
     if request.method == "POST":
-        serializer = CreateBasePPillsInjectionsSerializer(rep_app, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        for data in data_target:
+            rep_app = BasePillsInjectionsModel(created_by=doctor)
+            serializer = CreateBasePPillsInjectionsSerializer(rep_app, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                ctx.append(serializer.data)
+            else:
+                ctx.append(serializer.errors)
+    return Response(ctx)
 

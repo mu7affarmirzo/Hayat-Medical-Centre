@@ -74,10 +74,29 @@ class CreateBaseLabResearchServiceSerializer(serializers.ModelSerializer):
         exclude = ('state', )
 
 
+class CustomListSerializer(serializers.ListSerializer):
+    def update(self, instance, validated_data):
+        # Maps for id->instance and id->data item.
+        instance_mapping = {item.id: item for item in instance}
+        data_mapping = {item['id']: item for item in validated_data}
+
+        # Perform updates
+        ret = []
+        for item_id, data in data_mapping.items():
+            instance = instance_mapping.get(item_id, None)
+            if instance is None:
+                ret.append(self.child.create(data))
+            else:
+                ret.append(self.child.update(instance, data))
+
+        return ret
+
+
 class CreateBasePPillsInjectionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BasePillsInjectionsModel
         exclude = ('state', )
+        list_serializer_class = CustomListSerializer
 
 
 class BaseMedicalServicesSerializer(serializers.ModelSerializer):
