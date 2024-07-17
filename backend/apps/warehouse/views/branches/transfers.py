@@ -95,6 +95,7 @@ class TransferInline:
         for obj in formset.deleted_objects:
             obj.delete()
         for variant in variants:
+            print(self.object)
             variant.send_registry = self.object
             variant.created_by = self.request.user
             variant.save()

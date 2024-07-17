@@ -59,19 +59,19 @@ def create(validated_data, target_model, model_type: str):
 class CreateBaseMedicalServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseMedicalServiceModel
-        exclude = ('state', )
+        exclude = ('state', 'created_by', 'modified_by')
 
 
 class CreateBaseProceduresSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseProcedureServiceModel
-        exclude = ('state', )
+        exclude = ('state', 'created_by', 'modified_by')
 
 
 class CreateBaseLabResearchServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseLabResearchServiceModel
-        exclude = ('state', )
+        exclude = ('state', 'created_by', 'modified_by')
 
 
 class CustomListSerializer(serializers.ListSerializer):
@@ -95,7 +95,7 @@ class CustomListSerializer(serializers.ListSerializer):
 class CreateBasePPillsInjectionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = BasePillsInjectionsModel
-        exclude = ('state', )
+        exclude = ('state', 'created_by', 'modified_by')
         list_serializer_class = CustomListSerializer
 
 

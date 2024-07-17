@@ -88,8 +88,11 @@ class TransferInline():
         for obj in formset.deleted_objects:
             obj.delete()
         for variant in variants:
+            print(variant.item)
+
             variant.send_registry = self.object
             variant.created_by = self.request.user
+            variant.expire_date = variant.item.expire_date
             variant.save()
 
 

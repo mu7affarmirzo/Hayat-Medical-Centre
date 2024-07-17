@@ -152,14 +152,14 @@ def create_appointments_actions_medical_services_view(request):
     return create_appointments_actions_medical_services_service(request)
 
 
-@swagger_auto_schema(tags=['sanatorium'], method="post", request_body=CreateBaseProceduresSerializer)
+@swagger_auto_schema(tags=['sanatorium'], method="post", request_body=CreateBaseLabResearchServiceSerializer)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def create_appointments_actions_lab_research_view(request):
     return create_appointments_actions_lab_research_service(request)
 
 
-@swagger_auto_schema(tags=['sanatorium'], method="post", request_body=CreateBaseLabResearchServiceSerializer)
+@swagger_auto_schema(tags=['sanatorium'], method="post", request_body=CreateBaseProceduresSerializer)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def create_appointments_actions_procedures_view(request):

@@ -118,7 +118,6 @@ def update_items_in_stock(sender, instance: SentItemsModel = None, created=False
         instance.save()
 
         ItemsInStockModel.objects.create(
-            income_registry=instance.send_registry,
             income_seria=instance.send_registry.series,
             warehouse=instance.send_registry.receiver,
             item=instance.item.item, expire_date=instance.expire_date,
@@ -142,7 +141,6 @@ def update_items_in_stock(sender, instance: SentItemsModel = None, created=False
                 target.save()
             else:
                 ItemsInStockModel.objects.create(
-                    income_registry=instance.send_registry,
                     income_seria=instance.send_registry.series,
                     warehouse=instance.send_registry.receiver,
                     item=instance.item.item, expire_date=instance.expire_date,

@@ -56,7 +56,6 @@ def items_to_stock(sender, instance: IncomeItemsModel, created, **kwargs):
         ItemsInStockModel.objects.create(
             item=instance.item,
             income_seria=instance.income.serial,
-            income_registry=instance.income,
             quantity=instance.quantity,
             expire_date=instance.expire_date,
             warehouse=instance.income.receiver,
