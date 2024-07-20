@@ -11,7 +11,7 @@ from api.v1.sanatorium.serializers.appointments import (RepeatedAppointmentSeria
                                                         EkgAppointmentSerializer, CreateBaseMedicalServicesSerializer,
                                                         CreateBaseProceduresSerializer,
                                                         CreateBaseLabResearchServiceSerializer,
-                                                        CreateBasePPillsInjectionsSerializer)
+                                                        CreateBasePPillsInjectionsSerializer, ActionsByTypeSerializer)
 from api.v1.sanatorium.services.appointments import (
     repeated_appointment_post_service, final_appointment_post_service,
     consulting_with_neurologist_post_service, consulting_with_cardiologist_post_service,
@@ -22,7 +22,7 @@ from api.v1.sanatorium.services.appointments import (
 from api.v1.sanatorium.services.appointment_actions import (
     get_list_of_appointments_actions_service, create_appointments_actions_medical_services_service,
     create_appointments_actions_lab_research_service, create_appointments_actions_procedures_service,
-    create_appointments_actions_pills_service
+    create_appointments_actions_pills_service, get_list_of_appointments_actions_by_type_service
 )
 
 
@@ -143,6 +143,12 @@ def get_list_of_appointments_view(request, pk):
 @permission_classes((IsAuthenticated,))
 def get_list_of_appointments_actions_view(request, pk):
     return get_list_of_appointments_actions_service(request, pk)
+
+
+@swagger_auto_schema(tags=['sanatorium'], method="post", request_body=ActionsByTypeSerializer)
+@api_view(['POST', ])
+def get_list_of_appointments_actions_by_type_view(request):
+    return get_list_of_appointments_actions_by_type_service(request)
 
 
 @swagger_auto_schema(tags=['sanatorium'], method="post", request_body=CreateBaseMedicalServicesSerializer)

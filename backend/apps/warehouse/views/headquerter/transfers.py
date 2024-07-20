@@ -66,6 +66,10 @@ class TransferInline():
         self.object = form.save(commit=False)
         self.object.created_by = self.request.user
         self.object.sender = warehouse
+
+        if self.object.receiver.is_emergency:
+            self.object.state = 'доставлено'
+
         self.object.save()
 
         # for every formset, attempt to find a specific formset save function
@@ -86,27 +90,23 @@ class TransferInline():
         # add this 2 lines, if you have can_delete=True parameter
         # set in inlineformset_factory func
         for obj in formset.deleted_objects:
+            target = obj.item
+            target.quantity += obj.quantity
+            target.save()
+
             obj.delete()
         for variant in variants:
-            print(variant.item)
-
             variant.send_registry = self.object
             variant.created_by = self.request.user
             variant.expire_date = variant.item.expire_date
+
             variant.save()
 
 
 class TransferCreate(TransferInline, CreateView):
     def get_context_data(self, **kwargs):
-        receivers = StorePointModel.objects.all()
-        stores = StorePointModel.objects.all()
-        transfers = ItemsModel.objects.all()
-
         ctx = super(TransferCreate, self).get_context_data(**kwargs)
         ctx['named_formsets'] = self.get_named_formsets()
-        ctx['companies'] = receivers
-        ctx['stores'] = stores
-        ctx['transfers'] = transfers
 
         return ctx
 

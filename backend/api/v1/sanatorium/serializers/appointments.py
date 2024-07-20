@@ -56,6 +56,24 @@ def create(validated_data, target_model, model_type: str):
     return target
 
 
+class ActionsByTypeSerializer(serializers.Serializer):
+    MODEL_CHOICES = (
+        ('initial', 'initial'),
+        ('repeated_app', 'repeated_app'),
+        ('cardiologist', 'cardiologist'),
+        ('neurologist', 'neurologist'),
+        ('ekg', 'ekg'),
+        ('on_duty_doctor', 'on_duty_doctor'),
+    )
+
+    illness_history = serializers.IntegerField()
+    appointment = serializers.IntegerField()
+    model_type = serializers.ChoiceField(choices=MODEL_CHOICES)
+
+    class Meta:
+        fields = '__all__'
+
+
 class CreateBaseMedicalServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = BaseMedicalServiceModel

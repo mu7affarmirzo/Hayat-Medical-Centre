@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from api.v1.sanatorium.serializers import BaseMedicalServicesSerializer, BaseLabResearchServiceSerializer, \
     BaseProceduresSerializer, BasePPillsInjectionsSerializer
 from api.v1.sanatorium.serializers.appointments import CreateBasePPillsInjectionsSerializer, \
-    CreateBaseLabResearchServiceSerializer, CreateBaseProceduresSerializer, CreateBaseMedicalServicesSerializer
+    CreateBaseLabResearchServiceSerializer, CreateBaseProceduresSerializer, CreateBaseMedicalServicesSerializer, \
+    ActionsByTypeSerializer
 from apps.sanatorium.models import IllnessHistory, BaseMedicalServiceModel, BaseLabResearchServiceModel, \
     BaseProcedureServiceModel, BasePillsInjectionsModel
 
@@ -29,6 +30,48 @@ def get_list_of_appointments_actions_service(request, pk):
         "procedures": procedures.data,
         "pills": pills.data,
     })
+
+
+def get_list_of_appointments_actions_by_type_service(request):
+    data = ActionsByTypeSerializer(request.data)
+    print(data.data.get('illness_history'))
+    illness_history = data.data.get('illness_history')
+    appointment = data.data.get('appointment')
+    model_type = data.data.get('model_type')
+
+    medical_services = BaseMedicalServiceModel.objects.filter(
+        illness_history_id=illness_history,
+        model_ref_id=appointment,
+        model_type=model_type
+    )
+    lab_research = BaseLabResearchServiceModel.objects.filter(
+        illness_history_id=illness_history,
+        model_ref_id=appointment,
+        model_type=model_type
+    )
+    procedures = BaseProcedureServiceModel.objects.filter(
+        illness_history_id=illness_history,
+        model_ref_id=appointment,
+        model_type=model_type
+    )
+    pills = BasePillsInjectionsModel.objects.filter(
+        illness_history_id=illness_history,
+        model_ref_id=appointment,
+        model_type=model_type
+    )
+
+    medical_services = BaseMedicalServicesSerializer(medical_services, many=True)
+    lab_research = BaseLabResearchServiceSerializer(lab_research, many=True)
+    procedures = BaseProceduresSerializer(procedures, many=True)
+    pills = BasePPillsInjectionsSerializer(pills, many=True)
+
+    return Response({
+        "medical_services": medical_services.data,
+        "lab_research": lab_research.data,
+        "procedures": procedures.data,
+        "pills": pills.data,
+    })
+
 
 
 def create_appointments_actions_medical_services_service(request):

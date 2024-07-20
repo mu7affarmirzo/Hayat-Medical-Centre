@@ -84,7 +84,7 @@ def create_notification_to_receiver(sender, instance: SendRegistryModel = None, 
             if user.store_point.is_main:
                 url = reverse('warehouse_v2:transfers-detailed', args=[instance.id])
             else:
-                url = reverse('warehouse_branch:transfers-detailed', args=[instance.id])
+                url = reverse('warehouse_branch:income-detailed', args=[instance.id])
 
             NotificationModel.objects.create(
                 sender=instance.created_by,
@@ -110,20 +110,6 @@ def create_notification_to_receiver(sender, instance: SendRegistryModel = None, 
 
 @receiver(post_save, sender=SentItemsModel)
 def update_items_in_stock(sender, instance: SentItemsModel = None, created=False, **kwargs):
-    if instance.send_registry.receiver.is_emergency:
-        instance.send_registry.state = 'доставлено'
-        instance.send_registry.save()
-
-        instance.state = 'принято'
-        instance.save()
-
-        ItemsInStockModel.objects.create(
-            income_seria=instance.send_registry.series,
-            warehouse=instance.send_registry.receiver,
-            item=instance.item.item, expire_date=instance.expire_date,
-            quantity=instance.quantity
-        )
-        return 1
 
     if created:
         senders_item = instance.item

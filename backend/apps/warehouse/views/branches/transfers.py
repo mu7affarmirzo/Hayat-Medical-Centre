@@ -93,11 +93,17 @@ class TransferInline:
         # add this 2 lines, if you have can_delete=True parameter
         # set in inlineformset_factory func
         for obj in formset.deleted_objects:
+            print('Hi')
+            target = obj.item
+            target.quantity += obj.quantity
+            target.save()
+
             obj.delete()
         for variant in variants:
             print(self.object)
             variant.send_registry = self.object
             variant.created_by = self.request.user
+            variant.expire_date = variant.item.expire_date
             variant.save()
 
 

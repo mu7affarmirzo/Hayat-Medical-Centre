@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                             <br>
-                            <form action="{% url 'warehouse_v2:transfer-create' %}" method="post">
+                            <form action="{% url 'warehouse_branch:transfer-create' %}" method="post">
                                 {% csrf_token %}
                                 <div class="col-md-1">
                                     <button id="myButton" type="button" class="btn btn-block btn-success">
@@ -84,7 +84,7 @@
                                         <tr>
 
                                             <td>
-                                                <a href="{% url 'warehouse_v2:transfers-detailed' i.pk %}">{{ i.series }}</a>
+                                                <a href="{% url 'warehouse_branch:transfers-detailed' i.pk %}">{{ i.series }}</a>
                                             </td>
                                             <td>{{ i.created_at }}</td>
                                             <td>{{ i.receiver.name }}</td>
@@ -93,7 +93,7 @@
                                                 <td><span class="badge bg-warning">{{ i.state }}</span></td>
                                                 <td>
                                                     <a class="badge-pill"
-                                                       href="{% url 'warehouse_v2:transfer-update' i.pk %}">
+                                                       href="{% url 'warehouse_branch:transfer-update' i.pk %}">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 </td>
