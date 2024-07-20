@@ -10,7 +10,6 @@ class ItemsModel(models.Model):
     company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
     in_pack = models.IntegerField(null=True, blank=True, default=10)
     name = models.CharField(max_length=255)
-    price = models.IntegerField()
     unit = models.CharField(max_length=255, default="shtuk")
     seria = models.CharField(max_length=255, default="")
     is_expired = models.BooleanField(default=False)

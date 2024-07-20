@@ -7,6 +7,5 @@ urlpatterns = [
     path('warehouse/branch/', include('apps.warehouse.urls.branch')),
     path('warehouse/storepoint/', include('apps.warehouse.urls.storepoint')),
     path('warehouse/company/', include('apps.warehouse.urls.company')),
-    # path('hospital/', include('apps.hospital.urls')),
 
 ]

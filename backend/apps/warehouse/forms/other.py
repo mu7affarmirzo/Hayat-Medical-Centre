@@ -38,7 +38,6 @@ class AddItemForm(forms.Form):
     number = forms.CharField()
     company = forms.CharField()
     unit = forms.CharField()
-    price = forms.CharField()
 
 
 class ItemForm(forms.ModelForm):
@@ -46,11 +45,10 @@ class ItemForm(forms.ModelForm):
 
     class Meta:
         model = ItemsModel
-        fields = ['name', 'company', 'in_pack', 'price', 'seria']
+        fields = ['name', 'company', 'in_pack', 'seria']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'seria': forms.TextInput(attrs={'class': 'form-control'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control'}),
             'in_pack': forms.NumberInput(attrs={'class': 'form-control'}),
             'company': forms.TextInput(attrs={'class': 'form-control'}),
         }
