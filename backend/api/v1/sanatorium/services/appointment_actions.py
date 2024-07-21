@@ -33,11 +33,15 @@ def get_list_of_appointments_actions_service(request, pk):
 
 
 def get_list_of_appointments_actions_by_type_service(request):
-    data = ActionsByTypeSerializer(request.data)
-    print(data.data.get('illness_history'))
-    illness_history = data.data.get('illness_history')
-    appointment = data.data.get('appointment')
-    model_type = data.data.get('model_type')
+    illness_history = request.query_params.get('illness_history')
+    appointment = request.query_params.get('appointment')
+    model_type = request.query_params.get('model_type')
+
+    if not illness_history or not appointment or not model_type:
+        return Response(
+            {"detail": "Missing required query parameters."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
     medical_services = BaseMedicalServiceModel.objects.filter(
         illness_history_id=illness_history,

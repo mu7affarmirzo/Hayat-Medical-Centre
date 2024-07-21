@@ -145,8 +145,8 @@ def get_list_of_appointments_actions_view(request, pk):
     return get_list_of_appointments_actions_service(request, pk)
 
 
-@swagger_auto_schema(tags=['sanatorium'], method="post", request_body=ActionsByTypeSerializer)
-@api_view(['POST', ])
+@swagger_auto_schema(tags=['sanatorium'], method="get")
+@api_view(['get', ])
 def get_list_of_appointments_actions_by_type_view(request):
     return get_list_of_appointments_actions_by_type_service(request)
 
