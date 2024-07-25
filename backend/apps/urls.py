@@ -8,4 +8,6 @@ urlpatterns = [
     path('warehouse/storepoint/', include('apps.warehouse.urls.storepoint')),
     path('warehouse/company/', include('apps.warehouse.urls.company')),
 
+    path('logus/', include('apps.logus.urls')),
+
 ]

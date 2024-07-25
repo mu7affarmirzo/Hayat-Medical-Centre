@@ -68,9 +68,6 @@ class RoomModel(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_room", on_delete=models.SET_NULL, null=True)
 
-
-
-
     # @property
     # def available_capacity(self, start_date, end_date):
     #     booked_rooms = BookedRoomModel.objects.filter(

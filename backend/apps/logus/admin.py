@@ -3,6 +3,7 @@ from import_export.admin import ImportExportModelAdmin
 
 from apps.logus.models import *
 from apps.logus.models.room import TariffXTypeModel
+from apps.logus.models import available_rooms
 
 
 @admin.register(RoomModel)
@@ -80,3 +81,18 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(Payments)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in Payments._meta.fields]
+
+
+@admin.register(available_rooms.AvailableRoomModel)
+class AvailableRoomModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.AvailableRoomModel._meta.fields]
+
+
+@admin.register(available_rooms.AvailableRoomsTypeModel)
+class AvailableRoomsTypeModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.AvailableRoomsTypeModel._meta.fields]
+
+
+@admin.register(available_rooms.RoomTypeMatrix)
+class RoomTypeMatrixAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.RoomTypeMatrix._meta.fields]
