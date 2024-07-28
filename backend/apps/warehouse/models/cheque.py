@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from apps.account.models import Account, PatientModel
-from apps.warehouse.models import ItemsModel
+from apps.warehouse.models import ItemsModel, ItemsInStockModel
 
 
 class WarehouseChequeModel(models.Model):
@@ -36,8 +36,8 @@ class WarehouseChequeModel(models.Model):
 
 
 class ChequeItemsModel(models.Model):
-    cheque = models.ForeignKey(WarehouseChequeModel, on_delete=models.CASCADE, related_name='cheque_items')
-    item = models.ForeignKey(ItemsModel, on_delete=models.SET_NULL, null=True)
+    cheque = models.ForeignKey(WarehouseChequeModel, on_delete=models.CASCADE, related_name='cheque_items', null=True)
+    item = models.ForeignKey(ItemsInStockModel, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=1)
     created_by = models.ForeignKey(Account, related_name="warehouse_cheque_item", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -31,7 +31,7 @@ class ItemsModel(models.Model):
 
 class ItemsInStockModel(models.Model):
     income_seria = models.CharField(max_length=255, null=True, blank=True)
-    item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE, related_name="in_stock")
+    item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE, related_name="in_stock", null=True, blank=True)
 
     quantity = models.IntegerField()
     unit_quantity = models.IntegerField(default=0)
