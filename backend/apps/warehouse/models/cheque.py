@@ -31,14 +31,18 @@ class WarehouseChequeModel(models.Model):
     def total_price(self):
         summ = 0
         for i in self.cheque_items.all():
-            summ += (i.item.price * i.quantity)
+            summ += i.price_of_items
         return summ
 
 
 class ChequeItemsModel(models.Model):
     cheque = models.ForeignKey(WarehouseChequeModel, on_delete=models.CASCADE, related_name='cheque_items', null=True)
     item = models.ForeignKey(ItemsInStockModel, on_delete=models.SET_NULL, null=True)
+
+    price = models.IntegerField(default=0) # ItemsInStock modeldan unit_price keladi
+
     quantity = models.IntegerField(default=1)
+
     created_by = models.ForeignKey(Account, related_name="warehouse_cheque_item", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -49,7 +53,7 @@ class ChequeItemsModel(models.Model):
 
     @property
     def price_of_items(self):
-        return self.item.price * self.quantity
+        return self.price * self.quantity
 
 
 @receiver(post_save, sender=WarehouseChequeModel)
@@ -57,4 +61,11 @@ def create_warehouse_cheque_number(sender, instance=None, created=False, **kwarg
     if created:
         number_str = str(instance.id).zfill(5)
         instance.cheque_number = number_str
+        instance.save()
+
+
+@receiver(post_save, sender=ChequeItemsModel)
+def update_cheque_item_price_number(sender, instance=None, created=False, **kwargs):
+    if created:
+        instance.price = instance.item.unit_price
         instance.save()
