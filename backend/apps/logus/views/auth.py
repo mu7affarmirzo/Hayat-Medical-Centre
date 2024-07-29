@@ -6,11 +6,11 @@ from django.shortcuts import render, redirect
 
 from apps.account.models import NotificationModel
 from apps.logus.forms.registration import DateRangeForm
+from apps.logus.models import AvailableRoomsTypeModel, TariffModel
 from apps.warehouse.forms import AccountAuthenticationForm
 from apps.warehouse.models.store_point import StorePointStaffModel
 
 from datetime import datetime, timedelta
-
 
 # locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
@@ -72,7 +72,7 @@ def get_the_days_list(start_date, end_date):
     formatted_dates = []
     for date in selected_days:
         day = date.strftime("%d-%B")
-        week_day = WEEKDAYS[date.weekday()+1]
+        week_day = WEEKDAYS[date.weekday() + 1]
         formatted_dates.append([day, week_day])
 
     if len(formatted_dates) > 20:
@@ -83,32 +83,42 @@ def get_the_days_list(start_date, end_date):
 
 @login_required(login_url="logus_auth:login")
 def main_screen_view(request):
+    print('---------')
     context = {}
     staff = request.user
 
     today = datetime.today()
 
+    tariffs = TariffModel.objects.all()
+    room_types = AvailableRoomsTypeModel.objects.all()
+
     next_14_days = [today + timedelta(days=i) for i in range(14)]
     formatted_dates = []
     for date in next_14_days:
         day = date.strftime("%d-%B")
-        week_day = WEEKDAYS[date.weekday()+1]
+        week_day = WEEKDAYS[date.weekday() + 1]
         formatted_dates.append([day, week_day])
+
+    context = {
+        'user': staff,
+        'days': formatted_dates,
+        'tariffs': tariffs,
+        'room_types': room_types
+    }
 
     if request.method == 'POST':
         data = DateRangeForm(request.POST)
+        # print(data)
         date_range = data.data.get('reservation_time')
+        the_tariff = data.data.get('tariff')
+        room_type = data.data.get('room_type')
         start_str, end_str = date_range.split(' - ')
+        print(the_tariff, room_type)
 
         formatted_dates = get_the_days_list(start_str, end_str)
-
-        context['user'] = staff
         context['days'] = formatted_dates
 
         return render(request, 'logus/main_screen.html', context)
-
-    context['user'] = staff
-    context['days'] = formatted_dates
 
     return render(request, 'logus/main_screen.html', context)
 
