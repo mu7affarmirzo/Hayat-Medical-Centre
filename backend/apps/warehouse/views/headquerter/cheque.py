@@ -5,11 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 
 from apps.warehouse.forms.cheque import ChequeItemCountForm
-from apps.warehouse.models import WarehouseChequeModel, ChequeItemsModel
+from apps.warehouse.models import WarehouseChequeModel, ChequeItemsModel, ItemsInStockModel
 
 ITEMS_PER_PAGE = 30
 
@@ -56,6 +57,23 @@ def cheque_item_count_update(request, pk, quantity):
         cheque_item.modified_by = request.user
         cheque_item.save(update_fields=["quantity", "modified_at", "modified_by"])
     return redirect("warehouse_v2:cheque-detailed", pk=cheque_item.cheque.pk)
+
+
+import json
+
+
+@login_required
+def add_item_to_cheque(request, ):
+    data = json.loads(request.body)
+    pk = data.get('id')
+    quantity = data.get('quantity')
+    cheque_pk = data.get('cheque')
+    item = get_object_or_404(ItemsInStockModel, pk=pk)
+    cheque = get_object_or_404(WarehouseChequeModel, pk=cheque_pk)
+    ChequeItemsModel.objects.create(cheque=cheque, item=item, quantity=quantity, created_by=request.user,
+                                    modified_by=request.user)
+    return JsonResponse({}, status=200)
+
 
 @login_required
 def cheque_item_detailed_view(request, pk):

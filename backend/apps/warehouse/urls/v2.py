@@ -15,6 +15,7 @@ urlpatterns = [
     path('items-search/', items.item_search, name='mp-item-search'),
     path('items-in-stock-search/', items.items_in_stock_search, name='in-stock-search'),
     path('items/items-list', items.items_list_view, name='items-list'),
+    path('items/add-item-to-cheque', cheque.add_item_to_cheque, name='add-item-cheque'),
     # ITEMS END HERE
 
     # EMERGENCY PATHS

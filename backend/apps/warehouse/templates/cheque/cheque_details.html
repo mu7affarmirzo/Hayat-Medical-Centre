@@ -110,6 +110,49 @@
 
                                         </tbody>
                                     </table>
+                                    <div class="content-wrapper">
+
+                                        <!-- Main content -->
+                                        <div class="col-md-8 offset-md-2">
+                                            <form action="#">
+                                                <div class="input-group">
+                                                    <input id="search-product" type="search"
+                                                           class="form-control form-control-lg"
+                                                           placeholder="Введите ключевые слова здесь">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-lg btn-default">
+                                                            <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <table class="table table-rounded" id="formTable">
+                                                <thead>
+                                                <tr>
+                                                    <th>Полное наименование</th>
+                                                    <th>Skolko shtuk</th>
+                                                    <th>Компания</th>
+                                                    <th>Базовая цена</th>
+                                                    <th>Серия</th>
+                                                    <th>В каробке</th>
+                                                    <th>Юнит</th>
+                                                    <th>Срок год.</th>
+                                                    <th>Действие</th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody id="search-result" autofocus>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <!-- /.card-body -->
                             </div>
@@ -180,34 +223,142 @@
     <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.colVis.min.js" %}"></script>
     <!-- AdminLTE App -->
     <script src="{% static "adminlte3_assets/dist/js/adminlte.min.js" %}"></script>
-    <script>
-        function updateLink(id) {
-            const quantity = document.getElementById(`quantity-${id}`).value;
-            const link = document.getElementById(`link-${id}`);
-            const baseUrl = `/render/warehouse/main-point/cheque/item-update/pk/link`.replace('pk', `${id}`).replace(`link`, `${quantity}`);
-            link.href = baseUrl;
-        }
-    </script>
+{#    <script>#}
+{#        function updateLink(id) {#}
+{#            const quantity = document.getElementById(`quantity-${id}`).value;#}
+{#            const link = document.getElementById(`link-${id}`);#}
+{#            const baseUrl = `/render/warehouse/main-point/cheque/item-update/pk/link`.replace('pk', `${id}`).replace(`link`, `${quantity}`);#}
+{#            link.href = baseUrl;#}
+{#        }#}
+{#    </script>#}
 
     <!-- Page specific script -->
+{#    <script>#}
+{#        $(function () {#}
+{#            $("#example1").DataTable({#}
+{#                "responsive": true, "lengthChange": false, "autoWidth": false,#}
+{#                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]#}
+{#            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');#}
+{#            $('#example2').DataTable({#}
+{#                "paging": true,#}
+{#                "lengthChange": false,#}
+{#                "searching": false,#}
+{#                "ordering": true,#}
+{#                "info": true,#}
+{#                "autoWidth": false,#}
+{#                "responsive": true,#}
+{#            });#}
+{#        });#}
+{#    </script>#}
     <script>
-        $(function () {
-            $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
+        $(document).ready(function () {
+            $('#search-product').on('input', function () {
+                var searchQuery = $(this).val();
+                if (searchQuery.length > 2) {
+                    $.ajax({
+                        url: '{% url 'warehouse_v2:in-stock-search' %}',
+                        data: {'q': searchQuery},
+                        success: function (data) {
+                            $('#search-result').empty();
+                            data.forEach(function (item) {
+                                var daysUntilExpireContent;
+                                if (item.days_until_expire > 180) {
+                                    daysUntilExpireContent = `<span class="badge bg-success">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-success">${item.expire_date}</span>`;
+                                } else if (item.days_until_expire > 90) {
+                                    daysUntilExpireContent = `<span class="badge bg-warning">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-warning">${item.expire_date}</span>`;
+                                } else {
+                                    daysUntilExpireContent = `<span class="badge bg-balck">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-balck">${item.expire_date}</span>`;
+                                }
+                                $('#search-result').append(
+                                    `<tr class="result-item" data-item="${item.name}" data-id="${item.id}" data-company="${item.company}"
+                  data-price="${item.price}" data-seria="${item.seria}" data-inpack="${item.in_pack}"
+                  data-unit="${item.unit}">
+                <td>${item.name}</td>
+                <td><input type="number" class="form-control value-input" value="1" data-id="${item.id}"></td>
+                <td>${item.company}</td>
+                <td>${item.price}</td>
+                <td>${item.seria}</td>
+                <td>${item.in_pack}</td>
+                <td>${item.unit}</td>
+                <td>${daysUntilExpireContent}</td>
+                <td><button class="btn btn-primary send-data-item" data-id="${item.id}">dobavit</button></td>
+              </tr>`
+                                );
+                            });
+                        }
+                    });
+                }
             });
+
+
+            // when user clicks add more btn of variants
+            {#$('.add-variants').click(function (ev) {#}
+            {#    console.log(ev)#}
+            {#    ev.preventDefault();#}
+            {#    var count = $('#item-variants').children().length;#}
+            {#    var tmplMarkup = $('#variants-template').html();#}
+            {#    var compiledTmpl = "";#}
+            {#    $('#item-variants').append(compiledTmpl);#}
+            {##}
+            {#    // update form count#}
+            {#    $('#id_variants-TOTAL_FORMS').attr('value', count + 1);});#}
+
+
+            {#$(document).on('dblclick', '.result-item', function (e) {#}
+            {#    let thisID = $(this).data('id')#}
+            {#    console.log(e)#}
+            {#    var count = $('#item-variants').children().length;#}
+            {#    var tmplMarkup = $('#variants-template').html();#}
+            {#    var compiledTmpl = "";#}
+            {##}
+            {#    $('#item-variants').append(compiledTmpl);#}
+            {#    // update form count#}
+            {#    $('#id_variants-TOTAL_FORMS').attr('value', count + 1);#}
+            {#    console.log(thisID)#}
+            {#    $('#item-variants tr:last-child select option[value="' + thisID + '"]').prop('selected', 'selected')});#}
+
         });
     </script>
+    <script>
+        (function($) {
+            $(document).ready(function() {
 
+                // Делегирование события клика на документ
+                $(document).on('click', '.send-data-item', function() {
+
+                    // Получение данных строки из атрибутов кнопки
+                    const rowId = $(this).data('id');
+                    const inputValue = $(`input.value-input[data-id="${rowId}"]`).val();
+
+
+                    // Формирование данных для отправки
+                    const data = {
+                        id: rowId,
+                        quantity: inputValue,
+                        cheque: {{ cheque.id }}
+                    };
+
+                    // Отправка данных на сервер
+                    $.ajax({
+                        url: '{% url "warehouse_v2:add-item-cheque" %}',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                        },
+                        error: function(xhr, status, error) {
+                        }
+                    });
+                });
+            });
+        })(jQuery);
+    </script>
     </body>
     </html>
 
