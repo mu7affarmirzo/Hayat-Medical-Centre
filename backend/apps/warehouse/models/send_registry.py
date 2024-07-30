@@ -51,6 +51,7 @@ class SentItemsModel(models.Model):
     expire_date = models.DateField(null=True)
     state = models.CharField(choices=STATE_CHOICES, default='в ожидании', max_length=50)
     quantity = models.IntegerField()
+    unit_quantity = models.IntegerField(default=0, null=True, blank=True)
     send_registry = models.ForeignKey(SendRegistryModel, on_delete=models.CASCADE, related_name='send_registry_items')
     is_delivered = models.BooleanField(default=False)
     created_by = models.ForeignKey(Account, related_name="sent_items", on_delete=models.SET_NULL, null=True)
@@ -59,7 +60,7 @@ class SentItemsModel(models.Model):
     modified_by = models.ForeignKey(Account, related_name="modf_sent_items", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"{self.item} - {self.quantity} - {self.quantity}"
+        return f"{self.item} - {self.quantity}"
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -101,8 +102,16 @@ def create_notification_to_receiver(sender, instance: SendRegistryModel = None, 
                     instance.save()
         elif instance.state == 'отказоно':
             for item in send_registry_items:
-                item.item.quantity += item.quantity
-                item.item.save()
+                in_pack_quantity = item.item.item.in_pack
+
+                if item.item.unit_quantity + item.unit_quantity >= in_pack_quantity:
+                    item.item.quantity = item.item.quantity + item.quantity + ((item.item.quantity + item.quantity) // in_pack_quantity)
+                    item.item.unit_quantity = (item.item.quantity + item.quantity) % in_pack_quantity
+                    item.item.save()
+                else:
+                    item.item.quantity += item.quantity
+                    item.item.unit_quantity += item.unit_quantity
+                    item.item.save()
 
                 item.state = 'отменена'
                 item.save()
@@ -110,11 +119,18 @@ def create_notification_to_receiver(sender, instance: SendRegistryModel = None, 
 
 @receiver(post_save, sender=SentItemsModel)
 def update_items_in_stock(sender, instance: SentItemsModel = None, created=False, **kwargs):
-
+    in_pack_quantity = instance.item.item.in_pack
     if created:
         senders_item = instance.item
-        senders_item.quantity -= instance.quantity
-        senders_item.save()
+        if senders_item.unit_quantity - instance.unit_quantity < 0:
+            senders_item.quantity = (senders_item.quantity - instance.quantity - 1 -
+                                     abs(senders_item.unit_quantity - instance.unit_quantity) // in_pack_quantity)
+            senders_item.unit_quantity = abs(in_pack_quantity + senders_item.unit_quantity - instance.unit_quantity) % in_pack_quantity
+            senders_item.save()
+        else:
+            senders_item.quantity -= instance.quantity
+            senders_item.unit_quantity -= instance.unit_quantity
+            senders_item.save()
     else:
         if instance.cached_state == 'в ожидании' and instance.state == 'принято':
             target = ItemsInStockModel.objects.filter(
@@ -123,19 +139,37 @@ def update_items_in_stock(sender, instance: SentItemsModel = None, created=False
             )
             if target.first():
                 target = target.first()
-                target.quantity += instance.quantity
-                target.save()
+
+                if target.unit_quantity + instance.unit_quantity >= in_pack_quantity:
+                    target.quantity = (target.quantity + instance.quantity +
+                                       (target.unit_quantity + instance.unit_quantity) // in_pack_quantity)
+                    target.unit_quantity = (target.unit_quantity + instance.unit_quantity) % in_pack_quantity
+                    target.save()
+                else:
+                    target.quantity += instance.quantity
+                    target.unit_quantity += instance.unit_quantity
+                    target.save()
             else:
                 ItemsInStockModel.objects.create(
                     income_seria=instance.send_registry.series,
                     warehouse=instance.send_registry.receiver,
                     item=instance.item.item, expire_date=instance.expire_date,
-                    quantity=instance.quantity
+                    quantity=instance.quantity,
+                    price=instance.item.price,
+                    unit_quantity=instance.unit_quantity,
+                    unit_price=instance.item.unit_price,
                 )
         elif instance.cached_state == 'в ожидании' and (instance.state == 'отменена' or instance.state == 'не найдено'):
             senders_item = instance.item
-            senders_item.quantity += instance.quantity
-            senders_item.save()
+            if senders_item.unit_quantity + instance.unit_quantity >= in_pack_quantity:
+                senders_item.quantity = (senders_item.quantity + instance.quantity +
+                                         (senders_item.unit_quantity + instance.unit_quantity) // in_pack_quantity)
+                senders_item.unit_quantity = (senders_item.unit_quantity + instance.unit_quantity) % in_pack_quantity
+                senders_item.save()
+            else:
+                senders_item.quantity += instance.quantity
+                senders_item.unit_quantity += instance.unit_quantity
+                senders_item.save()
 
 
 # @receiver(post_save, sender=SendRegistryModel)

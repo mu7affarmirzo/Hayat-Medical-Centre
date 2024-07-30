@@ -74,6 +74,7 @@
                                             <th>УП</th>
                                             <th>Цена</th>
                                             <th>Остаток</th>
+                                            <th>Остаток в щтуках</th>
                                             <th>Серия лекарств</th>
                                             <th>Срок год.</th>
                                             <th>MX</th>
@@ -95,6 +96,7 @@
                                                 <td>{{ i.item.unit }}</td>
                                                 <td>{{ i.price }}</td>
                                                 <td>{{ i.quantity }}</td>
+                                                <td>{{ i.unit_quantity }} / {{ i.item.in_pack }}</td>
                                                 <td>{{ i.item.seria }}</td>
 
                                                 {% if i.days_until_expire > 180 %}

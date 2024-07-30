@@ -33,8 +33,10 @@ class IncomeItemsModel(models.Model):
     income = models.ForeignKey(IncomeModel, on_delete=models.CASCADE, related_name="income_items")
     item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE)
     price = models.BigIntegerField(default=0, null=True, blank=True)
+    unit_price = models.BigIntegerField(default=0, null=True, blank=True)
     overall_price = models.BigIntegerField(default=0, null=True, blank=True)
     quantity = models.IntegerField()
+    unit_quantity = models.IntegerField(null=True, default=0, blank=True)
     expire_date = models.DateField(null=True)
     created_by = models.ForeignKey(Account, related_name="income_items", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -47,7 +49,7 @@ class IncomeItemsModel(models.Model):
 
 @receiver(pre_save, sender=IncomeItemsModel)
 def income_item_overall_price(sender, instance, **kwargs):
-    instance.overall_price = instance.quantity * instance.price
+    instance.overall_price = (instance.quantity * instance.price) + (instance.unit_quantity * instance.unit_price)
 
 
 @receiver(post_save, sender=IncomeItemsModel)
@@ -57,7 +59,9 @@ def items_to_stock(sender, instance: IncomeItemsModel, created, **kwargs):
             item=instance.item,
             income_seria=instance.income.serial,
             quantity=instance.quantity,
+            unit_quantity=instance.unit_quantity,
             expire_date=instance.expire_date,
             warehouse=instance.income.receiver,
-            price=instance.price
+            price=instance.price,
+            unit_price=instance.unit_price
         )

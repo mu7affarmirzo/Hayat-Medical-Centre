@@ -73,7 +73,9 @@
                                             <th>Находиться в</th>
                                             <th>УП</th>
                                             <th>Цена</th>
+                                            <th>Цена единиц</th>
                                             <th>Остаток</th>
+                                            <th>Остаток единиц</th>
                                             <th>Серия лекарств</th>
                                             <th>Срок год.</th>
                                             <th>MX</th>
@@ -97,7 +99,9 @@
                                                 <td>{{ i.warehouse.name }}</td>
                                                 <td>{{ i.item.unit }}</td>
                                                 <td>{{ i.item.price }}</td>
+                                                <td>{{ i.item.unit_price }}</td>
                                                 <td>{{ i.quantity }}</td>
+                                                <td>{{ i.unit_quantity }}</td>
                                                 <td>{{ i.item.seria }}</td>
 
                                                 {% if i.days_until_expire > 180 %}

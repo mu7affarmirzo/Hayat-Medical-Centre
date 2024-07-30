@@ -29,7 +29,7 @@ class VariantForm(forms.ModelForm):
     class Meta:
         model = SentItemsModel
         fields = [
-            'item', 'quantity'
+            'item', 'quantity', 'unit_quantity'
         ]
         widgets = {
             'item': forms.Select(
@@ -42,6 +42,11 @@ class VariantForm(forms.ModelForm):
                     'class': 'form-control'
                     }
                 ),
+            'unit_quantity': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
         }
 
     def __init__(self, *args, **kwargs):

@@ -63,9 +63,10 @@
                                             <th>Полное наименование</th>
                                             <th>Срок год.</th>
                                             <th>Количество</th>
+                                            <th>Количество единиц</th>
                                             <th>Базовая цена</th>
+                                            <th>Цена за единицу</th>
                                             <th>Сумма</th>
-                                            <th>Пользователь</th>
                                             <th style="width: 40px">Label</th>
                                         </tr>
                                         </thead>
@@ -77,9 +78,10 @@
                                                 <td>{{ i.item.name }}</td>
                                                 <td>{{ i.item }}</td>
                                                 <td>{{ i.quantity }}</td>
+                                                <td>{{ i.unit_quantity }}</td>
                                                 <td>{{ i.price }}</td>
+                                                <td>{{ i.unit_price }}</td>
                                                 <td>{{ i.overall_price }}</td>
-                                                <td>{{ i.created_by }}</td>
                                                 <td>
                                                     <div class="progress progress-xs">
                                                         <div class="progress-bar progress-bar-danger"

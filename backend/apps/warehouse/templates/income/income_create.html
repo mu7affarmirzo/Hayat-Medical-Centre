@@ -102,7 +102,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <thead class="text-secondary">
                                 <th>Лекарства <span style="color: red;" class="required">*</span></th>
                                 <th>Количество <span style="color: red;" class="required">*</span></th>
+                                <th>Количество единиц <span style="color: red;" class="required">*</span></th>
                                 <th>Цена <span style="color: red;" class="required">*</span></th>
+                                <th>Цена за единицу <span style="color: red;" class="required">*</span></th>
                                 <th>Годен до <span style="color: red;" class="required">*</span></th>
                                 <th>Удалить(Не добавить) ?</th>
                                 <th>Удалить</th>
@@ -204,7 +206,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <tr>
                                     <th>Полное наименование</th>
                                     <th>Компания</th>
-                                    <th>Базовая цена</th>
                                     <th>Серия</th>
                                     <th>В каробке</th>
                                     <th>Юнит</th>
@@ -267,11 +268,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             data.forEach(function (item) {
                                 $('#search-result').append(
                                     `<tr class="result-item" data-item="${item.name}" data-id="${item.id}" data-company="${item.company}"
-                  data-price="${item.price}" data-seria="${item.seria}" data-inpack="${item.in_pack}"
+                  data-seria="${item.seria}" data-inpack="${item.in_pack}"
                   data-unit="${item.unit}">
                 <td>${item.name}</td>
                 <td>${item.company}</td>
-                <td>${item.price}</td>
                 <td>${item.seria}</td>
                 <td>${item.in_pack}</td>
                 <td>${item.unit}</td>
