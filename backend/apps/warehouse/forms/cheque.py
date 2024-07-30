@@ -1,0 +1,1 @@
+from django import formsfrom apps.warehouse.models import ChequeItemsModelclass ChequeItemCountForm(forms.ModelForm):    class Meta:        model = ChequeItemsModel        fields = ["quantity", ]

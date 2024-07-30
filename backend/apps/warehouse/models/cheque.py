@@ -39,7 +39,7 @@ class ChequeItemsModel(models.Model):
     cheque = models.ForeignKey(WarehouseChequeModel, on_delete=models.CASCADE, related_name='cheque_items', null=True)
     item = models.ForeignKey(ItemsInStockModel, on_delete=models.SET_NULL, null=True)
 
-    price = models.IntegerField(default=0) # ItemsInStock modeldan unit_price keladi
+    price = models.IntegerField(default=0)# ItemsInStock modeldan unit_price keladi
 
     quantity = models.IntegerField(default=1)
 

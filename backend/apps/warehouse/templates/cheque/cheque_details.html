@@ -45,7 +45,7 @@
                                     <h2 class="card-title">
                                         <b>Статус оплаты:</b>
                                         {% if cheque.state == 'не оплачено' %}
-                                             <span class="badge bg-warning">{{ cheque.state }}</span>
+                                            <span class="badge bg-warning">{{ cheque.state }}</span>
                                         {% elif cheque.state == 'оплачено' %}
                                             <span class="badge bg-success">{{ cheque.state }}</span>
                                         {% elif cheque.state == 'отказоно' %}
@@ -86,8 +86,10 @@
                                                 <td></td>
                                                 <td>{{ i.item.name }}</td>
                                                 <td>{{ i.item }}</td>
-                                                <td>{{ i.quantity }}</td>
-                                                <td>{{ i.item.price }}</td>
+                                                <td><input type="number" class="form-control" value="{{ i.quantity }}"
+                                                           id="quantity-{{ i.id }}" onchange="updateLink({{ i.id }})">
+                                                </td>
+                                                <td>{{ i.price }}</td>
                                                 <td>{{ i.price_of_items }}</td>
                                                 <td>{{ i.created_by }}</td>
                                                 <td>
@@ -97,6 +99,12 @@
                                                     </div>
                                                 </td>
                                                 <td><span class="badge bg-danger">55%</span></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal">
+                                                        <a href="{% url 'warehouse_v2:cheque-item-update' pk=i.id quantity=i.quantity %}"
+                                                           id="link-{{ i.id }}"><i class="fas fa-save"></i></a>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         {% endfor %}
 
@@ -172,6 +180,15 @@
     <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.colVis.min.js" %}"></script>
     <!-- AdminLTE App -->
     <script src="{% static "adminlte3_assets/dist/js/adminlte.min.js" %}"></script>
+    <script>
+        function updateLink(id) {
+            const quantity = document.getElementById(`quantity-${id}`).value;
+            const link = document.getElementById(`link-${id}`);
+            const baseUrl = `/render/warehouse/main-point/cheque/item-update/pk/link`.replace('pk', `${id}`).replace(`link`, `${quantity}`);
+            link.href = baseUrl;
+        }
+    </script>
+
     <!-- Page specific script -->
     <script>
         $(function () {
