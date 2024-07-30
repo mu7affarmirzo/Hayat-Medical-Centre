@@ -19,7 +19,7 @@ class ItemsModel(models.Model):
     modified_by = models.ForeignKey(Account, related_name="modf_item", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"{self.name} - {self.company}"
+        return f"{self.name} - {self.company} - {self.in_pack}"
 
     @property
     def validity_color(self):
