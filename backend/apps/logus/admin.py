@@ -2,6 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from apps.logus.models import *
+from apps.logus.models.booking import BookingHistory
 from apps.logus.models.room import TariffXTypeModel
 from apps.logus.models import available_rooms
 
@@ -33,6 +34,11 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(BookingModel)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in BookingModel._meta.fields]
+
+
+@admin.register(BookingHistory)
+class BookingHistoryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in BookingHistory._meta.fields]
 
 
 @admin.register(ServiceModel)

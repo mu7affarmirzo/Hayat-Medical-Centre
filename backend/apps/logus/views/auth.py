@@ -2,11 +2,14 @@ import locale
 
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from apps.account.models import NotificationModel
 from apps.logus.forms.registration import DateRangeForm
-from apps.logus.models import AvailableRoomsTypeModel, TariffModel
+from apps.logus.models import AvailableRoomsTypeModel, TariffModel, RoomTypeMatrix, AvailableRoomModel
+from apps.logus.models.booking import BookingHistory
 from apps.warehouse.forms import AccountAuthenticationForm
 from apps.warehouse.models.store_point import StorePointStaffModel
 
@@ -83,7 +86,6 @@ def get_the_days_list(start_date, end_date):
 
 @login_required(login_url="logus_auth:login")
 def main_screen_view(request):
-    print('---------')
     context = {}
     staff = request.user
 
@@ -107,16 +109,21 @@ def main_screen_view(request):
     }
 
     if request.method == 'POST':
-        data = DateRangeForm(request.POST)
-        # print(data)
-        date_range = data.data.get('reservation_time')
-        the_tariff = data.data.get('tariff')
-        room_type = data.data.get('room_type')
+        form = DateRangeForm(request.POST)
+
+        date_range = form.data.get('reservation_time')
+        # the_tariff = form.data.get('tariff')
+        room_type = form.data.get('room_type')
         start_str, end_str = date_range.split(' - ')
-        print(the_tariff, room_type)
+
+        start_date = datetime.strptime(start_str, '%m/%d/%Y')
+        end_date = datetime.strptime(end_str, '%m/%d/%Y')
+
+        available_rooms = get_available_rooms(start_date, end_date, room_type)
 
         formatted_dates = get_the_days_list(start_str, end_str)
         context['days'] = formatted_dates
+        context['rooms'] = available_rooms
 
         return render(request, 'logus/main_screen.html', context)
 
@@ -135,3 +142,39 @@ def notification_redirect_view(request, pk):
         return redirect(target_notification.generated_url)
     else:
         return redirect('logus_auth:main_screen')
+
+
+def get_available_rooms(start_date, end_date, room_type):
+    rooms_with_matching_type = RoomTypeMatrix.objects.filter(
+        room_type__id=int(room_type)
+    ).values_list('room_id', flat=True).distinct()
+
+    bookings = BookingHistory.objects.filter(
+        Q(start_date__lt=end_date) & Q(end_date__gt=start_date),
+        room_id__in=rooms_with_matching_type
+    )
+
+    booked_room = {}
+    for booking in bookings:
+        if booking.room_id in rooms_with_matching_type:
+            if booking.room_id not in booked_room:
+                booked_room[booking.room_id] = 1
+            else:
+                booked_room[booking.room_id] += 1
+
+    really_available_rooms = []
+    for i in rooms_with_matching_type:
+        target_room = AvailableRoomModel.objects.get(id=i)
+        if i in booked_room and booked_room[i] > target_room.capacity:
+            continue
+        else:
+            really_available_rooms.append(target_room)
+    return really_available_rooms
+
+
+@login_required(login_url="logus_auth:login")
+def test_view(request):
+    if request.method == 'POST':
+        room_id = request.POST.get('room_id')
+        print(room_id)
+    return HttpResponse('HI')

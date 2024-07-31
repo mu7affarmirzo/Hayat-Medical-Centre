@@ -173,222 +173,66 @@
         <section class="content">
             <div class="container-fluid">
                 <!-- SELECT2 EXAMPLE -->
-                <div class="card card-default">
+                <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Select2 (Default Theme)</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
+                        <h3 class="card-title">Мастер бронирования</h3>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Minimal</label>
-                                    <select class="form-control select2" style="width: 100%;">
-                                        <option selected="selected">Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Disabled</label>
-                                    <select class="form-control select2" disabled="disabled" style="width: 100%;">
-                                        <option selected="selected">Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Multiple</label>
-                                    <select class="select2" multiple="multiple" data-placeholder="Select a State"
-                                            style="width: 100%;">
-                                        <option>Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Disabled Result</label>
-                                    <select class="form-control select2" style="width: 100%;">
-                                        <option selected="selected">Alabama</option>
-                                        <option>Alaska</option>
-                                        <option disabled="disabled">California (disabled)</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
+                    <form action="{% url 'logus_registration:main_screen' %}" enctype="multipart/form-data"
+                          method="post" id="product_form">
+                        {% csrf_token %}
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Диапазон дат:</label>
 
-                        <h5>Custom Color Variants</h5>
-                        <div class="row">
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label>Minimal (.select2-danger)</label>
-                                    <select class="form-control select2 select2-danger"
-                                            data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                        <option selected="selected">Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                  <span class="input-group-text">
+                                                    <i class="far fa-calendar-alt"></i>
+                                                  </span>
+                                            </div>
+                                            <input name="reservation_time" type="text" class="form-control float-right"
+                                                   id="reservation">
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                    <!-- /.form-group -->
+                                    <div class="form-group-6">
+                                        <label>Тип комнаты</label>
+                                        <select name="room_type" class="select_room_type" data-placeholder="Тип комнаты"
+                                                style="width: 100%;">
+                                            {% for room_type in room_types %}
+                                                <option name="room_type"
+                                                        value="{{ room_type.id }}">{{ room_type.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <!-- /.form-group -->
                                 </div>
-                                <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label>Multiple (.select2-purple)</label>
-                                    <div class="select2-purple">
-                                        <select class="select2" multiple="multiple" data-placeholder="Select a State"
-                                                data-dropdown-css-class="select2-purple" style="width: 100%;">
-                                            <option>Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
+
+                                <!-- /.col -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Тарифы</label>
+                                        <select name="tariff" class="form-control select_tariff" style="width: 100%;">
+                                            {% for tariff in tariffs %}
+                                                <option name="tariff" value="{{ tariff.id }}">{{ tariff }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
+
+                                <!-- /.col -->
                             </div>
-                            <!-- /.col -->
+                            <!-- /.row -->
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                        Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
-                        information about
-                        the plugin.
-                    </div>
+                    </form>
                 </div>
                 <!-- /.card -->
-
-                <!-- SELECT2 EXAMPLE -->
-                <div class="card card-default">
-                    <div class="card-header">
-                        <h3 class="card-title">Select2 (Bootstrap4 Theme)</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Minimal</label>
-                                    <select class="form-control select2bs4" style="width: 100%;">
-                                        <option selected="selected">Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Disabled</label>
-                                    <select class="form-control select2bs4" disabled="disabled" style="width: 100%;">
-                                        <option selected="selected">Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Multiple</label>
-                                    <select class="select2bs4" multiple="multiple" data-placeholder="Select a State"
-                                            style="width: 100%;">
-                                        <option>Alabama</option>
-                                        <option>Alaska</option>
-                                        <option>California</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                </div>
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Disabled Result</label>
-                                    <select class="form-control select2bs4" style="width: 100%;">
-                                        <option selected="selected">Alabama</option>
-                                        <option>Alaska</option>
-                                        <option disabled="disabled">California (disabled)</option>
-                                        <option>Delaware</option>
-                                        <option>Tennessee</option>
-                                        <option>Texas</option>
-                                        <option>Washington</option>
-                                    </select>
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                        Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
-                        information about
-                        the plugin.
-                    </div>
-                </div>
-                <!-- /.card -->
-
 
             </div>
             <!-- /.container-fluid -->
@@ -422,7 +266,6 @@
 <script src="{% static 'adminlte3_assets/plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
 <script src="{% static 'adminlte3_assets/plugins/dropzone/min/dropzone.min.js' %}"></script>
 <script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
-<script src="{% static 'adminlte3_assets/dist/js/demo.js' %}"></script>
 <!-- Page specific script -->
 <script>
     $(function () {
