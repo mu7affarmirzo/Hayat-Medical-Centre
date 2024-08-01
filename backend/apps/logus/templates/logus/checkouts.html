@@ -1,11 +1,15 @@
-{% load static %}
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Advanced form elements</title>
+    <meta charset="UTF-8">
+    <title>{% load static %}
+        {% load i18n %}
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>AdminLTE 3 | Advanced form elements</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -72,7 +76,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Тип комнаты</label>
-                                        <select name="room_type" class="form-control select_room_type" style="width: 100%;">
+                                        <select name="room_type" class="form-control select_room_type"
+                                                style="width: 100%;">
                                             {% for room_type in room_types %}
                                                 <option name="room_type"
                                                         value="{{ room_type.id }}">{{ room_type.name }}</option>
@@ -89,11 +94,11 @@
                     </form>
                 </div>
                 <!-- /.card -->
-            {% if rooms %}
-            	<div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title"></h3>
-                    </div>
+                {% if rooms %}
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"></h3>
+                        </div>
                         <!-- /.card-header -->
                         <div class="card-body">
 
@@ -114,7 +119,8 @@
 
                                     {% for room in rooms %}
                                         <tr data-room-id="{{ room.id }}">
-                                            <td>{{ room.room_number }}  <span class="badge bg-yellow">{{ room.capacity }}</span></td>
+                                            <td>{{ room.room_number }} <span
+                                                    class="badge bg-yellow">{{ room.capacity }}</span></td>
                                             <td>11-7-2014</td>
                                             <td></td>
                                             <td><span class="badge bg-danger">Ж</span></td>
@@ -129,15 +135,15 @@
                                 </table>
                             </div>
                             <br>
-{#                            <form id="room-form" method="POST" action="{% url 'logus_registration:test' %}">#}
-{#                                {% csrf_token %}#}
-{#                                <input type="hidden" name="room_id" id="selected-room-id">#}
-{#                                <button type="submit" id="submit-button" class="btn btn-primary" disabled>Submit</button>#}
-{#                            </form>#}
+                            {#                            <form id="room-form" method="POST" action="{% url 'logus_registration:test' %}">#}
+                            {#                                {% csrf_token %}#}
+                            {#                                <input type="hidden" name="room_id" id="selected-room-id">#}
+                            {#                                <button type="submit" id="submit-button" class="btn btn-primary" disabled>Submit</button>#}
+                            {#                            </form>#}
 
                         </div>
-                </div>
-            {% endif %}
+                    </div>
+                {% endif %}
 
             </div>
             <!-- /.container-fluid -->
@@ -173,9 +179,9 @@
 <script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
 <!-- Page specific script -->
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Attach a double-click event listener to table rows
-        $('#room-table').on('dblclick', 'tr', function() {
+        $('#room-table').on('dblclick', 'tr', function () {
             // Get the room ID from the data attribute
             var roomId = $(this).data('room-id');
 
@@ -190,11 +196,11 @@
                     'room_id': roomId,
                     'csrfmiddlewaretoken': '{{ csrf_token }}' // Include CSRF token
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log('Room selected successfully:', response);
                     // Optional: Handle success response
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error('Error selecting room:', error);
                     // Optional: Handle error response
                 }
@@ -202,7 +208,7 @@
         });
 
         // Optionally, you can add some visual feedback for the selected row
-        $('#room-table').on('dblclick', 'tr', function() {
+        $('#room-table').on('dblclick', 'tr', function () {
             $('#room-table tr').removeClass('selected');
             $(this).addClass('selected');
         });
@@ -350,5 +356,11 @@
     }
     // DropzoneJS Demo Code End
 </script>
+</body>
+</html>
+</title>
+</head>
+<body>
+
 </body>
 </html>
