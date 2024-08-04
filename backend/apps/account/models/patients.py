@@ -43,7 +43,7 @@ class PatientModel(models.Model):
     address = models.TextField(blank=True, null=True)
     additional_info = models.JSONField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    information_source = models.ForeignKey(InformationSourceModel, on_delete=models.CASCADE)
+    information_source = models.ForeignKey(InformationSourceModel, on_delete=models.CASCADE, null=True, blank=True)
     patient_group = models.ManyToManyField(PatientGroupModel)
     doc_type = models.CharField(max_length=255, blank=True, null=True)
     doc_number = models.CharField(max_length=255, blank=True, null=True)
@@ -51,11 +51,11 @@ class PatientModel(models.Model):
     INN = models.CharField(max_length=255, blank=True, null=True)
     country = models.CharField(max_length=255, blank=True, null=True)
     last_visit_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    modified_by = models.ForeignKey(Account, related_name="modf_patient_by_user", on_delete=models.SET_NULL, null=True)
-    organization = models.ForeignKey(OrganizationModel, on_delete=models.SET_NULL, null=True)
+    modified_by = models.ForeignKey(Account, related_name="modf_patient_by_user", on_delete=models.SET_NULL, null=True, blank=True)
+    organization = models.ForeignKey(OrganizationModel, on_delete=models.SET_NULL, null=True, blank=True)
     gender = models.BooleanField()
     gestational_age = models.IntegerField(null=True, blank=True)
     @property
@@ -88,4 +88,4 @@ class PatientModel(models.Model):
         return f"{self.f_name} {self.l_name} {mid_name}"
 
     class Meta:
-        ordering = ('f_name', '-created_at')
+        ordering = ('-created_at', )

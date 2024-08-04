@@ -3,12 +3,18 @@ import locale
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_exempt
 
-from apps.account.models import NotificationModel
+from apps.account.models import NotificationModel, PatientModel
+from apps.logus.forms.booking import BookingForm, PatientRegistrationForm
 from apps.logus.forms.registration import DateRangeForm
-from apps.logus.models import AvailableRoomsTypeModel, TariffModel, RoomTypeMatrix, AvailableRoomModel
+from apps.logus.models import (
+    AvailableRoomsTypeModel, RoomTypeMatrix, AvailableRoomModel,
+    AvailableTariffModel, TariffRoomTypeMatrixModel
+)
 from apps.logus.models.booking import BookingHistory
 from apps.warehouse.forms import AccountAuthenticationForm
 from apps.warehouse.models.store_point import StorePointStaffModel
@@ -91,7 +97,7 @@ def main_screen_view(request):
 
     today = datetime.today()
 
-    tariffs = TariffModel.objects.all()
+    tariffs = AvailableTariffModel.objects.all()
     room_types = AvailableRoomsTypeModel.objects.all()
 
     next_14_days = [today + timedelta(days=i) for i in range(14)]
@@ -105,14 +111,77 @@ def main_screen_view(request):
         'user': staff,
         'days': formatted_dates,
         'tariffs': tariffs,
-        'room_types': room_types
+        'room_types': room_types,
+        'selected_room_type': None,
+        'selected_start_date': None,
+        'selected_end_date': None,
     }
 
     if request.method == 'POST':
         form = DateRangeForm(request.POST)
 
         date_range = form.data.get('reservation_time')
-        # the_tariff = form.data.get('tariff')
+
+        room_type = form.data.get('room_type')
+        start_str, end_str = date_range.split(' - ')
+
+        start_date = datetime.strptime(start_str, '%m/%d/%Y')
+        end_date = datetime.strptime(end_str, '%m/%d/%Y')
+
+        available_rooms = get_available_rooms(start_date, end_date, room_type)
+
+        formatted_dates = get_the_days_list(start_str, end_str)
+        context['days'] = formatted_dates
+        context['rooms'] = available_rooms
+        context['selected_room_type'] = room_type
+        context['selected_date_range'] = date_range
+
+        return render(request, 'logus/main_screen.html', context)
+
+    return render(request, 'logus/main_screen.html', context)
+
+
+@login_required(login_url="logus_auth:login")
+def available_room_view(request):
+    context = {}
+    staff = request.user
+
+    today = datetime.today()
+
+    tariffs = AvailableTariffModel.objects.all()
+    room_types = AvailableRoomsTypeModel.objects.all()
+
+    # Create a matrix dictionary to store the room type and tariff values
+    matrix = {}
+    for room_type in room_types:
+        matrix[room_type] = []
+        for tariff in tariffs:
+            try:
+                value = TariffRoomTypeMatrixModel.objects.get(tariff=tariff, room_type=room_type).price
+            except:
+                value = None
+            matrix[room_type].append(value)
+
+    next_14_days = [today + timedelta(days=i) for i in range(14)]
+    formatted_dates = []
+    for date in next_14_days:
+        day = date.strftime("%d-%B")
+        week_day = WEEKDAYS[date.weekday() + 1]
+        formatted_dates.append([day, week_day])
+
+    context = {
+        'user': staff,
+        'days': formatted_dates,
+        'tariffs': tariffs,
+        'room_types': room_types,
+        'matrix': matrix
+    }
+
+    if request.method == 'POST':
+        form = DateRangeForm(request.POST)
+
+        date_range = form.data.get('reservation_time')
+
         room_type = form.data.get('room_type')
         start_str, end_str = date_range.split(' - ')
 
@@ -125,12 +194,53 @@ def main_screen_view(request):
         context['days'] = formatted_dates
         context['rooms'] = available_rooms
 
-        return render(request, 'logus/main_screen.html', context)
+        return render(request, 'logus/available_rooms.html', context)
 
-    return render(request, 'logus/main_screen.html', context)
+    return render(request, 'logus/available_rooms.html', context)
 
 
-@login_required(login_url="logus_auth:login")
+@login_required(login_url='logus_auth:login')
+def register_booking_view(request):
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('logus_auth:main_screen')
+    else:
+        form = BookingForm()
+    patients = PatientModel.objects.all()
+    rooms = AvailableRoomModel.objects.all()
+    room_types = AvailableRoomsTypeModel.objects.all()
+    tariffs = AvailableTariffModel.objects.all()
+    return render(
+        request, 'logus/create_booking.html',
+        {
+            'form': form,
+            'patients': patients,
+            'rooms': rooms,
+            'room_types': room_types,
+            'tariffs': tariffs
+        }
+    )
+
+
+@csrf_exempt
+def add_new_patient(request):
+    if request.method == 'POST':
+        form = PatientRegistrationForm(request.POST)
+        if form.is_valid():
+            patient = form.save(commit=False)
+            patient.created_by = request.user
+            patient.modified_by = request.user
+            patient.save()
+            return redirect('logus_registration:register-booking')  # Replace with your success URL
+    else:
+        return redirect('logus_registration:register-booking')
+    return render(request, 'logus/create_booking.html', {'form': form})
+
+
+@login_required(login_url='logus_auth:login')
 def notification_redirect_view(request, pk):
     staff = request.user
 

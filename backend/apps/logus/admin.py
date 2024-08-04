@@ -102,3 +102,13 @@ class AvailableRoomsTypeModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(available_rooms.RoomTypeMatrix)
 class RoomTypeMatrixAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in available_rooms.RoomTypeMatrix._meta.fields]
+
+
+@admin.register(available_rooms.AvailableTariffModel)
+class AvailableTariffModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.AvailableTariffModel._meta.fields]
+
+
+@admin.register(available_rooms.TariffRoomTypeMatrixModel)
+class TariffRoomTypeMatrixModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.TariffRoomTypeMatrixModel._meta.fields]

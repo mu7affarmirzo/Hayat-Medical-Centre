@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Sum
 
 from apps.account.models import Account
 
@@ -20,6 +19,20 @@ ROOM_TASK_TYPE = (
     ("service", "service"),
     ("security", "security"),
 )
+
+
+class AvailableTariffModel(models.Model):
+    color = models.CharField(null=True, blank=True, max_length=20)
+    tag = models.CharField(null=True, blank=True, max_length=20)
+    name = models.CharField(max_length=255)
+    price = models.PositiveIntegerField(default=0)
+    created_by = models.ForeignKey(Account, related_name="available_tariff", on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    modified_by = models.ForeignKey(Account, related_name="modf_available_tariff", on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class AvailableRoomsTypeModel(models.Model):
@@ -52,3 +65,12 @@ class RoomTypeMatrix(models.Model):
 
     def __str__(self):
         return f"{self.room}| {self.room_type} | - {self.price}"
+
+
+class TariffRoomTypeMatrixModel(models.Model):
+    tariff = models.ForeignKey(AvailableTariffModel, on_delete=models.CASCADE, related_name="matrix", null=True, blank=True)
+    room_type = models.ForeignKey(AvailableRoomsTypeModel, on_delete=models.CASCADE,  related_name="matrix", null=True, blank=True)
+    price = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.tariff}"
