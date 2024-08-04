@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import chain
 from operator import attrgetter
 
@@ -18,7 +18,9 @@ BOOKINGS_PER_PAGE = 30
 def get_upcoming_checkouts(request):
     context = {}
 
-    checkouts = BookingModel.objects.filter(start_date=timezone.now().date())
+    tomorrow_date = timezone.now().date() + timedelta(days=1)
+
+    checkouts = BookingModel.objects.filter(end_date=tomorrow_date)
     context['bookings'] = checkouts
 
     query = request.GET.get('q', '')
@@ -50,8 +52,8 @@ def get_upcoming_checkouts(request):
 def get_living_guests(request):
     context = {}
 
-    checkouts = BookingModel.objects.filter(stage='settled', start_date=timezone.now().date())
-    context['bookings'] = checkouts
+    check_ins = BookingModel.objects.filter(stage='settled', start_date=timezone.now().date())
+    context['bookings'] = check_ins
 
     query = request.GET.get('q', '')
     search_query = request.GET.get('table_search')
@@ -82,8 +84,9 @@ def get_living_guests(request):
 def get_upcoming_check_ins_view(request):
     context = {}
 
-    checkouts = BookingModel.objects.filter(start_date=timezone.now().date())
-    context['bookings'] = checkouts
+    tomorrow_date = timezone.now().date() + timedelta(days=1)
+    check_ins = BookingModel.objects.filter(start_date=tomorrow_date)
+    context['bookings'] = check_ins
 
     # ----------------------
     user = request.user
@@ -169,21 +172,18 @@ def get_booking_queryset(query=None, stage=None):
     queries = query.split(" ")
     for q in queries:
         if stage:
-            bookings = BookingModel.objects.filter(stage=stage).filter(
+            bookings = BookingModel.objects.filter(stage=stage).exclude(stage='served').exclude(stage='cancelled').filter(
                 Q(series__icontains=q) |
                 Q(patient__f_name__icontains=q) |
                 Q(patient__mid_name__icontains=q)
             ).distinct()
         else:
-            bookings = BookingModel.objects.filter(
-                    Q(series__icontains=q) |
-                    Q(patient__f_name__icontains=q) |
-                    Q(patient__mid_name__icontains=q)
-                ).distinct()
+            bookings = BookingModel.objects.exclude(stage='served').exclude(stage='cancelled').filter(
+                Q(series__icontains=q) |
+                Q(patient__f_name__icontains=q) |
+                Q(patient__mid_name__icontains=q)
+            ).distinct()
         for new in bookings:
             queryset.append(new)
 
     return list(set(queryset))
-
-
-
