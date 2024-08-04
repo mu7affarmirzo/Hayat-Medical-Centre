@@ -1,14 +1,14 @@
-import locale
+from datetime import datetime, timedelta
 
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 
 from apps.account.models import NotificationModel, PatientModel
+from apps.decorators import role_required
 from apps.logus.forms.booking import BookingForm, PatientRegistrationForm
 from apps.logus.forms.registration import DateRangeForm
 from apps.logus.models import (
@@ -19,9 +19,6 @@ from apps.logus.models.booking import BookingHistory
 from apps.warehouse.forms import AccountAuthenticationForm
 from apps.warehouse.models.store_point import StorePointStaffModel
 
-from datetime import datetime, timedelta
-
-# locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
 WEEKDAYS = {
     1: 'Пн',
@@ -90,7 +87,7 @@ def get_the_days_list(start_date, end_date):
     return formatted_dates
 
 
-@login_required(login_url="logus_auth:login")
+@role_required(role='admin 1', login_url='logus_auth:logout')
 def main_screen_view(request):
     context = {}
     staff = request.user
