@@ -172,42 +172,6 @@
 <script src="{% static 'adminlte3_assets/plugins/dropzone/min/dropzone.min.js' %}"></script>
 <script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
 <!-- Page specific script -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        // Attach a double-click event listener to table rows
-        $('#room-table').on('dblclick', 'tr', function() {
-            // Get the room ID from the data attribute
-            var roomId = $(this).data('room-id');
-
-            // Do something with the room ID
-            console.log('Room ID:', roomId);
-
-            // Example: Send the selected room ID to the server
-            $.ajax({
-                url: '{% url 'logus_registration:test' %}', // Update this to your actual endpoint
-                method: 'POST',
-                data: {
-                    'room_id': roomId,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}' // Include CSRF token
-                },
-                success: function(response) {
-                    console.log('Room selected successfully:', response);
-                    // Optional: Handle success response
-                },
-                error: function(error) {
-                    console.error('Error selecting room:', error);
-                    // Optional: Handle error response
-                }
-            });
-        });
-
-        // Optionally, you can add some visual feedback for the selected row
-        $('#room-table').on('dblclick', 'tr', function() {
-            $('#room-table tr').removeClass('selected');
-            $(this).addClass('selected');
-        });
-    });
-</script>
 <style>
     .selected {
         background-color: #d0e9c6; /* Example color for selected row */
