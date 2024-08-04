@@ -60,7 +60,7 @@ def login_view(request):
     return render(request, 'auth/login.html', context)
 
 
-@login_required(login_url="logus_auth:login")
+@role_required(role='logus', login_url='logus_auth:logout')
 def logout_view(request):
     logout(request)
     return redirect('logus_auth:login')
@@ -87,7 +87,7 @@ def get_the_days_list(start_date, end_date):
     return formatted_dates
 
 
-@role_required(role='admin 1', login_url='logus_auth:logout')
+@role_required(role='logus', login_url='logus_auth:logout')
 def main_screen_view(request):
     context = {}
     staff = request.user
@@ -138,7 +138,7 @@ def main_screen_view(request):
     return render(request, 'logus/main_screen.html', context)
 
 
-@login_required(login_url="logus_auth:login")
+@role_required(role='logus', login_url='logus_auth:logout')
 def available_room_view(request):
     context = {}
     staff = request.user
@@ -196,7 +196,7 @@ def available_room_view(request):
     return render(request, 'logus/available_rooms.html', context)
 
 
-@login_required(login_url='logus_auth:login')
+@role_required(role='logus', login_url='logus_auth:logout')
 def register_booking_view(request):
 
     if request.method == 'POST':
@@ -237,7 +237,7 @@ def add_new_patient(request):
     return render(request, 'logus/create_booking.html', {'form': form})
 
 
-@login_required(login_url='logus_auth:login')
+@role_required(role='logus', login_url='logus_auth:logout')
 def notification_redirect_view(request, pk):
     staff = request.user
 
@@ -279,7 +279,7 @@ def get_available_rooms(start_date, end_date, room_type):
     return really_available_rooms
 
 
-@login_required(login_url="logus_auth:login")
+@role_required(role='logus', login_url='logus_auth:logout')
 def test_view(request):
     if request.method == 'POST':
         room_id = request.POST.get('room_id')

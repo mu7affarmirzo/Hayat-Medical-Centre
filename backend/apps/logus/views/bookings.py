@@ -9,12 +9,13 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 
+from apps.decorators import role_required
 from apps.logus.models import BookingModel
 
 BOOKINGS_PER_PAGE = 30
 
 
-@login_required(login_url="logus_auth:login")
+@role_required(role='logus', login_url='logus_auth:logout')
 def get_upcoming_checkouts(request):
     context = {}
 
@@ -48,7 +49,7 @@ def get_upcoming_checkouts(request):
     return render(request, 'logus/booking/checkouts.html', context)
 
 
-@login_required(login_url="logus_auth:login")
+@role_required(role='logus', login_url='logus_auth:logout')
 def get_living_guests(request):
     context = {}
 
@@ -80,7 +81,7 @@ def get_living_guests(request):
     return render(request, 'logus/booking/living.html', context)
 
 
-@login_required(login_url="logus_auth:login")
+@role_required(role='logus', login_url='logus_auth:logout')
 def get_upcoming_check_ins_view(request):
     context = {}
 
