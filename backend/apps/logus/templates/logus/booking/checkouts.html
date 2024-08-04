@@ -1,12 +1,11 @@
 {% load static %}
 {% load i18n %}
-{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Advanced form elements</title>
+    <title>Hayat Medical Center</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -41,165 +40,143 @@
         <section class="content">
             <div class="container-fluid">
                 <!-- SELECT2 EXAMPLE -->
-                <div class="card card-success">
+                <div class="card card-danger">
                     <div class="card-header">
-                        <h3 class="card-title">Мастер бронирования</h3>
+                        <h3 class="card-title">Ожидаемый выезд</h3>
                     </div>
-                    <form action="{% url 'logus_registration:available-rooms' %}" enctype="multipart/form-data"
-                          method="post" id="product_form">
-                        {% csrf_token %}
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Диапазон дат:</label>
 
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                  <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                  </span>
-                                            </div>
-                                            <input name="reservation_time" type="text" class="form-control float-right"
-                                                   id="reservation">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <label for="arrival-date-picker">Время выездa</label>
+                                    <div class="card-tools">
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <input type="date" id="arrival-date-picker" class="form-control" />
                                         </div>
-                                        <!-- /.input group -->
-                                    </div>
-                                    <!-- /.form-group -->
-                                </div>
-
-                                <!-- /.col -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Тип комнаты</label>
-                                        <select name="room_type" class="form-control select_room_type" style="width: 100%;">
-                                            {% for room_type in room_types %}
-                                                <option name="room_type"
-                                                        value="{{ room_type.id }}">{{ room_type.name }}</option>
-                                            {% endfor %}
-                                        </select>
                                     </div>
                                 </div>
 
-                                <!-- /.col -->
                             </div>
-                            <!-- /.row -->
-                            <button type="submit" class="btn btn-primary">Проверить</button>
-                        </div>
-                    </form>
-                </div>
-                <!-- /.card -->
-            {% if rooms %}
-            	<div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title"></h3>
-                    </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
 
-                            <div class="card-body table-responsive p-0">
-                                <table class="table table-hover text-nowrap" id="room-table">
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="card-tools">
+                                    <form method="get" action="">
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <input type="text" name="table_search" class="form-control float-right"
+                                                   placeholder="Search" value="{{ query }}">
+
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-default">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <br>
+
+                                <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>Комната</th>
+                                        <th style="width: 10px">#</th>
+                                        <th>Серия</th>
+                                        <th>Имя гостя</th>
                                         <th>Дата выезда</th>
-                                        <th>Дата заезда</th>
-                                        <th>Пол</th>
-                                        <th>Возраст</th>
-                                        <th>Этаж</th>
-                                        <th>Статус уборки</th>
+                                        <th>Тип комнаты</th>
+                                        <th>Комната</th>
+                                        <th>Время заезда</th>
+                                        <th>Дней</th>
+                                        <th>Тариф</th>
+                                        <th>Скидка</th>
                                     </tr>
-                                    </thead>
-                                    <tbody>
 
-                                    {% for room in rooms %}
-                                        <tr data-room-id="{{ room.id }}">
-                                            <td>{{ room.room_number }}  <span class="badge bg-yellow">{{ room.capacity }}</span></td>
-                                            <td>11-7-2014</td>
-                                            <td></td>
-                                            <td><span class="badge bg-danger">Ж</span></td>
-                                            <td>70</td>
-                                            <td>{{ room.floor }}</td>
-                                            <td><span class="badge bg-danger">грязный</span></td>
+                                    </thead>
+
+                                    <tbody id="booking-table-body">
+                                    {% for i in bookings %}
+                                        <tr>
+                                            <td>{{ i.id }}</td>
+                                            <td>{{ i.series }}</td>
+                                            <td>
+                                                {{ i.patient.full_name }}
+                                            </td>
+                                            <td>{{ i.end_date }}</td>
+                                            <td>
+                                                <span class="badge"
+                                                      style="background-color: {{ i.current_room_type.color }};">{{ i.current_room_type }}</span>
+                                            </td>
+                                            <td>{{ i.current_room.room_number }}</td>
+                                            <td>{{ i.start_date }}</td>
+                                            <td>{{ i.duration }}</td>
+                                            <td>
+                                                <span class="badge"
+                                                      style="background-color: {{ i.current_tariff.color }};">{{ i.current_tariff }}</span>
+                                            </td>
+                                            <td>{{ i.discount }}</td>
                                         </tr>
                                     {% endfor %}
 
-
                                     </tbody>
                                 </table>
                             </div>
-                            <br>
+                            <!-- /.card-body -->
+                            <div class="card-footer clearfix">
+                                <ul class="pagination pagination-sm m-0 float-right">
 
+                                    {% if bookings.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.previous_page_number }}">&laquo;</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for i in bookings.paginator.page_range %}
+                                        {% if bookings.number == i %}
+                                            <li class="page-item active"><a class="page-link">{{ i }}</a></li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link"
+                                                                     href="?{% if query %}q={{ query }}&{% endif %}page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if bookings.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.next_page_number }}">Next</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.paginator.num_pages }}">Last
+                                                &raquo;</a>
+                                        </li>
+                                    {% endif %}
+
+                                </ul>
+                            </div>
                         </div>
-                </div>
-            {% endif %}
-
-            <div class="card card-danger">
-                    <div class="card-header">
-                        <h3 class="card-title">Матрица тарифов и Тип комнат</h3>
                     </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-
-                            <div class="card-body table-responsive p-0">
-                                <table class="table table-hover text-nowrap" id="room-table">
-                                    <thead>
-
-                                    <tr>
-                                        <th style="font-size: 135%">Тип\Тариф</th>
-                                        {% for tariff in tariffs %}
-                                            <th>
-                                                <span class="badge" style="font-size: 100%; background-color: {{ tariff.color }};">{{ tariff.name }}</span>
-                                            </th>
-
-                                        {% endfor %}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for room_type, values in matrix.items %}
-                                            <tr>
-                                                <td><span class="badge" style="background-color: {{ room_type.color }};">
-                                                    {{ room_type }}</span>
-                                                </td>
-                                                {% for value in values %}
-                                                    {% if not value %}
-                                                        <td>
-                                                    	<span class="badge bg-danger">---</span>
-                                                        </td>
-                                                    {% else %}
-                                                        <td>{{ value|floatformat:3|intcomma }} сум</td>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <br>
-{#                            <form id="room-form" method="POST" action="{% url 'logus_registration:test' %}">#}
-{#                                {% csrf_token %}#}
-{#                                <input type="hidden" name="room_id" id="selected-room-id">#}
-{#                                <button type="submit" id="submit-button" class="btn btn-primary" disabled>Submit</button>#}
-{#                            </form>#}
-
-                        </div>
                 </div>
 
             </div>
-            <!-- /.container-fluid -->
         </section>
-        <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
 
 
-    {% include 'snippets/footer.html' %}
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
+{% include 'snippets/footer.html' %}
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+</aside>
+<!-- /.control-sidebar -->
 
 </div>
 <!-- ./wrapper -->
@@ -219,6 +196,34 @@
 <script src="{% static 'adminlte3_assets/plugins/dropzone/min/dropzone.min.js' %}"></script>
 <script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
 <!-- Page specific script -->
+
+<script>
+    document.getElementById('arrival-date-picker').addEventListener('change', function () {
+        var selectedDate = this.value;
+        fetch(`{% url 'logus_booking:get-checkout-bookings' %}?end_date=${selectedDate}`)
+            .then(response => response.json())
+            .then(data => {
+                var tableBody = document.getElementById('booking-table-body');
+                tableBody.innerHTML = '';
+                data.bookings.forEach(function (booking) {
+                    var row = `<tr>
+                    <td>${booking.id}</td>
+                    <td>${booking.series}</td>
+                    <td>${booking.patient_full_name}</td>
+                    <td>${booking.end_date}</td>
+                    <td><span class="badge" style="background-color: ${booking.current_room_type_color};">${booking.current_room_type}</span></td>
+                    <td>${booking.current_room_room_number}</td>
+                    <td>${booking.start_date}</td>
+                    <td>${booking.duration}</td>
+                    <td><span class="badge" style="background-color: ${booking.current_tariff_color};">${booking.current_tariff}</span></td>
+                    <td>${booking.discount}</td>
+                </tr>`;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+            });
+    });
+</script>
+
 
 <script>
     $(function () {
@@ -356,5 +361,11 @@
     }
     // DropzoneJS Demo Code End
 </script>
+</body>
+</html>
+</title>
+</head>
+<body>
+
 </body>
 </html>

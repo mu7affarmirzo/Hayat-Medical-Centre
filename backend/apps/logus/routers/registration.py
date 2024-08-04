@@ -12,12 +12,6 @@ urlpatterns = [
     path('register-booking/', auth.register_booking_view, name='register-booking'),
     path('add-new-patient/', auth.add_new_patient, name='add-new-patient'),
 
-    path('test/', auth.test_view, name='test'),
     path('upcoming-checkouts/', bookings.get_upcoming_checkouts, name='get_upcoming_checkouts'),
-    # path('date_range/', auth.date_range, name='date_range'),
-    # path('manual/', include('apps.logus.urls.manual')),
-    # path('branch/', include('apps.logus.urls.branch')),
-    # path('storepoint/', include('apps.logus.urls.storepoint')),
-    # path('company/', include('apps.logus.urls.company')),
 
 ]

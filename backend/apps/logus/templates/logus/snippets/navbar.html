@@ -13,24 +13,27 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+        <div class="collapse navbar-collapse order-4" id="navbarCollapse">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
+                <li class="nav-item bg">
+                    <a href="{% url 'logus_registration:register-booking' %}" class="nav-link">Забронировать</a>
+                </li>
 
-                <li class="nav-item bg-primary">
-                    <a href="#" class="nav-link">Ожидаемый заезд</a>
+                <li class="nav-item bg">
+                    <a href="{% url 'logus_booking:check-in' %}" class="nav-link">Ожидаемый заезд</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">Проживающие</a>
+                    <a href="{% url 'logus_booking:living' %}" class="nav-link">Проживающие</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">Ожидаемый выезд</a>
+                    <a href="{% url 'logus_booking:check-out' %}" class="nav-link">Ожидаемый выезд</a>
                 </li>
                 <li class="nav-item">
                     <a href="" class="nav-link">Неоплаченные</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">Наличие комнат</a>
+                    <a href="{% url 'logus_registration:available-rooms' %}" class="nav-link">Наличие комнат</a>
                 </li>
                 <li class="nav-item">
                     <a href="" class="nav-link">Лист ожидания</a>
