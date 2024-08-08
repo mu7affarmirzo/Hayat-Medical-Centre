@@ -1,3 +1,4 @@
+import json
 import datetime
 from operator import attrgetter
 
@@ -8,16 +9,117 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
+from django.views.generic import UpdateView, CreateView
 
-from apps.warehouse.forms.cheque import ChequeItemCountForm
+from apps.warehouse.forms.cheque import ChequeItemCountForm, VariantFormSet, ChequeForm
 from apps.warehouse.models import WarehouseChequeModel, ChequeItemsModel, ItemsInStockModel
 
 ITEMS_PER_PAGE = 30
 
 
+class ChequeInline:
+    form_class = ChequeForm
+    model = WarehouseChequeModel
+    template_name = "cheque/cheque_create.html"
+
+    def form_valid(self, form):
+        named_formsets = self.get_named_formsets()
+        if not all((x.is_valid() for x in named_formsets.values())):
+            return self.render_to_response(self.get_context_data(form=form))
+
+        self.object = form.save()
+        self.object.created_by = self.request.user
+        self.object.save()
+
+        for name, formset in named_formsets.items():
+            formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
+            if formset_save_func is not None:
+                formset_save_func(formset)
+            else:
+                formset.save()
+        return redirect('warehouse_v2:cheque')
+
+    def formset_variants_valid(self, formset):
+        variants = formset.save(commit=False)
+
+        for obj in formset.deleted_objects:
+            obj.delete()
+        for variant in variants:
+            variant.cheque = self.object
+            variant.save()
+
+
+class ChequeCreate(ChequeInline, CreateView):
+
+    def get_context_data(self, **kwargs):
+
+        ctx = super(ChequeCreate, self).get_context_data(**kwargs)
+        ctx['named_formsets'] = self.get_named_formsets()
+
+        return ctx
+
+    def get_named_formsets(self):
+        if self.request.method == "GET":
+            return {
+                'variants': VariantFormSet(prefix='variants', form_kwargs={'user': self.request.user}),
+            }
+        else:
+            return {
+                'variants': VariantFormSet(self.request.POST or None, self.request.FILES or None, prefix='variants', form_kwargs={'user': self.request.user}),
+            }
+
+
+class ChequeUpdate(ChequeInline, UpdateView):
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.state == 'оплачено':
+            return redirect('warehouse_v2:cheque')
+        return super(ChequeUpdate, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ChequeUpdate, self).get_context_data(**kwargs)
+        ctx['named_formsets'] = self.get_named_formsets()
+        return ctx
+
+    def get_named_formsets(self):
+        return {
+            'variants': VariantFormSet(self.request.POST or None, self.request.FILES or None, instance=self.object, prefix='variants', form_kwargs={'user': self.request.user}),
+        }
+
+
+def create_cheque(request):
+    if request.method == 'POST':
+        form = ChequeForm(request.POST)
+        formset = VariantFormSet(request.POST, request.FILES, prefix='variants', form_kwargs={'user': request.user})
+
+        if form.is_valid() and formset.is_valid():
+            cheque = form.save(commit=False)
+            cheque.created_by = request.user
+            cheque.save()
+
+            variants = formset.save(commit=False)
+            for variant in variants:
+                variant.cheque = cheque
+                variant.save()
+
+            for obj in formset.deleted_objects:
+                obj.delete()
+
+            return redirect('warehouse_v2:cheque')
+    else:
+        form = ChequeForm()
+        formset = VariantFormSet(prefix='variants', form_kwargs={'user': request.user})
+
+    context = {
+        'form': form,
+        'formset': formset,
+    }
+    return render(request, 'cheque/cheque_create.html', context)
+
+
 def cheque_view(request):
     query = request.GET.get('q', '')
-    print(f"q: {query}")
     search_query = request.GET.get('table_search')
     if search_query:
         cheques = sorted(get_cheques_queryset(search_query), key=attrgetter('created_at'), reverse=True)
@@ -57,9 +159,6 @@ def cheque_item_count_update(request, pk, quantity):
         cheque_item.modified_by = request.user
         cheque_item.save(update_fields=["quantity", "modified_at", "modified_by"])
     return redirect("warehouse_v2:cheque-detailed", pk=cheque_item.cheque.pk)
-
-
-import json
 
 
 @login_required

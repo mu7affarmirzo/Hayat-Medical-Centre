@@ -228,28 +228,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Main Footer -->
     {% include 'snippets/footer.html' %}
-    <div class="modal fade" id="modal-danger" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content bg-danger">
-                <div class="modal-header">
-                    <h4 class="modal-title">Log Out</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Ketyapsizmi muncha tez?</p>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Oтмена</button>
-                    <button type="button" class="btn btn-outline-light"><a href="{% url 'warehouse_v2:logout' %}"
-                                                                           class="dropdown-item">ВЫХОД</a></button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
