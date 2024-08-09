@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.views.generic import UpdateView, CreateView
 
+from apps.account.models import PatientModel
 from apps.warehouse.forms.cheque import ChequeItemCountForm, VariantFormSet, ChequeForm
 from apps.warehouse.models import WarehouseChequeModel, ChequeItemsModel, ItemsInStockModel
 
@@ -55,6 +56,7 @@ class ChequeCreate(ChequeInline, CreateView):
 
         ctx = super(ChequeCreate, self).get_context_data(**kwargs)
         ctx['named_formsets'] = self.get_named_formsets()
+        ctx['patients'] = PatientModel.objects.all()
 
         return ctx
 

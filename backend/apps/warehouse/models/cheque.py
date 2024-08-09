@@ -55,6 +55,22 @@ class ChequeItemsModel(models.Model):
     def price_of_items(self):
         return self.price * self.quantity
 
+    def save(self, *args, **kwargs):
+        if self.pk:
+            # The instance already exists, so it's an update
+            previous_instance = ChequeItemsModel.objects.get(pk=self.pk)
+            quantity_difference = self.quantity - previous_instance.quantity
+        else:
+            # The instance is new, so it's a creation
+            quantity_difference = self.quantity
+
+        # Update the quantity of the item in stock
+        if self.item:
+            self.item.unit_quantity -= quantity_difference
+            self.item.save()
+
+        super().save(*args, **kwargs)
+
 
 @receiver(post_save, sender=WarehouseChequeModel)
 def create_warehouse_cheque_number(sender, instance=None, created=False, **kwargs):
@@ -69,3 +85,4 @@ def update_cheque_item_price_number(sender, instance=None, created=False, **kwar
     if created:
         instance.price = instance.item.unit_price
         instance.save()
+        # TODO: update InStockModel

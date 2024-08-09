@@ -60,28 +60,49 @@
                                 <form enctype="multipart/form-data" method="post" action="{% url 'warehouse_v2:cheque-create' %}" id="product_form">
                                     {% csrf_token %}
                                     <h5>Пациент</h5>
-                                    <div class="row">
-                                        {% for field in form %}
-                                                <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                        {% if field.label == 'Patient' %}
-                                                            <label>Поставщик</label>
-                                                        {% endif %}
-                                                        {% if field.field.required %}
-                                                            <span style="color: red;" class="required">*</span>
-                                                        {% endif %}
 
-                                                        {{ field }}
-                                                        {% if field.help_text %}
-                                                            <small style="color: grey">{{ field.help_text }}</small>
-                                                        {% endif %}
-                                                        {% for error in field.errors %}
-                                                            <p style="color: red">{{ error }}</p>
+                                <div class="row">
+                                    {% for field in form %}
+
+                                        {% if field.name == 'patient' %}
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Пациент</label>
+                                                    {% if field.field.required %}
+                                                        <span style="color: red;" class="required">*</span>
+                                                    {% endif %}
+                                                    <select class="form-control select2 select2-primary" id="patient-select" name="patient" data-dropdown-css-class="select2-primary" style="width: 100%;">
+                                                        {% for patient in patients %}
+                                                            <option value="{{ patient.id }}" {% if field.value == patient.id %}selected{% endif %}>{{ patient.full_name }}</option>
                                                         {% endfor %}
-                                                    </div>
+                                                    </select>
+                                                    {% if field.help_text %}
+                                                        <small style="color: grey">{{ field.help_text }}</small>
+                                                    {% endif %}
+                                                    {% for error in field.errors %}
+                                                        <p style="color: red">{{ error }}</p>
+                                                    {% endfor %}
                                                 </div>
-                                        {% endfor %}
-                                    </div>
+                                            </div>
+                                        {% endif %}
+{#                                            <div class="col-sm-12">#}
+{#                                                <div class="form-group">#}
+{#                                                    <label>{{ field.label }}</label>#}
+{#                                                    {% if field.field.required %}#}
+{#                                                        <span style="color: red;" class="required">*</span>#}
+{#                                                    {% endif %}#}
+{#                                                    {{ field }}#}
+{#                                                    {% if field.help_text %}#}
+{#                                                        <small style="color: grey">{{ field.help_text }}</small>#}
+{#                                                    {% endif %}#}
+{#                                                    {% for error in field.errors %}#}
+{#                                                        <p style="color: red">{{ error }}</p>#}
+{#                                                    {% endfor %}#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        {% endif %}#}
+                                    {% endfor %}
+                                </div>
 
                                     {% with named_formsets.variants as formset %}
                                         {{ formset.management_form }}
@@ -174,13 +195,13 @@
                                         </div>
 
                                     {% endwith %}
-                                
+
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
                                 </div>
-            
+
                                 <div class="content-wrapper">
-            
+
                                     <!-- Main content -->
                                     <div class="col-md-8 offset-md-2">
                                         <form action="simple-results.html">
@@ -195,8 +216,8 @@
                                             </div>
                                         </form>
                                     </div>
-            
-            
+
+
                                     <div class="form-group">
                                         <table class="table table-rounded" id="formTable">
                                             <thead>
@@ -209,69 +230,12 @@
                                             </tr>
                                             </thead>
                                             <tbody id="search-result">
-            
+
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
 
-{#                                    <div class="row">#}
-{#                                        <div class="col-12 col-sm-6">#}
-{#                                            <div class="form-group">#}
-{##}
-{#                                                <select class="form-control select2 select2-primary" id="patient-select" name="patient" data-dropdown-css-class="select2-primary" style="width: 100%;">#}
-{#                                                    {% for patient in patients %}#}
-{#                                                        <option value="{{ patient.id }}">{{ patient.full_name }}</option>#}
-{#                                                    {% endfor %}#}
-{#                                                </select>#}
-{#                                            </div>#}
-{#                                            <!-- /.form-group -->#}
-{#                                        </div>#}
-{#                                        <!-- /.col -->#}
-{#                                        <div class="col-12 col-sm-6">#}
-{#                                            <div class="form-group">#}
-{#                                                <div class="select2-primary">#}
-{#                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default">#}
-{#                                                      Добавить новый пациент#}
-{#                                                    </button>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <!-- /.form-group -->#}
-{#                                        </div>#}
-{#                                        <!-- /.col -->#}
-{#                                    </div>#}
-
-{#                                    <h5>Комната</h5>#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-12 col-sm-6">#}
-{#                                            <div class="form-group">#}
-{#                                              <select name="current_room" class="form-control select2 select2-primary" data-dropdown-css-class="select2-primary" style="width: 100%;">#}
-{#                                                {% for room in rooms %}#}
-{#                                                    <option value="{{ room.id }}">{{ room.room_number }}</option>#}
-{#                                                {% endfor %}#}
-{#                                              </select>#}
-{#                                            </div>#}
-{#                                            <!-- /.form-group -->#}
-{#                                          </div>#}
-{#                                          <!-- /.col -->#}
-{#                                        <div class="col-12 col-sm-6">#}
-{#                                            <div class="form-group">#}
-{#                                                <div class="input-group">#}
-{#                                                    <div class="input-group-prepend">#}
-{#                                                      <span class="input-group-text">#}
-{#                                                        <i class="far fa-calendar-alt"></i>#}
-{#                                                      </span>#}
-{#                                                    </div>#}
-{#                                                    <input name="booking_period" type="text" class="form-control float-right" id="reservation">#}
-{#                                                  </div>#}
-{#                                            </div>#}
-{#                                        </div>#}
-{##}
-{#                                    <input type="hidden" name="start_date" id="start_date">#}
-{#                                    <input type="hidden" name="end_date" id="end_date">#}
-{#                                        <!-- /.col -->#}
-{#                                    </div>#}
-                                    <!-- /.row -->
                                 </form>
                                 <!-- /.row -->
                             </div>

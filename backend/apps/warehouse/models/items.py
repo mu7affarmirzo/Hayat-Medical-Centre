@@ -42,6 +42,19 @@ class ItemsInStockModel(models.Model):
     expire_date = models.DateField(null=True)
     warehouse = models.ForeignKey('StorePointModel', on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        # Get the in_pack value from the related item
+        in_pack = self.item.in_pack
+
+        # Calculate the total units including the new unit_quantity
+        total_units = (self.quantity * in_pack) + self.unit_quantity
+
+        # Update quantity and unit_quantity
+        self.quantity = total_units // in_pack
+        self.unit_quantity = total_units % in_pack
+
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.item}-{self.income_seria}"
 
