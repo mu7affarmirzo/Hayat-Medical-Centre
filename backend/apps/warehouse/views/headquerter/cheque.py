@@ -82,12 +82,40 @@ class ChequeUpdate(ChequeInline, UpdateView):
     def get_context_data(self, **kwargs):
         ctx = super(ChequeUpdate, self).get_context_data(**kwargs)
         ctx['named_formsets'] = self.get_named_formsets()
+        ctx['patients'] = PatientModel.objects.all()
         return ctx
 
     def get_named_formsets(self):
         return {
             'variants': VariantFormSet(self.request.POST or None, self.request.FILES or None, instance=self.object, prefix='variants', form_kwargs={'user': self.request.user}),
         }
+
+    def form_valid(self, form):
+        named_formsets = self.get_named_formsets()
+        if not all((x.is_valid() for x in named_formsets.values())):
+            return self.render_to_response(self.get_context_data(form=form))
+
+        self.object = form.save(commit=False)  # Do not commit to the database yet
+        self.object.created_by = self.request.user
+        self.object.save()  # Save the instance now
+
+        for name, formset in named_formsets.items():
+            formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
+            if formset_save_func is not None:
+                formset_save_func(formset)
+            else:
+                formset.save()
+
+        return redirect('warehouse_v2:cheque')
+
+    def formset_variants_valid(self, formset):
+        variants = formset.save(commit=False)
+
+        for obj in formset.deleted_objects:
+            obj.delete()
+        for variant in variants:
+            variant.cheque = self.object  # Associate the existing cheque
+            variant.save()
 
 
 def create_cheque(request):

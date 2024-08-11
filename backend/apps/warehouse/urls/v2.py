@@ -40,8 +40,8 @@ urlpatterns = [
     path('main-point/cheque/create', cheque.ChequeCreate.as_view(), name='cheque-create'),
     path('main-point/cheque/update/<int:pk>', cheque.ChequeUpdate.as_view(), name='cheque-update'),
     path('main-point/cheque/detailed/<int:pk>', cheque.cheque_detailed_view, name='cheque-detailed'),
-    path('main-point/cheque/item-update/<int:pk>/', cheque.cheque_item_detailed_view, name='cheque-item-detailed'),
-    path('main-point/cheque/item-update/<int:pk>/<int:quantity>', cheque.cheque_item_count_update, name='cheque-item-update'),
+    # path('main-point/cheque/item-update/<int:pk>/', cheque.cheque_item_detailed_view, name='cheque-item-detailed'),
+    # path('main-point/cheque/item-update/<int:pk>/<int:quantity>', cheque.cheque_item_count_update, name='cheque-item-update'),
     # CHEQUE ENDS HERE
 
     # TRANSFERS PATHs

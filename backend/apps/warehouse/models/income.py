@@ -15,7 +15,7 @@ class IncomeModel(models.Model):
         ('принято', 'принято'),
         ('отказоно', 'отказоно'),
     )
-    serial = models.UUIDField(default=uuid.uuid4)
+    serial = models.CharField(default=uuid.uuid4, max_length=255, unique=True)
     delivery_company = models.ForeignKey('CompanyModel', on_delete=models.SET_NULL, null=True, blank=True)
     receiver = models.ForeignKey(StorePointModel, on_delete=models.CASCADE)
     bill_amount = models.BigIntegerField(default=0, null=True, blank=True)
@@ -28,12 +28,21 @@ class IncomeModel(models.Model):
     def __str__(self):
         return f"{self.receiver} - {self.serial}"
 
+    @property
+    def overall_summ(self):
+        summ = 0
+        items = self.income_items.all()
+        for item in items:
+            summ += item.overall_price
+        return summ
+
 
 class IncomeItemsModel(models.Model):
     income = models.ForeignKey(IncomeModel, on_delete=models.CASCADE, related_name="income_items")
     item = models.ForeignKey(ItemsModel, on_delete=models.CASCADE)
     price = models.BigIntegerField(default=0, null=True, blank=True)
     unit_price = models.BigIntegerField(default=0, null=True, blank=True)
+    nds = models.PositiveIntegerField(default=0, null=True, blank=True)
     overall_price = models.BigIntegerField(default=0, null=True, blank=True)
     quantity = models.IntegerField()
     unit_quantity = models.IntegerField(null=True, default=0, blank=True)
@@ -49,7 +58,11 @@ class IncomeItemsModel(models.Model):
 
 @receiver(pre_save, sender=IncomeItemsModel)
 def income_item_overall_price(sender, instance, **kwargs):
-    instance.overall_price = (instance.quantity * instance.price) + (instance.unit_quantity * instance.unit_price)
+    if instance.nds != 0:
+        instance.unit_price = int(instance.unit_price*(100+instance.nds)/100)
+        instance.price = instance.unit_price*instance.item.in_pack
+
+    instance.overall_price = ((instance.quantity*instance.item.in_pack) + instance.unit_quantity) * instance.unit_price
 
 
 @receiver(post_save, sender=IncomeItemsModel)

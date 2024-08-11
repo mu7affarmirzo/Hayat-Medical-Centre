@@ -46,7 +46,7 @@ class VariantForm(forms.ModelForm):
     class Meta:
         model = IncomeItemsModel
         fields = [
-            'item', 'quantity', 'unit_quantity', 'price', 'unit_price', 'expire_date'
+            'item', 'quantity', 'unit_quantity', 'price', 'unit_price', 'expire_date', 'nds'
         ]
         widgets = {
             'item': forms.Select(
@@ -79,6 +79,11 @@ class VariantForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'type': 'date'
+                }
+            ),
+            'nds': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
                 }
             ),
         }

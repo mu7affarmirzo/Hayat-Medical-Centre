@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 {% block content %}
     <!DOCTYPE html>
     <!--
@@ -89,7 +90,7 @@
                                                 </td>
                                                 <td>{{ i.created_at }}</td>
                                                 <td>{{ i.delivery_company.name }}</td>
-                                                <td>{{ i.bill_amount }}</td>
+                                                <td>{{ i.overall_summ|intcomma }}</td>
                                                 <td>{{ i.created_by.full_name }}</td>
                                                 <td>{{ i.modified_at }}</td>
                                                 {% if i.state == 'в ожидании' %}

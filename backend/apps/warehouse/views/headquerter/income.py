@@ -99,6 +99,8 @@ class ProductUpdate(ProductInline, UpdateView):
     def get_context_data(self, **kwargs):
         ctx = super(ProductUpdate, self).get_context_data(**kwargs)
         ctx['named_formsets'] = self.get_named_formsets()
+        ctx['companies'] = CompanyModel.objects.all()
+
         return ctx
 
     def get_named_formsets(self):

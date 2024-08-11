@@ -31,7 +31,7 @@ class WarehouseChequeModel(models.Model):
     def total_price(self):
         summ = 0
         for i in self.cheque_items.all():
-            summ += i.price_of_items
+            summ += i.overall_price
         return summ
 
 
@@ -52,7 +52,7 @@ class ChequeItemsModel(models.Model):
         return f"{self.cheque} - {self.item}"
 
     @property
-    def price_of_items(self):
+    def overall_price(self):
         return self.price * self.quantity
 
     def save(self, *args, **kwargs):

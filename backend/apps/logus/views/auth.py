@@ -60,7 +60,6 @@ def login_view(request):
     return render(request, 'auth/login.html', context)
 
 
-@role_required(role='logus', login_url='logus_auth:logout')
 def logout_view(request):
     logout(request)
     return redirect('logus_auth:login')

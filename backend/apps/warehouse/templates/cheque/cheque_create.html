@@ -57,56 +57,45 @@
                         <div class="card card-default">
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form enctype="multipart/form-data" method="post" action="{% url 'warehouse_v2:cheque-create' %}" id="product_form">
+                                <form enctype="multipart/form-data" method="post" id="product_form">
                                     {% csrf_token %}
                                     <h5>Пациент</h5>
 
-                                <div class="row">
-                                    {% for field in form %}
+                                    <div class="row">
+                                        {% for field in form %}
 
-                                        {% if field.name == 'patient' %}
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label>Пациент</label>
-                                                    {% if field.field.required %}
-                                                        <span style="color: red;" class="required">*</span>
-                                                    {% endif %}
-                                                    <select class="form-control select2 select2-primary" id="patient-select" name="patient" data-dropdown-css-class="select2-primary" style="width: 100%;">
-                                                        {% for patient in patients %}
-                                                            <option value="{{ patient.id }}" {% if field.value == patient.id %}selected{% endif %}>{{ patient.full_name }}</option>
+                                            {% if field.name == 'patient' %}
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        {% if field.field.required %}
+                                                            <span style="color: red;" class="required">*</span>
+                                                        {% endif %}
+                                                        <select class="form-control select2 select2-primary"
+                                                                id="patient-select" name="patient"
+                                                                data-dropdown-css-class="select2-primary"
+                                                                style="width: 100%;">
+                                                            {% for patient in patients %}
+                                                                <option value="{{ patient.id }}"
+                                                                        {% if field.value == patient.id %}selected{% endif %}>{{ patient.full_name }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        {% if field.help_text %}
+                                                            <small style="color: grey">{{ field.help_text }}</small>
+                                                        {% endif %}
+                                                        {% for error in field.errors %}
+                                                            <p style="color: red">{{ error }}</p>
                                                         {% endfor %}
-                                                    </select>
-                                                    {% if field.help_text %}
-                                                        <small style="color: grey">{{ field.help_text }}</small>
-                                                    {% endif %}
-                                                    {% for error in field.errors %}
-                                                        <p style="color: red">{{ error }}</p>
-                                                    {% endfor %}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        {% endif %}
-{#                                            <div class="col-sm-12">#}
-{#                                                <div class="form-group">#}
-{#                                                    <label>{{ field.label }}</label>#}
-{#                                                    {% if field.field.required %}#}
-{#                                                        <span style="color: red;" class="required">*</span>#}
-{#                                                    {% endif %}#}
-{#                                                    {{ field }}#}
-{#                                                    {% if field.help_text %}#}
-{#                                                        <small style="color: grey">{{ field.help_text }}</small>#}
-{#                                                    {% endif %}#}
-{#                                                    {% for error in field.errors %}#}
-{#                                                        <p style="color: red">{{ error }}</p>#}
-{#                                                    {% endfor %}#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                        {% endif %}#}
-                                    {% endfor %}
-                                </div>
+                                            {% endif %}
+
+                                        {% endfor %}
+                                    </div>
 
                                     {% with named_formsets.variants as formset %}
                                         {{ formset.management_form }}
-                                        <script type="text/html" id="variants-template">  // id="inlineformsetname-template"
+                                        <script type="text/html"
+                                                id="variants-template">  // id="inlineformsetname-template"
                                         // id='inlineformsetname-__prefix__'
                                         <tr id="variants-__prefix__" class=hide_all>
                                             {% for fields in formset.empty_form.hidden_fields %}
@@ -125,7 +114,8 @@
                                             <table class="table card-header">
                                                 <thead class="text-secondary">
                                                 <th>Лекарства <span style="color: red;" class="required">*</span></th>
-                                                <th>Количество единиц <span style="color: red;" class="required">*</span></th>
+                                                <th>Количество единиц <span style="color: red;"
+                                                                            class="required">*</span></th>
                                                 <th>Удалить(Не добавить) ?</th>
                                                 <th>Удалить</th>
                                                 </thead>
@@ -151,12 +141,14 @@
                                                         {% comment %} for delete {% endcomment %}
                                                         {% if formss.instance.pk %}
                                                             <td>
-                                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                                <button type="button" class="btn btn-danger"
+                                                                        data-toggle="modal"
                                                                         data-target="#exampleModal{{ formss.instance.pk }}">
                                                                     Delete
                                                                 </button>
                                                                 <!-- Modal -->
-                                                                <div class="modal fade" id="exampleModal{{ formss.instance.pk }}"
+                                                                <div class="modal fade"
+                                                                     id="exampleModal{{ formss.instance.pk }}"
                                                                      tabindex="-1"
                                                                      role="dialog"
                                                                      aria-labelledby="exampleModalLabel{{ formss.instance.pk }}"
@@ -165,19 +157,24 @@
                                                                         <div class="modal-content">
                                                                             <div class="modal-header">
                                                                                 <h5 class="modal-title"
-                                                                                    id="exampleModalLabel{{ formss.instance.pk }}">Are
+                                                                                    id="exampleModalLabel{{ formss.instance.pk }}">
+                                                                                    Are
                                                                                     Your Sure
                                                                                     You
                                                                                     Want To Delete This?</h5>
-                                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                                <button type="button" class="close"
+                                                                                        data-dismiss="modal"
                                                                                         aria-label="Close">
                                                                                     <span aria-hidden="true">&times;</span>
                                                                                 </button>
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 <a href="{% url 'warehouse_v2:mp-income-detailed' formss.instance.pk %}"
-                                                                                   type="button" class="btn btn-primary">Yes, Delete</a>
-                                                                                <button type="button" class="btn btn-secondary"
+                                                                                   type="button"
+                                                                                   class="btn btn-primary">Yes,
+                                                                                    Delete</a>
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary"
                                                                                         data-dismiss="modal">Close
                                                                                 </button>
                                                                             </div>
@@ -190,51 +187,53 @@
                                                 {% endfor %}
                                                 </tbody>
                                             </table>
-                                            <a href="#" id="add-variant-button" class="btn btn-success add-variants">+ Добавить</a>
+                                            <a href="#" id="add-variant-button" class="btn btn-success add-variants">+
+                                                Добавить</a>
                                             <!-- id="add-inlineformsetname-button" -->
                                         </div>
 
                                     {% endwith %}
 
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
-                                </div>
-
-                                <div class="content-wrapper">
-
-                                    <!-- Main content -->
-                                    <div class="col-md-8 offset-md-2">
-                                        <form action="simple-results.html">
-                                            <div class="input-group">
-                                                <input id="search-product" type="search" class="form-control form-control-lg"
-                                                       placeholder="Введите ключевые слова здесь">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-lg btn-default">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-
-
                                     <div class="form-group">
-                                        <table class="table table-rounded" id="formTable">
-                                            <thead>
-                                            <tr>
-                                                <th>Полное наименование</th>
-                                                <th>Компания</th>
-                                                <th>Серия</th>
-                                                <th>В каробке</th>
-                                                <th>Юнит</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="search-result">
-
-                                            </tbody>
-                                        </table>
+                                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
                                     </div>
-                                </div>
+
+                                    <div class="content-wrapper">
+
+                                        <!-- Main content -->
+                                        <div class="col-md-8 offset-md-2">
+                                            <form action="simple-results.html">
+                                                <div class="input-group">
+                                                    <input id="search-product" type="search"
+                                                           class="form-control form-control-lg"
+                                                           placeholder="Введите ключевые слова здесь">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-lg btn-default">
+                                                            <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <table class="table table-rounded" id="formTable">
+                                                <thead>
+                                                <tr>
+                                                    <th>Полное наименование</th>
+                                                    <th>Компания</th>
+                                                    <th>Серия</th>
+                                                    <th>В каробке</th>
+                                                    <th>Юнит</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="search-result">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
 
                                 </form>
                                 <!-- /.row -->
@@ -247,75 +246,84 @@
                 </section>
 
 
+                <div class="modal fade" id="modal-default">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Добавить пациент</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
 
-            <div class="modal fade" id="modal-default">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title">Добавить пациент</h4>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-
-                      <form id="registerPatientForm" method="POST" action="{% url 'logus_registration:add-new-patient' %}">
-                            {% csrf_token %}
-                            <div class="card-body">
-                              <div class="form-group">
-                                <label for="example_fname">Имя</label>
-                                <input name="f_name" type="text" class="form-control" id="example_fname" placeholder="Отабек">
-                              </div>
-                                <div class="form-group">
-                                <label for="example_fname">Фамилия</label>
-                                <input name="mid_name" type="text" class="form-control" id="example_fname" placeholder="Равшанов">
-                              </div>
-                              <div class="form-group">
-                                <label for="example_last_name">Отчества</label>
-                                <input name="l_name" type="text" class="form-control" id="example_last_name" placeholder="Ботирович">
-                              </div>
-                              <div class="form-group">
-                                <label for="example_phone_nm">Телефон</label>
-                                <input name="mobile_phone_number" type="text" class="form-control" id="example_phone_nm" placeholder="+998901002030">
-                              </div>
-
-
-                                <div class="col-sm-6">
-                                  <!-- radio -->
-                                  <div class="form-group">
-                                    <div class="custom-control custom-radio">
-                                      <input value='False' class="custom-control-input" type="radio" id="customRadio1" name="gender">
-                                      <label for="customRadio1" class="custom-control-label">Женщина</label>
+                            <form id="registerPatientForm" method="POST"
+                                  action="{% url 'logus_registration:add-new-patient' %}">
+                                {% csrf_token %}
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="example_fname">Имя</label>
+                                        <input name="f_name" type="text" class="form-control" id="example_fname"
+                                               placeholder="Отабек">
                                     </div>
-                                    <div class="custom-control custom-radio">
-                                      <input value='True' class="custom-control-input" type="radio" id="customRadio2" name="gender" checked>
-                                      <label for="customRadio2" class="custom-control-label">Мужчина</label>
+                                    <div class="form-group">
+                                        <label for="example_fname">Фамилия</label>
+                                        <input name="mid_name" type="text" class="form-control" id="example_fname"
+                                               placeholder="Равшанов">
                                     </div>
-                                  </div>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="example_last_name">Отчества</label>
+                                        <input name="l_name" type="text" class="form-control" id="example_last_name"
+                                               placeholder="Ботирович">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="example_phone_nm">Телефон</label>
+                                        <input name="mobile_phone_number" type="text" class="form-control"
+                                               id="example_phone_nm" placeholder="+998901002030">
+                                    </div>
 
-                                <div class="form-group">
-                                  <label>Дата рождения:</label>
-                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                        <input name="date_of_birth" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+
+                                    <div class="col-sm-6">
+                                        <!-- radio -->
+                                        <div class="form-group">
+                                            <div class="custom-control custom-radio">
+                                                <input value='False' class="custom-control-input" type="radio"
+                                                       id="customRadio1" name="gender">
+                                                <label for="customRadio1" class="custom-control-label">Женщина</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input value='True' class="custom-control-input" type="radio"
+                                                       id="customRadio2" name="gender" checked>
+                                                <label for="customRadio2" class="custom-control-label">Мужчина</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Дата рождения:</label>
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                            <input name="date_of_birth" type="text"
+                                                   class="form-control datetimepicker-input"
+                                                   data-target="#reservationdate"/>
+                                            <div class="input-group-append" data-target="#reservationdate"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /.card-body -->
+                                <!-- /.card-body -->
 
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                              <button type="submit" class="btn btn-primary">Сохранить</button>
-                            </div>
-                        </form>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                </div>
+                            </form>
 
-                  </div>
-                  <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
                 </div>
-                <!-- /.modal-dialog -->
-              </div>
 
 
                 <!-- /.row -->
@@ -353,18 +361,18 @@
 <script src="{% static 'adminlte3_assets/plugins/toastr/toastr.min.js' %}"></script>
 
 <script>
-        $(document).ready(function () {
-            $('#search-product').on('input', function () {
-                var searchQuery = $(this).val();
-                if (searchQuery.length > 2) {
-                    $.ajax({
-                        url: '{% url 'warehouse_v2:mp-item-search' %}',
-                        data: {'q': searchQuery},
-                        success: function (data) {
-                            $('#search-result').empty();
-                            data.forEach(function (item) {
-                                $('#search-result').append(
-                                    `<tr class="result-item" data-item="${item.name}" data-id="${item.id}" data-company="${item.company}"
+    $(document).ready(function () {
+        $('#search-product').on('input', function () {
+            var searchQuery = $(this).val();
+            if (searchQuery.length > 2) {
+                $.ajax({
+                    url: '{% url 'warehouse_v2:mp-item-search' %}',
+                    data: {'q': searchQuery},
+                    success: function (data) {
+                        $('#search-result').empty();
+                        data.forEach(function (item) {
+                            $('#search-result').append(
+                                `<tr class="result-item" data-item="${item.name}" data-id="${item.id}" data-company="${item.company}"
                   data-seria="${item.seria}" data-inpack="${item.in_pack}"
                   data-unit="${item.unit}">
                 <td>${item.name}</td>
@@ -373,42 +381,42 @@
                 <td>${item.in_pack}</td>
                 <td>${item.unit}</td>
               </tr>`
-                                );
-                            });
-                        }
-                    });
-                }
+                            );
+                        });
+                    }
+                });
+            }
 
-            });
-
-
-            // when user clicks add more btn of variants
-            $('.add-variants').click(function (ev) {
-                ev.preventDefault();
-                var count = $('#item-variants').children().length;
-                var tmplMarkup = $('#variants-template').html();
-                var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-                $('#item-variants').append(compiledTmpl);
-
-                // update form count
-                $('#id_variants-TOTAL_FORMS').attr('value', count + 1);
-            });
-
-            $(document).on('dblclick', '.result-item', function (e) {
-                let thisID = $(this).data('id')
-                console.log(e)
-                var count = $('#item-variants').children().length;
-                var tmplMarkup = $('#variants-template').html();
-                var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-
-                $('#item-variants').append(compiledTmpl);
-                // update form count
-                $('#id_variants-TOTAL_FORMS').attr('value', count + 1);
-                console.log(thisID)
-                $('#item-variants tr:last-child select option[value="' + thisID + '"]').prop('selected', 'selected')
-            });
         });
-    </script>
+
+
+        // when user clicks add more btn of variants
+        $('.add-variants').click(function (ev) {
+            ev.preventDefault();
+            var count = $('#item-variants').children().length;
+            var tmplMarkup = $('#variants-template').html();
+            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+            $('#item-variants').append(compiledTmpl);
+
+            // update form count
+            $('#id_variants-TOTAL_FORMS').attr('value', count + 1);
+        });
+
+        $(document).on('dblclick', '.result-item', function (e) {
+            let thisID = $(this).data('id')
+            console.log(e)
+            var count = $('#item-variants').children().length;
+            var tmplMarkup = $('#variants-template').html();
+            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+
+            $('#item-variants').append(compiledTmpl);
+            // update form count
+            $('#id_variants-TOTAL_FORMS').attr('value', count + 1);
+            console.log(thisID)
+            $('#item-variants tr:last-child select option[value="' + thisID + '"]').prop('selected', 'selected')
+        });
+    });
+</script>
 
 <script>
     function openNewPatientPopup() {
@@ -478,19 +486,19 @@
 
 <script>
 
-$(function() {
+    $(function () {
 
-    // When the form is submitted
-    $('form').on('submit', function(e) {
-        // Get the date range value
-        var dateRange = $('#reservation').val();
-        // Split the date range into start and end dates
-        var dates = dateRange.split(' - ');
-        // Set the values of the hidden inputs
-        $('#start_date').val(dates[0]);
-        $('#end_date').val(dates[1]);
+        // When the form is submitted
+        $('form').on('submit', function (e) {
+            // Get the date range value
+            var dateRange = $('#reservation').val();
+            // Split the date range into start and end dates
+            var dates = dateRange.split(' - ');
+            // Set the values of the hidden inputs
+            $('#start_date').val(dates[0]);
+            $('#end_date').val(dates[1]);
+        });
     });
-});
 
     $(function () {
         //Initialize Select2 Elements

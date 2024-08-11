@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 {% block content %}
     <!DOCTYPE html>
     <!--
@@ -52,6 +53,9 @@
                                             <span class="badge bg-black">{{ cheque.state }}</span>
                                         {% endif %}
                                     </h2>
+                                    <br>
+                                    <h2 class="card-title"><b>Создатель: </b> {{ cheque.created_by.full_name }}</h2>
+                                    <br>
                                     <div class="row no-print">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-primary float-right"
@@ -69,90 +73,29 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th style="width: 10px">#</th>
                                             <th>Полное наименование</th>
                                             <th>Срок год.</th>
                                             <th>Количество</th>
-                                            <th>Базовая цена</th>
+                                            <th>Цена</th>
                                             <th>Сумма</th>
-                                            <th>Пользователь</th>
-                                            <th style="width: 40px">Label</th>
+                                            <th>Добавлено</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
                                         {% for i in details %}
                                             <tr>
-                                                <td></td>
-                                                <td>{{ i.item.name }}</td>
-                                                <td>{{ i.item }}</td>
-                                                <td><input type="number" class="form-control" value="{{ i.quantity }}"
-                                                           id="quantity-{{ i.id }}" onchange="updateLink({{ i.id }})">
-                                                </td>
-                                                <td>{{ i.price }}</td>
-                                                <td>{{ i.price_of_items }}</td>
-                                                <td>{{ i.created_by }}</td>
-                                                <td>
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar progress-bar-danger"
-                                                             style="width: 55%"></div>
-                                                    </div>
-                                                </td>
-                                                <td><span class="badge bg-danger">55%</span></td>
-                                                <td>
-                                                    <button type="button" class="btn btn-warning" data-toggle="modal">
-                                                        <a href="{% url 'warehouse_v2:cheque-item-update' pk=i.id quantity=i.quantity %}"
-                                                           id="link-{{ i.id }}"><i class="fas fa-save"></i></a>
-                                                    </button>
-                                                </td>
+                                                <td>{{ i.item.item.name }}</td>
+                                                <td>{{ i.item.expire_date }}</td>
+                                                <td>{{ i.quantity }}</td>
+                                                <td>{{ i.price|intcomma }}</td>
+                                                <td>{{ i.overall_price|intcomma }}</td>
+                                                <td>{{ i.created_at }}</td>
                                             </tr>
                                         {% endfor %}
 
                                         </tbody>
                                     </table>
-                                    <div class="content-wrapper">
-
-                                        <!-- Main content -->
-                                        <div class="col-md-8 offset-md-2">
-                                            <form action="#">
-                                                <div class="input-group">
-                                                    <input id="search-product" type="search"
-                                                           class="form-control form-control-lg"
-                                                           placeholder="Введите ключевые слова здесь">
-                                                    <div class="input-group-append">
-                                                        <button type="submit" class="btn btn-lg btn-default">
-                                                            <i class="fa fa-search"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <table class="table table-rounded" id="formTable">
-                                                <thead>
-                                                <tr>
-                                                    <th>Полное наименование</th>
-                                                    <th>Skolko shtuk</th>
-                                                    <th>Компания</th>
-                                                    <th>Базовая цена</th>
-                                                    <th>Серия</th>
-                                                    <th>В каробке</th>
-                                                    <th>Юнит</th>
-                                                    <th>Срок год.</th>
-                                                    <th>Действие</th>
-
-                                                </tr>
-                                                </thead>
-                                                <tbody id="search-result" autofocus>
-
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-                                    </div>
-
                                 </div>
                                 <!-- /.card-body -->
                             </div>
