@@ -9,9 +9,11 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import UpdateView, CreateView
 
 from apps.account.models import PatientModel
+from apps.logus.forms.booking import PatientRegistrationForm
 from apps.warehouse.forms.cheque import ChequeItemCountForm, VariantFormSet, ChequeForm
 from apps.warehouse.models import WarehouseChequeModel, ChequeItemsModel, ItemsInStockModel
 
@@ -222,6 +224,21 @@ def cheque_item_detailed_view(request, pk):
             cheque_item.save()
             return redirect("warehouse_v2:cheque-detailed", pk=cheque_item.cheque.pk)
     return render(request, "cheque/cheque_item_update.html", context)
+
+
+@csrf_exempt
+def add_new_patient(request):
+    if request.method == 'POST':
+        form = PatientRegistrationForm(request.POST)
+        if form.is_valid():
+            patient = form.save(commit=False)
+            patient.created_by = request.user
+            patient.modified_by = request.user
+            patient.save()
+            return redirect('warehouse_v2:cheque-create')  # Replace with your success URL
+    else:
+        return redirect('warehouse_v2:cheque-create')
+    return render(request, 'cheque/cheque_create.html', {'form': form})
 
 
 def get_cheques_queryset(query=None):

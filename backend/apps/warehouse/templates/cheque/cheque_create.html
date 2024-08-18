@@ -65,7 +65,7 @@
                                         {% for field in form %}
 
                                             {% if field.name == 'patient' %}
-                                                <div class="col-sm-12">
+                                                <div class="col-12 col-sm-6">
                                                     <div class="form-group">
                                                         {% if field.field.required %}
                                                             <span style="color: red;" class="required">*</span>
@@ -86,6 +86,16 @@
                                                             <p style="color: red">{{ error }}</p>
                                                         {% endfor %}
                                                     </div>
+                                                </div>
+                                                <div class="col-12 col-sm-6">
+                                                    <div class="form-group">
+                                                        <div class="select2-primary">
+                                                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default">
+                                                              Добавить новый пациент
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.form-group -->
                                                 </div>
                                             {% endif %}
 
@@ -257,7 +267,7 @@
                             </div>
 
                             <form id="registerPatientForm" method="POST"
-                                  action="{% url 'logus_registration:add-new-patient' %}">
+                                  action="{% url 'warehouse_v2:add-new-patient' %}">
                                 {% csrf_token %}
                                 <div class="card-body">
                                     <div class="form-group">
