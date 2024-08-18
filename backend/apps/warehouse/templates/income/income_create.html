@@ -25,6 +25,24 @@
     <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/bs-stepper/css/bs-stepper.min.css' %}">
     <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/dropzone/min/dropzone.min.css' %}">
     <link rel="stylesheet" href="{% static 'adminlte3_assets/dist/css/adminlte.min.css' %}">
+    <style>
+
+        #custom-button {
+            width: auto; /* Ensures the button only takes up as much space as needed */
+            max-width: 200px; /* Optional: Limit the maximum width of the button */
+            display: inline-block; /* Ensures the button behaves like a regular-sized button */
+        }
+
+        #custom-button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .custom-btn {
+            margin: 0 auto; /* Center the button itself */
+            display: inline-block; /* Ensures the button behaves like a regular-sized button */
+        }
+    </style>
 </head>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
@@ -38,7 +56,7 @@
             <div class="container">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0"> Создать Чек</h1>
+                        <h1 class="m-0"> Детали прихода</h1>
                     </div><!-- /.col -->
 
                 </div><!-- /.row -->
@@ -57,202 +75,228 @@
                         <div class="card card-default">
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <form enctype="multipart/form-data" method="post" id="product_form">
+                                <form enctype="multipart/form-data" method="post">
                                     {% csrf_token %}
 
-                                <div class="row">
-                                    {% for field in form %}
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                {% if field.label == 'Delivery company' %}
-                                                    <label>Поставщик</label>
-                                                     {% if field.field.required %}
-                                                        <span style="color: red;" class="required">*</span>
+                                    <div class="row">
+                                        {% for field in form %}
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    {% if field.label == 'Delivery company' %}
+                                                        <label>Поставщик</label>
+                                                        {% if field.field.required %}
+                                                            <span style="color: red;" class="required">*</span>
+                                                        {% endif %}
+                                                        <select class="form-control select2 select2-primary"
+                                                                id="patient-select" name="delivery_company"
+                                                                data-dropdown-css-class="select2-primary"
+                                                                style="width: 100%;">#}
+                                                            {% for patient in companies %}
+                                                                <option value="{{ patient.id }}"
+                                                                        {% if field.value == patient.id %}selected{% endif %}>{{ patient.name }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    {% elif field.label == 'Serial' %}
+                                                        <label>Серия</label>
+                                                        {% if field.field.required %}
+                                                            <span style="color: red;" class="required">*</span>
+                                                        {% endif %}
+                                                        {{ field }}
+                                                    {% elif field.label == 'Bill amount' %}
+                                                        <label>Общая Сумма</label>
+                                                        {% if field.field.required %}
+                                                            <span style="color: red;" class="required">*</span>
+                                                        {% endif %}
+                                                        {{ field }}
+                                                    {% elif field.label == 'Receiver' %}
+                                                        <label>Получатель</label>
+                                                        {% if field.field.required %}
+                                                            <span style="color: red;" class="required">*</span>
+                                                        {% endif %}
+                                                        {{ field }}
+                                                    {% elif field.label == 'State' %}
+                                                        <label>Статус</label>
+                                                        {% if field.field.required %}
+                                                            <span style="color: red;" class="required">*</span>
+                                                        {% endif %}
+                                                        {{ field }}
                                                     {% endif %}
-                                                    <select class="form-control select2 select2-primary" id="patient-select" name="delivery_company" data-dropdown-css-class="select2-primary" style="width: 100%;">#}
-                                                        {% for patient in companies %}
-                                                            <option value="{{ patient.id }}" {% if field.value == patient.id %}selected{% endif %}>{{ patient.name }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                {% elif field.label == 'Serial' %}
-                                                    <label>Серия</label>
-                                                     {% if field.field.required %}
-                                                        <span style="color: red;" class="required">*</span>
-                                                    {% endif %}
-                                                    {{ field }}
-                                                {% elif field.label == 'Bill amount' %}
-                                                    <label>Общая Сумма</label>
-                                                     {% if field.field.required %}
-                                                        <span style="color: red;" class="required">*</span>
-                                                    {% endif %}
-                                                    {{ field }}
-                                                {% elif field.label == 'Receiver' %}
-                                                    <label>Получатель</label>
-                                                     {% if field.field.required %}
-                                                        <span style="color: red;" class="required">*</span>
-                                                    {% endif %}
-                                                    {{ field }}
-                                                {% elif field.label == 'State' %}
-                                                    <label>Статус</label>
-                                                     {% if field.field.required %}
-                                                        <span style="color: red;" class="required">*</span>
-                                                    {% endif %}
-                                                    {{ field }}
-                                                {% endif %}
-{#                                                {% if field.field.required %}#}
-{#                                                    <span style="color: red;" class="required">*</span>#}
-{#                                                {% endif %}#}
+                                                    {#                                                {% if field.field.required %}#}
+                                                    {#                                                    <span style="color: red;" class="required">*</span>#}
+                                                    {#                                                {% endif %}#}
 
-{#                                                {{ field }}#}
-                                                {% if field.help_text %}
-                                                    <small style="color: grey">{{ field.help_text }}</small>
-                                                {% endif %}
-                                                {% for error in field.errors %}
-                                                    <p style="color: red">{{ error }}</p>
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-
-                                    {% endfor %}
-                                </div>
-
-                                    {% with named_formsets.variants as formset %}
-                        {{ formset.management_form }}
-                        <script type="text/html" id="variants-template">  // id="inlineformsetname-template"
-                        // id='inlineformsetname-__prefix__'
-                        <tr id="variants-__prefix__" class=hide_all>
-                            {% for fields in formset.empty_form.hidden_fields %}
-                                {{ fields }}
-                            {% endfor %}
-
-                            {% for fields in formset.empty_form.visible_fields %}
-                                <td>{{ fields }}</td>
-                            {% endfor %}
-                        </tr>
-                        </script>
-                        <div class="table-responsive card mt-4">
-                            <div class="card-header card-header-secondary">
-                                <h4 class="card-title">Добавить Лекарств</h4>
-                            </div>
-                            <table class="table card-header">
-                                <thead class="text-secondary">
-                                    <th>Лекарства <span style="color: red;" class="required">*</span></th>
-                                    <th>Количество <span style="color: red;" class="required">*</span></th>
-                                    <th>Количество единиц <span style="color: red;" class="required">*</span></th>
-                                    <th>Цена <span style="color: red;" class="required">*</span></th>
-                                    <th>Цена за единицу <span style="color: red;" class="required">*</span></th>
-                                    <th>Годен до <span style="color: red;" class="required">*</span></th>
-                                    <th>НДС % <span style="color: red;" class="required">*</span></th>
-                                    <th>Удалить(Не добавить) ?</th>
-                                    <th>Удалить</th>
-                                </thead>
-                                <tbody id="item-variants">  <!-- id="item-inlineformsetname" -->
-                                    <!-- formset non forms errors -->
-                                    {% for error in formset.non_form_errors %}
-                                        <span style="color: red">{{ error }}</span>
-                                    {% endfor %}
-                                    {% for formss in formset %}
-                                        {{ formss.management_form }}
-                                        <tr id="variants-{{ forloop.counter0 }}" class=hide_all>
-                                            <!-- id="inlineformsetname-counter" -->
-                                            {{ formss.id }}
-                                            {% for field in formss.visible_fields %}
-                                                <td>
-                                                    {{ field }}
+                                                    {#                                                {{ field }}#}
+                                                    {% if field.help_text %}
+                                                        <small style="color: grey">{{ field.help_text }}</small>
+                                                    {% endif %}
                                                     {% for error in field.errors %}
-                                                        <span style="color: red">{{ error }}</span>
+                                                        <p style="color: red">{{ error }}</p>
                                                     {% endfor %}
-
-                                                    {% comment %} {{ field.DELETE }} {% endcomment %}
-                                                </td>
-                                            {% endfor %}
-                                            {% comment %} for delete {% endcomment %}
-                                            {% if formss.instance.pk %}
-                                                <td>
-                                                    <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                            data-target="#exampleModal{{ formss.instance.pk }}">
-                                                        Delete
-                                                    </button>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="exampleModal{{ formss.instance.pk }}"
-                                                         tabindex="-1"
-                                                         role="dialog"
-                                                         aria-labelledby="exampleModalLabel{{ formss.instance.pk }}"
-                                                         aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="exampleModalLabel{{ formss.instance.pk }}">Are
-                                                                        Your Sure
-                                                                        You
-                                                                        Want To Delete This?</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal"
-                                                                            aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <a href="{% url 'warehouse_v2:mp-income-detailed' formss.instance.pk %}"
-                                                                       type="button" class="btn btn-primary">Yes, Delete</a>
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Close
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            {% endif %}
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                            <a href="#" id="add-variant-button" class="btn btn-success add-variants">+ Добавить</a>
-                            <!-- id="add-inlineformsetname-button" -->
-                        </div>
-
-                    {% endwith %}
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
-                                </div>
-
-                                <div class="content-wrapper">
-
-                                    <!-- Main content -->
-                                    <div class="col-md-8 offset-md-2">
-                                        <form action="simple-results.html">
-                                            <div class="input-group">
-                                                <input id="search-product" type="search" class="form-control form-control-lg"
-                                                       placeholder="Введите ключевые слова здесь">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-lg btn-default">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
                                                 </div>
                                             </div>
-                                        </form>
+
+                                        {% endfor %}
                                     </div>
 
+                                    {% with named_formsets.variants as formset %}
+                                        {{ formset.management_form }}
+                                        <script type="text/html"
+                                                id="variants-template">  // id="inlineformsetname-template"
+                                        // id='inlineformsetname-__prefix__'
+                                        <tr id="variants-__prefix__" class=hide_all>
+                                            {% for fields in formset.empty_form.hidden_fields %}
+                                                {{ fields }}
+                                            {% endfor %}
+
+                                            {% for fields in formset.empty_form.visible_fields %}
+                                                <td>{{ fields }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                        </script>
+                                        <div class="table-responsive card mt-4">
+                                            <div class="card-header card-header-secondary">
+                                                <h4 class="card-title">Добавить Лекарств</h4>
+                                            </div>
+                                            <table class="table card-header">
+                                                <thead class="text-secondary">
+                                                <th>Лекарства <span style="color: red;" class="required">*</span></th>
+                                                <th>Количество <span style="color: red;" class="required">*</span></th>
+                                                <th>Количество единиц <span style="color: red;"
+                                                                            class="required">*</span></th>
+                                                <th>Цена <span style="color: red;" class="required">*</span></th>
+                                                <th>Цена за единицу <span style="color: red;" class="required">*</span>
+                                                </th>
+                                                <th>Годен до <span style="color: red;" class="required">*</span></th>
+                                                <th>НДС % <span style="color: red;" class="required">*</span></th>
+                                                <th>Удалить(Не добавить) ?</th>
+                                                <th>Удалить</th>
+                                                </thead>
+                                                <tbody id="item-variants">  <!-- id="item-inlineformsetname" -->
+                                                <!-- formset non forms errors -->
+                                                {% for error in formset.non_form_errors %}
+                                                    <span style="color: red">{{ error }}</span>
+                                                {% endfor %}
+                                                {% for formss in formset %}
+                                                    {{ formss.management_form }}
+                                                    <tr id="variants-{{ forloop.counter0 }}" class=hide_all>
+                                                        <!-- id="inlineformsetname-counter" -->
+                                                        {{ formss.id }}
+                                                        {% for field in formss.visible_fields %}
+                                                            <td>
+                                                                {{ field }}
+                                                                {% for error in field.errors %}
+                                                                    <span style="color: red">{{ error }}</span>
+                                                                {% endfor %}
+
+                                                                {% comment %} {{ field.DELETE }} {% endcomment %}
+                                                            </td>
+                                                        {% endfor %}
+                                                        {% comment %} for delete {% endcomment %}
+                                                        {% if formss.instance.pk %}
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger"
+                                                                        data-toggle="modal"
+                                                                        data-target="#exampleModal{{ formss.instance.pk }}">
+                                                                    Delete
+                                                                </button>
+                                                                <!-- Modal -->
+                                                                <div class="modal fade"
+                                                                     id="exampleModal{{ formss.instance.pk }}"
+                                                                     tabindex="-1"
+                                                                     role="dialog"
+                                                                     aria-labelledby="exampleModalLabel{{ formss.instance.pk }}"
+                                                                     aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="exampleModalLabel{{ formss.instance.pk }}">
+                                                                                    Are
+                                                                                    Your Sure
+                                                                                    You
+                                                                                    Want To Delete This?</h5>
+                                                                                <button type="button" class="close"
+                                                                                        data-dismiss="modal"
+                                                                                        aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <a href="{% url 'warehouse_v2:mp-income-detailed' formss.instance.pk %}"
+                                                                                   type="button"
+                                                                                   class="btn btn-primary">Yes,
+                                                                                    Delete</a>
+                                                                                <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">Close
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        {% endif %}
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <a href="#" id="add-variant-button" class="btn btn-success add-variants">+
+                                                Добавить</a>
+                                            <!-- id="add-inlineformsetname-button" -->
+                                        </div>
+
+                                    {% endwith %}
 
                                     <div class="form-group">
-                                        <table class="table table-rounded" id="formTable">
-                                            <thead>
-                                            <tr>
-                                                <th>Полное наименование</th>
-                                                <th>Компания</th>
-                                                <th>Серия</th>
-                                                <th>В каробке</th>
-                                                <th>Юнит</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="search-result">
-
-                                            </tbody>
-                                        </table>
+                                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
                                     </div>
-                                </div>
+
+                                    <div class="content-wrapper">
+
+                                        <!-- Main content -->
+                                        <div class="col-md-8 offset-md-2">
+                                            <form action="simple-results.html">
+                                                <div class="input-group">
+                                                    <input id="search-product" type="search"
+                                                           class="form-control form-control-lg"
+                                                           placeholder="Введите ключевые слова здесь">
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-lg btn-default">
+                                                            <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <br>
+
+{#                                        <div class="form-group">#}
+{#                                            <button id="custom-button" type="button"#}
+{#                                                    class="btn btn-warning btn-block custom-btn" data-toggle="modal"#}
+{#                                                    data-target="#modal-default"#}
+{#                                                    style="width: auto;">+Добавить лекарств#}
+{#                                            </button>#}
+{#                                        </div>#}
+
+
+                                        <div class="form-group">
+                                            <table class="table table-rounded" id="formTable">
+                                                <thead>
+                                                <tr>
+                                                    <th>Полное наименование</th>
+                                                    <th>Компания</th>
+                                                    <th>Серия</th>
+                                                    <th>В каробке</th>
+                                                    <th>Юнит</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="search-result">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
 
                                 </form>
                                 <!-- /.row -->
@@ -265,75 +309,59 @@
                 </section>
 
 
+                <div class="modal fade" id="modal-default">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Добавить в базу</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
 
-            <div class="modal fade" id="modal-default">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title">Добавить пациент</h4>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                            <form enctype="multipart/form-data" method="post" action="{% url 'warehouse_manual:item-create' %}">
+                                {% csrf_token %}
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="company">Производитель</label>
+                                        <select class="form-control" id="company" name="company" required>
+                                            {% for company in companies %}
+                                                <option value="{{ company.id }}">{{ company.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="in_pack">В каробке</label>
+                                        <input type="number" class="form-control" id="in_pack" name="in_pack"
+                                               placeholder="Number of items in pack" value="10" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Наименование</label>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="названия"
+                                               maxlength="255" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="unit">Юнит</label>
+                                        <input type="text" class="form-control" id="unit" name="unit"
+                                               placeholder="штук/флакон" value="" maxlength="255" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="seria">Серия</label>
+                                        <input type="text" class="form-control" id="seria" name="seria"
+                                               placeholder="10572-фи" maxlength="255">
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Добавить</button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /.modal-content -->
                     </div>
-
-                      <form id="registerPatientForm" method="POST" action="{% url 'logus_registration:add-new-patient' %}">
-                            {% csrf_token %}
-                            <div class="card-body">
-                              <div class="form-group">
-                                <label for="example_fname">Имя</label>
-                                <input name="f_name" type="text" class="form-control" id="example_fname" placeholder="Отабек">
-                              </div>
-                                <div class="form-group">
-                                <label for="example_fname">Фамилия</label>
-                                <input name="mid_name" type="text" class="form-control" id="example_fname" placeholder="Равшанов">
-                              </div>
-                              <div class="form-group">
-                                <label for="example_last_name">Отчества</label>
-                                <input name="l_name" type="text" class="form-control" id="example_last_name" placeholder="Ботирович">
-                              </div>
-                              <div class="form-group">
-                                <label for="example_phone_nm">Телефон</label>
-                                <input name="mobile_phone_number" type="text" class="form-control" id="example_phone_nm" placeholder="+998901002030">
-                              </div>
-
-
-                                <div class="col-sm-6">
-                                  <!-- radio -->
-                                  <div class="form-group">
-                                    <div class="custom-control custom-radio">
-                                      <input value='False' class="custom-control-input" type="radio" id="customRadio1" name="gender">
-                                      <label for="customRadio1" class="custom-control-label">Женщина</label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                      <input value='True' class="custom-control-input" type="radio" id="customRadio2" name="gender" checked>
-                                      <label for="customRadio2" class="custom-control-label">Мужчина</label>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="form-group">
-                                  <label>Дата рождения:</label>
-                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                        <input name="date_of_birth" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                              <button type="submit" class="btn btn-primary">Сохранить</button>
-                            </div>
-                        </form>
-
-                  </div>
-                  <!-- /.modal-content -->
+                    <!-- /.modal-dialog -->
                 </div>
-                <!-- /.modal-dialog -->
-              </div>
 
 
                 <!-- /.row -->
@@ -371,18 +399,54 @@
 <script src="{% static 'adminlte3_assets/plugins/toastr/toastr.min.js' %}"></script>
 
 <script>
-        $(document).ready(function () {
-            $('#search-product').on('input', function () {
-                var searchQuery = $(this).val();
-                if (searchQuery.length > 2) {
-                    $.ajax({
-                        url: '{% url 'warehouse_v2:mp-item-search' %}',
-                        data: {'q': searchQuery},
-                        success: function (data) {
-                            $('#search-result').empty();
-                            data.forEach(function (item) {
-                                $('#search-result').append(
-                                    `<tr class="result-item" data-item="${item.name}" data-id="${item.id}" data-company="${item.company}"
+    $(document).ready(function() {
+    $('#modal-default form').on('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        var $form = $(this);
+
+        $.ajax({
+            url: $form.attr('action'),
+            type: $form.attr('method'),
+            data: $form.serialize(),
+            success: function(response) {
+                // Close the modal
+                $('#modal-default').modal('hide');
+
+                // Clear the form fields (optional)
+                $form[0].reset();
+
+                // Optionally, update your UI with the new item
+                // For example, append the new item to a list
+            },
+            error: function(xhr, status, error) {
+                // Handle errors (e.g., show validation messages)
+                // Optionally, reopen the modal with the form errors
+            }
+        });
+    });
+
+    // When the modal is hidden, clear the form (optional)
+    $('#modal-default').on('hidden.bs.modal', function () {
+        $(this).find('form')[0].reset(); // Clear form data
+    });
+});
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#search-product').on('input', function () {
+            var searchQuery = $(this).val();
+            if (searchQuery.length > 2) {
+                $.ajax({
+                    url: '{% url 'warehouse_v2:mp-item-search' %}',
+                    data: {'q': searchQuery},
+                    success: function (data) {
+                        $('#search-result').empty();
+                        data.forEach(function (item) {
+                            $('#search-result').append(
+                                `<tr class="result-item" data-item="${item.name}" data-id="${item.id}" data-company="${item.company}"
                   data-seria="${item.seria}" data-inpack="${item.in_pack}"
                   data-unit="${item.unit}">
                 <td>${item.name}</td>
@@ -391,42 +455,42 @@
                 <td>${item.in_pack}</td>
                 <td>${item.unit}</td>
               </tr>`
-                                );
-                            });
-                        }
-                    });
-                }
+                            );
+                        });
+                    }
+                });
+            }
 
-            });
-
-
-            // when user clicks add more btn of variants
-            $('.add-variants').click(function (ev) {
-                ev.preventDefault();
-                var count = $('#item-variants').children().length;
-                var tmplMarkup = $('#variants-template').html();
-                var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-                $('#item-variants').append(compiledTmpl);
-
-                // update form count
-                $('#id_variants-TOTAL_FORMS').attr('value', count + 1);
-            });
-
-            $(document).on('dblclick', '.result-item', function (e) {
-                let thisID = $(this).data('id')
-                console.log(e)
-                var count = $('#item-variants').children().length;
-                var tmplMarkup = $('#variants-template').html();
-                var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-
-                $('#item-variants').append(compiledTmpl);
-                // update form count
-                $('#id_variants-TOTAL_FORMS').attr('value', count + 1);
-                console.log(thisID)
-                $('#item-variants tr:last-child select option[value="' + thisID + '"]').prop('selected', 'selected')
-            });
         });
-    </script>
+
+
+        // when user clicks add more btn of variants
+        $('.add-variants').click(function (ev) {
+            ev.preventDefault();
+            var count = $('#item-variants').children().length;
+            var tmplMarkup = $('#variants-template').html();
+            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+            $('#item-variants').append(compiledTmpl);
+
+            // update form count
+            $('#id_variants-TOTAL_FORMS').attr('value', count + 1);
+        });
+
+        $(document).on('dblclick', '.result-item', function (e) {
+            let thisID = $(this).data('id')
+            console.log(e)
+            var count = $('#item-variants').children().length;
+            var tmplMarkup = $('#variants-template').html();
+            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+
+            $('#item-variants').append(compiledTmpl);
+            // update form count
+            $('#id_variants-TOTAL_FORMS').attr('value', count + 1);
+            console.log(thisID)
+            $('#item-variants tr:last-child select option[value="' + thisID + '"]').prop('selected', 'selected')
+        });
+    });
+</script>
 
 <script>
     function openNewPatientPopup() {
@@ -496,19 +560,19 @@
 
 <script>
 
-$(function() {
+    $(function () {
 
-    // When the form is submitted
-    $('form').on('submit', function(e) {
-        // Get the date range value
-        var dateRange = $('#reservation').val();
-        // Split the date range into start and end dates
-        var dates = dateRange.split(' - ');
-        // Set the values of the hidden inputs
-        $('#start_date').val(dates[0]);
-        $('#end_date').val(dates[1]);
+        // When the form is submitted
+        $('form').on('submit', function (e) {
+            // Get the date range value
+            var dateRange = $('#reservation').val();
+            // Split the date range into start and end dates
+            var dates = dateRange.split(' - ');
+            // Set the values of the hidden inputs
+            $('#start_date').val(dates[0]);
+            $('#end_date').val(dates[1]);
+        });
     });
-});
 
     $(function () {
         //Initialize Select2 Elements

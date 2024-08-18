@@ -42,6 +42,11 @@
                                     <h2 class="card-title"><b>Поставщик:</b> {{ income.delivery_company.name }}</h2>
                                     <br>
                                     <h2 class="card-title"><b>Дата:</b> {{ income.created_at }}</h2>
+                                    <br>
+                                    <h2 class="card-title"><b>Получатель:</b> {{ income.created_by.full_name }}</h2>
+                                    <br>
+                                    <br>
+                                    <h2 class="card-title"><b>Общая сумма:</b> {{ income.overall_summ|intcomma }} cум</h2>
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 150px;">
                                             <input type="text" name="table_search" class="form-control float-right"

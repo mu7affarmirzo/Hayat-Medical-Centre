@@ -56,6 +56,8 @@
                                     <br>
                                     <h2 class="card-title"><b>Создатель: </b> {{ cheque.created_by.full_name }}</h2>
                                     <br>
+                                    <h2 class="card-title"><b>Общая сумма: </b> {{ cheque.total_price|intcomma }}</h2>
+                                    <br>
                                     <div class="row no-print">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-primary float-right"

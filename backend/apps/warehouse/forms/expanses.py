@@ -29,7 +29,7 @@ class VariantForm(forms.ModelForm):
     class Meta:
         model = ExpenseItemsModel
         fields = [
-            'item', 'quantity', 'expire_date'
+            'item', 'quantity',
         ]
         widgets = {
             'item': forms.Select(
@@ -42,13 +42,6 @@ class VariantForm(forms.ModelForm):
                     'class': 'form-control'
                     }
                 ),
-            'expire_date': forms.DateInput(
-                format='%Y-%m-%d',  # Adjust the format as per your model field and locale preferences
-                attrs={
-                    'class': 'form-control',
-                    'type': 'date'  # This makes the browser use the native date picker
-                }
-            ),
         }
 
     def __init__(self, *args, **kwargs):
