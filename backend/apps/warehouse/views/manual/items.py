@@ -47,7 +47,6 @@ def item_create(request):
             item.modified_by = request.user
             item.save()
             return redirect("warehouse_manual:items")
-        print(form.errors)
     context = {}
     form = ItemsModelCreateForm()
     context["form"] = form
@@ -57,26 +56,35 @@ def item_create(request):
 
 @login_required
 def item_update(request, pk):
+
     item_update = get_object_or_404(ItemsModel, pk=pk)
     if request.method == "POST":
         form = ItemsModelCreateForm(request.POST, instance=item_update)
         if form.is_valid():
             item: ItemsModel = form.save(commit=False)
-            item.created_by = request.user
             item.modified_by = request.user
             item.save()
-            return redirect("warehouse_items:items")
+            return redirect("warehouse_manual:items")
     context = {}
-    form = ItemsModelCreateForm(instance=item_update)
+    form = ItemsModelCreateForm(
+        initial={
+            'company': item_update.company,
+            'in_pack': item_update.in_pack,
+            'name': item_update.name,
+            'unit': item_update.unit,
+            'seria': item_update.seria,
+        }
+    )
     context["form"] = form
+    context['companies'] = CompanyModel.objects.all()
     return render(request, "manual/item_update.html", context)
 
 
 @login_required
-def store_point_delete(request, pk):
-    store_point = get_object_or_404(ItemsModel, pk=pk)
-    store_point.delete()
-    return redirect("warehouse_items:items")
+def item_delete(request, pk):
+    item = get_object_or_404(ItemsModel, pk=pk)
+    item.delete()
+    return redirect("warehouse_manual:items")
 
 
 def get_items_queryset(query=None):
