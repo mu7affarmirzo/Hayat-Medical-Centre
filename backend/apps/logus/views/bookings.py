@@ -171,19 +171,25 @@ def get_bookings_view(request, end_date=None):
 def get_booking_queryset(query=None, stage=None):
     queryset = []
     queries = query.split(" ")
+
+    tomorrow_date = timezone.now().date() + timedelta(days=1)
+
     for q in queries:
         if stage:
-            bookings = BookingModel.objects.filter(stage=stage).exclude(stage='served').exclude(stage='cancelled').filter(
+            bookings = (BookingModel.objects.filter(stage=stage).exclude(stage='served').exclude(stage='cancelled').
+                        filter(
                 Q(series__icontains=q) |
                 Q(patient__f_name__icontains=q) |
                 Q(patient__mid_name__icontains=q)
-            ).distinct()
+            ).distinct())
         else:
-            bookings = BookingModel.objects.exclude(stage='served').exclude(stage='cancelled').filter(
+            bookings = (BookingModel.objects.exclude(stage='served').exclude(stage='cancelled').
+                        filter(start_date__gte=tomorrow_date).
+                        filter(
                 Q(series__icontains=q) |
                 Q(patient__f_name__icontains=q) |
                 Q(patient__mid_name__icontains=q)
-            ).distinct()
+            ).distinct())
         for new in bookings:
             queryset.append(new)
 
