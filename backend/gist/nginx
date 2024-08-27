@@ -1,0 +1,233 @@
+server {
+    server_name 185.196.213.3 back-telelon.uz;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/Hayat-Medical-Centre/backend;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/back-telelon.uz/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/back-telelon.uz/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = back-telelon.uz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name 185.196.213.3 back-telelon.uz;
+    return 404; # managed by Certbot
+}
+
+server {
+    server_name 185.196.213.3 back.dev-hayat.uz;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/Hayat-Medical-Centre/backend;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+
+}
+server {
+    if ($host = back.dev-hayat.uz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name 185.196.213.3 back.dev-hayat.uz;
+    return 404; # managed by Certbot
+}
+
+
+
+
+
+
+
+server {
+    server_name 185.196.213.3 dev-hayat.uz;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/Hayat-Medical-Centre/backend;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/dev-hayat.uz/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/dev-hayat.uz/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}
+server {
+    if ($host = dev-hayat.uz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name 185.196.213.3 dev-hayat.uz;
+    return 404; # managed by Certbot
+
+
+}
+server {
+
+    server_name lis.dev-hayat.uz www.lis.dev-hayat.uz;
+
+    # Assuming /home/react-app/build is where your React app build directory is
+    root /var/www/lis;
+
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;
+    }
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/lis.dev-hayat.uz/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/lis.dev-hayat.uz/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+
+    server_name mis.dev-hayat.uz www.mis.dev-hayat.uz;
+
+    # Assuming /home/react-app/build is where your React app build directory is
+    root /var/www/cashbox;
+
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;
+    }
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/mis.dev-hayat.uz/fullchain.pem; # managed by Certbot
+
+server {
+
+    server_name back.dev-hayat.uz www.back.dev-hayat.uz;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/Hayat-Medical-Centre/backend;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+
+
+    if ($host = back.dev-hayat.uz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    return 404; # managed by Certbot
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/back.dev-hayat.uz/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/back.dev-hayat.uz/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+server {
+    if ($host = mis.dev-hayat.uz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    listen [::]:80;
+
+    server_name mis.dev-hayat.uz www.mis.dev-hayat.uz;
+    return 404; # managed by Certbot
+
+
+}
+
+server {
+    if ($host = back.dev-hayat.uz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    listen [::]:80;
+
+    server_name back.dev-hayat.uz www.back.dev-hayat.uz;
+    return 404; # managed by Certbot
+server {
+    if ($host = back.dev-hayat.uz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    listen [::]:80;
+
+    server_name back.dev-hayat.uz www.back.dev-hayat.uz;
+    return 404; # managed by Certbot
+
+
+}
+server {
+    if ($host = lis.dev-hayat.uz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    listen [::]:80;
+
+    server_name lis.dev-hayat.uz www.lis.dev-hayat.uz;
+    return 404; # managed by Certbot
+
+
+}
+
+server {
+
+    server_name logus.dev-hayat.uz www.logus.dev-hayat.uz;
+
+    # Assuming /home/react-app/build is where your React app build directory is
+    root /var/www/logus;
+
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;
+    }
+
+}

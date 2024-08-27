@@ -1,8 +1,14 @@
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 from apps.account.models import (
-    accounts, organizations, roles_permissions, patients, specialities, appointments, attandance
+    accounts, organizations, roles_permissions, patients, specialities, appointments, attandance,
+notifications
 )
+
+
+@admin.register(notifications.NotificationModel)
+class NotificationModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in notifications.NotificationModel._meta.fields]
 
 
 @admin.register(accounts.Account)
@@ -97,3 +103,4 @@ class DoctorSpecialityAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 @admin.register(attandance.AttendanceModel)
 class AttendanceAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in attandance.AttendanceModel._meta.fields]
+

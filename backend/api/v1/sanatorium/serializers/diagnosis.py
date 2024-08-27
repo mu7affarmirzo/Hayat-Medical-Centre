@@ -1,0 +1,1 @@
+from rest_framework import serializersclass SearchSerializer(serializers.Serializer):    word = serializers.CharField()    category = serializers.CharField()class GetDiagnosisWithCategory(serializers.Serializer):    category = serializers.CharField()

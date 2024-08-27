@@ -19,11 +19,36 @@ APPOINTMENT_CHOICES = (
 )
 
 
+class MedicalServiceCategory(models.Model):
+    # consulting
+    # instrumental research
+    # laboratory research
+    name = models.CharField(max_length=255, null=False, blank=False)
+
+    created_by = models.ForeignKey(Account, related_name='med_serv_category_created', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    modified_by = models.ForeignKey(Account, related_name="modf_med_serv_category", on_delete=models.SET_NULL, null=True)
+
+
 class MedicalService(models.Model):
+    TYPES = (
+        ("service", "service"),
+        ("procedure", "procedure"),
+        ("consulting", "consulting")
+    )
     name = models.CharField(max_length=255)
     cost = models.BigIntegerField()
     doctor = models.ManyToManyField(DoctorAccountModel, blank=True)
-    speciality = models.ForeignKey(SpecialityModel, on_delete=models.SET_NULL, null=True)
+    speciality = models.ForeignKey(SpecialityModel, on_delete=models.SET_NULL,
+                                   null=True, related_name='med_service_specialty')
+    """
+    look at sanatorium 
+    https://www.figma.com/file/aeByA9WSTeHdobGPmKAxfR/Hayat-Medical-(Project)?type=design&node-id=3595-18579&mode=design&t=5d8fgNQjEiyO1W9h-0
+    """
+    category = models.ForeignKey(MedicalServiceCategory, on_delete=models.SET_NULL, null=True)
+    type = models.CharField(choices=TYPES, default="service", max_length=50, null=True)
+
     created_by = models.ForeignKey(Account, related_name='med_serv_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

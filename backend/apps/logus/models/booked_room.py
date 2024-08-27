@@ -26,9 +26,10 @@ STAGES = (
 
 
 class BookedRoomModel(models.Model):
-    tariff = models.ForeignKey(TariffModel, on_delete=models.SET_NULL, null=True)
-    room = models.ForeignKey('RoomModel', on_delete=models.SET_NULL, null=True)
-    room_type = models.ForeignKey(RoomTypeModel, on_delete=models.SET_NULL, null=True)
+    tariff = models.ForeignKey(TariffModel, on_delete=models.SET_NULL, null=True,
+                               related_name='booked_room_tariff', blank=True)
+    room = models.ForeignKey('AvailableRoomModel', on_delete=models.SET_NULL, null=True, related_name='booked_room', blank=True)
+    room_type = models.ForeignKey(RoomTypeModel, on_delete=models.SET_NULL, null=True, related_name='booked_room_type')
     patients = models.ForeignKey(PatientModel, on_delete=models.SET_NULL, null=True, related_name="booked_rooms")
     discount = models.IntegerField(choices=DISCOUNT_CHOICES, null=True, blank=True, default=0)
     cheque = models.OneToOneField(LogusChequeModel, on_delete=models.DO_NOTHING, null=True, blank=True)
@@ -37,8 +38,6 @@ class BookedRoomModel(models.Model):
 
     start_date = models.DateField()
     end_date = models.DateField()
-    # marketing
-    # segment = models.CharField(choices=)
 
     created_by = models.ForeignKey(Account, related_name="booked_room", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

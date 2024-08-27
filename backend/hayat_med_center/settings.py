@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     'apps.account',
     'apps.cashbox',
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'apps.logus',
     'apps.hospital',
     'apps.sanatorium',
+    'apps.lis',
 
     'rest_framework',
     'rest_framework_simplejwt',
@@ -49,7 +51,14 @@ INSTALLED_APPS = [
     'corsheaders',
     'import_export',
     'django_filters',
+
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
@@ -146,7 +155,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
+LANGUAGES = (('ru', "Russian", ), )
 
 TIME_ZONE = 'Asia/Tashkent'
 

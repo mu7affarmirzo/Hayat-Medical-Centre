@@ -73,6 +73,10 @@ class Account(AbstractBaseUser):
 
         return f"{self.f_name} {self.l_name} {m_name}"
 
+    @property
+    def unread_notifications(self):
+        return self.notifications.filter(state=False)
+
 
 class DoctorAccountModel(models.Model):
     doctor = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='doctor_model')

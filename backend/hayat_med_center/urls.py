@@ -8,7 +8,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
-
+from apps.warehouse.views import auth
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -25,6 +25,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('', auth.login_view, name='login'),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('render/', include('apps.urls')),

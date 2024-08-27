@@ -2,6 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from apps.warehouse.models import *
+from apps.warehouse.models.store_point import StorePointStaffModel, StorePointRolesModel
 
 
 def create_admin_class(model):
@@ -13,9 +14,10 @@ def create_admin_class(model):
 
 
 for model in [
-    ItemsModel, ReceivedItemsModel, ReceiveRegistryModel, SendRegistryModel,
-    IncomeModel, IncomeItemsModel, ItemsInStockModel, SentItemsModel,
+    ItemsModel, ReceivedItemsModel, ReceiveRegistryModel,
+    IncomeModel, IncomeItemsModel, ItemsInStockModel,
     StorePointModel, WarehouseChequeModel, ChequeItemsModel, ExpenseModel,
+    StorePointStaffModel, StorePointRolesModel
 ]:
     admin.site.register(model, admin_class=type(
         f"{model.__name__}Admin",
@@ -24,6 +26,20 @@ for model in [
     ))
 
 
+class SentItemsModelInlineAdmin(admin.StackedInline):
+    model = SentItemsModel
+
+
+@admin.register(SendRegistryModel)
+class SendRegistryModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    inlines = [SentItemsModelInlineAdmin]
+    field = '__all__'
+    search_fields = ['series']
+
+
+@admin.register(SentItemsModel)
+class SendRegistryItemModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    field = '__all__'
 # admin.site.register(ItemsModel, create_admin_class(ItemsModel))
 # admin.site.register(ReceivedItemsModel, create_admin_class(ReceivedItemsModel))
 # admin.site.register(ReceiveRegistryModel, create_admin_class(ReceiveRegistryModel))
@@ -35,6 +51,7 @@ for model in [
 # admin.site.register(StorePointModel, create_admin_class(StorePointModel))
 # admin.site.register(WarehouseChequeModel, create_admin_class(WarehouseChequeModel))
 # admin.site.register(ChequeItemsModel, create_admin_class(ChequeItemsModel))
+
 
 @admin.register(CompanyModel)
 class CompanyAdmin(ImportExportModelAdmin, admin.ModelAdmin):

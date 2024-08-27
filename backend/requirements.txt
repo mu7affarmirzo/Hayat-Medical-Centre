@@ -12,3 +12,4 @@ django-filter
 passlib
 cryptography
 xhtml2pdf
+crispy-bootstrap5

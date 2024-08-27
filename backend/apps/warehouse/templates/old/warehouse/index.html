@@ -1,0 +1,445 @@
+{% extends 'snippets/../snippets/base.html' %}
+{% load static %}
+
+{% block content %}
+<nav>
+    <a href="{% url 'warehouse:warehouse-medicines' %} " class="nav-link">
+        <img src="{% static '/assets/icons/briefcase-medical.svg' %}" alt="icon"/>
+        <p>
+            Реестр <br/>
+            лекарств
+        </p>
+    </a>
+    <a href="{% url 'warehouse:warehouse-incomes' %} " class="nav-link">
+        <img src="{% static '/assets/icons/arrow-down-to-square.svg' %}" alt="icon"/>
+        <p>
+            Реестр <br/>
+            прихода
+        </p>
+    </a>
+    <a href="" class="nav-link">
+        <img src="{% static '/assets/icons/arrow-up-from-square.svg' %}" alt="icon"/>
+        <p>
+            Реестр <br/>
+            расхода
+        </p>
+    </a>
+</nav>
+<!-- navbar ends ===== -->
+
+<!-- main starts ==== -->
+<main>
+    <div class="main-left">
+        <div class="main-left-input">
+            <label for="">Филиал</label>
+            <div class="main-left-menu">
+                <input type="text" id="office-input"/>
+                <button data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+                    <img src="{% static '/assets/icons/book.svg' %}" alt="icon"/>
+                </button>
+                <button>
+                    <img src="{% static '/assets/icons/close-square.svg' %}" alt="icon"/>
+                </button>
+            </div>
+        </div>
+        <div class="main-left-input">
+            <label for="">Перемещение</label>
+            <div class="main-left-menu">
+                <input type="text" id="outcome-input" />
+                <button data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">
+                    <img src="{% static '/assets/icons/book.svg' %}" alt="icon"/>
+                </button>
+                <button>
+                    <img src="{% static '/assets/icons/search.svg' %}" alt="icon"/>
+                </button>
+                <button>
+                    <img src="{% static '/assets/icons/wallet-money.svg' %}" alt="icon"/>
+                </button>
+            </div>
+        </div>
+        <div class="main-left-input">
+            <label for="">Приходы</label>
+            <div class="main-left-menu">
+                <input type="text" id="income-input"/>
+                <button data-bs-target="#exampleModalToggle3" data-bs-toggle="modal">
+                    <img src="{% static '/assets/icons/book.svg' %}" alt="icon"/>
+                </button>
+                <button>
+                    <img src="{% static '/assets/icons/search.svg' %}" alt="icon"/>
+                </button>
+                <button>
+                    <img src="{% static '/assets/icons/wallet-money.svg' %}" alt="icon"/>
+                </button>
+            </div>
+        </div>
+        <div class="main-left-input">
+            <label for="">Оптовая торговля</label>
+            <div class="main-left-menu">
+                <input type="text" id="whole-prod-input"/>
+                <button data-bs-target="#exampleModalToggl4" data-bs-toggle="modal">
+                    <img src="{% static '/assets/icons/book.svg' %}" alt="icon"/>
+                </button>
+                <button>
+                    <img src="{% static '/assets/icons/search.svg' %}" alt="icon"/>
+                </button>
+                <button>
+                    <img src="{% static '/assets/icons/wallet-money.svg' %}" alt="icon"/>
+                </button>
+            </div>
+        </div>
+        <div class="main-left-input">
+            <label for="">Розничная торговля</label>
+            <div class="main-left-menu">
+                <input type="text" id="retail-input"/>
+                <button data-bs-target="#exampleModalToggle5" data-bs-toggle="modal">
+                    <img src="{% static '/assets/icons/book.svg' %}" alt="icon"/>
+                </button>
+                <button>
+                    <img src="{% static '/assets/icons/search.svg' %}" alt="icon"/>
+                </button>
+                <button>
+                    <img src="{% static '/assets/icons/wallet-money.svg' %}" alt="icon"/>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="main-right">
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>Наименование</th>
+                <th>Дата</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td style="width: 35px"></td>
+                <td>...</td>
+                <td>01.05.2021</td>
+            </tr>
+            <tr>
+                <td><img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/></td>
+                <td>Hayat Medical filial</td>
+                <td>03.02.2023</td>
+            </tr>
+            <tr>
+                <td><img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/></td>
+                <td>Hayat medical main</td>
+                <td>03.02.2023</td>
+            </tr>
+            <tr>
+                <td><img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/></td>
+                <td>Hayat Medical filial 2 операционной</td>
+                <td>03.02.2023</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+<!-- office modal starts ================ -->
+<div
+        class="modal fade w-100"
+        id="exampleModalToggle"
+        aria-hidden="true"
+        tabindex="-1"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">
+                    Выбор из справочника
+                </h1>
+                <button
+                        class="bg-transparent border-0"
+                        type="button"
+                        data-bs-dismiss="modal"
+                >
+                    <img src="{% static '/assets/icons/close-circle.svg' %}" alt="icon"/>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-top">
+                    <img src="{% static '/assets/icons/search-normal.svg' %}" alt="icon"/>
+                    <input
+                            class="border-0"
+                            type="text"
+                            placeholder="Поиск по таблице"
+                    />
+                </div>
+                <table>
+                <thead>
+                    <tr >
+                        <th></th>
+                        <th>Наименование</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for org in orgs %}
+                    <tr data-bs-dismiss="modal" id="office-value">
+                        <td style="width: 35px">
+                            <img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/>
+                        </td>
+                        <td>{{ org.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- office modal ends ========= -->
+<!-- Перемещение modal starts ================ -->
+<div
+        class="modal fade w-100"
+        id="exampleModalToggle2"
+        aria-hidden="true"
+        tabindex="-1"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">
+                    Выбор из справочника
+                </h1>
+                <button
+                        class="bg-transparent border-0"
+                        type="button"
+                        data-bs-dismiss="modal"
+                >
+                    <img src="{% static '/assets/icons/close-circle.svg' %}" alt="icon"/>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-top">
+                    <img src="{% static '/assets/icons/search-normal.svg' %}" alt="icon"/>
+                    <input
+                            class="border-0"
+                            type="text"
+                            placeholder="Поиск по таблице"
+                    />
+                </div>
+                <table>
+                <thead>
+                    <tr >
+                        <th></th>
+                        <th>Наименование</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for org in orgs %}
+                    <tr data-bs-dismiss="modal" id="outcome-value">
+                        <td style="width: 35px">
+                            <img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/>
+                        </td>
+                        <td>{{ org.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Перемещение modal ends ========= -->
+<!-- Приходы modal starts ================ -->
+<div
+        class="modal fade w-100"
+        id="exampleModalToggle3"
+        aria-hidden="true"
+        tabindex="-1"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">
+                    Выбор из справочника
+                </h1>
+                <button
+                        class="bg-transparent border-0"
+                        type="button"
+                        data-bs-dismiss="modal"
+                >
+                    <img src="{% static '/assets/icons/close-circle.svg' %}" alt="icon"/>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-top">
+                    <img src="{% static '/assets/icons/search-normal.svg' %}" alt="icon"/>
+                    <input
+                            class="border-0"
+                            type="text"
+                            placeholder="Поиск по таблице"
+                    />
+                </div>
+                <table>
+                <thead>
+                    <tr >
+                        <th></th>
+                        <th>Наименование</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for org in orgs %}
+                    <tr data-bs-dismiss="modal" id="income-value">
+                        <td style="width: 35px">
+                           <img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/>
+                        </td>
+                        <td>{{ org.id }}</td>
+                    </tr>
+                    {% endfor %}
+               </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Приходы modal ends ========= -->
+<!-- Оптовая торговля modal starts ================ -->
+<div
+        class="modal fade w-100"
+        id="exampleModalToggl4"
+        aria-hidden="true"
+        tabindex="-1"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">
+                    Выбор из справочника
+                </h1>
+                <button
+                        class="bg-transparent border-0"
+                        type="button"
+                        data-bs-dismiss="modal"
+                >
+                    <img src="{% static '/assets/icons/close-circle.svg' %}" alt="icon"/>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-top">
+                    <img src="{% static '/assets/icons/search-normal.svg' %}" alt="icon"/>
+                    <input
+                            class="border-0"
+                            type="text"
+                            placeholder="Поиск по таблице"
+                    />
+                </div>
+                <table>
+                <thead>
+                    <tr >
+                        <th></th>
+                        <th>Наименование</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for org in orgs %}
+                    <tr data-bs-dismiss="modal" id="whole-prod-value">
+                        <td style="width: 35px">
+                            <img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/>
+                        </td>
+                        <td>{{ org.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Оптовая торговля modal ends ========= -->
+<!-- Розничная торговля modal starts ================ -->
+<div
+        class="modal fade w-100"
+        id="exampleModalToggle5"
+        aria-hidden="true"
+        tabindex="-1"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">
+                    Выбор из справочника
+                </h1>
+                <button
+                        class="bg-transparent border-0"
+                        type="button"
+                        data-bs-dismiss="modal"
+                >
+                    <img src="{% static '/assets/icons/close-circle.svg' %}" alt="icon"/>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body-top">
+                    <img src="{% static '/assets/icons/search-normal.svg' %}" alt="icon"/>
+                    <input
+                            class="border-0"
+                            type="text"
+                            placeholder="Поиск по таблице"
+                    />
+                </div>
+               <table>
+                <thead>
+                    <tr >
+                        <th></th>
+                        <th>Наименование</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for org in orgs %}
+                    <tr data-bs-dismiss="modal" id="retail-value">
+                        <td style="width: 35px">
+                        <img class="more-icon" src="{% static '/assets/icons/row-left-mini.svg' %}" alt=""/>
+                        </td>
+                        <td data-key="{{ org.id }}">{{ org.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Розничная торговля modal ends ========= -->
+<!-- main ends ==== -->
+
+{% endblock content %}

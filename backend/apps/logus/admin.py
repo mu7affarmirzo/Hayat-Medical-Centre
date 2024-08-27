@@ -2,7 +2,9 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from apps.logus.models import *
+from apps.logus.models.booking import BookingHistory
 from apps.logus.models.room import TariffXTypeModel
+from apps.logus.models import available_rooms
 
 
 @admin.register(RoomModel)
@@ -34,6 +36,11 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in BookingModel._meta.fields]
 
 
+@admin.register(BookingHistory)
+class BookingHistoryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in BookingHistory._meta.fields]
+
+
 @admin.register(ServiceModel)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in ServiceModel._meta.fields]
@@ -55,7 +62,7 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(LogusChequeModel)
-class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class LogusChequeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in LogusChequeModel._meta.fields]
 
 
@@ -80,3 +87,28 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(Payments)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in Payments._meta.fields]
+
+
+@admin.register(available_rooms.AvailableRoomModel)
+class AvailableRoomModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.AvailableRoomModel._meta.fields]
+
+
+@admin.register(available_rooms.AvailableRoomsTypeModel)
+class AvailableRoomsTypeModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.AvailableRoomsTypeModel._meta.fields]
+
+
+@admin.register(available_rooms.RoomTypeMatrix)
+class RoomTypeMatrixAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.RoomTypeMatrix._meta.fields]
+
+
+@admin.register(available_rooms.AvailableTariffModel)
+class AvailableTariffModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.AvailableTariffModel._meta.fields]
+
+
+@admin.register(available_rooms.TariffRoomTypeMatrixModel)
+class TariffRoomTypeMatrixModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in available_rooms.TariffRoomTypeMatrixModel._meta.fields]

@@ -116,6 +116,12 @@ def get_living_guests_view(request):
 @permission_classes((IsAuthenticated,))
 def search_patient(request):
     word = request.data["word"]
+    patient_id = request.data.get("patient_id")
+    if patient_id:
+        patient = PatientModel.objects.filter(id__icontains=patient_id).first()
+        if patient:
+            return Response(PatientModelSerializer(patient, many=True).data)
+        return Response([])
 
     patients = PatientModel.objects.filter(
         Q(f_name__icontains=word) | Q(mid_name__icontains=word) | Q(l_name__icontains=word) | Q(email__icontains=word))
