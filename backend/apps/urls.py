@@ -9,5 +9,6 @@ urlpatterns = [
     path('warehouse/company/', include('apps.warehouse.urls.company')),
 
     path('logus/', include('apps.logus.urls')),
+    path('sanatorium/', include('apps.sanatorium.urls')),
 
 ]
