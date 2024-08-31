@@ -42,7 +42,7 @@
                 <!-- SELECT2 EXAMPLE -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Проживающие</h3>
+                        <h3 class="card-title">Забронированные</h3>
                     </div>
 
                     <div class="row">
@@ -63,7 +63,7 @@
                             <div class="card-body">
                                 <div class="card-tools">
                                     <form method="get" action="">
-                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                        <div class="input-group input-group-sm" style="width: 450px;">
                                             <input type="text" name="table_search" class="form-control float-right"
                                                    placeholder="Search" value="{{ query }}">
 
@@ -82,15 +82,15 @@
                                     <thead>
                                     <tr>
                                         <th style="width: 10px">#</th>
-                                        <th>Серия</th>
                                         <th>Имя гостя</th>
-                                        <th>Дата выезда</th>
+                                        <th>Пол</th>
+                                        <th>Возраст</th>
                                         <th>Тип комнаты</th>
                                         <th>Комната</th>
                                         <th>Время заезда</th>
+                                        <th>Дата выезда</th>
                                         <th>Дней</th>
                                         <th>Тариф</th>
-                                        <th>Скидка</th>
                                     </tr>
 
                                     </thead>
@@ -99,23 +99,25 @@
                                     {% for i in bookings %}
                                         <tr>
                                             <td>{{ i.id }}</td>
-                                            <td>{{ i.series }}</td>
+                                            <td><a href="{% url 'sanatorium_staff:get_patient_by_id' i.pk %}">{{ i.patient.full_name }}</a></td>
                                             <td>
-                                                {{ i.patient.full_name }}
+                                                {{ i.patient.formatted_gender }}
                                             </td>
-                                            <td>{{ i.end_date }}</td>
+                                            <td>
+                                                {{ i.patient.age }} год
+                                            </td>
                                             <td>
                                                 <span class="badge"
                                                       style="background-color: {{ i.current_room_type.color }};">{{ i.current_room_type }}</span>
                                             </td>
                                             <td>{{ i.current_room.room_number }}</td>
                                             <td>{{ i.start_date }}</td>
+                                            <td>{{ i.end_date }}</td>
                                             <td>{{ i.duration }}</td>
                                             <td>
                                                 <span class="badge"
                                                       style="background-color: {{ i.current_tariff.color }};">{{ i.current_tariff }}</span>
                                             </td>
-                                            <td>{{ i.discount }}</td>
                                         </tr>
                                     {% endfor %}
 

@@ -4,7 +4,7 @@ from django.db import models
 
 from apps.account.models import Account
 from apps.account.models import PatientModel
-from apps.logus.models import BookedRoomModel
+from apps.logus.models import BookingModel
 
 
 class AmbulatoryHistory(models.Model):
@@ -13,7 +13,7 @@ class AmbulatoryHistory(models.Model):
     patient = models.ForeignKey(PatientModel, on_delete=models.CASCADE, related_name="ambulatory_histories")
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE)
     # nurse = models.ForeignKey(Account, on_delete=models.CASCADE)
-    booking = models.ForeignKey(BookedRoomModel, on_delete=models.CASCADE)
+    booking = models.ForeignKey(BookingModel, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True, related_name="ambulatory_histories")
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

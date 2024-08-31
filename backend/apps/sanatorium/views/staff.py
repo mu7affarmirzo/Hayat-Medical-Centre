@@ -13,6 +13,7 @@ from django.utils import timezone
 
 from apps.decorators import role_required
 from apps.logus.models import BookingModel
+from apps.logus.views.bookings import get_bookings_view
 
 BOOKINGS_PER_PAGE = 30
 
@@ -49,39 +50,17 @@ def get_patients_list(request):
     return render(request, 'sanatorium/staff/main_screen.html', context)
 
 
+def get_patient_by_id_view(request, pk):
+    context = {}
+
+    return render(request, 'sanatorium/staff/main_screen.html', context)
+
+
 def get_bookings_by_start_date_view(request):
     start_date_str = request.GET.get('start_date')
     if start_date_str:
         start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
         return get_bookings_view(request, start_date)
-
-
-def get_bookings_view(request, end_date=None):
-    start_date_str = request.GET.get('start_date')
-    if start_date_str:
-        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
-        bookings = BookingModel.objects.filter(start_date=start_date)
-    elif end_date:
-        bookings = BookingModel.objects.filter(end_date=end_date)
-    else:
-        bookings = []
-
-    bookings_data = [{
-        'id': booking.id,
-        'series': booking.series,
-        'patient_full_name': booking.patient.full_name,
-        'end_date': booking.end_date,
-        'current_room_type': str(booking.current_room_type),
-        'current_room_type_color': booking.current_room_type.color,
-        'current_room_room_number': booking.current_room.room_number,
-        'start_date': booking.start_date,
-        'duration': booking.duration,
-        'current_tariff': str(booking.current_tariff),
-        'current_tariff_color': booking.current_tariff.color,
-        'discount': booking.discount,
-    } for booking in bookings]
-
-    return JsonResponse({'bookings': bookings_data})
 
 
 def get_booking_queryset(query=None, stage=None):
