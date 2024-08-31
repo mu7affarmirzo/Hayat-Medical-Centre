@@ -1,11 +1,12 @@
 from django.urls import path, include
 
-from apps.logus.views import auth, bookings
+from apps.sanatorium.views import staff
 
 app_name = 'sanatorium_staff'
 
 urlpatterns = [
-    path('', auth.login_view, name='login'),
-    path('main_screen/', auth.main_screen_view, name='main_screen'),
-    path('available-rooms/', auth.available_room_view, name='available-rooms'),
+    path('main_screen/', staff.main_screen_view, name='main_screen'),
+    path('patients/', staff.main_screen_view, name='patients'),
+    path('notifications/', staff.main_screen_view, name='notifications'),
+    path('get-bookings-by-start-date', staff.get_bookings_by_start_date_view, name='by-start-date'),
 ]

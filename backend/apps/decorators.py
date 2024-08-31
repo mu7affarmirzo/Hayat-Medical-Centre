@@ -16,16 +16,17 @@ def role_required(role, login_url=None):
                 return login_required(view_func)(request, login_url, *args, **kwargs)
             # Check if the user has the required role
             try:
-                target_role = AccountRolesModel.objects.get(user=request.user)
+                target_role = AccountRolesModel.objects.filter(user=request.user)
             except:
                 return redirect(login_url)
 
+            target_role = target_role.first()
             target_role = target_role.role.name
 
             if target_role == 'admin':
                 return view_func(request, *args, **kwargs)
 
-            if not target_role == role:
+            if not set(role).issubset(set(target_role)):
                 return redirect(login_url)
 
             return view_func(request, *args, **kwargs)
