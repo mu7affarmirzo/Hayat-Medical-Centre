@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime, timedelta
 from itertools import chain
 from operator import attrgetter
@@ -11,9 +11,12 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 
+from apps.account.models import PatientModel, DoctorAccountModel, NurseAccountModel
 from apps.decorators import role_required
-from apps.logus.models import BookingModel
+from apps.logus.models import BookingModel, AvailableTariffModel
 from apps.logus.views.bookings import get_bookings_view
+from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
+from apps.sanatorium.models import IllnessHistory
 
 BOOKINGS_PER_PAGE = 30
 
@@ -53,7 +56,47 @@ def get_patients_list(request):
 def get_patient_by_id_view(request, pk):
     context = {}
 
-    return render(request, 'sanatorium/staff/main_screen.html', context)
+    try:
+        ill_his = IllnessHistory.objects.get(pk=pk)
+    except:
+        return render(request, 'sanatorium/staff/patient.html', context)
+
+    if request.method == "POST":
+        patient_form = PatientUpdateForm(request.POST, instance=ill_his.patient)
+        ih_form = IllnessHistoryUpdateForm(request.POST, instance=ill_his)
+        booking_form = BookingModelUpdateForm(request.POST, instance=ill_his.booking)
+        if 'patient_form' in request.POST and patient_form.is_valid():
+            patient: PatientModel = patient_form.save(commit=False)
+            patient.modified_by = request.user
+            patient.save()
+            return redirect('sanatorium_staff:get_patient_by_id', pk=pk)
+        elif 'ih_form' in request.POST and ih_form.is_valid():
+            ih: IllnessHistory = ih_form.save(commit=False)
+            ih.modified_by = request.user
+            ih.save()
+            return redirect('sanatorium_staff:get_patient_by_id', pk=pk)
+        elif 'booking_form' in request.POST and booking_form.is_valid():
+            booking: BookingModel = booking_form.save(commit=False)
+            booking.modified_by = request.user
+            booking.save()
+            return redirect('sanatorium_staff:get_patient_by_id', pk=pk)
+
+    context['ill_his'] = ill_his
+    context['ill_his_types'] = IllnessHistory.type.field.choices
+    context['patient'] = ill_his.patient
+    context['booking'] = ill_his.booking
+    context['programs'] = AvailableTariffModel.objects.all()
+    context['doctors'] = DoctorAccountModel.objects.all()
+    context['nurses'] = NurseAccountModel.objects.all()
+
+    patient_form = PatientUpdateForm(instance=ill_his.patient)
+    ih_form = IllnessHistoryUpdateForm(instance=ill_his)
+    booking_form = BookingModelUpdateForm(instance=ill_his.booking)
+
+    context["patient_form"] = patient_form
+    context["ih_form"] = ih_form
+    context["booking_form"] = booking_form
+    return render(request, 'sanatorium/staff/patient.html', context)
 
 
 def get_bookings_by_start_date_view(request):

@@ -1,0 +1,826 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hayat Medical Center</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/daterangepicker/daterangepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'adminlte3_assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'adminlte3_assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/select2/css/select2.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'adminlte3_assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'adminlte3_assets/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/bs-stepper/css/bs-stepper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/dropzone/min/dropzone.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminlte3_assets/dist/css/adminlte.min.css' %}">
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+    <!-- Navbar -->
+    {% include 'sanatorium/snippets/navbar.html' %}
+    <!-- /.navbar -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <br>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- SELECT2 EXAMPLE -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Забронированные</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5 col-sm-3">
+                                <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist"
+                                     aria-orientation="vertical">
+                                    <a class="nav-link active" id="vert-tabs-home-tab" data-toggle="pill"
+                                       href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home"
+                                       aria-selected="true">Титульная страница</a>
+                                    <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill"
+                                       href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile"
+                                       aria-selected="false">**********</a>
+                                    <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill"
+                                       href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages"
+                                       aria-selected="false">Документы</a>
+                                    <a class="nav-link" id="vert-tabs-food-docs" data-toggle="pill"
+                                       href="#vert-tabs-food" role="tab" aria-controls="vert-tabs-food"
+                                       aria-selected="false">Питание</a>
+                                    <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill"
+                                       href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings"
+                                       aria-selected="false">Основной лист назначений</a>
+                                    <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill"
+                                       href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings"
+                                       aria-selected="false">Питание</a>
+                                    <a class="nav-link" id="vert-tabs-settings-tab" data-toggle="pill"
+                                       href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings"
+                                       aria-selected="false">Питание</a>
+                                </div>
+                            </div>
+                            <div class="col-7 col-sm-9">
+                                <div class="tab-content" id="vert-tabs-tabContent">
+                                    <div class="tab-pane text-left fade show active" id="vert-tabs-home" role="tabpanel"
+                                         aria-labelledby="vert-tabs-home-tab">
+                                        <div class="card-body">
+                                            <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="custom-content-below-home-tab"
+                                                       data-toggle="pill" href="#custom-content-below-home" role="tab"
+                                                       aria-controls="custom-content-below-home" aria-selected="true">Пациент</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="custom-content-below-profile-tab"
+                                                       data-toggle="pill" href="#custom-content-below-profile"
+                                                       role="tab" aria-controls="custom-content-below-profile"
+                                                       aria-selected="false">Титульная страница</a>
+                                                </li>
+
+                                            </ul>
+                                            <div class="tab-content" id="custom-content-below-tabContent">
+                                                <div class="tab-pane fade show active" id="custom-content-below-home"
+                                                     role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                                                    <form enctype="multipart/form-data" method="post" id="product_form">
+                                                        {% csrf_token %}
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Основные</h3>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <label>Фамилия</label>
+                                                                <input type="text" class="form-control"
+                                                                       placeholder="Фамилия"
+                                                                       value="{{ patient_form.instance.mid_name|default_if_none:'' }}"
+                                                                       name="mid_name">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label>Имя</label>
+                                                                <input type="text" class="form-control"
+                                                                       placeholder="Имя"
+                                                                       value="{{ patient_form.instance.f_name|default_if_none:'' }}"
+                                                                       name="f_name">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label>Отчество</label>
+                                                                <input type="text" class="form-control"
+                                                                       placeholder="Отчество"
+                                                                       value="{{ patient_form.instance.l_name|default_if_none:'' }}"
+                                                                       name="l_name">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <label>Пол</label>
+                                                                <div class="form-group">
+                                                                    <div class="custom-control custom-radio">
+                                                                        <input value='False'
+                                                                               class="custom-control-input" type="radio"
+                                                                               id="customRadio1" name="gender"
+                                                                               {% if patient_form.instance.gender == False %}checked{% endif %}>
+                                                                        <label for="customRadio1"
+                                                                               class="custom-control-label">Женщина</label>
+                                                                    </div>
+                                                                    <div class="custom-control custom-radio">
+                                                                        <input value='True' class="custom-control-input"
+                                                                               type="radio"
+                                                                               id="customRadio2" name="gender"
+                                                                               {% if patient_form.instance.gender == True %}checked{% endif %}>
+                                                                        <label for="customRadio2"
+                                                                               class="custom-control-label">Мужчина</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-4">
+                                                                <label>Дата рождения:</label>
+                                                                <div class="input-group date" id="reservationdate"
+                                                                     data-target-input="nearest">
+                                                                    <input name="date_of_birth" type="text"
+                                                                           class="form-control datetimepicker-input"
+                                                                           data-target="#reservationdate"
+                                                                           value="{{ patient_form.instance.date_of_birth|date:'d/m/Y' }}"/>
+                                                                    <div class="input-group-append"
+                                                                         data-target="#reservationdate"
+                                                                         data-toggle="datetimepicker">
+                                                                        <div class="input-group-text"><i
+                                                                                class="fa fa-calendar"></i></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label>Возрасть:</label>
+                                                                <p class="form-control">{{ patient_form.instance.age }}</p>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Контакты</h3>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <label>Основной</label>
+                                                                <input type="text" class="form-control"
+                                                                       placeholder="+998901234567"
+                                                                       value="{{ patient_form.instance.mobile_phone_number|default_if_none:'' }}"
+                                                                       name="mobile_phone_number">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label>Домашный</label>
+                                                                <input type="text" class="form-control"
+                                                                       placeholder="+998701234567"
+                                                                       value="{{ patient_form.instance.home_phone_number|default_if_none:'' }}"
+                                                                       name="home_phone_number">
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="patient_email">E-mail</label>
+                                                            <input type="text" class="form-control" id="patient_email"
+                                                                   name="email" placeholder="hayat@medical.uz"
+                                                                   value="{{ patient_form.instance.email|default_if_none:'' }}"
+                                                                   min="1">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="address">Быстрый ввод адреса</label>
+                                                            <input type="text" class="form-control" id="address"
+                                                                   name="address" placeholder="Домашний адрес"
+                                                                   maxlength="255"
+                                                                   value="{{ patient_form.instance.address|default_if_none:'' }}"
+                                                                   required>
+                                                        </div>
+
+                                                        <div class="text-center">
+                                                            <button type="submit" name="patient_form"
+                                                                    class="btn btn-primary">Сохранить
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="tab-pane fade" id="custom-content-below-profile"
+                                                     role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
+                                                    <form enctype="multipart/form-data" method="post" id="ih_form">
+                                                        {% csrf_token %}
+                                                        <br>
+                                                        <div class="card card-info">
+                                                            <div class="card-header">
+                                                                <h2 class="card-title">Детали ИБ</h2>
+                                                            </div>
+
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <label>История болезни №</label>
+                                                                        <input type="text" class="form-control"
+                                                                               placeholder="919/2024"
+                                                                               value="{{ ih_form.instance.series_number|default_if_none:'' }}"
+                                                                               name="series_number">
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <label>Тип</label>
+{#                                                                        <label>{{ ih_form.instance.type }} ---</label>#}
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;">
+
+                                                                            {% for type in ill_his_types %}
+                                                                                <option value="{{ type.id }}"
+                                                                                        {% if ih_form.instance.type == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <label>Программа</label>
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;">
+                                                                            {% for prog in programs %}
+                                                                                <option value="{{ prog.id }}"
+                                                                                        {% if ih_form.instance.booking.current_tariff.id == prog.id %}selected{% endif %}>{{ prog.name }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label>Лечащий врач:</label>
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;">
+                                                                            {% for doctor in doctors %}
+                                                                                <option value="{{ doctor.id }}"
+                                                                                        {% if ih_form.instance.doctor.value == doctor.id %}selected{% endif %}>{{ doctor.doctor.name }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <label>Медсестра:</label>
+                                                                      <select class="select2" multiple="multiple" data-placeholder="Медсестры" style="width: 100%;">
+                                                                          {% for nurse in nurses %}
+                                                                              <option value="{{ nurse.id }}">{{ nurse.nurse.full_name }}</option>
+                                                                          {% endfor %}
+                                                                      </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <button type="submit" name="ih_form"
+                                                                                class="btn btn-primary">Сохранить
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </form>
+
+                                                    <form enctype="multipart/form-data" method="post" id="booking_form">
+                                                        {% csrf_token %}
+                                                        <div class="card card-gray">
+                                                            <div class="card-header">
+                                                                <h2 class="card-title">Пребывание в санатории</h2>
+                                                            </div>
+
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <label>Помещён в комнату:</label>
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;">
+                                                                            <option selected="selected">Alabama
+                                                                            </option>
+                                                                            <option>Alaska</option>
+                                                                            <option>California</option>
+                                                                            <option>Delaware</option>
+                                                                            <option>Tennessee</option>
+                                                                            <option>Texas</option>
+                                                                            <option>Washington</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <label>Тип комнаты:</label>
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;">
+                                                                            <option selected="selected">Alabama
+                                                                            </option>
+                                                                            <option>Alaska</option>
+                                                                            <option>California</option>
+                                                                            <option>Delaware</option>
+                                                                            <option>Tennessee</option>
+                                                                            <option>Texas</option>
+                                                                            <option>Washington</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-3">
+                                                                        <label>Прибыл:</label>
+                                                                        <div class="input-group date" id="reservationdate"
+                                                                             data-target-input="nearest">
+                                                                            <input name="date_of_birth" type="text"
+                                                                                   class="form-control datetimepicker-input"
+                                                                                   data-target="#reservationdate"
+                                                                                   value="{{ patient_form.instance.date_of_birth|date:'d/m/Y' }}"/>
+                                                                            <div class="input-group-append"
+                                                                                 data-target="#reservationdate"
+                                                                                 data-toggle="datetimepicker">
+                                                                                <div class="input-group-text"><i
+                                                                                        class="fa fa-calendar"></i></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-3">
+                                                                        <label>Планируемый отъезд:</label>
+                                                                        <div class="input-group date" id="reservationdate"
+                                                                             data-target-input="nearest">
+                                                                            <input name="date_of_birth" type="text"
+                                                                                   class="form-control datetimepicker-input"
+                                                                                   data-target="#reservationdate"
+                                                                                   value="{{ patient_form.instance.date_of_birth|date:'d/m/Y' }}"/>
+                                                                            <div class="input-group-append"
+                                                                                 data-target="#reservationdate"
+                                                                                 data-toggle="datetimepicker">
+                                                                                <div class="input-group-text"><i
+                                                                                        class="fa fa-calendar"></i></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-3">
+                                                                        <label>Количество к/дней:</label>
+                                                                        <div>
+                                                                            <p class="lead mb-3">10</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <button type="submit" name="booking_form"
+                                                                                class="btn btn-primary ">Сохранить
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                    <form enctype="multipart/form-data" method="post" id="title_form">
+                                                        {% csrf_token %}
+                                                        <div class="card card-danger">
+                                                            <div class="card-header">
+                                                                <h2 class="card-title">Лечебные программы</h2>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="card-body p-0">
+                                                                        <table class="table table-striped projects">
+                                                                            <thead>
+                                                                            <tr>
+                                                                                <th style="width: 1%">
+                                                                                    #
+                                                                                </th>
+                                                                                <th style="width: 20%">
+                                                                                    Название
+                                                                                </th>
+                                                                                <th style="width: 30%">
+                                                                                    Начало
+                                                                                </th>
+                                                                                <th>
+                                                                                    Окончание
+                                                                                </th>
+                                                                                <th style="width: 20%">
+                                                                                </th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    1
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a>
+                                                                                        AdminLTE v3
+                                                                                    </a>
+
+                                                                                </td>
+                                                                                <td>
+                                                                                    10.02.2024
+                                                                                </td>
+                                                                                <td>
+                                                                                    21.02.2024
+                                                                                </td>
+                                                                                <td class="project-actions text-right">
+                                                                                    <a class="btn btn-info btn-sm" href="#">
+                                                                                        <i class="fas fa-pencil-alt">
+                                                                                        </i>
+                                                                                        Изменить
+                                                                                    </a>
+                                                                                    <a class="btn btn-danger btn-sm" href="#">
+                                                                                        <i class="fas fa-trash">
+                                                                                        </i>
+                                                                                        Удалить
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    2
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a>
+                                                                                        AdminLTE v3
+                                                                                    </a>
+
+                                                                                </td>
+                                                                                <td>
+                                                                                    10.02.2024
+                                                                                </td>
+                                                                                <td>
+                                                                                    21.02.2024
+                                                                                </td>
+                                                                                <td class="project-actions text-right">
+                                                                                    <a class="btn btn-info btn-sm" href="#">
+                                                                                        <i class="fas fa-pencil-alt">
+                                                                                        </i>
+                                                                                        Изменить
+                                                                                    </a>
+                                                                                    <a class="btn btn-danger btn-sm" href="#">
+                                                                                        <i class="fas fa-trash">
+                                                                                        </i>
+                                                                                        Удалить
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-10">
+                                                                        <a class="btn btn-success btn-sm" href="#">
+                                                                            <i class="fas fa-plus">
+                                                                            </i>
+                                                                            Добавить
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel"
+                                         aria-labelledby="vert-tabs-profile-tab">
+                                        <div class="card-body">
+                                            <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="custom-content-below-home-tab"
+                                                       data-toggle="pill" href="#custom-content-below-home" role="tab"
+                                                       aria-controls="custom-content-below-home" aria-selected="true">Home</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="custom-content-below-profile-tab"
+                                                       data-toggle="pill" href="#custom-content-below-profile"
+                                                       role="tab" aria-controls="custom-content-below-profile"
+                                                       aria-selected="false">Profile</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="custom-content-below-messages-tab"
+                                                       data-toggle="pill" href="#custom-content-below-messages"
+                                                       role="tab" aria-controls="custom-content-below-messages"
+                                                       aria-selected="false">Messages</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="custom-content-below-settings-tab"
+                                                       data-toggle="pill" href="#custom-content-below-settings"
+                                                       role="tab" aria-controls="custom-content-below-settings"
+                                                       aria-selected="false">Settings</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" id="custom-content-below-tabContent">
+                                                <div class="tab-pane fade show active" id="custom-content-below-home"
+                                                     role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
+                                                    malesuada lacus ullamcorper dui molestie, sit amet congue quam
+                                                    finibus. Etiam ultricies nunc non magna feugiat commodo. Etiam odio
+                                                    magna, mollis auctor felis vitae, ullamcorper ornare ligula. Proin
+                                                    pellentesque tincidunt nisi, vitae ullamcorper felis aliquam id.
+                                                    Pellentesque habitant morbi tristique senectus et netus et malesuada
+                                                    fames ac turpis egestas. Proin id orci eu lectus blandit suscipit.
+                                                    Phasellus porta, ante et varius ornare, sem enim sollicitudin eros,
+                                                    at commodo leo est vitae lacus. Etiam ut porta sem. Proin porttitor
+                                                    porta nisl, id tempor risus rhoncus quis. In in quam a nibh cursus
+                                                    pulvinar non consequat neque. Mauris lacus elit, condimentum ac
+                                                    condimentum at, semper vitae lectus. Cras lacinia erat eget sapien
+                                                    porta consectetur.
+                                                </div>
+                                                <div class="tab-pane fade" id="custom-content-below-profile"
+                                                     role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
+                                                    Mauris tincidunt mi at erat gravida, eget tristique urna bibendum.
+                                                    Mauris pharetra purus ut ligula tempor, et vulputate metus
+                                                    facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+                                                    posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus
+                                                    interdum, nisl ligula placerat mi, quis posuere purus ligula eu
+                                                    lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere
+                                                    nec nunc. Nunc euismod pellentesque diam.
+                                                </div>
+                                                <div class="tab-pane fade" id="custom-content-below-messages"
+                                                     role="tabpanel"
+                                                     aria-labelledby="custom-content-below-messages-tab">
+                                                    Morbi turpis dolor, vulputate vitae felis non, tincidunt congue
+                                                    mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus
+                                                    faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac
+                                                    tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum.
+                                                    Suspendisse ut velit condimentum, mattis urna a, malesuada nunc.
+                                                    Curabitur eleifend facilisis velit finibus tristique. Nam vulputate,
+                                                    eros non luctus efficitur, ipsum odio volutpat massa, sit amet
+                                                    sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida
+                                                    fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel
+                                                    metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare
+                                                    magna.
+                                                </div>
+                                                <div class="tab-pane fade" id="custom-content-below-settings"
+                                                     role="tabpanel"
+                                                     aria-labelledby="custom-content-below-settings-tab">
+                                                    Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque
+                                                    magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget
+                                                    blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod
+                                                    molestie tristique. Vestibulum consectetur dolor a vestibulum
+                                                    pharetra. Donec interdum placerat urna nec pharetra. Etiam eget
+                                                    dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et
+                                                    felis ut nisl commodo dignissim. In hac habitasse platea dictumst.
+                                                    Praesent imperdiet accumsan ex sit amet facilisis.
+                                                </div>
+                                            </div>
+                                            <div class="tab-custom-content">
+                                                <p class="lead mb-0">Custom Content goes here</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel"
+                                         aria-labelledby="vert-tabs-messages-tab">
+                                        3
+                                    </div>
+                                    <div class="tab-pane fade" id="vert-tabs-docs" role="tabpanel"
+                                         aria-labelledby="vert-tabs-food-tab">
+                                        4
+                                    </div>
+                                    <div class="tab-pane fade" id="vert-tabs-docs" role="tabpanel"
+                                         aria-labelledby="vert-tabs-food-tab">
+                                        5
+                                    </div>
+                                    <div class="tab-pane fade" id="vert-tabs-docs" role="tabpanel"
+                                         aria-labelledby="vert-tabs-food-tab">
+                                        6
+                                    </div>
+                                    <div class="tab-pane fade" id="vert-tabs-docs" role="tabpanel"
+                                         aria-labelledby="vert-tabs-food-tab">
+                                        7
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+{% include 'sanatorium/snippets/footer.html' %}
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+</aside>
+<!-- /.control-sidebar -->
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{% static 'adminlte3_assets/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/select2/js/select2.full.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/inputmask/jquery.inputmask.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/daterangepicker/daterangepicker.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/bs-stepper/js/bs-stepper.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/plugins/dropzone/min/dropzone.min.js' %}"></script>
+<script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
+<!-- Page specific script -->
+
+<script>
+    document.getElementById('arrival-date-picker').addEventListener('change', function () {
+        var selectedDate = this.value;
+        fetch(`{% url 'sanatorium_staff:by-start-date' %}?start_date=${selectedDate}`)
+            .then(response => response.json())
+            .then(data => {
+                var tableBody = document.getElementById('booking-table-body');
+                tableBody.innerHTML = '';
+                data.bookings.forEach(function (booking) {
+                    var row = `<tr>
+                    <td>${booking.id}</td>
+                    <td>${booking.series}</td>
+                    <td>${booking.patient_full_name}</td>
+                    <td>${booking.end_date}</td>
+                    <td><span class="badge" style="background-color: ${booking.current_room_type_color};">${booking.current_room_type}</span></td>
+                    <td>${booking.current_room_room_number}</td>
+                    <td>${booking.start_date}</td>
+                    <td>${booking.duration}</td>
+                    <td><span class="badge" style="background-color: ${booking.current_tariff_color};">${booking.current_tariff}</span></td>
+                    <td>${booking.discount}</td>
+                </tr>`;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+            });
+    });
+</script>
+
+
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+
+        //Datemask dd/mm/yyyy
+        $('#datemask').inputmask('dd/mm/yyyy', {'placeholder': 'dd/mm/yyyy'})
+        //Datemask2 mm/dd/yyyy
+        $('#datemask2').inputmask('mm/dd/yyyy', {'placeholder': 'mm/dd/yyyy'})
+        //Money Euro
+        $('[data-mask]').inputmask()
+
+        //Date picker
+        $('#reservationdate').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+        //Date and time picker
+        $('#reservationdatetime').datetimepicker({icons: {time: 'far fa-clock'}});
+
+        //Date range picker
+        $('#reservation').daterangepicker()
+        //Date range picker with time picker
+        $('#reservationtime').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
+        })
+        //Date range as a button
+        $('#daterange-btn').daterangepicker(
+            {
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
+            },
+            function (start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+            }
+        )
+
+        //Timepicker
+        $('#timepicker').datetimepicker({
+            format: 'LT'
+        })
+
+        //Bootstrap Duallistbox
+        $('.duallistbox').bootstrapDualListbox()
+
+        //Colorpicker
+        $('.my-colorpicker1').colorpicker()
+        //color picker with addon
+        $('.my-colorpicker2').colorpicker()
+
+        $('.my-colorpicker2').on('colorpickerChange', function (event) {
+            $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+        })
+
+        $("input[data-bootstrap-switch]").each(function () {
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+        })
+
+    })
+    // BS-Stepper Init
+    document.addEventListener('DOMContentLoaded', function () {
+        window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+    })
+
+    // DropzoneJS Demo Code Start
+    Dropzone.autoDiscover = false
+
+    // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+    var previewNode = document.querySelector("#template")
+    previewNode.id = ""
+    var previewTemplate = previewNode.parentNode.innerHTML
+    previewNode.parentNode.removeChild(previewNode)
+
+    var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+        url: "/target-url", // Set the url
+        thumbnailWidth: 80,
+        thumbnailHeight: 80,
+        parallelUploads: 20,
+        previewTemplate: previewTemplate,
+        autoQueue: false, // Make sure the files aren't queued until manually added
+        previewsContainer: "#previews", // Define the container to display the previews
+        clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+    })
+
+    myDropzone.on("addedfile", function (file) {
+        // Hookup the start button
+        file.previewElement.querySelector(".start").onclick = function () {
+            myDropzone.enqueueFile(file)
+        }
+    })
+
+    // Update the total progress bar
+    myDropzone.on("totaluploadprogress", function (progress) {
+        document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+    })
+
+    myDropzone.on("sending", function (file) {
+        // Show the total progress bar when upload starts
+        document.querySelector("#total-progress").style.opacity = "1"
+        // And disable the start button
+        file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
+    })
+
+    // Hide the total progress bar when nothing's uploading anymore
+    myDropzone.on("queuecomplete", function (progress) {
+        document.querySelector("#total-progress").style.opacity = "0"
+    })
+
+    // Setup the buttons for all transfers
+    // The "add files" button doesn't need to be setup because the config
+    // `clickable` has already been specified.
+    document.querySelector("#actions .start").onclick = function () {
+        myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+    }
+    document.querySelector("#actions .cancel").onclick = function () {
+        myDropzone.removeAllFiles(true)
+    }
+    // DropzoneJS Demo Code End
+</script>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

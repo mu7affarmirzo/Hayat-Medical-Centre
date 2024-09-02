@@ -84,7 +84,16 @@ class DoctorAccountModel(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.doctor.email)
+        return str(self.doctor.full_name)
+
+
+class NurseAccountModel(models.Model):
+    nurse = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='nurse_model')
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.nurse.full_name)
 
 
 class ReferringDoctorModel(models.Model):
