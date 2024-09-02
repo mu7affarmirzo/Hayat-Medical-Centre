@@ -37,8 +37,23 @@ class IllnessHistoryUpdateForm(forms.ModelForm):
             'doctor'
         ]
 
+    nurse = forms.SelectMultiple(
+        choices=NurseAccountModel
+    )
+
 
 class BookingModelUpdateForm(forms.ModelForm):
+    start_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),
+        input_formats=['%Y-%m-%d', '%d/%m/%Y', '%d/%m/%y'],
+        required=False  # Make it optional in case it's empty or not filled
+    )
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),
+        input_formats=['%Y-%m-%d', '%d/%m/%Y', '%d/%m/%y'],
+        required=False  # Make it optional in case it's empty or not filled
+    )
+
     class Meta:
         model = BookingModel
         fields = [

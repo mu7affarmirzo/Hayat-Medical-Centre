@@ -81,7 +81,7 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th style="width: 10px">#</th>
+                                        <th style="width: 10px">№</th>
                                         <th>Имя гостя</th>
                                         <th>Пол</th>
                                         <th>Возраст</th>
@@ -98,7 +98,7 @@
                                     <tbody id="booking-table-body">
                                     {% for i in bookings %}
                                         <tr>
-                                            <td>{{ i.id }}</td>
+                                            <td>{{ i.series_number }}</td>
                                             <td><a href="{% url 'sanatorium_staff:get_patient_by_id' i.pk %}">{{ i.patient.full_name }}</a></td>
                                             <td>
                                                 {{ i.patient.formatted_gender }}
@@ -108,15 +108,15 @@
                                             </td>
                                             <td>
                                                 <span class="badge"
-                                                      style="background-color: {{ i.current_room_type.color }};">{{ i.current_room_type }}</span>
+                                                      style="background-color: {{ i.booking.current_room_type.color }};">{{ i.booking.current_room_type }}</span>
                                             </td>
-                                            <td>{{ i.current_room.room_number }}</td>
-                                            <td>{{ i.start_date }}</td>
-                                            <td>{{ i.end_date }}</td>
-                                            <td>{{ i.duration }}</td>
+                                            <td>{{ i.booking.current_room.room_number }}</td>
+                                            <td>{{ i.booking.start_date }}</td>
+                                            <td>{{ i.booking.end_date }}</td>
+                                            <td>{{ i.booking.duration }}</td>
                                             <td>
                                                 <span class="badge"
-                                                      style="background-color: {{ i.current_tariff.color }};">{{ i.current_tariff }}</span>
+                                                      style="background-color: {{ i.booking.current_tariff.color }};">{{ i.booking.current_tariff }}</span>
                                             </td>
                                         </tr>
                                     {% endfor %}

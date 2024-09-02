@@ -42,7 +42,7 @@
                 <!-- SELECT2 EXAMPLE -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Забронированные</h3>
+                        <h3 class="card-title">{{ ih_form.instance.series_number }} | {{ patient_form.instance.full_name }}</h3>
                     </div>
 
                     <div class="card-body">
@@ -235,38 +235,29 @@
                                                                                value="{{ ih_form.instance.series_number|default_if_none:'' }}"
                                                                                name="series_number">
                                                                     </div>
-                                                                    <div class="col-4">
-                                                                        <label>Тип</label>
-{#                                                                        <label>{{ ih_form.instance.type }} ---</label>#}
-                                                                        <select class="form-control select2"
-                                                                                style="width: 100%;">
 
-                                                                            {% for type in ill_his_types %}
-                                                                                <option value="{{ type.id }}"
-                                                                                        {% if ih_form.instance.type == type.0 %}selected{% endif %}>{{ type.0 }}</option>
-                                                                            {% endfor %}
-                                                                        </select>
-                                                                    </div>
                                                                 </div>
                                                                 <br>
                                                                 <div class="row">
-                                                                    <div class="col-4">
-                                                                        <label>Программа</label>
-                                                                        <select class="form-control select2"
-                                                                                style="width: 100%;">
-                                                                            {% for prog in programs %}
-                                                                                <option value="{{ prog.id }}"
-                                                                                        {% if ih_form.instance.booking.current_tariff.id == prog.id %}selected{% endif %}>{{ prog.name }}</option>
-                                                                            {% endfor %}
-                                                                        </select>
-                                                                    </div>
+
                                                                     <div class="col-6">
                                                                         <label>Лечащий врач:</label>
                                                                         <select class="form-control select2"
-                                                                                style="width: 100%;">
+                                                                                style="width: 100%;" name="doctor">
                                                                             {% for doctor in doctors %}
                                                                                 <option value="{{ doctor.id }}"
-                                                                                        {% if ih_form.instance.doctor.value == doctor.id %}selected{% endif %}>{{ doctor.doctor.name }}</option>
+                                                                                        {% if ih_form.instance.doctor.id == doctor.id %}selected{% endif %}>{{ doctor}}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <label>Тип</label>
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;" name="type">
+
+                                                                            {% for type in ill_his_types %}
+                                                                                <option value="{{ type.0 }}"
+                                                                                        {% if ih_form.instance.type == type.0 %}selected{% endif %}>{{ type.0 }}</option>
                                                                             {% endfor %}
                                                                         </select>
                                                                     </div>
@@ -276,9 +267,9 @@
                                                                 <div class="row">
                                                                     <div class="col-10">
                                                                         <label>Медсестра:</label>
-                                                                      <select class="select2" multiple="multiple" data-placeholder="Медсестры" style="width: 100%;">
+                                                                      <select class="select2" multiple="multiple" data-placeholder="Медсестры" style="width: 100%;" name="nurse">
                                                                           {% for nurse in nurses %}
-                                                                              <option value="{{ nurse.id }}">{{ nurse.nurse.full_name }}</option>
+                                                                              <option value="{{ nurse.pk }}" {% if nurse in ih_form.instance.nurse.all %}selected{% endif %}>{{ nurse.nurse.full_name }}</option>
                                                                           {% endfor %}
                                                                       </select>
                                                                     </div>
@@ -309,29 +300,31 @@
                                                                     <div class="col-4">
                                                                         <label>Помещён в комнату:</label>
                                                                         <select class="form-control select2"
-                                                                                style="width: 100%;">
-                                                                            <option selected="selected">Alabama
-                                                                            </option>
-                                                                            <option>Alaska</option>
-                                                                            <option>California</option>
-                                                                            <option>Delaware</option>
-                                                                            <option>Tennessee</option>
-                                                                            <option>Texas</option>
-                                                                            <option>Washington</option>
+                                                                                style="width: 100%;" name="current_room">
+                                                                            {% for room in rooms %}
+                                                                                <option value="{{ room.pk }}"
+                                                                                        {% if booking_form.instance.current_room == room %}selected{% endif %}>{{ room.room_number }}</option>
+                                                                            {% endfor %}
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-4">
                                                                         <label>Тип комнаты:</label>
                                                                         <select class="form-control select2"
-                                                                                style="width: 100%;">
-                                                                            <option selected="selected">Alabama
-                                                                            </option>
-                                                                            <option>Alaska</option>
-                                                                            <option>California</option>
-                                                                            <option>Delaware</option>
-                                                                            <option>Tennessee</option>
-                                                                            <option>Texas</option>
-                                                                            <option>Washington</option>
+                                                                                style="width: 100%;" name="current_room_type">
+                                                                            {% for room_type in room_types %}
+                                                                                <option value="{{ room_type.pk }}"
+                                                                                        {% if booking_form.instance.current_room_type == room_type %}selected{% endif %}>{{ room_type }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <label>Программа</label>
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;" name="current_tariff">
+                                                                            {% for prog in programs %}
+                                                                                <option value="{{ prog.id }}"
+                                                                                        {% if booking_form.instance.current_tariff.id == prog.id %}selected{% endif %}>{{ prog.name }}</option>
+                                                                            {% endfor %}
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -339,14 +332,14 @@
                                                                 <div class="row">
                                                                     <div class="col-3">
                                                                         <label>Прибыл:</label>
-                                                                        <div class="input-group date" id="reservationdate"
+                                                                        <div class="input-group date" id="booking_start_date"
                                                                              data-target-input="nearest">
-                                                                            <input name="date_of_birth" type="text"
+                                                                            <input name="start_date" type="text"
                                                                                    class="form-control datetimepicker-input"
-                                                                                   data-target="#reservationdate"
-                                                                                   value="{{ patient_form.instance.date_of_birth|date:'d/m/Y' }}"/>
+                                                                                   data-target="#booking_start_date"
+                                                                                   value="{{ booking_form.instance.start_date|date:'d/m/Y' }}"/>
                                                                             <div class="input-group-append"
-                                                                                 data-target="#reservationdate"
+                                                                                 data-target="#booking_start_date"
                                                                                  data-toggle="datetimepicker">
                                                                                 <div class="input-group-text"><i
                                                                                         class="fa fa-calendar"></i></div>
@@ -355,14 +348,14 @@
                                                                     </div>
                                                                     <div class="col-3">
                                                                         <label>Планируемый отъезд:</label>
-                                                                        <div class="input-group date" id="reservationdate"
+                                                                        <div class="input-group date" id="booking_end_date"
                                                                              data-target-input="nearest">
-                                                                            <input name="date_of_birth" type="text"
+                                                                            <input name="end_date" type="text"
                                                                                    class="form-control datetimepicker-input"
-                                                                                   data-target="#reservationdate"
-                                                                                   value="{{ patient_form.instance.date_of_birth|date:'d/m/Y' }}"/>
+                                                                                   data-target="#booking_end_date"
+                                                                                   value="{{ booking_form.instance.end_date|date:'d/m/Y' }}"/>
                                                                             <div class="input-group-append"
-                                                                                 data-target="#reservationdate"
+                                                                                 data-target="#booking_end_date"
                                                                                  data-toggle="datetimepicker">
                                                                                 <div class="input-group-text"><i
                                                                                         class="fa fa-calendar"></i></div>
@@ -372,7 +365,7 @@
                                                                     <div class="col-3">
                                                                         <label>Количество к/дней:</label>
                                                                         <div>
-                                                                            <p class="lead mb-3">10</p>
+                                                                            <p class="lead mb-3">{{ booking_form.instance.duration }}</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -400,87 +393,60 @@
                                                                     <div class="card-body p-0">
                                                                         <table class="table table-striped projects">
                                                                             <thead>
-                                                                            <tr>
-                                                                                <th style="width: 1%">
-                                                                                    #
-                                                                                </th>
-                                                                                <th style="width: 20%">
-                                                                                    Название
-                                                                                </th>
-                                                                                <th style="width: 30%">
-                                                                                    Начало
-                                                                                </th>
-                                                                                <th>
-                                                                                    Окончание
-                                                                                </th>
-                                                                                <th style="width: 20%">
-                                                                                </th>
-                                                                            </tr>
+                                                                                <tr>
+                                                                                    <th style="width: 1%">
+                                                                                        #
+                                                                                    </th>
+                                                                                    <th style="width: 20%">
+                                                                                        Программа
+                                                                                    </th>
+                                                                                    <th style="width: 30%">
+                                                                                        Начало
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        Окончание
+                                                                                    </th>
+                                                                                    <th style="width: 20%">
+                                                                                    </th>
+                                                                                </tr>
                                                                             </thead>
                                                                             <tbody>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    1
-                                                                                </td>
-                                                                                <td>
-                                                                                    <a>
-                                                                                        AdminLTE v3
-                                                                                    </a>
+                                                                                {% for bh in booking_history %}
+                                                                                    <tr>
+                                                                                    <td>
+                                                                                        {{ forloop.counter }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <a>
+                                                                                            {{ bh.tariff}}
+                                                                                        </a>
 
-                                                                                </td>
-                                                                                <td>
-                                                                                    10.02.2024
-                                                                                </td>
-                                                                                <td>
-                                                                                    21.02.2024
-                                                                                </td>
-                                                                                <td class="project-actions text-right">
-                                                                                    <a class="btn btn-info btn-sm" href="#">
-                                                                                        <i class="fas fa-pencil-alt">
-                                                                                        </i>
-                                                                                        Изменить
-                                                                                    </a>
-                                                                                    <a class="btn btn-danger btn-sm" href="#">
-                                                                                        <i class="fas fa-trash">
-                                                                                        </i>
-                                                                                        Удалить
-                                                                                    </a>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    2
-                                                                                </td>
-                                                                                <td>
-                                                                                    <a>
-                                                                                        AdminLTE v3
-                                                                                    </a>
-
-                                                                                </td>
-                                                                                <td>
-                                                                                    10.02.2024
-                                                                                </td>
-                                                                                <td>
-                                                                                    21.02.2024
-                                                                                </td>
-                                                                                <td class="project-actions text-right">
-                                                                                    <a class="btn btn-info btn-sm" href="#">
-                                                                                        <i class="fas fa-pencil-alt">
-                                                                                        </i>
-                                                                                        Изменить
-                                                                                    </a>
-                                                                                    <a class="btn btn-danger btn-sm" href="#">
-                                                                                        <i class="fas fa-trash">
-                                                                                        </i>
-                                                                                        Удалить
-                                                                                    </a>
-                                                                                </td>
-                                                                            </tr>
-
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{ bh.start_date}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{ bh.end_date}}
+                                                                                    </td>
+                                                                                    <td class="project-actions text-right">
+                                                                                        <a class="btn btn-info btn-sm" href="#">
+                                                                                            <i class="fas fa-pencil-alt">
+                                                                                            </i>
+                                                                                            Изменить
+                                                                                        </a>
+                                                                                        <a class="btn btn-danger btn-sm" href="#">
+                                                                                            <i class="fas fa-trash">
+                                                                                            </i>
+                                                                                            Удалить
+                                                                                        </a>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                {% endfor %}
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
                                                                 </div>
+                                                                <br>
                                                                 <div class="row">
                                                                     <div class="col-10">
                                                                         <a class="btn btn-success btn-sm" href="#">
@@ -699,6 +665,14 @@
 
         //Date picker
         $('#reservationdate').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#booking_start_date').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#booking_end_date').datetimepicker({
             format: 'DD/MM/YYYY'
         });
 
