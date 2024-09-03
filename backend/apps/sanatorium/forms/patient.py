@@ -37,10 +37,6 @@ class IllnessHistoryUpdateForm(forms.ModelForm):
             'doctor'
         ]
 
-    nurse = forms.SelectMultiple(
-        choices=NurseAccountModel
-    )
-
 
 class BookingModelUpdateForm(forms.ModelForm):
     start_date = forms.DateField(
