@@ -19,12 +19,6 @@ from apps.logus.forms.booking import PatientRegistrationForm
 from apps.warehouse.forms.cheque import ChequeItemCountForm, VariantFormSet, ChequeForm
 from apps.warehouse.models import WarehouseChequeModel, ChequeItemsModel, ItemsInStockModel
 
-from django.template.loader import get_template
-from django.template.loader import render_to_string
-import weasyprint
-
-from apps.warehouse.views.cheque_gen import generate_cheque_pdf
-
 ITEMS_PER_PAGE = 30
 
 
@@ -283,17 +277,6 @@ def add_new_patient(request):
         return redirect('warehouse_v2:cheque-create')
     return render(request, 'cheque/cheque_create.html', {'form': form})
 
-
-def gen_invoice(request, pk):
-    cheque = get_object_or_404(WarehouseChequeModel, pk=pk)
-    html = render_to_string('cheque/invoice.html',
-                            {'order': cheque})
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'filename=order_{cheque.id}.pdf'
-    weasyprint.HTML(string=html).write_pdf(response,
-                                           stylesheets=[weasyprint.CSS(
-                                               settings.STATIC_ROOT / 'css/pdf.css')])
-    return response
 
 
 def get_cheques_queryset(query=None):
