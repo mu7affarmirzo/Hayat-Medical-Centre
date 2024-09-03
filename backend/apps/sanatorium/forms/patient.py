@@ -37,9 +37,9 @@ class IllnessHistoryUpdateForm(forms.ModelForm):
             'doctor'
         ]
 
-    nurse = forms.SelectMultiple(
-        choices=NurseAccountModel
-    )
+    # nurse = forms.SelectMultiple(
+    #     choices=NurseAccountModel
+    # )
 
 
 class BookingModelUpdateForm(forms.ModelForm):
