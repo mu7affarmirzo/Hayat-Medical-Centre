@@ -42,7 +42,7 @@ urlpatterns = [
     path('main-point/cheque/detailed/<int:pk>', cheque.cheque_detailed_view, name='cheque-detailed'),
     path('main-point/cheque/add-new-patient', cheque.add_new_patient, name='add-new-patient'),
 
-    path('main-point/cheque/invoice/<int:pk>', cheque.gen_invoice, name='invoice-gen'),
+    # path('main-point/cheque/invoice/<int:pk>', cheque.gen_invoice, name='invoice-gen'),
     # CHEQUE ENDS HERE
 
     # TRANSFERS PATHs
