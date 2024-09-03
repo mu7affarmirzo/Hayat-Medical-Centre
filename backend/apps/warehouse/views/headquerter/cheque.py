@@ -1,12 +1,14 @@
 import json
 import datetime
+import os
 from operator import attrgetter
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -16,9 +18,49 @@ from apps.account.models import PatientModel
 from apps.logus.forms.booking import PatientRegistrationForm
 from apps.warehouse.forms.cheque import ChequeItemCountForm, VariantFormSet, ChequeForm
 from apps.warehouse.models import WarehouseChequeModel, ChequeItemsModel, ItemsInStockModel
+
+from django.template.loader import get_template
+from django.template.loader import render_to_string
+import weasyprint
+
 from apps.warehouse.views.cheque_gen import generate_cheque_pdf
 
 ITEMS_PER_PAGE = 30
+
+
+from django.contrib.staticfiles import finders
+
+
+def link_callback(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+    resources
+    """
+    result = finders.find(uri)
+    if result:
+        if not isinstance(result, (list, tuple)):
+            result = [result]
+        result = list(os.path.realpath(path) for path in result)
+        path = result[0]
+    else:
+        sUrl = settings.STATIC_URL        # Typically /static/
+        sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
+        mUrl = settings.MEDIA_URL         # Typically /media/
+        mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
+
+        if uri.startswith(mUrl):
+            path = os.path.join(mRoot, uri.replace(mUrl, ""))
+        elif uri.startswith(sUrl):
+            path = os.path.join(sRoot, uri.replace(sUrl, ""))
+        else:
+            return uri
+
+    # make sure that file exists
+    if not os.path.isfile(path):
+        raise RuntimeError(
+            'media URI must start with %s or %s' % (sUrl, mUrl)
+        )
+    return path
 
 
 class ChequeInline:
@@ -242,9 +284,16 @@ def add_new_patient(request):
     return render(request, 'cheque/cheque_create.html', {'form': form})
 
 
-def cheque_pdf_view(request, pk):
+def gen_invoice(request, pk):
     cheque = get_object_or_404(WarehouseChequeModel, pk=pk)
-    return generate_cheque_pdf(cheque.id)
+    html = render_to_string('cheque/invoice.html',
+                            {'order': cheque})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=order_{cheque.id}.pdf'
+    weasyprint.HTML(string=html).write_pdf(response,
+                                           stylesheets=[weasyprint.CSS(
+                                               settings.STATIC_ROOT / 'css/pdf.css')])
+    return response
 
 
 def get_cheques_queryset(query=None):

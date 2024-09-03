@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
@@ -12,6 +14,7 @@ def generate_cheque_pdf(cheque_id):
     # Fetch the cheque from the database
     cheque = WarehouseChequeModel.objects.get(id=cheque_id)
     items = cheque.cheque_items.all()
+    # pdfmetrics.registerFont(TTFont('DejaVuSerif', 'DejaVuSerif.ttf'))
 
     # Create a Django HttpResponse object to serve the PDF
     response = HttpResponse(content_type='application/pdf')
@@ -27,7 +30,7 @@ def generate_cheque_pdf(cheque_id):
 
     # Cheque details
     p.setFont("Helvetica", 12)
-    p.drawString(100, height - 60, f"Cheque Number: {cheque.cheque_number}")
+    p.drawString(100, height - 60, f"Номер чека: {cheque.cheque_number}")
     p.drawString(100, height - 80, f"Patient: {cheque.patient.full_name if cheque.patient else 'Unknown'}")
     p.drawString(100, height - 100, f"Date: {cheque.created_at.strftime('%d.%m.%Y %H:%M:%S')}")
     p.drawString(100, height - 120, f"Cashier: {cheque.created_by.username}")
