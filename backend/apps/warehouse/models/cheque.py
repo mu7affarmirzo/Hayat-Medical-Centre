@@ -67,6 +67,7 @@ class ChequeItemsModel(models.Model):
         # Update the quantity of the item in stock
         if self.item:
             self.item.unit_quantity -= quantity_difference
+            self.price = self.item.unit_price
             self.item.save()
 
         super().save(*args, **kwargs)
