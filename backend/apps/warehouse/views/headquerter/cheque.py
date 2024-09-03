@@ -16,6 +16,7 @@ from apps.account.models import PatientModel
 from apps.logus.forms.booking import PatientRegistrationForm
 from apps.warehouse.forms.cheque import ChequeItemCountForm, VariantFormSet, ChequeForm
 from apps.warehouse.models import WarehouseChequeModel, ChequeItemsModel, ItemsInStockModel
+from apps.warehouse.views.cheque_gen import generate_cheque_pdf
 
 ITEMS_PER_PAGE = 30
 
@@ -239,6 +240,11 @@ def add_new_patient(request):
     else:
         return redirect('warehouse_v2:cheque-create')
     return render(request, 'cheque/cheque_create.html', {'form': form})
+
+
+def cheque_pdf_view(request, pk):
+    cheque = get_object_or_404(WarehouseChequeModel, pk=pk)
+    return generate_cheque_pdf(cheque.id)
 
 
 def get_cheques_queryset(query=None):
