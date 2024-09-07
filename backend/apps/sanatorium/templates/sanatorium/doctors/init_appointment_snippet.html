@@ -1,0 +1,395 @@
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+
+<div class="tab-pane text-left fade show active" id="vert-tabs-init-app" role="tabpanel"
+     aria-labelledby="vert-tabs-init-app-tab">
+    <div class="card-body">
+        <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="custom-init-app-by-id-1-tab"
+                   data-toggle="pill" href="#custom-init-app-by-id-1" role="tab"
+                   aria-controls="custom-init-app-by-id-1" aria-selected="true">05.07.2023 10:46</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="custom-init-app-by-id-2-tab"
+                   data-toggle="pill" href="#custom-init-app-by-id-2"
+                   role="tab" aria-controls="custom-init-app-by-id-2"
+                   aria-selected="false">07.07.2023 10:46</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="custom-content-below-tabContent">
+            <div class="tab-pane fade show active" id="custom-init-app-by-id-1" role="tabpanel" aria-labelledby="custom-init-app-by-id-1-tab">
+                <form enctype="multipart/form-data" method="post" id="product_form">
+                    {% csrf_token %}
+                    <div class="card-header">
+                        <h3 class="card-title">Основные 12</h3>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <label>Фамилия</label>
+                            <input type="text" class="form-control"
+                                   placeholder="Фамилия"
+                                   value="{{ patient_form.instance.mid_name|default_if_none:'' }}"
+                                   name="mid_name">
+                        </div>
+                        <div class="col-4">
+                            <label>Имя</label>
+                            <input type="text" class="form-control"
+                                   placeholder="Имя"
+                                   value="{{ patient_form.instance.f_name|default_if_none:'' }}"
+                                   name="f_name">
+                        </div>
+                        <div class="col-4">
+                            <label>Отчество</label>
+                            <input type="text" class="form-control"
+                                   placeholder="Отчество"
+                                   value="{{ patient_form.instance.l_name|default_if_none:'' }}"
+                                   name="l_name">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-4">
+                            <label>Пол</label>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input value='False'
+                                           class="custom-control-input" type="radio"
+                                           id="customRadio1" name="gender"
+                                           {% if patient_form.instance.gender == False %}checked{% endif %}>
+                                    <label for="customRadio1"
+                                           class="custom-control-label">Женщина</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input value='True' class="custom-control-input"
+                                           type="radio"
+                                           id="customRadio2" name="gender"
+                                           {% if patient_form.instance.gender == True %}checked{% endif %}>
+                                    <label for="customRadio2"
+                                           class="custom-control-label">Мужчина</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <label>Дата рождения:</label>
+                            <div class="input-group date" id="reservationdate"
+                                 data-target-input="nearest">
+                                <input name="date_of_birth" type="text"
+                                       class="form-control datetimepicker-input"
+                                       data-target="#reservationdate"
+                                       value="{{ patient_form.instance.date_of_birth|date:'d/m/Y' }}"/>
+                                <div class="input-group-append"
+                                     data-target="#reservationdate"
+                                     data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i
+                                            class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label>Возрасть:</label>
+                            <p class="form-control">{{ patient_form.instance.age }}</p>
+                        </div>
+
+
+                    </div>
+
+                    <div class="card-header">
+                        <h3 class="card-title">Контакты</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <label>Основной</label>
+                            <input type="text" class="form-control"
+                                   placeholder="+998901234567"
+                                   value="{{ patient_form.instance.mobile_phone_number|default_if_none:'' }}"
+                                   name="mobile_phone_number">
+                        </div>
+                        <div class="col-4">
+                            <label>Домашный</label>
+                            <input type="text" class="form-control"
+                                   placeholder="+998701234567"
+                                   value="{{ patient_form.instance.home_phone_number|default_if_none:'' }}"
+                                   name="home_phone_number">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="patient_email">E-mail</label>
+                        <input type="text" class="form-control" id="patient_email"
+                               name="email" placeholder="hayat@medical.uz"
+                               value="{{ patient_form.instance.email|default_if_none:'' }}"
+                               min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Быстрый ввод адреса</label>
+                        <input type="text" class="form-control" id="address"
+                               name="address" placeholder="Домашний адрес"
+                               maxlength="255"
+                               value="{{ patient_form.instance.address|default_if_none:'' }}"
+                               required>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" name="patient_form"
+                                class="btn btn-primary">Сохранить
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="custom-init-app-by-id-2" role="tabpanel" aria-labelledby="custom-init-app-by-id-2-tab">
+                <form enctype="multipart/form-data" method="post" id="ih_form">
+                    {% csrf_token %}
+                    <br>
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h2 class="card-title">Детали ИБ</h2>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>История болезни №</label>
+                                    <input type="text" class="form-control"
+                                           placeholder="919/2024"
+                                           value="{{ ih_form.instance.series_number|default_if_none:'' }}"
+                                           name="series_number">
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <label>Лечащий врач:</label>
+                                    <select class="form-control select2"
+                                            style="width: 100%;" name="doctor">
+                                        {% for doctor in doctors %}
+                                            <option value="{{ doctor.id }}"
+                                                    {% if ih_form.instance.doctor.id == doctor.id %}selected{% endif %}>{{ doctor }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <label>Тип</label>
+                                    <select class="form-control select2"
+                                            style="width: 100%;" name="type">
+
+                                        {% for type in ill_his_types %}
+                                            <option value="{{ type.0 }}"
+                                                    {% if ih_form.instance.type == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-10">
+                                    <label>Медсестра:</label>
+                                    <select class="select2" multiple="multiple" data-placeholder="Медсестры"
+                                            style="width: 100%;" name="nurse">
+                                        {% for nurse in nurses %}
+                                            <option value="{{ nurse.pk }}"
+                                                    {% if nurse in ih_form.instance.nurse.all %}selected{% endif %}>{{ nurse.nurse.full_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-10">
+                                    <button type="submit" name="ih_form"
+                                            class="btn btn-primary">Сохранить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+                <form enctype="multipart/form-data" method="post" id="booking_form">
+                    {% csrf_token %}
+                    <div class="card card-gray">
+                        <div class="card-header">
+                            <h2 class="card-title">Пребывание в санатории</h2>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Помещён в комнату:</label>
+                                    <select class="form-control select2"
+                                            style="width: 100%;" name="current_room">
+                                        {% for room in rooms %}
+                                            <option value="{{ room.pk }}"
+                                                    {% if booking_form.instance.current_room == room %}selected{% endif %}>{{ room.room_number }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <label>Тип комнаты:</label>
+                                    <select class="form-control select2"
+                                            style="width: 100%;" name="current_room_type">
+                                        {% for room_type in room_types %}
+                                            <option value="{{ room_type.pk }}"
+                                                    {% if booking_form.instance.current_room_type == room_type %}selected{% endif %}>{{ room_type }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <label>Программа</label>
+                                    <select class="form-control select2"
+                                            style="width: 100%;" name="current_tariff">
+                                        {% for prog in programs %}
+                                            <option value="{{ prog.id }}"
+                                                    {% if booking_form.instance.current_tariff.id == prog.id %}selected{% endif %}>{{ prog.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-3">
+                                    <label>Прибыл:</label>
+                                    <div class="input-group date" id="booking_start_date"
+                                         data-target-input="nearest">
+                                        <input name="start_date" type="text"
+                                               class="form-control datetimepicker-input"
+                                               data-target="#booking_start_date"
+                                               value="{{ booking_form.instance.start_date|date:'d/m/Y' }}"/>
+                                        <div class="input-group-append"
+                                             data-target="#booking_start_date"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i
+                                                    class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label>Планируемый отъезд:</label>
+                                    <div class="input-group date" id="booking_end_date"
+                                         data-target-input="nearest">
+                                        <input name="end_date" type="text"
+                                               class="form-control datetimepicker-input"
+                                               data-target="#booking_end_date"
+                                               value="{{ booking_form.instance.end_date|date:'d/m/Y' }}"/>
+                                        <div class="input-group-append"
+                                             data-target="#booking_end_date"
+                                             data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i
+                                                    class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label>Количество к/дней:</label>
+                                    <div>
+                                        <p class="lead mb-3">{{ booking_form.instance.duration }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-10">
+                                    <button type="submit" name="booking_form"
+                                            class="btn btn-primary ">Сохранить
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+                <form enctype="multipart/form-data" method="post" id="title_form">
+                    {% csrf_token %}
+                    <div class="card card-danger">
+                        <div class="card-header">
+                            <h2 class="card-title">Лечебные программы</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="card-body p-0">
+                                    <table class="table table-striped projects">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 1%">
+                                                #
+                                            </th>
+                                            <th style="width: 20%">
+                                                Программа
+                                            </th>
+                                            <th style="width: 30%">
+                                                Начало
+                                            </th>
+                                            <th>
+                                                Окончание
+                                            </th>
+                                            <th style="width: 20%">
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for bh in booking_history %}
+                                            <tr>
+                                                <td>
+                                                    {{ forloop.counter }}
+                                                </td>
+                                                <td>
+                                                    <a>
+                                                        {{ bh.tariff }}
+                                                    </a>
+
+                                                </td>
+                                                <td>
+                                                    {{ bh.start_date }}
+                                                </td>
+                                                <td>
+                                                    {{ bh.end_date }}
+                                                </td>
+                                                <td class="project-actions text-right">
+                                                    <a class="btn btn-info btn-sm" href="#">
+                                                        <i class="fas fa-pencil-alt">
+                                                        </i>
+                                                        Изменить
+                                                    </a>
+                                                    <a class="btn btn-danger btn-sm" href="#">
+                                                        <i class="fas fa-trash">
+                                                        </i>
+                                                        Удалить
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-10">
+                                    <a class="btn btn-success btn-sm" href="#">
+                                        <i class="fas fa-plus">
+                                        </i>
+                                        Добавить
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -78,3 +78,11 @@ def items_to_stock(sender, instance: IncomeItemsModel, created, **kwargs):
             price=instance.price,
             unit_price=instance.unit_price
         )
+
+
+@receiver(post_save, sender=IncomeModel)
+def create_income_serial_number(sender, instance=None, created=False, **kwargs):
+    if created:
+        number_str = str(instance.id).zfill(5)
+        instance.serial = f"{instance.serial}|{number_str}"
+        instance.save()

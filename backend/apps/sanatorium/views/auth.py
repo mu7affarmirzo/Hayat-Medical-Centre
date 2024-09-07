@@ -55,7 +55,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('sanatorium_auth:login')
+    return redirect('login')
 
 
 @role_required(role='sanatorium', login_url='sanatorium_auth:logout')
@@ -67,6 +67,7 @@ def main_screen_view(request):
         target_role = target_role.role.name
 
     user_role_based_redirect = {
+        'warehouse': 'warehouse_v2:main_screen',
         'sanatorium.staff': 'sanatorium_staff:main_screen',
         'sanatorium.nurse': 'sanatorium_nurse:main_screen',
         'sanatorium.admin': 'sanatorium_admin:main_screen',
@@ -74,6 +75,7 @@ def main_screen_view(request):
     }
 
     if target_role in user_role_based_redirect:
+        print(user_role_based_redirect[target_role])
         return redirect(user_role_based_redirect[target_role])
     return redirect('sanatorium_auth:logout')
 

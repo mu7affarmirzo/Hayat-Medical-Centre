@@ -44,13 +44,13 @@ def main_screen_view(request):
         "bookings": bookings
     }
 
-    return render(request, 'sanatorium/staff/main_screen.html', context)
+    return render(request, 'sanatorium/doctors/main_screen.html', context)
 
 
 def get_patients_list(request):
     context = {}
 
-    return render(request, 'sanatorium/staff/main_screen.html', context)
+    return render(request, 'sanatorium/doctors/main_screen.html', context)
 
 
 def get_patient_by_id_view(request, pk):
@@ -59,7 +59,7 @@ def get_patient_by_id_view(request, pk):
     try:
         ill_his = IllnessHistory.objects.get(pk=pk)
     except:
-        return render(request, 'sanatorium/staff/patient.html', context)
+        return render(request, 'sanatorium/doctors/patient.html', context)
 
     if request.method == "POST":
         patient_form = PatientUpdateForm(request.POST, instance=ill_his.patient)
@@ -104,7 +104,7 @@ def get_patient_by_id_view(request, pk):
     context["ih_form"] = ih_form
     context["booking_form"] = booking_form
 
-    return render(request, 'sanatorium/staff/patient.html', context)
+    return render(request, 'sanatorium/doctors/patient.html', context)
 
 
 def get_bookings_by_start_date_view(request):
