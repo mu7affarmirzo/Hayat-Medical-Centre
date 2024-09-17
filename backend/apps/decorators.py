@@ -11,6 +11,7 @@ def role_required(role, login_url=None):
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
+            print(request)
             # Check if the user is authenticated
             if not request.user.is_authenticated:
                 return login_required(view_func)(request, login_url, *args, **kwargs)
@@ -26,6 +27,7 @@ def role_required(role, login_url=None):
             if target_role == 'admin':
                 return view_func(request, *args, **kwargs)
 
+            print(target_role, role)
             if not set(role).issubset(set(target_role)):
                 return redirect(login_url)
 

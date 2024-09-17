@@ -9,7 +9,7 @@ urlpatterns = [
     path('logout/', auth.logout_view, name='logout'),
     path('notification_redirect_view/<int:pk>', auth.notification_redirect_view, name='note_redirect'),
 
-    path('main_screen/', auth.main_screen_view, name='mainscreen'),
+    path('main_screen/', auth.main_screen_view, name='main_screen'),
 
     # ITEMS PATHS
     path('items-search/', items.item_search, name='mp-item-search'),
@@ -42,7 +42,7 @@ urlpatterns = [
     path('main-point/cheque/detailed/<int:pk>', cheque.cheque_detailed_view, name='cheque-detailed'),
     path('main-point/cheque/add-new-patient', cheque.add_new_patient, name='add-new-patient'),
 
-    # path('main-point/cheque/invoice/<int:pk>', cheque.gen_invoice, name='invoice-gen'),
+    path('main-point/cheque/invoice/<int:pk>', cheque.gen_invoice, name='invoice-gen'),
     # CHEQUE ENDS HERE
 
     # TRANSFERS PATHs

@@ -182,7 +182,7 @@ def cheque_detailed_view(request, pk):
     cheque = get_object_or_404(WarehouseChequeModel, pk=pk)
     context = {
         "cheque": cheque,
-        "details": cheque.cheque_items.all()
+        "details": cheque.cheque_items.all(),
     }
     return render(request, 'cheque/cheque_details.html', context)
 
@@ -245,6 +245,15 @@ def add_new_patient(request):
         return redirect('warehouse_v2:cheque-create')
     return render(request, 'cheque/cheque_create.html', {'form': form})
 
+
+def gen_invoice(request, pk):
+    cheque = get_object_or_404(WarehouseChequeModel, pk=pk)
+    context = {
+        "cheque": cheque,
+        "details": cheque.cheque_items.all(),
+        "date": datetime.date.today()
+    }
+    return render(request, 'cheque/invoice.html', context)
 
 
 def get_cheques_queryset(query=None):

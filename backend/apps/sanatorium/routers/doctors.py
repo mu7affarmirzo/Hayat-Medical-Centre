@@ -5,6 +5,7 @@ from apps.sanatorium.views import doctors
 app_name = 'sanatorium_doctors'
 
 urlpatterns = [
+    path('sidebar/', doctors.sidebar_view, name='sidebar_view'),
     path('main_screen/', doctors.main_screen_view, name='main_screen'),
     path('patients/', doctors.get_patients_list, name='patients'),
     path('get-patient/<int:pk>', doctors.get_patient_by_id_view, name='get_patient_by_id'),

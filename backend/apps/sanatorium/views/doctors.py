@@ -21,6 +21,12 @@ from apps.sanatorium.models import IllnessHistory
 BOOKINGS_PER_PAGE = 30
 
 
+@role_required(role='sanatorium.doctor', login_url='logout')
+def sidebar_view(request):
+    return render(request, 'sanatorium/doctors/sidebar.html', {})
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
 def main_screen_view(request):
     query = request.GET.get('q', '')
     search_query = request.GET.get('table_search')
@@ -47,12 +53,14 @@ def main_screen_view(request):
     return render(request, 'sanatorium/doctors/main_screen.html', context)
 
 
+@role_required(role='sanatorium.doctor', login_url='logout')
 def get_patients_list(request):
     context = {}
 
     return render(request, 'sanatorium/doctors/main_screen.html', context)
 
 
+@role_required(role='sanatorium.doctor', login_url='logout')
 def get_patient_by_id_view(request, pk):
     context = {}
 
@@ -107,6 +115,7 @@ def get_patient_by_id_view(request, pk):
     return render(request, 'sanatorium/doctors/patient.html', context)
 
 
+@role_required(role='sanatorium.doctor', login_url='logout')
 def get_bookings_by_start_date_view(request):
     start_date_str = request.GET.get('start_date')
     if start_date_str:

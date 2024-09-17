@@ -12,14 +12,31 @@ def user_redirect(user):
     if role_page:
         return redirect(role_page.role.name)
     else:
-        return redirect("warehouse_v2:mainscreen")
+        return redirect("warehouse_v2:main_screen")
+        return redirect("warehouse_v2:main_screen")
 
 
 def login_view(request):
     context = {}
     user = request.user
     if user.is_authenticated:
-        return redirect("warehouse_v2:mainscreen")
+        target_role = AccountRolesModel.objects.filter(user=request.user)
+        target_role = target_role.first()
+        if target_role:
+            target_role = target_role.role.name
+
+        user_role_based_redirect = {
+            'warehouse': 'warehouse_v2:main_screen',
+            'logus.reception': 'logus_auth:main_screen',
+            'sanatorium.staff': 'sanatorium_staff:main_screen',
+            'sanatorium.nurse': 'sanatorium_nurse:main_screen',
+            'sanatorium.admin': 'sanatorium_admin:main_screen',
+            'sanatorium.doctor': 'sanatorium_doctors:main_screen',
+        }
+
+        if target_role in user_role_based_redirect:
+            return redirect(user_role_based_redirect[target_role])
+        return render(request, 'auth/login.html', context)
 
     if request.POST:
         form = AccountAuthenticationForm(request.POST)
@@ -37,7 +54,7 @@ def login_view(request):
                     target_role = target_role.role.name
 
                 user_role_based_redirect = {
-                    'warehouse': 'warehouse_v2:mainscreen',
+                    'warehouse': 'warehouse_v2:main_screen',
                     'logus.reception': 'logus_auth:main_screen',
                     'sanatorium.staff': 'sanatorium_staff:main_screen',
                     'sanatorium.nurse': 'sanatorium_nurse:main_screen',
@@ -93,4 +110,4 @@ def notification_redirect_view(request, pk):
 
         return redirect(target_notification.generated_url)
     else:
-        return redirect('warehouse_v2:mainscreen')
+        return redirect('warehouse_v2:main_screen')

@@ -2,28 +2,30 @@
 {% load i18n %}
 {% load humanize %}
 
-<div class="tab-pane text-left fade show active" id="vert-tabs-init-app" role="tabpanel"
-     aria-labelledby="vert-tabs-init-app-tab">
+<div class="tab-pane text-left fade show active" id="vert-tabs-title-page" role="tabpanel"
+     aria-labelledby="vert-tabs-title-page-tab">
     <div class="card-body">
         <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="custom-init-app-by-id-1-tab"
-                   data-toggle="pill" href="#custom-init-app-by-id-1" role="tab"
-                   aria-controls="custom-init-app-by-id-1" aria-selected="true">05.07.2023 10:46</a>
+                <a class="nav-link active" id="custom-content-below-home-tab"
+                   data-toggle="pill" href="#custom-content-below-home" role="tab"
+                   aria-controls="custom-content-below-home" aria-selected="true">Пациент</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="custom-init-app-by-id-2-tab"
-                   data-toggle="pill" href="#custom-init-app-by-id-2"
-                   role="tab" aria-controls="custom-init-app-by-id-2"
-                   aria-selected="false">07.07.2023 10:46</a>
+                <a class="nav-link" id="custom-content-below-profile-tab"
+                   data-toggle="pill" href="#custom-content-below-profile"
+                   role="tab" aria-controls="custom-content-below-profile"
+                   aria-selected="false">Титульная страница</a>
             </li>
+
         </ul>
         <div class="tab-content" id="custom-content-below-tabContent">
-            <div class="tab-pane fade show active" id="custom-init-app-by-id-1" role="tabpanel" aria-labelledby="custom-init-app-by-id-1-tab">
+            <div class="tab-pane fade show active" id="custom-content-below-home"
+                 role="tabpanel" aria-labelledby="custom-content-below-home-tab">
                 <form enctype="multipart/form-data" method="post" id="product_form">
                     {% csrf_token %}
                     <div class="card-header">
-                        <h3 class="card-title">Основные 12</h3>
+                        <h3 class="card-title">Основные</h3>
                     </div>
 
                     <div class="row">
@@ -141,7 +143,8 @@
                     </div>
                 </form>
             </div>
-            <div class="tab-pane fade" id="custom-init-app-by-id-2" role="tabpanel" aria-labelledby="custom-init-app-by-id-2-tab">
+            <div class="tab-pane fade" id="custom-content-below-profile"
+                 role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
                 <form enctype="multipart/form-data" method="post" id="ih_form">
                     {% csrf_token %}
                     <br>
