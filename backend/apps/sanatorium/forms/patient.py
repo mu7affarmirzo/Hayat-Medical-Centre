@@ -8,7 +8,7 @@ from apps.sanatorium.models import IllnessHistory
 class PatientUpdateForm(forms.ModelForm):
     date_of_birth = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),
-        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y'],
+        input_formats=['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%d/%m/%Y'],
         required=False  # Make it optional in case it's empty or not filled
     )
 

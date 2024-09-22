@@ -15,8 +15,11 @@ from apps.account.models import PatientModel, DoctorAccountModel, NurseAccountMo
 from apps.decorators import role_required
 from apps.logus.models import BookingModel, AvailableTariffModel, AvailableRoomModel, AvailableRoomsTypeModel
 from apps.logus.views.bookings import get_bookings_view
+from apps.sanatorium.forms.doctors import InitialAppointmentShortForm, BasePillsInjectionsForm
 from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
-from apps.sanatorium.models import IllnessHistory
+from apps.sanatorium.models import IllnessHistory, DiagnosisTemplate, InitialAppointmentWithDoctorModel, \
+    BasePillsInjectionsModel
+from apps.warehouse.models import ItemsInStockModel
 
 BOOKINGS_PER_PAGE = 30
 
@@ -51,6 +54,127 @@ def main_screen_view(request):
     }
 
     return render(request, 'sanatorium/doctors/main_screen.html', context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def get_title_page_by_id_view(request, pk):
+    context = {
+        "active_page": {'title_page': 'active'}
+    }
+
+    try:
+        ill_his = IllnessHistory.objects.get(pk=pk)
+    except:
+        return render(request, 'sanatorium/doctors/title-page.html', context)
+
+    if request.method == "POST":
+        patient_form = PatientUpdateForm(request.POST, instance=ill_his.patient)
+        ih_form = IllnessHistoryUpdateForm(request.POST, instance=ill_his)
+        booking_form = BookingModelUpdateForm(request.POST, instance=ill_his.booking)
+
+        if 'patient_form' in request.POST and patient_form.is_valid():
+            patient: PatientModel = patient_form.save(commit=False)
+            patient.modified_by = request.user
+            patient.save()
+            return redirect('sanatorium_doctors:title_page', pk=pk)
+        if 'ih_form' in request.POST and ih_form.is_valid():
+            ih: IllnessHistory = ih_form.save(commit=False)
+            ih.modified_by = request.user
+            ih.save()
+            ih_form.save_m2m()
+            return redirect('sanatorium_doctors:title_page', pk=pk)
+        if 'booking_form' in request.POST and booking_form.is_valid():
+            booking: BookingModel = booking_form.save(commit=False)
+            booking.modified_by = request.user
+            booking.save()
+            return redirect('sanatorium_doctors:title_page', pk=pk)
+
+    context['ill_his'] = ill_his
+    context['ill_his_types'] = IllnessHistory.type.field.choices
+    context['patient'] = ill_his.patient
+
+    context['booking'] = ill_his.booking
+    context['booking_history'] = ill_his.booking.booking_history.all()
+    context['rooms'] = AvailableRoomModel.objects.all()
+    context['room_types'] = AvailableRoomsTypeModel.objects.all()
+    context['programs'] = AvailableTariffModel.objects.all()
+
+    context['doctors'] = DoctorAccountModel.objects.all()
+    context['nurses'] = NurseAccountModel.objects.all()
+
+    patient_form = PatientUpdateForm(instance=ill_his.patient)
+    ih_form = IllnessHistoryUpdateForm(instance=ill_his)
+    booking_form = BookingModelUpdateForm(instance=ill_his.booking)
+
+    context["patient_form"] = patient_form
+    context["ih_form"] = ih_form
+    context["booking_form"] = booking_form
+
+    return render(request, 'sanatorium/doctors/title-page.html', context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def get_init_app_by_id_view(request, pk):
+    context = {
+        "active_page": {'init_app_page': 'active'},
+        'doctor': request.user
+    }
+
+    try:
+        ill_his = IllnessHistory.objects.get(pk=pk)
+    except:
+        return redirect('sanatorium_doctors:main_screen')
+
+    init_app_instance = InitialAppointmentWithDoctorModel.objects.filter(illness_history=ill_his)
+
+    if init_app_instance:
+        init_app_form = InitialAppointmentShortForm(instance=ill_his.init_appointment)
+    else:
+        init_app_form = InitialAppointmentShortForm()
+
+    if request.method == "POST":
+        if init_app_instance:
+            init_app_form = InitialAppointmentShortForm(request.POST, instance=ill_his.init_appointment)
+        else:
+            init_app_form = InitialAppointmentShortForm(request.POST)
+
+        pills_form = BasePillsInjectionsForm(request.POST)
+
+        if 'init_app_form' in request.POST and init_app_form.is_valid():
+            init_app: InitialAppointmentWithDoctorModel = init_app_form.save(commit=False)
+            init_app.modified_by = request.user
+            init_app.created_by = request.user
+            init_app.doctor = request.user
+            init_app.illness_history = ill_his
+            init_app.save()
+            return redirect('sanatorium_doctors:init_app_page', pk=pk)
+        if 'pills_form' in request.POST and pills_form.is_valid():
+            pills_injections: BasePillsInjectionsModel = pills_form.save(commit=False)
+            pills_injections.modified_by = request.user
+            pills_injections.created_by = request.user
+            pills_injections.illness_history = ill_his
+            pills_injections.save()
+            return redirect('sanatorium_doctors:init_app_page', pk=pk)
+
+    context['init_app_form'] = init_app_form
+
+    context['ill_his'] = ill_his
+    context['patient'] = ill_his.patient
+    context['diagnosis'] = DiagnosisTemplate.objects.all()
+    context['pills'] = ItemsInStockModel.objects.filter(warehouse__name='Gospital')
+    context['pill_frequency_types'] = BasePillsInjectionsModel.frequency.field.choices
+    context['assigned_pills'] = BasePillsInjectionsModel.objects.filter(illness_history=ill_his)
+
+    context['booking'] = ill_his.booking
+    context['booking_history'] = ill_his.booking.booking_history.all()
+    context['rooms'] = AvailableRoomModel.objects.all()
+    context['room_types'] = AvailableRoomsTypeModel.objects.all()
+    context['programs'] = AvailableTariffModel.objects.all()
+
+    context['doctors'] = DoctorAccountModel.objects.all()
+    context['nurses'] = NurseAccountModel.objects.all()
+
+    return render(request, 'sanatorium/doctors/init-app-page.html', context)
 
 
 @role_required(role='sanatorium.doctor', login_url='logout')
