@@ -99,7 +99,7 @@
                                     {% for i in bookings %}
                                         <tr>
                                             <td>{{ i.series_number }}</td>
-                                            <td><a href="{% url 'sanatorium_doctors:get_patient_by_id' i.pk %}">{{ i.patient.full_name }}</a></td>
+                                            <td><a href="{% url 'sanatorium_doctors:title_page' i.pk %}">{{ i.patient.full_name }}</a></td>
                                             <td>
                                                 {{ i.patient.formatted_gender }}
                                             </td>

@@ -11,14 +11,14 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 
-from apps.account.models import PatientModel, DoctorAccountModel, NurseAccountModel
+from apps.account.models import PatientModel, DoctorAccountModel, NurseAccountModel, MedicalService
 from apps.decorators import role_required
 from apps.logus.models import BookingModel, AvailableTariffModel, AvailableRoomModel, AvailableRoomsTypeModel
 from apps.logus.views.bookings import get_bookings_view
-from apps.sanatorium.forms.doctors import InitialAppointmentShortForm, BasePillsInjectionsForm
+from apps.sanatorium.forms.doctors import InitialAppointmentShortForm, BasePillsInjectionsForm, BaseProcedureServiceForm
 from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
 from apps.sanatorium.models import IllnessHistory, DiagnosisTemplate, InitialAppointmentWithDoctorModel, \
-    BasePillsInjectionsModel
+    BasePillsInjectionsModel, BaseProcedureServiceModel
 from apps.warehouse.models import ItemsInStockModel
 
 BOOKINGS_PER_PAGE = 30
@@ -139,6 +139,7 @@ def get_init_app_by_id_view(request, pk):
             init_app_form = InitialAppointmentShortForm(request.POST)
 
         pills_form = BasePillsInjectionsForm(request.POST)
+        procedures_form = BaseProcedureServiceForm(request.POST)
 
         if 'init_app_form' in request.POST and init_app_form.is_valid():
             init_app: InitialAppointmentWithDoctorModel = init_app_form.save(commit=False)
@@ -155,15 +156,28 @@ def get_init_app_by_id_view(request, pk):
             pills_injections.illness_history = ill_his
             pills_injections.save()
             return redirect('sanatorium_doctors:init_app_page', pk=pk)
+        if 'procedures_form' in request.POST and procedures_form.is_valid():
+            procedures: BaseProcedureServiceModel = procedures_form.save(commit=False)
+            procedures.modified_by = request.user
+            procedures.created_by = request.user
+            procedures.illness_history = ill_his
+            procedures.save()
+            return redirect('sanatorium_doctors:init_app_page', pk=pk)
+        print(procedures_form.errors)
 
     context['init_app_form'] = init_app_form
 
     context['ill_his'] = ill_his
     context['patient'] = ill_his.patient
     context['diagnosis'] = DiagnosisTemplate.objects.all()
+
     context['pills'] = ItemsInStockModel.objects.filter(warehouse__name='Gospital')
     context['pill_frequency_types'] = BasePillsInjectionsModel.frequency.field.choices
     context['assigned_pills'] = BasePillsInjectionsModel.objects.filter(illness_history=ill_his)
+
+    context['assigned_procedures'] = BaseProcedureServiceModel.objects.filter(illness_history=ill_his)
+    context['procedures'] = MedicalService.objects.filter(type='procedure')
+    context['procedures_frequency_types'] = BaseProcedureServiceModel.frequency.field.choices
 
     context['booking'] = ill_his.booking
     context['booking_history'] = ill_his.booking.booking_history.all()

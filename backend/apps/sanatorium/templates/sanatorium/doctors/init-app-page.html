@@ -100,7 +100,7 @@
                                         </form>
 
                                         <br>
-                                        <div class="card card-primary" id="treatmen-program">
+                                        <div class="card card-primary" id="treatmen-programs">
                                             <div class="card-header">
                                                 <a href="#treatment-program"
                                                    style="text-decoration: none; color: inherit;">
@@ -178,7 +178,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="card card-primary" id="treatmen-program">
+                                        <div class="card card-primary" id="treatmen-procedures">
                                             <div class="card-header">
                                                 <a href="#treatment-program"
                                                    style="text-decoration: none; color: inherit;">
@@ -194,36 +194,75 @@
                                                                 <th style="width: 1%">
                                                                     #
                                                                 </th>
-                                                                <th style="width: 20%">
-                                                                    Программа
-                                                                </th>
-                                                                <th style="width: 30%">
-                                                                    Начало
+                                                                <th>
+                                                                    Статус
                                                                 </th>
                                                                 <th>
-                                                                    Окончание
+                                                                    Назначение
+                                                                </th>
+                                                                <th>
+                                                                    О
+                                                                </th>
+                                                                <th>
+                                                                    Д
+                                                                </th>
+                                                                <th>
+                                                                    Н
+                                                                </th>
+                                                                <th>
+                                                                    Дата
+                                                                </th>
+                                                                <th>
+                                                                    Способ оплаты
+                                                                </th>
+                                                                <th>
+                                                                    Цена
+                                                                </th>
+                                                                <th>
+                                                                    Назначил
                                                                 </th>
                                                                 <th style="width: 20%">
                                                                 </th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            {% for pill in booking_history %}
+                                                            {% for proc in assigned_procedures %}
                                                                 <tr>
                                                                     <td>
                                                                         {{ forloop.counter }}
                                                                     </td>
                                                                     <td>
-                                                                        <a>
-                                                                            {{ pill.tariff }}
-                                                                        </a>
-
+                                                                        {% if proc.state == 'assigned' %}
+                                                                            <span class="badge bg-warning">Назначено</span>
+                                                                        {% elif proc.state == 'dispatched' %}
+                                                                            <span class="badge bg-success">Диспетчеризовано</span>
+                                                                        {% elif proc.state == 'cancelled' %}
+                                                                            <span class="badge bg-danger">Отменено</span>
+                                                                        {% endif %}
                                                                     </td>
                                                                     <td>
-                                                                        {{ pill.start_date }}
+                                                                        {{ proc.medical_service }}
                                                                     </td>
                                                                     <td>
-                                                                        {{ pill.end_date }}
+                                                                        0
+                                                                    </td>
+                                                                    <td>
+                                                                        0
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ proc.quantity }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ proc.start_date }}
+                                                                    </td>
+                                                                    <td>
+                                                                        ---
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ proc.price }}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{ proc.created_by }}
                                                                     </td>
                                                                     <td class="project-actions text-right">
                                                                         <a class="btn btn-info btn-sm" href="#">
@@ -246,7 +285,8 @@
                                                 <br>
                                                 <div class="row">
                                                     <div class="col-10">
-                                                        <a class="btn btn-success btn-sm" href="#">
+                                                        <a class="btn btn-success btn-sm" href="#"
+                                                           data-toggle="modal" data-target="#modal-procedures">
                                                             <i class="fas fa-plus">
                                                             </i>
                                                             Добавить
@@ -254,11 +294,96 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="modal fade" id="modal-procedures">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Добавить процедуры</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+
+                                                            <form id="procedures_form" method="POST">
+                                                                {% csrf_token %}
+                                                                <div class="card-body">
+                                                                    <div class="form-group">
+                                                                        <label for="example_fname">Название
+                                                                            процедуры</label>
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;"
+                                                                                name="medical_service">
+                                                                            {% for procedure in procedures %}
+                                                                                <option value="{{ procedure.id }}"
+                                                                                        {% if procedures_form.instance.medical_service.id == procedure.id %}selected{% endif %}>{{ procedure }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Дата начала:</label>
+                                                                        <div class="input-group date" id="reservationdate"
+                                                                             data-target-input="nearest">
+                                                                            <input name="start_date" type="text"
+                                                                                   class="form-control datetimepicker-input"
+                                                                                   data-target="#reservationdate"/>
+                                                                            <div class="input-group-append"
+                                                                                 data-target="#reservationdate"
+                                                                                 data-toggle="datetimepicker">
+                                                                                <div class="input-group-text"><i
+                                                                                        class="fa fa-calendar"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="frequency">Кратность:</label>
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;" name="frequency">
+                                                                            {% for type in procedures_frequency_types %}
+                                                                                <option value="{{ type.0 }}"
+                                                                                        {% if procedures_form.instance.frequency == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="quantity">Количество</label>
+                                                                        <input name="quantity" type="number"
+                                                                               class="form-control"
+                                                                               id="quantity"
+                                                                               placeholder="5">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="comments">Особые указания</label>
+                                                                        <textarea rows="3" name="comments" type="text"
+                                                                                  class="form-control"
+                                                                                  id="comments"
+                                                                                  placeholder=""></textarea>
+                                                                    </div>
+
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default"
+                                                                                data-dismiss="modal">Закрыть
+                                                                        </button>
+                                                                        <button name="procedures_form" type="submit"
+                                                                                class="btn btn-primary">
+                                                                            Сохранить
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+
                                             </div>
                                         </div>
-                                        <div class="card card-primary" id="treatmen-program">
+                                        <div class="card card-primary" id="pills-injections">
                                             <div class="card-header">
-                                                <a href="#treatment-program"
+                                                <a href="#pills-injections"
                                                    style="text-decoration: none; color: inherit;">
                                                     <h2 class="card-title">Медикаменты</h2>
                                                 </a>
@@ -311,7 +436,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a>
-                                                                            {{pill.pills_injections.for_doctors_naming}}
+                                                                            {{ pill.pills_injections.for_doctors_naming }}
                                                                         </a>
 
                                                                     </td>
@@ -361,7 +486,7 @@
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h4 class="modal-title">Добавить пациент</h4>
+                                                                <h4 class="modal-title">Добавить медикамент</h4>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
@@ -375,7 +500,8 @@
                                                                         <label for="example_fname">Название
                                                                             медикамента</label>
                                                                         <select class="form-control select2"
-                                                                                style="width: 100%;" name="pills_injections">
+                                                                                style="width: 100%;"
+                                                                                name="pills_injections">
                                                                             {% for pill in pills %}
                                                                                 <option value="{{ pill.id }}"
                                                                                         {% if pills_form.instance.diagnosis.id == pill.id %}selected{% endif %}>{{ pill.for_doctors_naming }}</option>
@@ -410,7 +536,7 @@
                                                                     <div class="form-group">
                                                                         <label for="frequency">По, дн:</label>
                                                                         <select class="form-control select2"
-                                                                            style="width: 100%;" name="frequency">
+                                                                                style="width: 100%;" name="frequency">
                                                                             {% for type in pill_frequency_types %}
                                                                                 <option value="{{ type.0 }}"
                                                                                         {% if pills_form.instance.frequency == type.0 %}selected{% endif %}>{{ type.0 }}</option>

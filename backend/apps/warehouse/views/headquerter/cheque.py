@@ -22,9 +22,6 @@ from apps.warehouse.models import WarehouseChequeModel, ChequeItemsModel, ItemsI
 ITEMS_PER_PAGE = 30
 
 
-from django.contrib.staticfiles import finders
-
-
 class ChequeInline:
     form_class = ChequeForm
     model = WarehouseChequeModel

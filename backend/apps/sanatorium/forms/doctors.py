@@ -2,7 +2,8 @@ from django import forms
 
 from apps.account.models import PatientModel, NurseAccountModel
 from apps.logus.models import BookingModel
-from apps.sanatorium.models import IllnessHistory, InitialAppointmentWithDoctorModel, BasePillsInjectionsModel
+from apps.sanatorium.models import IllnessHistory, InitialAppointmentWithDoctorModel, BasePillsInjectionsModel, \
+    BaseProcedureServiceModel
 
 
 class PatientUpdateForm(forms.ModelForm):
@@ -74,6 +75,24 @@ class InitialAppointmentShortForm(forms.ModelForm):
         ]
 
 
+class BaseProcedureServiceForm(forms.ModelForm):
+    start_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),
+        input_formats=['%Y-%m-%d', '%d/%m/%Y', '%d/%m/%y'],
+        required=False  # Make it optional in case it's empty or not filled
+    )
+
+    class Meta:
+        model = BaseProcedureServiceModel
+        fields = [
+            'medical_service',
+            'quantity',
+            'start_date',
+            'frequency',
+            'comments',
+        ]
+
+
 class BasePillsInjectionsForm(forms.ModelForm):
     start_date = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),
@@ -92,3 +111,5 @@ class BasePillsInjectionsForm(forms.ModelForm):
             'comments',
             'instruction',
         ]
+
+
