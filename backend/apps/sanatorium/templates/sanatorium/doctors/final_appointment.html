@@ -1,0 +1,159 @@
+{% extends 'sanatorium/doctors/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>История болезни №: <b>{{ ill_his.series_number }}</b></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item active"><b>Заключительный прием лечащего
+                                врача, {{ request.user.full_name }}</b></li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Default box -->
+                        <div class="card">
+                            <div class="tab-pane text-left fade show active" id="vert-tabs-title-page" role="tabpanel"
+                                 aria-labelledby="vert-tabs-title-page-tab">
+                                <div class="card-body">
+
+                                    <div class="tab-content" id="custom-content-below-tabContent">
+                                        <form enctype="multipart/form-data" method="post" id="final_app_form">
+                                            {% csrf_token %}
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <a href="#treatment-program"
+                                                       style="text-decoration: none; color: inherit;">
+                                                        <h2 class="card-title">Заключительный прием</h2>
+                                                    </a>
+                                                </div>
+                                                <div class="card-body">
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Объективный статус</label>
+                                                                <textarea name="objective_status" class="form-control" rows="3"
+                                                                          placeholder=" ...">{{ final_app_form.instance.objective_status|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-3">
+                                                            <label>Рост:</label>
+                                                            <input type="number" class="form-control"
+                                                                   placeholder="165 см"
+                                                                   name="height">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>Вес:</label>
+                                                            <input type="number" class="form-control"
+                                                                   placeholder="65 кг"
+                                                                   name="weight">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>Пульс:</label>
+                                                            <input type="number" class="form-control"
+                                                                   placeholder="75 уд/м"
+                                                                   name="heart_beat">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>Давление</label>
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="85/130"
+                                                                   name="arterial_high_low">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-2">
+                                                            <label>ИМТ:</label>
+                                                            <input step="0.01" type="number" class="form-control"
+                                                                   placeholder="26.04"
+                                                                   name="imt">
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label>Интерпретация показателя ИМТ:</label>
+                                                            <input step="0.01" type="number" class="form-control"
+                                                                   placeholder=""
+                                                                   name="imt_interpretation">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Итоги лечения, рекомендации по дальнейшему лечению</label>
+                                                                <textarea name="summary" class="form-control"
+                                                                          rows="3"
+                                                                          placeholder="...">{{ final_app_form.instance.summary|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="frequency">Результаты лечения</label>
+                                                        <select class="form-control select2"
+                                                                style="width: 100%;" name="treatment_results">
+                                                            {% for type in treatment_results_choices %}
+                                                                <option value="{{ type.0 }}"
+                                                                        {% if final_app_form.instance.frequency == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-4">
+                                                            <label for="exampleInputFile">Файлы</label>
+                                                            <div class="input-group">
+                                                                <div class="custom-file">
+                                                                    <input name="file" type="file" class="custom-file-input"
+                                                                           id="exampleInputFile">
+                                                                    <label class="custom-file-label" for="exampleInputFile">Добавить
+                                                                        файл</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="text-center">
+                                                        <button type="submit" name="final_app_form"
+                                                                class="btn btn-primary">Сохранить
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <br>
+                                        {% include 'sanatorium/doctors/components/consulting-treatment-program-card.html' %}
+                                        {% include 'sanatorium/doctors/components/treatment-procedure-card.html' %}
+                                        {% include 'sanatorium/doctors/components/pills-injections-card.html' %}
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

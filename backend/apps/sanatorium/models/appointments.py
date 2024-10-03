@@ -1,6 +1,7 @@
 from django.db import models
 
 from apps.account.models import Account
+from apps.lis.models import upload_location
 from apps.sanatorium.models import (DiagnosisTemplate, IllnessHistory)
 
 
@@ -32,14 +33,16 @@ class FinalAppointmentWithDoctorModel(models.Model):
     )
 
     objective_status = models.TextField(null=True, blank=True)
+    file = models.FileField(upload_to=upload_location, null=True, blank=True)
 
-    height = models.FloatField()
-    weight = models.FloatField()
-    heart_beat = models.IntegerField()
-    arterial_high = models.IntegerField()
-    arterial_low = models.IntegerField()
-    imt = models.FloatField()
-    imt_interpretation = models.FloatField()
+    height = models.FloatField(null=True, blank=True)
+    weight = models.FloatField(null=True, blank=True)
+    heart_beat = models.IntegerField(null=True, blank=True)
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
+    arterial_high = models.IntegerField(null=True, blank=True)
+    arterial_low = models.IntegerField(null=True, blank=True)
+    imt = models.FloatField(null=True, blank=True)
+    imt_interpretation = models.FloatField(null=True, blank=True)
 
     diagnosis = models.ManyToManyField(DiagnosisTemplate)
     summary = models.TextField(blank=True, null=True)

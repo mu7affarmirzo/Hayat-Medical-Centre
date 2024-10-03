@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/bs-stepper/css/bs-stepper.min.css' %}">
     <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/dropzone/min/dropzone.min.css' %}">
     <link rel="stylesheet" href="{% static 'adminlte3_assets/dist/css/adminlte.min.css' %}">
+
+    <script src="https://unpkg.com/htmx.org@1.6.0"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-navbar-fixed">
 <!-- Site wrapper -->
@@ -39,10 +41,25 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="../../index3.html" class="nav-link">Home</a>
+                <a href="{% url 'sanatorium_doctors:main_screen' %}" class="nav-link">Пациенты</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                  Создать <span class="caret"></span>
+                </a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" tabindex="-1" href="#">Консультация кардиолога первичная</a>
+                  <a class="dropdown-item" tabindex="-1" href="#">Консультация невролога первичная</a>
+                  <a class="dropdown-item" tabindex="-1" href="#">Осмотр дежурного врача при поступлении</a>
+                  <a class="dropdown-item" tabindex="-1" href="#">Повторный приём лечащего врача</a>
+                  <a class="dropdown-item" tabindex="-1" href="#">Прием дежурного врача</a>
+                  <a class="dropdown-item" tabindex="-1" href="#">ЭКГ (Электрокардиограмма)</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" tabindex="-1" href="#">Заключительный прием лечащего врача</a>
+                </div>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
+                <a href="#" class="nav-link">События</a>
             </li>
         </ul>
 
@@ -318,6 +335,48 @@
         myDropzone.removeAllFiles(true)
     }
     // DropzoneJS Demo Code End
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    $('#speciality').on('change', function () {
+        const specialityId = $(this).val();
+        const medicalServiceSelect = $('#medical-service');
+
+        if (specialityId) {
+            // Use Django's URL template with a placeholder
+            const url = "{% url 'sanatorium_doctors:get_labs' 0 %}".replace('0', specialityId);
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Clear existing options
+                    medicalServiceSelect.html('<option value="">Select a medical service</option>');
+
+                    // Populate with new options
+                    $.each(data, function (index, service) {
+                        medicalServiceSelect.append(new Option(service.name, service.id));
+                    });
+
+                    // Enable the select element
+                    medicalServiceSelect.prop('disabled', false);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching medical services:', error);
+                }
+            });
+        } else {
+            // Reset and disable if no speciality is selected
+            medicalServiceSelect.html('<option value="">Select a medical service</option>');
+            medicalServiceSelect.prop('disabled', true);
+        }
+    });
+});
+
+
+
 </script>
 </body>
 </html>

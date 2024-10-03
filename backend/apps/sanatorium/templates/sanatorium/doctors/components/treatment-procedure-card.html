@@ -1,0 +1,203 @@
+<div class="card card-primary" id="treatment-procedures">
+    <div class="card-header">
+        <a href="#treatment-procedures"
+           style="text-decoration: none; color: inherit;">
+            <h2 class="card-title">Лечебные процедуры</h2>
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="card-body p-0">
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            #
+                        </th>
+                        <th>
+                            Статус
+                        </th>
+                        <th>
+                            Назначение
+                        </th>
+                        <th>
+                            О
+                        </th>
+                        <th>
+                            Д
+                        </th>
+                        <th>
+                            Н
+                        </th>
+                        <th>
+                            Дата
+                        </th>
+                        <th>
+                            Способ оплаты
+                        </th>
+                        <th>
+                            Цена
+                        </th>
+                        <th>
+                            Назначил
+                        </th>
+                        <th style="width: 20%">
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for proc in assigned_procedures %}
+                        <tr>
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+                            <td>
+                                {% if proc.state == 'assigned' %}
+                                    <span class="badge bg-warning">Назначено</span>
+                                {% elif proc.state == 'dispatched' %}
+                                    <span class="badge bg-success">Диспетчеризовано</span>
+                                {% elif proc.state == 'cancelled' %}
+                                    <span class="badge bg-danger">Отменено</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ proc.medical_service }}
+                            </td>
+                            <td>
+                                0
+                            </td>
+                            <td>
+                                0
+                            </td>
+                            <td>
+                                {{ proc.quantity }}
+                            </td>
+                            <td>
+                                {{ proc.start_date }}
+                            </td>
+                            <td>
+                                ---
+                            </td>
+                            <td>
+                                {{ proc.price }}
+                            </td>
+                            <td>
+                                {{ proc.created_by }}
+                            </td>
+                            <td class="project-actions text-right">
+                                <a class="btn btn-info btn-sm" href="#">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                    Изменить
+                                </a>
+                                <a class="btn btn-danger btn-sm" href="#">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                    Удалить
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-10">
+                <a class="btn btn-success btn-sm" href="#"
+                   data-toggle="modal" data-target="#modal-procedures">
+                    <i class="fas fa-plus">
+                    </i>
+                    Добавить
+                </a>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-procedures">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Добавить процедуры</h4>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form id="procedures_form" method="POST">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="example_fname">Название
+                                    процедуры</label>
+                                <select class="form-control select2"
+                                        style="width: 100%;"
+                                        name="medical_service">
+                                    {% for procedure in procedures %}
+                                        <option value="{{ procedure.id }}"
+                                                {% if procedures_form.instance.medical_service.id == procedure.id %}selected{% endif %}>{{ procedure }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Дата начала:</label>
+                                <div class="input-group date" id="reservationdate"
+                                     data-target-input="nearest">
+                                    <input name="start_date" type="text"
+                                           class="form-control datetimepicker-input"
+                                           data-target="#reservationdate"/>
+                                    <div class="input-group-append"
+                                         data-target="#reservationdate"
+                                         data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i
+                                                class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="frequency">Кратность:</label>
+                                <select class="form-control select2"
+                                        style="width: 100%;" name="frequency">
+                                    {% for type in procedures_frequency_types %}
+                                        <option value="{{ type.0 }}"
+                                                {% if procedures_form.instance.frequency == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Количество</label>
+                                <input name="quantity" type="number"
+                                       class="form-control"
+                                       id="quantity"
+                                       placeholder="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="comments">Особые указания</label>
+                                <textarea rows="3" name="comments" type="text"
+                                          class="form-control"
+                                          id="comments"
+                                          placeholder=""></textarea>
+                            </div>
+
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">Закрыть
+                                </button>
+                                <button name="procedures_form" type="submit"
+                                        class="btn btn-primary">
+                                    Сохранить
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+    </div>
+</div>

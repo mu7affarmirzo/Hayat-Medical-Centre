@@ -68,8 +68,27 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{ active_page.proc_main_list_page }}">
-                        <i class="nav-icon fas fa-copy"></i>
+                    <a href="#" class="nav-link {{ active_page.consulting_and_med_services_page }}">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            Консультации и повторные приемы
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        {% for consulting in consultings_n_appointments %}
+                            <li class="nav-item">
+                                <a href="../layout/top-nav.html" class="nav-link">
+                                    <i class="far"></i>
+                                    <p>Консультации и исследования</p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}" class="nav-link {{ active_page.proc_main_list_page }}">
+                        <i class="nav-icon fas fa-columns"></i>
                         <p>
                             Основной лист назначений
                             <i class="fas fa-angle-left right"></i>
@@ -77,15 +96,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../layout/top-nav.html" class="nav-link">
+                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#consulting" class="nav-link">
                                 <i class="far"></i>
                                 <p>Консультации и исследования</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../layout/top-nav-sidebar.html" class="nav-link">
+                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#procedures" class="nav-link">
                                 <i class="far"></i>
                                 <p>Лечебные процедуры</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#medicine" class="nav-link">
+                                <i class="far"></i>
+                                <p>Медикаменты</p>
                             </a>
                         </li>
                     </ul>
