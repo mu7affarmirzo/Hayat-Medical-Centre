@@ -6,7 +6,7 @@ app_name = 'sanatorium_doctors'
 
 urlpatterns = [
     path('main_screen/', main_screen.main_screen_view, name='main_screen'),
-    path('patients/', main_screen.get_patients_list, name='patients'),
+    path('patients/', main_screen.get_patients_list, name='assigned_patients'),
 
     path('lab-sereachs/<int:pk>', main_screen.get_labs_view, name='get_labs'),
 
@@ -19,6 +19,9 @@ urlpatterns = [
     path('appointments/final-appointment-page/<int:pk>', appointments.final_appointment_view, name='final_appointment_page'),
 
     path('patients/list-of-procedures/<int:pk>', main_list_of.main_list_of_procedures_view, name='main_list_of_procedures'),
+    path('patients/treatment-proc-update/<int:pk>', main_list_of.treatment_procedure_update, name='treatment_procedure_update'),
+    path('patients/pills-injections-update/<int:pk>', main_list_of.pills_injections_update, name='pills_injections_update'),
+    path('patients/consulting-update/<int:pk>', main_list_of.consulting_update, name='consulting_update'),
 ]
 
 

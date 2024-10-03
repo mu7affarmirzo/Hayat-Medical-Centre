@@ -5,6 +5,7 @@ from apps.account.models import PatientModel, DoctorAccountModel, NurseAccountMo
 from apps.decorators import role_required
 from apps.lis.models import LabResearchModel, LabResearchCategoryModel
 from apps.logus.models import BookingModel, AvailableTariffModel, AvailableRoomModel, AvailableRoomsTypeModel
+from apps.sanatorium.forms.doctors import BasePillsInjectionsForm, BaseProcedureServiceForm, BaseLabResearchServiceForm
 from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
 from apps.sanatorium.models import IllnessHistory, BasePillsInjectionsModel, BaseProcedureServiceModel, \
     BaseLabResearchServiceModel
@@ -19,21 +20,32 @@ def main_list_of_procedures_view(request, pk):
     ill_his = get_object_or_404(IllnessHistory.objects.select_related('patient', 'booking'), pk=pk)
 
     if request.method == "POST":
-        forms_mapping = {
-            'patient_form': PatientUpdateForm(request.POST, instance=ill_his.patient),
-            'ih_form': IllnessHistoryUpdateForm(request.POST, instance=ill_his),
-            'booking_form': BookingModelUpdateForm(request.POST, instance=ill_his.booking)
-        }
 
-        form_name = next((key for key in forms_mapping if key in request.POST), None)
+        pills_form = BasePillsInjectionsForm(request.POST)
+        procedures_form = BaseProcedureServiceForm(request.POST)
+        lab_research_form = BaseLabResearchServiceForm(request.POST)
 
-        if form_name and forms_mapping[form_name].is_valid():
-            obj = forms_mapping[form_name].save(commit=False)
-            obj.modified_by = request.user
-            obj.save()
-            if form_name == 'ih_form':
-                forms_mapping[form_name].save_m2m()
-            return redirect('sanatorium_doctors:title_page', pk=pk)
+        if 'pills_form' in request.POST and pills_form.is_valid():
+            pills_injections: BasePillsInjectionsModel = pills_form.save(commit=False)
+            pills_injections.modified_by = request.user
+            pills_injections.created_by = request.user
+            pills_injections.illness_history = ill_his
+            pills_injections.save()
+            return redirect('sanatorium_doctors:main_list_of_procedures', pk=pk)
+        if 'procedures_form' in request.POST and procedures_form.is_valid():
+            procedures: BaseProcedureServiceModel = procedures_form.save(commit=False)
+            procedures.modified_by = request.user
+            procedures.created_by = request.user
+            procedures.illness_history = ill_his
+            procedures.save()
+            return redirect('sanatorium_doctors:main_list_of_procedures', pk=pk)
+        if 'lab_research_form' in request.POST and lab_research_form.is_valid():
+            lab_research: BaseLabResearchServiceModel = lab_research_form.save(commit=False)
+            lab_research.modified_by = request.user
+            lab_research.created_by = request.user
+            lab_research.illness_history = ill_his
+            lab_research.save()
+            return redirect('sanatorium_doctors:main_list_of_procedures', pk=pk)
 
     context = {
         "active_page": {'proc_main_list_page': 'active'},
@@ -47,9 +59,6 @@ def main_list_of_procedures_view(request, pk):
         'programs': AvailableTariffModel.objects.all(),
         'doctors': DoctorAccountModel.objects.all(),
         'nurses': NurseAccountModel.objects.all(),
-        'patient_form': PatientUpdateForm(instance=ill_his.patient),
-        'ih_form': IllnessHistoryUpdateForm(instance=ill_his),
-        'booking_form': BookingModelUpdateForm(instance=ill_his.booking),
 
         'pills': ItemsInStockModel.objects.filter(warehouse__name='Gospital'),
         'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
@@ -63,3 +72,97 @@ def main_list_of_procedures_view(request, pk):
     }
 
     return render(request, 'sanatorium/doctors/main_list_of_procedures.html', context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def treatment_procedure_update(request, pk):
+
+    item_update = get_object_or_404(BaseProcedureServiceModel, pk=pk)
+    if request.method == "POST":
+        form = BaseProcedureServiceForm(request.POST, instance=item_update)
+        if form.is_valid():
+            item: BaseProcedureServiceModel = form.save(commit=False)
+            item.modified_by = request.user
+            item.save()
+            return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
+        print(form.errors)
+
+    form = BaseProcedureServiceForm(
+        initial={
+            'medical_service': item_update.medical_service,
+            'quantity': item_update.quantity,
+            'start_date': item_update.start_date,
+            'frequency': item_update.frequency,
+            'comments': item_update.comments,
+        }
+    )
+    context = {
+        'form': form,
+        'procedures_frequency_types': BaseProcedureServiceModel.frequency.field.choices,
+        'procedures': MedicalService.objects.filter(type='procedure'),
+        'ill_his': item_update.illness_history,
+
+    }
+    return render(request, "sanatorium/doctors/treatment_procedures_update.html", context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def pills_injections_update(request, pk):
+
+    item_update = get_object_or_404(BasePillsInjectionsModel, pk=pk)
+    if request.method == "POST":
+        form = BasePillsInjectionsForm(request.POST, instance=item_update)
+        if form.is_valid():
+            item: BasePillsInjectionsModel = form.save(commit=False)
+            item.modified_by = request.user
+            item.save()
+            return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
+
+    form = BasePillsInjectionsForm(
+        initial={
+            'pills_injections': item_update.pills_injections,
+            'quantity': item_update.quantity,
+            'period_days': item_update.period_days,
+            'start_date': item_update.start_date,
+            'frequency': item_update.frequency,
+            'comments': item_update.comments,
+        }
+    )
+    context = {
+        'form': form,
+        'pills': ItemsInStockModel.objects.filter(warehouse__name='Gospital'),
+        'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
+        'ill_his': item_update.illness_history,
+
+    }
+    return render(request, "sanatorium/doctors/pills_injections_update.html", context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def consulting_update(request, pk):
+
+    item_update = get_object_or_404(BaseLabResearchServiceModel, pk=pk)
+    if request.method == "POST":
+        form = BaseLabResearchServiceForm(request.POST, instance=item_update)
+        if form.is_valid():
+            item: BaseLabResearchServiceModel = form.save(commit=False)
+            item.modified_by = request.user
+            item.save()
+            return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
+        print(form.errors)
+
+    form = BaseLabResearchServiceForm(
+        initial={
+            'lab': item_update.lab,
+            'start_date': item_update.start_date,
+            'comments': item_update.comments,
+        }
+    )
+    context = {
+        'form': form,
+        'labs': LabResearchModel.objects.all(),
+        'labs_types': LabResearchCategoryModel.objects.all(),
+        'ill_his': item_update.illness_history,
+
+    }
+    return render(request, "sanatorium/doctors/consultings_update.html", context)

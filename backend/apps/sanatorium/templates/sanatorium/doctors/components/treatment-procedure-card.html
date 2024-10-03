@@ -82,11 +82,11 @@
                                 {{ proc.price }}
                             </td>
                             <td>
-                                {{ proc.created_by }}
+                                {{ proc.created_by.full_name }}
                             </td>
                             <td class="project-actions text-right">
-                                <a class="btn btn-info btn-sm" href="#">
-                                    <i class="fas fa-pencil-alt">
+                                <a class="btn btn-info btn-sm" href="{% url 'sanatorium_doctors:treatment_procedure_update' proc.id %}">
+                                    <i class="fas fa-edit">
                                     </i>
                                     Изменить
                                 </a>
@@ -142,13 +142,13 @@
                             </div>
                             <div class="form-group">
                                 <label>Дата начала:</label>
-                                <div class="input-group date" id="reservationdate"
+                                <div class="input-group date" id="proc_reservationdate"
                                      data-target-input="nearest">
                                     <input name="start_date" type="text"
                                            class="form-control datetimepicker-input"
-                                           data-target="#reservationdate"/>
+                                           data-target="#proc_reservationdate"/>
                                     <div class="input-group-append"
-                                         data-target="#reservationdate"
+                                         data-target="#proc_reservationdate"
                                          data-toggle="datetimepicker">
                                         <div class="input-group-text"><i
                                                 class="fa fa-calendar"></i>

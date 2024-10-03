@@ -55,7 +55,32 @@ def main_screen_view(request):
 
 @role_required(role='sanatorium.doctor', login_url='logout')
 def get_patients_list(request):
-    context = {}
+    query = request.GET.get('q', '')
+    search_query = request.GET.get('table_search')
+
+    doctor = DoctorAccountModel.objects.filter(doctor=request.user).first()
+    if not doctor:
+        return render(request, 'sanatorium/doctors/main_screen.html', {})
+
+    if search_query:
+        bookings = sorted(get_booking_queryset(search_query, 'settled', doctor), key=attrgetter('booking.end_date'),
+                          reverse=True)
+    else:
+        bookings = sorted(get_booking_queryset(query, 'settled', doctor), key=attrgetter('booking.end_date'), reverse=True)
+
+    page = request.GET.get('page', 1)
+    bookings_paginator = Paginator(bookings, BOOKINGS_PER_PAGE)
+
+    try:
+        bookings = bookings_paginator.page(page)
+    except PageNotAnInteger:
+        bookings = bookings_paginator.page(BOOKINGS_PER_PAGE)
+    except EmptyPage:
+        bookings = bookings_paginator.page(bookings_paginator.num_pages)
+
+    context = {
+        "bookings": bookings
+    }
 
     return render(request, 'sanatorium/doctors/main_screen.html', context)
 
@@ -123,7 +148,7 @@ def get_bookings_by_start_date_view(request):
         return get_bookings_view(request, start_date)
 
 
-def get_booking_queryset(query=None, stage=None):
+def get_booking_queryset(query=None, stage=None, doctor=None):
     queryset = []
     queries = query.split(" ")
 
