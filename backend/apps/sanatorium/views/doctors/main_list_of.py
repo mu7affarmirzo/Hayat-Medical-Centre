@@ -61,7 +61,7 @@ def main_list_of_procedures_view(request, pk):
         'doctors': DoctorAccountModel.objects.all(),
         'nurses': NurseAccountModel.objects.all(),
 
-        'pills': ItemsInStockModel.objects.filter(warehouse__name='Gospital'),
+        'pills': ItemsInStockModel.objects.filter(warehouse__name='Госпиталь'),
         'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
         'assigned_pills': BasePillsInjectionsModel.objects.filter(illness_history=ill_his),
         'assigned_procedures': BaseProcedureServiceModel.objects.filter(illness_history=ill_his),
@@ -144,7 +144,7 @@ def pills_injections_update(request, pk):
 
     context = {
         'form': form,
-        'pills': ItemsInStockModel.objects.filter(warehouse__name='Gospital'),
+        'pills': ItemsInStockModel.objects.filter(warehouse__name='Госпиталь'),
         'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
         'ill_his': item_update.illness_history,
         'next': next_url,
