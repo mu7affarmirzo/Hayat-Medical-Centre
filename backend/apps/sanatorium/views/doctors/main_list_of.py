@@ -133,7 +133,7 @@ def pills_injections_update(request, pk):
         else:
             context = {
                 'form': form,
-                'pills': ItemsInStockModel.objects.filter(warehouse__name='Gospital'),
+                'pills': ItemsInStockModel.objects.filter(warehouse__name='Госпиталь'),
                 'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
                 'ill_his': item_update.illness_history,
                 'next': next_url,
