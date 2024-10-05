@@ -3,7 +3,8 @@ from django import forms
 from apps.account.models import PatientModel, NurseAccountModel
 from apps.logus.models import BookingModel
 from apps.sanatorium.models import IllnessHistory, InitialAppointmentWithDoctorModel, BasePillsInjectionsModel, \
-    BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel
+    BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel, \
+    ConsultingWithCardiologistModel
 
 
 class PatientUpdateForm(forms.ModelForm):
@@ -89,6 +90,29 @@ class FinalAppointmentShortForm(forms.ModelForm):
             'file',
             'summary',
             'treatment_results',
+        ]
+
+
+class ConsultingWithCardiologistShortForm(forms.ModelForm):
+    class Meta:
+        model = ConsultingWithCardiologistModel
+        fields = [
+            'state',
+            'has_cardio_complaints',
+            'has_nerve_complaints',
+            'other_complaints',
+            'history_of_illness',
+            'inheritance',
+            'height',
+            'weight',
+            'pulse_general',
+            'arterial_high_low',
+            'imt',
+            'imt_interpretation',
+            'file',
+            'summary',
+            'cito',
+            'recommendation',
         ]
 
 

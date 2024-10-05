@@ -19,7 +19,7 @@ class FinalAppointmentWithDoctorModel(models.Model):
         ('Без изменения', 'Без изменения'),
         ('Ухудшение', 'Ухудшение'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='fawd_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -59,7 +59,7 @@ class ConsultingWithNeurologistModel(models.Model):
         ('Не показан', 'Не показан'),
         ('Противопоказан', 'Противопоказан'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='cwn_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -239,7 +239,7 @@ class ConsultingWithCardiologistModel(models.Model):
     PLEURAL_FRICTION_RUB_CHOICES = (
         ('шум трения плевры', 'шум трения плевры'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='cw_cardio_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -257,13 +257,14 @@ class ConsultingWithCardiologistModel(models.Model):
     history_of_illness = models.TextField(null=True, blank=True)
     inheritance = models.TextField(null=True, blank=True)
 
-    height = models.FloatField()
-    weight = models.FloatField()
+    height = models.FloatField(null=True, blank=True)
+    weight = models.FloatField(null=True, blank=True)
     pulse_general = models.IntegerField(null=True, blank=True)
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
     arterial_high = models.IntegerField(null=True, blank=True)
     arterial_low = models.IntegerField(null=True, blank=True)
-    imt = models.FloatField()
-    imt_interpretation = models.FloatField()
+    imt = models.FloatField(null=True, blank=True)
+    imt_interpretation = models.FloatField(null=True, blank=True)
 
     body_figure = models.CharField(max_length=255, choices=BODY_CHOICES, default='правильное, нормастеник')
     skin = models.CharField(max_length=255, choices=SKIN_CHOICES, default='нормальной окраски')
@@ -276,8 +277,8 @@ class ConsultingWithCardiologistModel(models.Model):
     pulse_per_min = models.IntegerField(null=True, blank=True)
     pulse = models.CharField(max_length=255, choices=PULSE_CHOICES, default='ритмичный')
     fault_of_pulse = models.CharField(max_length=255, default='отсутствует')
-    heart_arterial_high = models.IntegerField()
-    heart_arterial_low = models.IntegerField()
+    heart_arterial_high = models.IntegerField(null=True, blank=True)
+    heart_arterial_low = models.IntegerField(null=True, blank=True)
     left_heart_edges = models.CharField(max_length=255, default='в норме')
     right_heart_edges = models.CharField(max_length=255, default='в норме')
     upper_heart_edges = models.CharField(max_length=255, default='в норме')
@@ -311,6 +312,7 @@ class ConsultingWithCardiologistModel(models.Model):
     )
 
     cito = models.BooleanField(default=False)
+    file = models.FileField(upload_to=upload_location, null=True, blank=True)
     for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=250, null=True, blank=True)
     summary = models.TextField(blank=True, null=True)
     recommendation = models.TextField(blank=True, null=True)
@@ -335,7 +337,7 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
         ('Тонизирующий', 'Тонизирующий'),
         ('Тренирующий', 'Тренирующий'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='aw_on_duty_on_arr_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -387,7 +389,7 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
 
 class RepeatedAppointmentWithDoctorModel(models.Model):
 
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='rawd_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -421,7 +423,7 @@ class AppointmentWithOnDutyDoctorModel(models.Model):
         ('Не показан', 'Не показан'),
         ('Противопоказан', 'Противопоказан'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='aw_on_duty_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -464,7 +466,7 @@ class EkgAppointmentModel(models.Model):
         ('Противопоказан', 'Противопоказан'),
     )
 
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='ekg_app_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

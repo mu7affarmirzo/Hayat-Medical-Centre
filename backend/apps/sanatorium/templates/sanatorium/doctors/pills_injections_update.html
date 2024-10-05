@@ -35,7 +35,7 @@
                                 <div class="card-body">
 
                                     <div class="tab-content" id="custom-content-below-tabContent">
-                                        <form id="form" method="POST">
+                                        <form id="form" method="POST" action="?{% if next %}next={{ next }}{% endif %}">
                                             {% csrf_token %}
                                             <div class="card-body">
                                                 <div class="form-group">
@@ -58,7 +58,7 @@
                                                         <input name="start_date" type="text"
                                                                class="form-control datetimepicker-input"
                                                                data-target="#pills_reservationdate"
-                                                                value="{{ form.initial.start_date }}"/>
+                                                                value="{{ form.instance.start_date|date:"d/m/Y" }}"/>
                                                         <div class="input-group-append"
                                                              data-target="#pills_reservationdate"
                                                              data-toggle="datetimepicker">
@@ -74,7 +74,7 @@
                                                     <input name="period_days" type="number"
                                                            class="form-control"
                                                            id="period_days"
-                                                           value="{{ form.initial.period_days }}"
+                                                           value="{{ form.instance.period_days }}"
                                                            placeholder="8 дней">
                                                 </div>
                                                 <div class="form-group">
@@ -93,7 +93,7 @@
                                                            class="form-control"
                                                            id="quantity"
                                                            placeholder="1 таблетка"
-                                                           value="{{ form.initial.number }}"
+                                                           value="{{ form.instance.quantity }}"
                                                     >
                                                 </div>
                                                 <div class="form-group">
@@ -101,7 +101,7 @@
                                                     <input name="comments" type="text"
                                                            class="form-control"
                                                            id="comments"
-                                                           value="{{ form.initial.comments }}"
+                                                           value="{{ form.instance.comments }}"
                                                            placeholder="">
                                                 </div>
                                                 <div class="form-group">
@@ -110,7 +110,7 @@
                                                               type="text"
                                                               class="form-control"
                                                               id="instruction"
-                                                              placeholder="">{{ form.initial.instruction }}</textarea>
+                                                              placeholder="">{{ form.instance.instruction }}</textarea>
                                                 </div>
 
                                                 <div class="modal-footer justify-content-between">

@@ -35,7 +35,7 @@
                                 <div class="card-body">
 
                                     <div class="tab-content" id="custom-content-below-tabContent">
-                                        <form id="form" method="POST">
+                                        <form id="form" method="POST" action="?{% if next %}next={{ next }}{% endif %}">
                                             {% csrf_token %}
                                             <div class="card-body">
                                                 <div class="form-group">
@@ -55,7 +55,7 @@
                                                     <div class="input-group date" id="proc_reservationdate"
                                                          data-target-input="nearest">
                                                         <input name="start_date" type="text"
-                                                               value="{{ form.initial.start_date }}"
+                                                               value="{{ form.instance.start_date|date:"d/m/Y" }}"
                                                                class="form-control datetimepicker-input"
                                                                data-target="#proc_reservationdate"/>
                                                         <div class="input-group-append"
@@ -82,7 +82,7 @@
                                                     <input name="quantity" type="number"
                                                            class="form-control"
                                                            id="quantity"
-                                                           value="{{ form.initial.quantity }}"
+                                                           value="{{ form.instance.quantity }}"
                                                            placeholder="5">
                                                 </div>
                                                 <div class="form-group">
@@ -90,8 +90,8 @@
                                                     <textarea rows="3" name="comments" type="text"
                                                               class="form-control"
                                                               id="comments"
-                                                              value="{{ form.initial.comments }}"
-                                                              placeholder="">{{ form.initial.comments }}</textarea>
+                                                              value="{{ form.instance.comments }}"
+                                                              placeholder="">{{ form.instance.comments }}</textarea>
                                                 </div>
 
                                                 <div class="modal-footer justify-content-between">

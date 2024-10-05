@@ -17,6 +17,7 @@ urlpatterns = [
     path('appointments/init-app/<int:pk>', appointments.get_init_app_by_id_view, name='init_app_page'),
     path('appointments/title-page/<int:pk>', appointments.get_title_page_by_id_view, name='title_page'),
     path('appointments/final-appointment-page/<int:pk>', appointments.final_appointment_view, name='final_appointment_page'),
+    path('appointments/cardiologist-appointment-page/<int:pk>', appointments.cardiologist_appointment_view, name='cardiologist_appointment_page'),
 
     path('patients/list-of-procedures/<int:pk>', main_list_of.main_list_of_procedures_view, name='main_list_of_procedures'),
     path('patients/treatment-proc-update/<int:pk>', main_list_of.treatment_procedure_update, name='treatment_procedure_update'),

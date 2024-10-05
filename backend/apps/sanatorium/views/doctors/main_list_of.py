@@ -10,6 +10,7 @@ from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateF
 from apps.sanatorium.models import IllnessHistory, BasePillsInjectionsModel, BaseProcedureServiceModel, \
     BaseLabResearchServiceModel
 from apps.warehouse.models import ItemsInStockModel
+from urllib.parse import urlencode
 
 BOOKINGS_PER_PAGE = 30
 
@@ -78,31 +79,39 @@ def main_list_of_procedures_view(request, pk):
 def treatment_procedure_update(request, pk):
 
     item_update = get_object_or_404(BaseProcedureServiceModel, pk=pk)
+    next_url = request.GET.get('next', '')
+
     if request.method == "POST":
         form = BaseProcedureServiceForm(request.POST, instance=item_update)
         if form.is_valid():
             item: BaseProcedureServiceModel = form.save(commit=False)
             item.modified_by = request.user
             item.save()
+            if next_url:
+                return redirect(next_url)
             return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
-        print(form.errors)
+        else:
+            print(form.errors)
+            # Return the user to the form with errors highlighted
+            context = {
+                'form': form,
+                'procedures_frequency_types': BaseProcedureServiceModel.frequency.field.choices,
+                'procedures': MedicalService.objects.filter(type='procedure'),
+                'ill_his': item_update.illness_history,
+                'next': next_url,
+            }
+            return render(request, "sanatorium/doctors/treatment_procedures_update.html", context)
+    else:
+        form = BaseProcedureServiceForm(instance=item_update)
 
-    form = BaseProcedureServiceForm(
-        initial={
-            'medical_service': item_update.medical_service,
-            'quantity': item_update.quantity,
-            'start_date': item_update.start_date,
-            'frequency': item_update.frequency,
-            'comments': item_update.comments,
-        }
-    )
     context = {
         'form': form,
         'procedures_frequency_types': BaseProcedureServiceModel.frequency.field.choices,
         'procedures': MedicalService.objects.filter(type='procedure'),
         'ill_his': item_update.illness_history,
-
+        'next': next_url,
     }
+
     return render(request, "sanatorium/doctors/treatment_procedures_update.html", context)
 
 
@@ -110,30 +119,35 @@ def treatment_procedure_update(request, pk):
 def pills_injections_update(request, pk):
 
     item_update = get_object_or_404(BasePillsInjectionsModel, pk=pk)
+    next_url = request.GET.get('next', '')
+
     if request.method == "POST":
         form = BasePillsInjectionsForm(request.POST, instance=item_update)
         if form.is_valid():
             item: BasePillsInjectionsModel = form.save(commit=False)
             item.modified_by = request.user
             item.save()
+            if next_url:
+                return redirect(next_url)
             return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
+        else:
+            context = {
+                'form': form,
+                'pills': ItemsInStockModel.objects.filter(warehouse__name='Gospital'),
+                'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
+                'ill_his': item_update.illness_history,
+                'next': next_url,
+            }
+            return render(request, "sanatorium/doctors/pills_injections_update.html", context)
+    else:
+        form = BasePillsInjectionsForm(instance=item_update)
 
-    form = BasePillsInjectionsForm(
-        initial={
-            'pills_injections': item_update.pills_injections,
-            'quantity': item_update.quantity,
-            'period_days': item_update.period_days,
-            'start_date': item_update.start_date,
-            'frequency': item_update.frequency,
-            'comments': item_update.comments,
-        }
-    )
     context = {
         'form': form,
         'pills': ItemsInStockModel.objects.filter(warehouse__name='Gospital'),
         'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
         'ill_his': item_update.illness_history,
-
+        'next': next_url,
     }
     return render(request, "sanatorium/doctors/pills_injections_update.html", context)
 
@@ -142,27 +156,35 @@ def pills_injections_update(request, pk):
 def consulting_update(request, pk):
 
     item_update = get_object_or_404(BaseLabResearchServiceModel, pk=pk)
+    next_url = request.GET.get('next', '')
+
     if request.method == "POST":
         form = BaseLabResearchServiceForm(request.POST, instance=item_update)
         if form.is_valid():
             item: BaseLabResearchServiceModel = form.save(commit=False)
             item.modified_by = request.user
             item.save()
+            if next_url:
+                return redirect(next_url)
             return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
-        print(form.errors)
+        else:
+            context = {
+                'form': form,
+                'labs': LabResearchModel.objects.all(),
+                'labs_types': LabResearchCategoryModel.objects.all(),
+                'ill_his': item_update.illness_history,
+                'next': next_url,
+            }
+            print(form.errors)
+            return render(request, "sanatorium/doctors/consultings_update.html", context)
+    else:
+        form = BaseLabResearchServiceForm(instance=item_update)
 
-    form = BaseLabResearchServiceForm(
-        initial={
-            'lab': item_update.lab,
-            'start_date': item_update.start_date,
-            'comments': item_update.comments,
-        }
-    )
     context = {
         'form': form,
         'labs': LabResearchModel.objects.all(),
         'labs_types': LabResearchCategoryModel.objects.all(),
         'ill_his': item_update.illness_history,
-
+        'next': next_url,
     }
     return render(request, "sanatorium/doctors/consultings_update.html", context)

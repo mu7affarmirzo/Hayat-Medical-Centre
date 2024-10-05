@@ -35,7 +35,7 @@
                                 <div class="card-body">
 
                                     <div class="tab-content" id="custom-content-below-tabContent">
-                                        <form id="form" method="POST">
+                                        <form id="form" method="POST" action="?{% if next %}next={{ next }}{% endif %}">
                                             {% csrf_token %}
                                             <div class="card-body">
                                                 <div class="form-group">
@@ -44,19 +44,21 @@
                                                             style="width: 100%;"
                                                             name="lab">
                                                         {% for lab in labs %}
-                                                            <option value="{{ form.initial.lab.id }}"
-                                                            {% if form.initial.lab.id == lab.id %}selected{% endif %}>{{ lab }}</option>
+                                                            <option value="{{ lab.id }}"
+                                                                {% if form.instance.lab.id == lab.id %}selected{% endif %}>{{ lab }}
+                                                            </option>
                                                         {% endfor %}
                                                     </select>
                                                 </div>
+                                            {% with datetimepicker_id="lab_reservationdate" %}
                                                 <div class="form-group">
-                                                    <label>Дата начала:</label>
+                                                    <label>Дата начала: </label>
                                                     <div class="input-group date" id="lab_reservationdate"
                                                          data-target-input="nearest">
                                                         <input name="start_date" type="text"
                                                                class="form-control datetimepicker-input"
                                                                data-target="#lab_reservationdate"
-                                                               value="{{ form.initial.start_date }}"
+                                                               value="{{ form.instance.start_date|date:"d/m/Y" }}"
                                                         />
                                                         <div class="input-group-append"
                                                              data-target="#lab_reservationdate"
@@ -67,6 +69,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            {% endwith %}
+{#                                            {% with datetimepicker_id="lab_reservationdate" %}#}
+{#                                            <div class="form-group">#}
+{#                                                <label>Дата начала:</label>#}
+{#                                                {% include "sanatorium/doctors/components/datetimepicker.html" with id=datetimepicker_id name="start_date" value=form.instance.start_date %}#}
+{#                                            </div>#}
+{#                                            {% endwith %}#}
                                                 <div class="form-group">
                                                     <label for="comments">Особые указания</label>
                                                     <textarea rows="3" name="comments" type="text"

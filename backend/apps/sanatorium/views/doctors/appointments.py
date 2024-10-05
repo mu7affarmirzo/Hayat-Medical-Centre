@@ -1,3 +1,5 @@
+from audioop import error
+
 from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
 
@@ -6,13 +8,21 @@ from apps.decorators import role_required
 from apps.lis.models import LabResearchCategoryModel, LabResearchModel
 from apps.logus.models import BookingModel, AvailableTariffModel, AvailableRoomModel, AvailableRoomsTypeModel
 from apps.sanatorium.forms.doctors import InitialAppointmentShortForm, BasePillsInjectionsForm, \
-    BaseProcedureServiceForm, BaseLabResearchServiceForm, FinalAppointmentShortForm
+    BaseProcedureServiceForm, BaseLabResearchServiceForm, FinalAppointmentShortForm, ConsultingWithCardiologistShortForm
 from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
 from apps.sanatorium.models import IllnessHistory, DiagnosisTemplate, InitialAppointmentWithDoctorModel, \
-    BasePillsInjectionsModel, BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel
+    BasePillsInjectionsModel, BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel, \
+    ConsultingWithCardiologistModel
 from apps.warehouse.models import ItemsInStockModel
 
 BOOKINGS_PER_PAGE = 30
+
+
+def get_all_appointments(ill_his):
+    return {
+        'cardiologist_appointments': ConsultingWithCardiologistModel.objects.filter(illness_history=ill_his),
+        'final_appointment': FinalAppointmentWithDoctorModel.objects.filter(illness_history=ill_his).first()
+    }
 
 
 @role_required(role='sanatorium.doctor', login_url='logout')
@@ -157,8 +167,9 @@ def get_init_app_by_id_view(request, pk):
 
     context['doctors'] = DoctorAccountModel.objects.all()
     context['nurses'] = NurseAccountModel.objects.all()
+    context.update(get_all_appointments(ill_his))
 
-    return render(request, 'sanatorium/doctors/init-app-page.html', context)
+    return render(request, 'sanatorium/doctors/appointments/init-app-page.html', context)
 
 
 @role_required(role='sanatorium.doctor', login_url='logout')
@@ -169,7 +180,6 @@ def final_appointment_view(request, pk):
     final_app_instance = FinalAppointmentWithDoctorModel.objects.filter(illness_history=ill_his)
 
     if final_app_instance:
-        print(ill_his.final_appointment, '------------------------------', final_app_instance)
         final_app_form = FinalAppointmentShortForm(request.POST, instance=final_app_instance.first())
     else:
         final_app_form = FinalAppointmentShortForm(request.POST)
@@ -188,7 +198,6 @@ def final_appointment_view(request, pk):
             final_app.illness_history = ill_his
             final_app.save()
             return redirect('sanatorium_doctors:final_appointment_page', pk=pk)
-        print(final_app_form.errors)
 
     context = {
         "active_page": {'consulting_and_med_services_page': 'active'},
@@ -220,6 +229,75 @@ def final_appointment_view(request, pk):
         'labs': LabResearchModel.objects.all(),
         'assigned_labs': BaseLabResearchServiceModel.objects.filter(illness_history=ill_his),
         'labs_types': LabResearchCategoryModel.objects.all(),
+        **get_all_appointments(ill_his),
     }
 
-    return render(request, 'sanatorium/doctors/final_appointment.html', context)
+    return render(request, 'sanatorium/doctors/appointments/final_appointment.html', context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def cardiologist_appointment_view(request, pk):
+
+    ill_his = get_object_or_404(IllnessHistory.objects.select_related('patient', 'booking'), pk=pk)
+
+    cardiologist_app_instance = ConsultingWithCardiologistModel.objects.filter(illness_history=ill_his).first()
+
+    print(cardiologist_app_instance)
+
+    appointments = {
+        'cardiologist_appointments': ConsultingWithCardiologistModel.objects.filter(illness_history=ill_his),
+        'final_appointment': FinalAppointmentWithDoctorModel.objects.filter(illness_history=ill_his).first()
+    }
+
+    context = {
+        "active_page": {'consulting_and_med_services_page': 'active'},
+
+        'state_choices': ConsultingWithCardiologistModel.state.field.choices,
+
+        'ill_his': ill_his,
+        'ill_his_types': IllnessHistory.type.field.choices,
+        'diagnosis': DiagnosisTemplate.objects.all(),
+        'patient': ill_his.patient,
+        'booking': ill_his.booking,
+        'booking_history': ill_his.booking.booking_history.all(),
+        'rooms': AvailableRoomModel.objects.all(),
+        'room_types': AvailableRoomsTypeModel.objects.all(),
+        'programs': AvailableTariffModel.objects.all(),
+        'doctors': DoctorAccountModel.objects.all(),
+        'nurses': NurseAccountModel.objects.all(),
+        'patient_form': PatientUpdateForm(instance=ill_his.patient),
+        'ih_form': IllnessHistoryUpdateForm(instance=ill_his),
+        'booking_form': BookingModelUpdateForm(instance=ill_his.booking),
+
+        'pills': ItemsInStockModel.objects.filter(warehouse__name='Gospital'),
+        'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
+        'assigned_pills': BasePillsInjectionsModel.objects.filter(illness_history=ill_his),
+        'assigned_procedures': BaseProcedureServiceModel.objects.filter(illness_history=ill_his),
+        'procedures': MedicalService.objects.filter(type='procedure'),
+        'procedures_frequency_types': BaseProcedureServiceModel.frequency.field.choices,
+        'labs': LabResearchModel.objects.all(),
+        'assigned_labs': BaseLabResearchServiceModel.objects.filter(illness_history=ill_his),
+        'labs_types': LabResearchCategoryModel.objects.all(),
+        **appointments,
+    }
+
+    if request.method == "POST":
+        cardiologist_app_form = ConsultingWithCardiologistShortForm(request.POST or None, request.FILES or None, instance=cardiologist_app_instance)
+        if cardiologist_app_form.is_valid():
+            cardiologist_app: ConsultingWithCardiologistModel = cardiologist_app_form.save(commit=False)
+            cardiologist_app.modified_by = request.user
+            cardiologist_app.created_by = request.user
+            cardiologist_app.doctor = request.user
+            cardiologist_app.illness_history = ill_his
+            cardiologist_app.save()
+            return redirect('sanatorium_doctors:main_screen')
+        else:
+            print(cardiologist_app_form.errors)
+            context['cardiologist_app_form'] = cardiologist_app_form
+            return render(request, 'sanatorium/doctors/appointments/cardiologist_appointment.html', context)
+    else:
+        cardiologist_app_form = ConsultingWithCardiologistShortForm(instance=cardiologist_app_instance)
+
+    context['cardiologist_app_form'] = cardiologist_app_form
+
+    return render(request, 'sanatorium/doctors/appointments/cardiologist_appointment.html', context)
