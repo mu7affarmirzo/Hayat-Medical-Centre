@@ -24,6 +24,11 @@ urlpatterns = [
     path('appointments/repeated-appointment-page/<int:pk>', appointments.repeated_appointments_view, name='repeated_appointments_page'),
     path('appointments/update-repeated-appointment-page/<int:pk>', appointments.update_repeated_appointments_view, name='update_repeated_appointments_page'),
 
+    path('appointments/with-doc-on-duty-appointment-page/<int:pk>', appointments.with_doc_on_duty_appointment_view, name='with_doc_on_duty_appointment_page'),
+    path('appointments/update-with-doc-on-duty-appointment-page/<int:pk>', appointments.update_with_doc_on_duty_appointment_view, name='update_with_doc_on_duty_appointment_page'),
+    path('appointments/ekg-appointment-page/<int:pk>', appointments.ekg_appointment_view, name='ekg_appointment_page'),
+    path('appointments/update-ekg-appointment-page/<int:pk>', appointments.update_ekg_appointment_view, name='update_ekg_appointment_page'),
+
     path('patients/list-of-procedures/<int:pk>', main_list_of.main_list_of_procedures_view, name='main_list_of_procedures'),
     path('patients/treatment-proc-update/<int:pk>', main_list_of.treatment_procedure_update, name='treatment_procedure_update'),
     path('patients/pills-injections-update/<int:pk>', main_list_of.pills_injections_update, name='pills_injections_update'),

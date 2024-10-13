@@ -5,7 +5,7 @@ from apps.logus.models import BookingModel
 from apps.sanatorium.models import IllnessHistory, InitialAppointmentWithDoctorModel, BasePillsInjectionsModel, \
     BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel, \
     ConsultingWithCardiologistModel, ConsultingWithNeurologistModel, AppointmentWithOnDutyDoctorOnArrivalModel, \
-    RepeatedAppointmentWithDoctorModel
+    RepeatedAppointmentWithDoctorModel, AppointmentWithOnDutyDoctorModel, EkgAppointmentModel
 
 
 class PatientUpdateForm(forms.ModelForm):
@@ -160,6 +160,33 @@ class RepeatedAppointmentWithDoctorShortForm(forms.ModelForm):
             'summary',
         ]
 
+
+class AppointmentWithOnDutyDoctorForm(forms.ModelForm):
+    class Meta:
+        model = AppointmentWithOnDutyDoctorModel
+        fields = [
+            'state',
+            'complaints',
+            'objective_data',
+            'arterial_high_low',
+            'imt',
+            'cito',
+            'diagnosis',
+            'for_sanatorium_treatment',
+            'summary',
+        ]
+
+class EkgAppointmentShortForm(forms.ModelForm):
+    class Meta:
+        model = EkgAppointmentModel
+        fields = [
+            'state',
+            'cito',
+            'diagnosis',
+            'for_sanatorium_treatment',
+            'objective_data',
+            'summary',
+        ]
 
 class BaseProcedureServiceForm(forms.ModelForm):
     start_date = forms.DateField(

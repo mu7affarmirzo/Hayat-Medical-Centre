@@ -1,5 +1,6 @@
 from audioop import error
 
+from django.contrib import messages
 from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
 
@@ -10,7 +11,8 @@ from apps.logus.models import BookingModel, AvailableTariffModel, AvailableRoomM
 from apps.sanatorium.forms.doctors import InitialAppointmentShortForm, BasePillsInjectionsForm, \
     BaseProcedureServiceForm, BaseLabResearchServiceForm, FinalAppointmentShortForm, \
     ConsultingWithCardiologistShortForm, ConsultingWithNeurologistShortForm, \
-    AppointmentWithOnDutyDoctorOnArrivalShortForm, RepeatedAppointmentWithDoctorShortForm
+    AppointmentWithOnDutyDoctorOnArrivalShortForm, RepeatedAppointmentWithDoctorShortForm, \
+    AppointmentWithOnDutyDoctorForm, EkgAppointmentShortForm
 from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
 from apps.sanatorium.models import IllnessHistory, DiagnosisTemplate, InitialAppointmentWithDoctorModel, \
     BasePillsInjectionsModel, BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel, \
@@ -19,6 +21,21 @@ from apps.sanatorium.models import IllnessHistory, DiagnosisTemplate, InitialApp
 from apps.warehouse.models import ItemsInStockModel
 
 BOOKINGS_PER_PAGE = 30
+
+
+def is_author(current_user, author):
+    return current_user == author
+
+def show_error_message(request, message):
+    messages.error(request, message)
+
+def redirect_to_main_screen():
+    return redirect('sanatorium_doctors:main_screen')
+
+def save_modified_appointment(appointment_form, user):
+    appointment_instance = appointment_form.save(commit=False)
+    appointment_instance.modified_by = user
+    appointment_instance.save()
 
 
 def get_all_appointments(ill_his):
@@ -337,6 +354,7 @@ def update_repeated_appointments_view(request, pk):
 
     if request.method == "POST":
         if request.user != repeated_app_instance.created_by:
+            messages.error(request, "Вы не можете вносить изменения в эту встречу, поскольку вы не являетесь ее автором.")
             return redirect('sanatorium_doctors:main_screen')
 
         repeated_app_form = RepeatedAppointmentWithDoctorShortForm(request.POST or None, request.FILES or None, instance=repeated_app_instance)
@@ -354,3 +372,129 @@ def update_repeated_appointments_view(request, pk):
         context['state_choices'] = RepeatedAppointmentWithDoctorModel.state.field.choices
 
         return render(request, 'sanatorium/doctors/appointments/repeated_appointment.html', context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def with_doc_on_duty_appointment_view(request, pk):
+
+    ill_his = get_object_or_404(IllnessHistory.objects.select_related('patient', 'booking'), pk=pk)
+
+    with_doc_on_duty_instance = AppointmentWithOnDutyDoctorModel.objects.filter(illness_history=ill_his).first()
+
+    context = assemble_context(ill_his)
+
+    if request.method == "POST":
+        with_doc_on_duty_form = AppointmentWithOnDutyDoctorForm(request.POST or None, request.FILES or None, instance=with_doc_on_duty_instance)
+        if with_doc_on_duty_form.is_valid():
+            with_doc_on_duty: AppointmentWithOnDutyDoctorModel = with_doc_on_duty_form.save(commit=False)
+            with_doc_on_duty.created_by = request.user
+            with_doc_on_duty.doctor = request.user
+            with_doc_on_duty.illness_history = ill_his
+            with_doc_on_duty.save()
+            return redirect('sanatorium_doctors:main_screen')
+        else:
+            context['with_doc_on_duty_form'] = with_doc_on_duty_form
+            return render(request, 'sanatorium/doctors/appointments/with_doc_on_duty_appointment.html', context)
+    else:
+        with_doc_on_duty_form = AppointmentWithOnDutyDoctorForm(instance=with_doc_on_duty_instance)
+
+    context['with_doc_on_duty_form'] = with_doc_on_duty_form
+    context['state_choices'] = AppointmentWithOnDutyDoctorModel.state.field.choices
+    context['for_sanatorium_treatment_choices'] = AppointmentWithOnDutyDoctorModel.for_sanatorium_treatment.field.choices
+
+    return render(request, 'sanatorium/doctors/appointments/with_doc_on_duty_appointment.html', context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def update_with_doc_on_duty_appointment_view(request, pk):
+
+    with_doc_on_duty_instance = get_object_or_404(AppointmentWithOnDutyDoctorModel, pk=pk)
+
+    ill_his = with_doc_on_duty_instance.illness_history
+
+    context = assemble_context(ill_his)
+
+    if request.method == "POST":
+        if request.user != with_doc_on_duty_instance.created_by:
+            messages.error(request, "Вы не можете вносить изменения в эту встречу, поскольку вы не являетесь ее автором.")
+            return redirect('sanatorium_doctors:main_screen')
+
+        with_doc_on_duty_form = AppointmentWithOnDutyDoctorForm(request.POST or None, request.FILES or None, instance=with_doc_on_duty_instance)
+        if with_doc_on_duty_form.is_valid():
+            with_doc_on_duty: AppointmentWithOnDutyDoctorModel = with_doc_on_duty_form.save(commit=False)
+            with_doc_on_duty.modified_by = request.user
+            with_doc_on_duty.save()
+            return redirect('sanatorium_doctors:main_screen')
+        else:
+            context['with_doc_on_duty_form'] = with_doc_on_duty_form
+            return render(request, 'sanatorium/doctors/appointments/with_doc_on_duty_appointment.html', context)
+    else:
+        with_doc_on_duty_form = AppointmentWithOnDutyDoctorForm(instance=with_doc_on_duty_instance)
+        context['with_doc_on_duty_form'] = with_doc_on_duty_form
+        context['state_choices'] = AppointmentWithOnDutyDoctorModel.state.field.choices
+        context['for_sanatorium_treatment_choices'] = AppointmentWithOnDutyDoctorModel.for_sanatorium_treatment.field.choices
+
+        return render(request, 'sanatorium/doctors/appointments/with_doc_on_duty_appointment.html', context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def ekg_appointment_view(request, pk):
+
+    ill_his = get_object_or_404(IllnessHistory.objects.select_related('patient', 'booking'), pk=pk)
+
+    ekg_instance = EkgAppointmentModel.objects.filter(illness_history=ill_his).first()
+
+    context = assemble_context(ill_his)
+
+    if request.method == "POST":
+        ekg_form = EkgAppointmentShortForm(request.POST or None, request.FILES or None, instance=ekg_instance)
+        if ekg_form.is_valid():
+            ekg: EkgAppointmentModel = ekg_form.save(commit=False)
+            ekg.created_by = request.user
+            ekg.doctor = request.user
+            ekg.illness_history = ill_his
+            ekg.save()
+            return redirect('sanatorium_doctors:main_screen')
+        else:
+            context['ekg_form'] = ekg_form
+            return render(request, 'sanatorium/doctors/appointments/ekg_appointment.html', context)
+    else:
+        ekg_form = EkgAppointmentShortForm(instance=ekg_instance)
+
+    context['ekg_form'] = ekg_form
+    context['state_choices'] = EkgAppointmentModel.state.field.choices
+    context['for_sanatorium_treatment_choices'] = EkgAppointmentModel.for_sanatorium_treatment.field.choices
+
+    return render(request, 'sanatorium/doctors/appointments/ekg_appointment.html', context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def update_ekg_appointment_view(request, pk):
+
+    ekg_instance = get_object_or_404(EkgAppointmentModel, pk=pk)
+
+    ill_his = ekg_instance.illness_history
+
+    context = assemble_context(ill_his)
+
+    if request.method == "POST":
+        if request.user != ekg_instance.created_by:
+            messages.error(request, "Вы не можете вносить изменения в эту встречу, поскольку вы не являетесь ее автором.")
+            return redirect('sanatorium_doctors:main_screen')
+
+        ekg_form = EkgAppointmentShortForm(request.POST or None, request.FILES or None, instance=ekg_instance)
+        if ekg_form.is_valid():
+            ekg: EkgAppointmentModel = ekg_form.save(commit=False)
+            ekg.modified_by = request.user
+            ekg.save()
+            return redirect('sanatorium_doctors:main_screen')
+        else:
+            context['ekg_form'] = ekg_form
+            return render(request, 'sanatorium/doctors/appointments/ekg_appointment.html', context)
+    else:
+        ekg_form = EkgAppointmentShortForm(instance=ekg_instance)
+        context['ekg_form'] = ekg_form
+        context['state_choices'] = EkgAppointmentModel.state.field.choices
+        context['for_sanatorium_treatment_choices'] = EkgAppointmentModel.for_sanatorium_treatment.field.choices
+
+        return render(request, 'sanatorium/doctors/appointments/ekg_appointment.html', context)

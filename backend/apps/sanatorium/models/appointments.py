@@ -440,9 +440,12 @@ class AppointmentWithOnDutyDoctorModel(models.Model):
     complaints = models.TextField(null=True, blank=True)
     objective_data = models.TextField(null=True, blank=True)
 
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
     arterial_high = models.IntegerField(null=True)
     arterial_low = models.IntegerField(null=True)
-    imt = models.FloatField(null=True)
+    imt = models.CharField(max_length=255, null=True, blank=True)
+
+    diagnosis = models.ForeignKey(DiagnosisTemplate, null=True, on_delete=models.SET_NULL)
 
     cito = models.BooleanField(default=False)
     for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=250, null=True, blank=True)
@@ -500,6 +503,9 @@ class EkgAppointmentModel(models.Model):
     cito = models.BooleanField(default=False)
     diagnosis = models.ForeignKey(DiagnosisTemplate, null=True, on_delete=models.SET_NULL)
     for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=250, null=True, blank=True)
+    objective_data = models.TextField(null=True, blank=True)
+
+    summary = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.id}"

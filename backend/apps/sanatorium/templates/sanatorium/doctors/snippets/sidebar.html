@@ -111,7 +111,7 @@
                             <div class="dropdown-divider"></div>
                             {% for consulting in repeated_appointments %}
                                 <li class="nav-item">
-                                    <a href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}" class="nav-link">
+                                    <a href="{% url 'sanatorium_doctors:update_repeated_appointments_page' consulting.id %}" class="nav-link">
                                         <i class="far"></i>
                                         <p>Повторный приём лечащего врача | {{ consulting.created_at }}</p>
                                     </a>
@@ -123,9 +123,9 @@
                             <div class="dropdown-divider"></div>
                             {% for consulting in with_doc_on_duty_appointments %}
                                 <li class="nav-item">
-                                    <a href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}" class="nav-link">
+                                    <a href="{% url 'sanatorium_doctors:update_with_doc_on_duty_appointment_page' consulting.id %}" class="nav-link">
                                         <i class="far"></i>
-                                        <p>Консультация невролога | {{ consulting.created_at }}</p>
+                                        <p>Прием дежурного врача | {{ consulting.created_at }}</p>
                                     </a>
                                 </li>
                             {% endfor %}
@@ -135,15 +135,13 @@
                             <div class="dropdown-divider"></div>
                             {% for consulting in ekg_appointments %}
                                 <li class="nav-item">
-                                    <a href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}" class="nav-link">
+                                    <a href="{% url 'sanatorium_doctors:update_ekg_appointment_page' consulting.id %}" class="nav-link">
                                         <i class="far"></i>
-                                        <p>Консультация невролога | {{ consulting.created_at }}</p>
+                                        <p>ЭКГ (Электрокардиограмма) | {{ consulting.created_at }}</p>
                                     </a>
                                 </li>
                             {% endfor %}
                         {% endif %}
-
-
 
                         <div class="dropdown-divider"></div>
                         <li class="nav-item">
