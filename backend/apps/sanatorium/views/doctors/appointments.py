@@ -317,12 +317,10 @@ def repeated_appointments_view(request, pk):
 
     ill_his = get_object_or_404(IllnessHistory.objects.select_related('patient', 'booking'), pk=pk)
 
-    repeated_app_instance = RepeatedAppointmentWithDoctorModel.objects.filter(illness_history=ill_his).first()
-
     context = assemble_context(ill_his)
 
     if request.method == "POST":
-        repeated_app_form = RepeatedAppointmentWithDoctorShortForm(request.POST or None, request.FILES or None, instance=repeated_app_instance)
+        repeated_app_form = RepeatedAppointmentWithDoctorShortForm(request.POST or None, request.FILES or None)
         if repeated_app_form.is_valid():
             repeated_app: RepeatedAppointmentWithDoctorModel = repeated_app_form.save(commit=False)
             repeated_app.modified_by = request.user
@@ -335,12 +333,12 @@ def repeated_appointments_view(request, pk):
             context['repeated_app_form'] = repeated_app_form
             return render(request, 'sanatorium/doctors/appointments/repeated_appointment.html', context)
     else:
-        repeated_app_form = RepeatedAppointmentWithDoctorShortForm(instance=repeated_app_instance)
+        repeated_app_form = RepeatedAppointmentWithDoctorShortForm(request.POST or None, request.FILES or None)
 
-    context['repeated_app_form'] = repeated_app_form
-    context['state_choices'] = RepeatedAppointmentWithDoctorModel.state.field.choices
+        context['repeated_app_form'] = repeated_app_form
+        context['state_choices'] = RepeatedAppointmentWithDoctorModel.state.field.choices
 
-    return render(request, 'sanatorium/doctors/appointments/repeated_appointment.html', context)
+        return render(request, 'sanatorium/doctors/appointments/repeated_appointment.html', context)
 
 
 @role_required(role='sanatorium.doctor', login_url='logout')
