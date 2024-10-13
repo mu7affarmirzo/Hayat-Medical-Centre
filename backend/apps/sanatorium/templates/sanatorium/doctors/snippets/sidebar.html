@@ -84,6 +84,67 @@
                                 </a>
                             </li>
                         {% endfor %}
+                        {% if neurologist_appointments %}
+                            <div class="dropdown-divider"></div>
+                            {% for consulting in neurologist_appointments %}
+                                <li class="nav-item">
+                                    <a href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}" class="nav-link">
+                                        <i class="far"></i>
+                                        <p>Консультация невролога | {{ consulting.created_at }}</p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if on_arrival_appointments %}
+                            <div class="dropdown-divider"></div>
+                            {% for consulting in on_arrival_appointments %}
+                                <li class="nav-item">
+                                    <a href="{% url 'sanatorium_doctors:on_arrival_appointment_page' ill_his.id %}" class="nav-link">
+                                        <i class="far"></i>
+                                        <p>Осмотр дежурного врача при поступлении | {{ consulting.created_at }}</p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                        {% if repeated_appointments %}
+                            <div class="dropdown-divider"></div>
+                            {% for consulting in repeated_appointments %}
+                                <li class="nav-item">
+                                    <a href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}" class="nav-link">
+                                        <i class="far"></i>
+                                        <p>Повторный приём лечащего врача | {{ consulting.created_at }}</p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if with_doc_on_duty_appointments %}
+                            <div class="dropdown-divider"></div>
+                            {% for consulting in with_doc_on_duty_appointments %}
+                                <li class="nav-item">
+                                    <a href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}" class="nav-link">
+                                        <i class="far"></i>
+                                        <p>Консультация невролога | {{ consulting.created_at }}</p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if ekg_appointments %}
+                            <div class="dropdown-divider"></div>
+                            {% for consulting in ekg_appointments %}
+                                <li class="nav-item">
+                                    <a href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}" class="nav-link">
+                                        <i class="far"></i>
+                                        <p>Консультация невролога | {{ consulting.created_at }}</p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+
+
+
                         <div class="dropdown-divider"></div>
                         <li class="nav-item">
                             <a href="{% url 'sanatorium_doctors:final_appointment_page' ill_his.id %}" class="nav-link">

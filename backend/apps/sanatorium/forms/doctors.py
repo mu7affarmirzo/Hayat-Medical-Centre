@@ -4,7 +4,8 @@ from apps.account.models import PatientModel, NurseAccountModel
 from apps.logus.models import BookingModel
 from apps.sanatorium.models import IllnessHistory, InitialAppointmentWithDoctorModel, BasePillsInjectionsModel, \
     BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel, \
-    ConsultingWithCardiologistModel
+    ConsultingWithCardiologistModel, ConsultingWithNeurologistModel, AppointmentWithOnDutyDoctorOnArrivalModel, \
+    RepeatedAppointmentWithDoctorModel
 
 
 class PatientUpdateForm(forms.ModelForm):
@@ -113,6 +114,50 @@ class ConsultingWithCardiologistShortForm(forms.ModelForm):
             'summary',
             'cito',
             'recommendation',
+        ]
+
+
+class ConsultingWithNeurologistShortForm(forms.ModelForm):
+    class Meta:
+        model = ConsultingWithNeurologistModel
+        fields = [
+            'state',
+            'is_familiar_with_anamnesis',
+            'complaint',
+            'anamnesis',
+            'cito',
+            'summary',
+            'recommendation',
+        ]
+
+
+class AppointmentWithOnDutyDoctorOnArrivalShortForm(forms.ModelForm):
+    class Meta:
+        model = AppointmentWithOnDutyDoctorOnArrivalModel
+        fields = [
+            'state',
+            'complaints',
+            'objective_data',
+            'temperature',
+            'arterial_high_low',
+            'pulse',
+            'diet',
+            'regime',
+        ]
+
+
+class RepeatedAppointmentWithDoctorShortForm(forms.ModelForm):
+    class Meta:
+        model = RepeatedAppointmentWithDoctorModel
+        fields = [
+            'state',
+            'complaint',
+            'objective_data',
+            'arterial_high_low',
+            'imt',
+            'diagnosis',
+            'cito',
+            'summary',
         ]
 
 

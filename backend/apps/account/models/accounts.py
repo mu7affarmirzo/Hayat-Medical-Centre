@@ -37,6 +37,7 @@ class Account(AbstractBaseUser):
     l_name = models.CharField(max_length=50, null=True)
     m_name = models.CharField(max_length=50, null=True)
     phone_number = models.CharField(max_length=30, null=True)
+    tg_username = models.CharField(max_length=255, null=True, blank=True)
     sex = models.BooleanField(default=True)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)

@@ -49,11 +49,11 @@
                 </a>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:cardiologist_appointment_page' ill_his.id %}">Консультация кардиолога первичная</a>
-                  <a class="dropdown-item" tabindex="-1" href="#">Консультация невролога первичная</a>
-                  <a class="dropdown-item" tabindex="-1" href="#">Осмотр дежурного врача при поступлении</a>
-                  <a class="dropdown-item" tabindex="-1" href="#">Повторный приём лечащего врача</a>
-                  <a class="dropdown-item" tabindex="-1" href="#">Прием дежурного врача</a>
-                  <a class="dropdown-item" tabindex="-1" href="#">ЭКГ (Электрокардиограмма)</a>
+                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}">Консультация невролога первичная</a>
+                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:on_arrival_appointment_page' ill_his.id %}">Осмотр дежурного врача при поступлении</a>
+                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:repeated_appointments_page' ill_his.id %}">Повторный приём лечащего врача</a>
+                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:on_arrival_appointment_page' ill_his.id %}">Прием дежурного врача</a>
+                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:on_arrival_appointment_page' ill_his.id %}">ЭКГ (Электрокардиограмма)</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:final_appointment_page' ill_his.id %}">Заключительный прием лечащего врача</a>
                 </div>

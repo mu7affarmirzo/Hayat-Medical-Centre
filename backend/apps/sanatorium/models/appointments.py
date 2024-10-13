@@ -373,8 +373,9 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
 
     objective_data = models.TextField(null=True, blank=True)
 
-    temperature = models.FloatField(null=True, blank=True)
+    temperature = models.CharField(null=True, blank=True, max_length=255)
 
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
     arterial_high = models.IntegerField(null=True)
     arterial_low = models.IntegerField(null=True)
     imt = models.IntegerField(null=True)
@@ -405,9 +406,10 @@ class RepeatedAppointmentWithDoctorModel(models.Model):
     complaint = models.TextField(null=True, blank=True)
     objective_data = models.TextField(null=True, blank=True)
 
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
     arterial_high = models.IntegerField(null=True)
     arterial_low = models.IntegerField(null=True)
-    imt = models.FloatField(null=True)
+    imt = models.CharField(max_length=255, null=True, blank=True)
 
     diagnosis = models.ForeignKey(DiagnosisTemplate, null=True, on_delete=models.SET_NULL)
     cito = models.BooleanField(default=False)
