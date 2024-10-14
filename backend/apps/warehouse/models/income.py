@@ -81,6 +81,9 @@ def items_to_stock(sender, instance: IncomeItemsModel, created, **kwargs):
         )
     else:
         print('------------ ELSE ---------------')
+        print(instance.income.serial)
+        print(instance.item)
+        print(instance.income.receiver)
         items_in_stock = ItemsInStockModel.objects.filter(
             income_seria=instance.income.serial,
             item=instance.item,
