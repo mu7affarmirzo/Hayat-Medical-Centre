@@ -78,6 +78,13 @@ def items_to_stock(sender, instance: IncomeItemsModel, created, **kwargs):
             price=instance.price,
             unit_price=instance.unit_price
         )
+    else:
+        items_in_stock = ItemsInStockModel.objects.filter(income_seria=instance.income.serial, item=instance.item,
+                                                          warehouse=instance.income.receiver)
+        for stock_item in items_in_stock:
+            stock_item.price = instance.price
+            stock_item.unit_price = instance.unit_price
+            stock_item.save()
 
 
 @receiver(post_save, sender=IncomeModel)
