@@ -68,6 +68,7 @@ def income_item_overall_price(sender, instance, **kwargs):
 @receiver(post_save, sender=IncomeItemsModel)
 def items_to_stock(sender, instance: IncomeItemsModel, created, **kwargs):
     if created:
+        print('------------ created ---------------')
         ItemsInStockModel.objects.create(
             item=instance.item,
             income_seria=instance.income.serial,
@@ -79,8 +80,13 @@ def items_to_stock(sender, instance: IncomeItemsModel, created, **kwargs):
             unit_price=instance.unit_price
         )
     else:
-        items_in_stock = ItemsInStockModel.objects.filter(income_seria=instance.income.serial, item=instance.item,
-                                                          warehouse=instance.income.receiver)
+        print('------------ ELSE ---------------')
+        items_in_stock = ItemsInStockModel.objects.filter(
+            income_seria=instance.income.serial,
+            item=instance.item,
+            warehouse=instance.income.receiver
+        )
+        print(f'------------ {items_in_stock} ---------------')
         for stock_item in items_in_stock:
             stock_item.price = instance.price
             stock_item.unit_price = instance.unit_price
