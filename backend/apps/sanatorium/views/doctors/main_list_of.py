@@ -5,10 +5,12 @@ from apps.account.models import PatientModel, DoctorAccountModel, NurseAccountMo
 from apps.decorators import role_required
 from apps.lis.models import LabResearchModel, LabResearchCategoryModel
 from apps.logus.models import BookingModel, AvailableTariffModel, AvailableRoomModel, AvailableRoomsTypeModel
-from apps.sanatorium.forms.doctors import BasePillsInjectionsForm, BaseProcedureServiceForm, BaseLabResearchServiceForm
+from apps.sanatorium.forms.doctors import BasePillsInjectionsForm, BaseProcedureServiceForm, BaseLabResearchServiceForm, \
+    LabResultForm
 from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
 from apps.sanatorium.models import IllnessHistory, BasePillsInjectionsModel, BaseProcedureServiceModel, \
-    BaseLabResearchServiceModel
+    BaseLabResearchServiceModel, LabResult
+from apps.sanatorium.views.doctors.appointments import assemble_context, get_all_appointments
 from apps.warehouse.models import ItemsInStockModel
 from urllib.parse import urlencode
 
@@ -158,8 +160,14 @@ def consulting_update(request, pk):
     item_update = get_object_or_404(BaseLabResearchServiceModel, pk=pk)
     next_url = request.GET.get('next', '')
 
+    context = assemble_context(item_update.illness_history)
+    context.update({
+        'lab_results': item_update.lab_results.all(),
+    })
+
     if request.method == "POST":
         form = BaseLabResearchServiceForm(request.POST, instance=item_update)
+        lab_result_form = LabResultForm(request.POST, request.FILES)
         if form.is_valid():
             item: BaseLabResearchServiceModel = form.save(commit=False)
             item.modified_by = request.user
@@ -167,24 +175,65 @@ def consulting_update(request, pk):
             if next_url:
                 return redirect(next_url)
             return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
+        if 'lab_result_form' in request.POST and lab_result_form.is_valid():
+            lab_result: LabResult = lab_result_form.save(commit=False)
+            lab_result.created_by = request.user
+            lab_result.base_lab_research = item_update
+            lab_result.save()
+            return redirect("sanatorium_doctors:consulting_update", pk=pk)
         else:
-            context = {
+            context.update({
+                'active_page': {'proc_main_list_page': 'active'},
                 'form': form,
                 'labs': LabResearchModel.objects.all(),
                 'labs_types': LabResearchCategoryModel.objects.all(),
                 'ill_his': item_update.illness_history,
                 'next': next_url,
-            }
-            print(form.errors)
+            })
             return render(request, "sanatorium/doctors/consultings_update.html", context)
     else:
         form = BaseLabResearchServiceForm(instance=item_update)
 
-    context = {
+    context.update({
+        'active_page': {'proc_main_list_page': 'active'},
         'form': form,
         'labs': LabResearchModel.objects.all(),
         'labs_types': LabResearchCategoryModel.objects.all(),
         'ill_his': item_update.illness_history,
         'next': next_url,
-    }
+    })
     return render(request, "sanatorium/doctors/consultings_update.html", context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def get_patient_lab_research_view(request, pk):
+
+    target_lab = get_object_or_404(BaseLabResearchServiceModel, pk=pk)
+    lab_results = target_lab.lab_results.all()
+    next_url = request.GET.get('next', '')
+
+    context = assemble_context(target_lab.illness_history)
+
+    context.update({
+        'active_page': {'proc_main_list_page': 'active'},
+        'assigned_lab': target_lab,
+        'lab_results': lab_results,
+        'next': next_url,
+    })
+    return render(request, "sanatorium/doctors/patient_lab_research_detail.html", context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def update_lab_research_result_view(request, pk):
+
+    target_lab_result = get_object_or_404(LabResult, pk=pk)
+    next_url = request.GET.get('next', '')
+
+    context = get_all_appointments(target_lab_result.base_lab_research.illness_history)
+
+    context.update({
+        'active_page': {'proc_main_list_page': 'active'},
+        'lab_result': target_lab_result,
+        'next': next_url,
+    })
+    return render(request, "sanatorium/doctors/patient_lab_research_result_update.html", context)

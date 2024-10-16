@@ -95,6 +95,129 @@
                                                 </div>
                                             </div>
                                         </form>
+
+                                    </div>
+
+                                    <div class="card card-primary" id="lab-result-programs">
+                                        <div class="card-header">
+                                            <a href="#lab-result-programs"
+                                               style="text-decoration: none; color: inherit;">
+                                                <h2 class="card-title">Результаты исследовании</h2>
+                                            </a>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="card-body p-0">
+                                                    <table class="table table-striped projects">
+                                                        <thead>
+                                                        <tr>
+                                                            <th style="width: 1%">
+                                                                #
+                                                            </th>
+                                                            <th style="width: 20%">
+                                                                Комментарии
+                                                            </th>
+                                                            <th>
+                                                                Выгружал
+                                                            </th>
+                                                            <th>
+                                                                Выгружен
+                                                            </th>
+                                                            <th >
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for lab in lab_results %}
+                                                            <tr>
+                                                                <td>
+                                                                    {{ forloop.counter }}
+                                                                </td>
+                                                                <td>
+                                                                        {{ lab.comments }}
+                                                                </td>
+
+                                                                <td>
+                                                                    {{ lab.created_by.full_name }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ lab.created_at }}
+                                                                </td>
+                                                                {% with current_url=request.get_full_path %}
+                                                                    <td class="project-actions text-right">
+                                                                        <a class="btn btn-info btn-sm"
+                                                                           href="{% url 'sanatorium_doctors:consulting_update' lab.id %}?next={{ current_url }}">
+                                                                            <i class="fas fa-edit">
+                                                                            </i>
+                                                                            Изменить
+                                                                        </a>
+                                                                        <a class="btn btn-danger btn-sm" href="#">
+                                                                            <i class="fas fa-trash">
+                                                                            </i>
+                                                                            Удалить
+                                                                        </a>
+                                                                    </td>
+                                                                {% endwith %}
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-10">
+                                                    <a class="btn btn-success btn-sm" href="#"
+                                                       data-toggle="modal" data-target="#modal-lab-result">
+                                                        <i class="fas fa-plus">
+                                                        </i>
+                                                        Добавить
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal fade" id="modal-lab-result">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="tab-pane fade show active"
+                                                             id="custom-tabs-one-home" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-one-home-tab">
+                                                            <form id="lab_result_form" method="POST" enctype="multipart/form-data">
+                                                                {% csrf_token %}
+                                                                <div class="card-body">
+                                                                    <div class="form-group">
+                                                                        <label for="lab">Комментарии</label>
+                                                                        <textarea rows="3" name="comments"
+                                                                                  type="text"
+                                                                                  class="form-control"
+                                                                                  id="comments"
+                                                                                  placeholder=""></textarea>
+                                                                    </div>
+                                                                    <div class="file-upload">
+                                                                        <input name="attached_file" type="file" class="file-input" id="fileUploadInput">
+                                                                        <label class="file-label" for="fileUploadInput">Добавить файл</label>
+                                                                    </div>
+
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button"
+                                                                                class="btn btn-default"
+                                                                                data-dismiss="modal">Закрыть
+                                                                        </button>
+                                                                        <button name="lab_result_form"
+                                                                                type="submit"
+                                                                                class="btn btn-primary">
+                                                                            Сохранить
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
 
                                 </div>

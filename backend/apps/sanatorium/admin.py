@@ -106,6 +106,9 @@ class BaseLabResearchServiceModelAdmin(ImportExportModelAdmin, admin.ModelAdmin)
     list_display = [field.name for field in BaseLabResearchServiceModel._meta.fields]
 
 
+@admin.register(LabResult)
+class LabResultAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in LabResult._meta.fields]
 
 
 @admin.register(BasicTemplateModel)

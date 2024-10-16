@@ -5,7 +5,7 @@ from apps.logus.models import BookingModel
 from apps.sanatorium.models import IllnessHistory, InitialAppointmentWithDoctorModel, BasePillsInjectionsModel, \
     BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel, \
     ConsultingWithCardiologistModel, ConsultingWithNeurologistModel, AppointmentWithOnDutyDoctorOnArrivalModel, \
-    RepeatedAppointmentWithDoctorModel, AppointmentWithOnDutyDoctorModel, EkgAppointmentModel
+    RepeatedAppointmentWithDoctorModel, AppointmentWithOnDutyDoctorModel, EkgAppointmentModel, LabResult
 
 
 class PatientUpdateForm(forms.ModelForm):
@@ -241,3 +241,12 @@ class BaseLabResearchServiceForm(forms.ModelForm):
             'comments',
         ]
 
+
+class LabResultForm(forms.ModelForm):
+
+    class Meta:
+        model = LabResult
+        fields = [
+            'attached_file',
+            'comments',
+        ]

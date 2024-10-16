@@ -47,7 +47,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a>
+                                <a href="{% url 'sanatorium_doctors:get_patient_lab_research' lab.id %}">
                                     {{ lab.lab }}
                                 </a>
                             </td>
