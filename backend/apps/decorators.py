@@ -8,6 +8,23 @@ from apps.account.models import AccountRolesModel
 
 
 def role_required(role, login_url=None):
+    """
+    role_required(role, login_url=None) -> function
+
+    A decorator to restrict access to a view based on user roles.
+
+    Parameters:
+    role (list): A list of allowed roles required to access the view.
+    login_url (str, optional): The URL to redirect to for login if the user is not authenticated or does not have the required role. Defaults to None.
+
+    Returns:
+    function: The decorated view function.
+
+    Behavior:
+    - If the user is not authenticated, they will be redirected to the login page.
+    - If the user does not have the required role, they will be redirected to the login page.
+    - If the user has the required role, the original view function is called.
+    """
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
