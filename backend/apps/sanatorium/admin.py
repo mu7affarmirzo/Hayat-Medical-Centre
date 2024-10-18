@@ -96,6 +96,11 @@ class BaseProcedureServiceModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in BaseProcedureServiceModel._meta.fields]
 
 
+@admin.register(ProcedureDaysModel)
+class ProcedureDaysModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in ProcedureDaysModel._meta.fields]
+
+
 @admin.register(BasePillsInjectionsModel)
 class BasePillsInjectionsModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in BasePillsInjectionsModel._meta.fields]

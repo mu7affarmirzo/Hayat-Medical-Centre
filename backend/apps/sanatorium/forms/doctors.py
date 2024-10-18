@@ -201,7 +201,6 @@ class BaseProcedureServiceForm(forms.ModelForm):
             'medical_service',
             'quantity',
             'start_date',
-            'frequency',
             'comments',
         ]
 

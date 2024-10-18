@@ -79,7 +79,14 @@ class Account(AbstractBaseUser):
         return self.notifications.filter(state=False)
 
 
+class DoctorSpecialtyTypeModel(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+
 class DoctorAccountModel(models.Model):
+    specialty_type = models.ForeignKey('DoctorSpecialtyTypeModel', on_delete=models.SET_NULL, null=True)
     doctor = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='doctor_model')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

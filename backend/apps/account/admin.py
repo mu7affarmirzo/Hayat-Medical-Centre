@@ -16,6 +16,11 @@ class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in accounts.Account._meta.fields]
 
 
+@admin.register(accounts.DoctorSpecialtyTypeModel)
+class DoctorSpecialtyTypeModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in accounts.DoctorSpecialtyTypeModel._meta.fields]
+
+
 @admin.register(accounts.NurseAccountModel)
 class NurseAccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in accounts.NurseAccountModel._meta.fields]

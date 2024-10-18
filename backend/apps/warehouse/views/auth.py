@@ -32,6 +32,7 @@ def login_view(request):
             'sanatorium.nurse': 'sanatorium_nurse:main_screen',
             'sanatorium.admin': 'sanatorium_admin:main_screen',
             'sanatorium.doctor': 'sanatorium_doctors:main_screen',
+            'sanatorium.dispatcher': 'sanatorium_dispatchers:main_screen',
         }
 
         if target_role in user_role_based_redirect:

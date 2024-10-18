@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from apps.account.models import AccountRolesModel
 
 
-def role_required(role, login_url=None):
+def role_required(role, login_url=None, fix_role=False):
     """
     role_required(role, login_url=None) -> function
 
@@ -45,8 +45,9 @@ def role_required(role, login_url=None):
                 return view_func(request, *args, **kwargs)
 
             print(target_role, role)
-            if not set(role).issubset(set(target_role)):
-                return redirect(login_url)
+            if not fix_role:
+                if not set(role).issubset(set(target_role)):
+                    return redirect(login_url)
 
             return view_func(request, *args, **kwargs)
 
