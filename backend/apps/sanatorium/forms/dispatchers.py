@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from django import forms
 
-from apps.sanatorium.models import BaseProcedureServiceModel
+from apps.sanatorium.models import BaseProcedureServiceModel, ProcedureDaysModel
 
 
 class UpdateBaseProcedureServiceForm(forms.ModelForm):
@@ -26,3 +28,27 @@ class DispatchBaseProcedureServiceForm(forms.ModelForm):
         fields = [
             'procedure_doctor'
         ]
+
+
+from django import forms
+from datetime import datetime
+
+class ProcedureDaysModelForm(forms.ModelForm):
+
+    class Meta:
+        model = ProcedureDaysModel
+        fields = [
+            'state',
+            'start_at',
+            'procedure_doctor',
+            'comments',
+        ]
+
+    def clean_start_at(self):
+        start_at = self.cleaned_data.get('start_at')
+        return datetime.strptime(start_at, '%m/%d/%Y %I:%M %p')
+        # try:
+        #     # Adjust the format here to match the incoming date format.
+        #     return datetime.strptime(start_at, '%m/%d/%Y %I:%M %p')
+        # except (ValueError, TypeError):
+        #     raise forms.ValidationError('Введите правильную дату и время.')

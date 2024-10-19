@@ -16,7 +16,7 @@ from apps.decorators import role_required
 from apps.lis.models import LabResearchCategoryModel, LabResearchModel
 from apps.logus.models import BookingModel, AvailableTariffModel, AvailableRoomModel, AvailableRoomsTypeModel
 from apps.logus.views.bookings import get_bookings_view
-from apps.sanatorium.forms.dispatchers import DispatchBaseProcedureServiceForm
+from apps.sanatorium.forms.dispatchers import DispatchBaseProcedureServiceForm, ProcedureDaysModelForm
 from apps.sanatorium.forms.doctors import InitialAppointmentShortForm, BasePillsInjectionsForm, \
     BaseProcedureServiceForm, BaseLabResearchServiceForm
 from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
@@ -93,13 +93,13 @@ def dispatch_patient_procedures_view(request, pk):
             procedure = form.save(commit=False)
             procedure.updated_by = request.user
             procedure.state = 'dispatched'
+            procedure.save()
 
             days = ProcedureDaysModel.objects.filter(procedure=procedure)
             for day in days:
                 day.procedure_doctor = procedure.procedure_doctor
+                day.state = 'диспетчеризирован'
                 day.save()
-
-            procedure.save()
 
             return redirect('sanatorium_dispatchers:patient_procedure_by_days', pk=pk)
 
@@ -113,6 +113,38 @@ def dispatch_patient_procedures_view(request, pk):
     context['dispatch_form'] = form
 
     return render(request, 'sanatorium/dispatcher/patient_procedure_dispatch.html', context)
+
+
+@role_required(role='sanatorium.dispatcher', login_url='logout')
+def update_procedure_days_view(request, pk):
+    context = {}
+
+    try:
+        days = ProcedureDaysModel.objects.get(pk=pk)
+    except:
+        return redirect('sanatorium_dispatchers:main_screen')
+
+    procedure = days.procedure
+    ill_his = procedure.illness_history
+
+    if request.method == "POST":
+        form = ProcedureDaysModelForm(request.POST, instance=days)
+        target_time = datetime.strptime(form.data.get('start_at'), '%m/%d/%Y %I:%M %p')
+        days.updated_by = request.user
+        days.state = form.data.get('state')
+        days.start_at = target_time
+        days.procedure_doctor_id = form.data.get('procedure_doctor')
+        days.comments = form.data.get('comments')
+        days.save()
+        return redirect('sanatorium_dispatchers:patient_procedure_by_days', pk=procedure.pk)
+
+    form = ProcedureDaysModelForm(instance=days)
+    context['specialists'] = DoctorAccountModel.objects.filter(specialty_type__name='treatment')
+    context['form'] = form
+    context['states'] = ProcedureDaysModel.state.field.choices
+    context['ill_his'] = ill_his
+
+    return render(request, 'sanatorium/dispatcher/update_days.html', context)
 
 
 @role_required(role='sanatorium.dispatcher', login_url='logout')
@@ -131,6 +163,7 @@ def get_patient_procedure_by_days_view(request, pk):
     context['days'] = procedure.days.all()
     context['booking'] = ill_his.booking
     context['booking_history'] = ill_his.booking.booking_history.all()
+    context['specialists'] = DoctorAccountModel.objects.filter(specialty_type__name='treatment')
 
     return render(request, 'sanatorium/dispatcher/patient_procedure_by_days.html', context)
 

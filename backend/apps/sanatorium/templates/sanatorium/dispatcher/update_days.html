@@ -36,7 +36,6 @@
     <div class="content-wrapper">
 
 
-
         {% if messages %}
             <div class="alert alert-danger">
                 {% for message in messages %}
@@ -52,127 +51,87 @@
         <section class="content">
             <div class="container-fluid">
                 <!-- SELECT2 EXAMPLE -->
-                <div class="card card-primary">
+                <div class="card card-primary" id="treatment-procedures">
                     <div class="card-header">
-                        <h3 class="card-title">Забронированные</h3>
+                        <a href="#treatment-procedures"
+                           style="text-decoration: none; color: inherit;">
+                            <h2 class="card-title">Лечебные процедуры || {{ ill_his }} || {{ ill_his.patient }}</h2>
+                        </a>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card col-md-12">
-                                <div class="card-header">
-                                    <label for="arrival-date-picker">Время заезда</label>
-                                    <div class="card-tools">
-                                        <div class="input-group input-group-sm" style="width: 150px;">
-                                            <input type="date" id="arrival-date-picker" class="form-control" />
+                    <div class="tab-pane text-left fade show active" id="vert-tabs-title-page" role="tabpanel"
+                         aria-labelledby="vert-tabs-title-page-tab">
+                        <div class="card-body">
+
+                            <div class="tab-content" id="custom-content-below-tabContent">
+                                <form id="form" method="POST" action="?{% if next %}next={{ next }}{% endif %}">
+                                    {% csrf_token %}
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="example_fname">Статус</label>
+                                            <select class="form-control select2"
+                                                    style="width: 100%;"
+                                                    name="state">
+                                                {% for state in states %}
+                                                    <option value="{{ state.0 }}"
+                                                            {% if form.instance.state == state.0 %}selected{% endif %}>{{ state.0 }}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <div class="card-tools">
-                                    <form method="get" action="">
-                                        <div class="input-group input-group-sm" style="width: 450px;">
-                                            <input type="text" name="table_search" class="form-control float-right"
-                                                   placeholder="Search" value="{{ query }}">
-
-                                            <div class="input-group-append">
-                                                <button type="submit" class="btn btn-default">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
+                                        <div class="form-group">
+                                            <label>Время:</label>
+                                            <div class="input-group date" id="reservationdatetime"
+                                                 data-target-input="nearest">
+                                                <input
+                                                        type="text" class="form-control datetimepicker-input"
+                                                        name="start_at"
+                                                        data-target="#reservationdatetime"
+                                                        value="
+                                                                {% if form.instance.start_at %}{{ form.instance.start_at|date:'m/d/Y h:i A' }}{% endif %}"
+                                                />
+                                                <div class="input-group-append" data-target="#reservationdatetime"
+                                                     data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
 
-                                <br>
+                                        <div class="form-group">
+                                            <label for="frequency">Специалисть:</label>
+                                            <select class="form-control select2"
+                                                    style="width: 100%;" name="procedure_doctor">
+                                                {% for spec in specialists %}
+                                                    <option value="{{ spec.id }}"
+                                                            {% if form.instance.procedure_doctor == spec %}selected{% endif %}>{{ spec }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
 
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 10px">№</th>
-                                        <th>Имя гостя</th>
-                                        <th>Пол</th>
-                                        <th>Возраст</th>
-                                        <th>Тип комнаты</th>
-                                        <th>Комната</th>
-                                        <th>Время заезда</th>
-                                        <th>Дата выезда</th>
-                                        <th>Дней</th>
-                                        <th>Тариф</th>
-                                    </tr>
+                                        <div class="form-group">
+                                            <label for="comments">Особые указания</label>
+                                            <textarea rows="3" name="comments" type="text"
+                                                      class="form-control"
+                                                      id="comments"
+                                                      value="{{ form.instance.comments|default_if_none:'' }}"
+                                                      placeholder="">{{ form.instance.comments|default_if_none:'' }}</textarea>
+                                        </div>
 
-                                    </thead>
-
-                                    <tbody id="booking-table-body">
-                                    {% for i in bookings %}
-                                        <tr>
-                                            <td>{{ i.series_number }}</td>
-                                            <td><a href="{% url 'sanatorium_dispatchers:patient_procedures' i.pk %}">{{ i.patient.full_name }}</a></td>
-                                            <td>
-                                                {{ i.patient.formatted_gender }}
-                                            </td>
-                                            <td>
-                                                {{ i.patient.age }} год
-                                            </td>
-                                            <td>
-                                                <span class="badge"
-                                                      style="background-color: {{ i.booking.current_room_type.color }};">{{ i.booking.current_room_type }}</span>
-                                            </td>
-                                            <td>{{ i.booking.current_room.room_number }}</td>
-                                            <td>{{ i.booking.start_date }}</td>
-                                            <td>{{ i.booking.end_date }}</td>
-                                            <td>{{ i.booking.duration }}</td>
-                                            <td>
-                                                <span class="badge"
-                                                      style="background-color: {{ i.booking.current_tariff.color }};">{{ i.booking.current_tariff }}</span>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-
-                                    </tbody>
-                                </table>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default"
+                                                    data-dismiss="modal">Закрыть
+                                            </button>
+                                            <button name="form" type="submit"
+                                                    class="btn btn-primary">
+                                                Сохранить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer clearfix">
-                                <ul class="pagination pagination-sm m-0 float-right">
 
-                                    {% if bookings.has_previous %}
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.previous_page_number }}">&laquo;</a>
-                                        </li>
-                                    {% endif %}
-
-                                    {% for i in bookings.paginator.page_range %}
-                                        {% if bookings.number == i %}
-                                            <li class="page-item active"><a class="page-link">{{ i }}</a></li>
-                                        {% else %}
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="?{% if query %}q={{ query }}&{% endif %}page={{ i }}">{{ i }}</a>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-
-                                    {% if bookings.has_next %}
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.next_page_number }}">Next</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.paginator.num_pages }}">Last
-                                                &raquo;</a>
-                                        </li>
-                                    {% endif %}
-
-                                </ul>
-                            </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
@@ -260,7 +219,10 @@
         });
 
         //Date and time picker
-        $('#reservationdatetime').datetimepicker({icons: {time: 'far fa-clock'}});
+        $('#reservationdatetime').datetimepicker(
+            {icons: {time: 'far fa-clock'},
+            format: 'MM/DD/YYYY h:mm A'}
+        );
 
         //Date range picker
         $('#reservation').daterangepicker()

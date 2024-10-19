@@ -54,7 +54,7 @@
                 <!-- SELECT2 EXAMPLE -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Забронированные</h3>
+                        <h3 class="card-title">Диспетчеризация</h3>
                     </div>
 
                     <div class="row">
@@ -93,43 +93,82 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th style="width: 10px">№</th>
+                                        <th style="width: 10px">№ ИБ</th>
+                                        <th>Процедура</th>
+                                        <th>Статус</th>
+                                        <th style="width: 5px">Кол.во</th>
+                                        <th>Дата начало</th>
                                         <th>Имя гостя</th>
                                         <th>Пол</th>
                                         <th>Возраст</th>
-                                        <th>Тип комнаты</th>
                                         <th>Комната</th>
-                                        <th>Время заезда</th>
-                                        <th>Дата выезда</th>
-                                        <th>Дней</th>
-                                        <th>Тариф</th>
+                                        <th>Прогрес</th>
+                                        <th>%</th>
+                                        <th>Действие</th>
                                     </tr>
 
                                     </thead>
 
                                     <tbody id="booking-table-body">
-                                    {% for i in bookings %}
+                                    {% for i in procedures %}
                                         <tr>
-                                            <td>{{ i.series_number }}</td>
-                                            <td><a href="{% url 'sanatorium_dispatchers:patient_procedures' i.pk %}">{{ i.patient.full_name }}</a></td>
+                                            <td>{{ i.illness_history.series_number }}</td>
+                                            <td><a href="{% url 'sanatorium_dispatchers:patient_procedure_by_days' i.pk %}">{{ i.medical_service }}</a></td>
                                             <td>
-                                                {{ i.patient.formatted_gender }}
+                                                {% if i.state == 'assigned' %}
+                                                    <span class="badge bg-warning">Назначено</span>
+                                                {% elif i.state == 'dispatched' %}
+                                                    <span class="badge bg-success">Диспетчеризовано</span>
+                                                {% elif i.state == 'cancelled' %}
+                                                    <span class="badge bg-danger">Отменено</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ i.quantity }}</td>
+                                            <td>{{ i.start_date }}</td>
+                                            <td>{{ i.illness_history.patient.full_name }}</td>
+                                            <td>
+                                                {{ i.illness_history.patient.formatted_gender }}
                                             </td>
                                             <td>
                                                 {{ i.patient.age }} год
                                             </td>
+
+                                            <td>{{ i.illness_history.booking.current_room.room_number }}</td>
+
                                             <td>
-                                                <span class="badge"
-                                                      style="background-color: {{ i.booking.current_room_type.color }};">{{ i.booking.current_room_type }}</span>
+                                                <div class="progress progress-xs progress-striped active">
+                                                    <div class="progress-bar bg-success"
+                                                         style="width: {{ i.progres_percentile }}%"></div>
+                                                </div>
                                             </td>
-                                            <td>{{ i.booking.current_room.room_number }}</td>
-                                            <td>{{ i.booking.start_date }}</td>
-                                            <td>{{ i.booking.end_date }}</td>
-                                            <td>{{ i.booking.duration }}</td>
-                                            <td>
-                                                <span class="badge"
-                                                      style="background-color: {{ i.booking.current_tariff.color }};">{{ i.booking.current_tariff }}</span>
+                                            <td><span class="badge bg-success">{{ i.progres_percentile }}%</span>
                                             </td>
+                                            {% with current_url=request.get_full_path %}
+                                                <td class="project-actions text-right">
+                                                    <a class="btn btn-info btn-sm"
+                                                       href="#">
+                                                        <i class="fas fa-edit">
+                                                        </i>
+                                                        Изменить
+                                                    </a>
+                                                    {% if i.state != 'dispatched' %}
+
+                                                        <a class="btn btn-success btn-sm"
+                                                           href="{% url 'sanatorium_dispatchers:patient_procedure_dispatch' i.id %}">
+                                                            <i class="fas fa-upload">
+                                                            </i>
+                                                            Потвердить
+                                                        </a>
+                                                    {% else %}
+                                                        <a class="btn btn-light btn-sm"
+                                                           href="#">
+                                                            <i class="fas fa-upload">
+                                                            </i>
+                                                            Потвердить
+                                                        </a>
+                                                    {% endif %}
+                                                </td>
+                                            {% endwith %}
                                         </tr>
                                     {% endfor %}
 
@@ -140,15 +179,15 @@
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">
 
-                                    {% if bookings.has_previous %}
+                                    {% if procedures.has_previous %}
                                         <li class="page-item">
                                             <a class="page-link"
-                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.previous_page_number }}">&laquo;</a>
+                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ procedures.previous_page_number }}">&laquo;</a>
                                         </li>
                                     {% endif %}
 
-                                    {% for i in bookings.paginator.page_range %}
-                                        {% if bookings.number == i %}
+                                    {% for i in procedures.paginator.page_range %}
+                                        {% if procedures.number == i %}
                                             <li class="page-item active"><a class="page-link">{{ i }}</a></li>
                                         {% else %}
                                             <li class="page-item"><a class="page-link"
@@ -157,14 +196,14 @@
                                         {% endif %}
                                     {% endfor %}
 
-                                    {% if bookings.has_next %}
+                                    {% if procedures.has_next %}
                                         <li class="page-item">
                                             <a class="page-link"
-                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.next_page_number }}">Next</a>
+                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ procedures.next_page_number }}">Next</a>
                                         </li>
                                         <li class="page-item">
                                             <a class="page-link"
-                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.paginator.num_pages }}">Last
+                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ procedures.paginator.num_pages }}">Last
                                                 &raquo;</a>
                                         </li>
                                     {% endif %}
@@ -208,33 +247,6 @@
 <script src="{% static 'adminlte3_assets/plugins/dropzone/min/dropzone.min.js' %}"></script>
 <script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
 <!-- Page specific script -->
-
-<script>
-    document.getElementById('arrival-date-picker').addEventListener('change', function () {
-        var selectedDate = this.value;
-        fetch(`{% url 'sanatorium_staff:by-start-date' %}?start_date=${selectedDate}`)
-            .then(response => response.json())
-            .then(data => {
-                var tableBody = document.getElementById('booking-table-body');
-                tableBody.innerHTML = '';
-                data.bookings.forEach(function (booking) {
-                    var row = `<tr>
-                    <td>${booking.id}</td>
-                    <td>${booking.series}</td>
-                    <td>${booking.patient_full_name}</td>
-                    <td>${booking.end_date}</td>
-                    <td><span class="badge" style="background-color: ${booking.current_room_type_color};">${booking.current_room_type}</span></td>
-                    <td>${booking.current_room_room_number}</td>
-                    <td>${booking.start_date}</td>
-                    <td>${booking.duration}</td>
-                    <td><span class="badge" style="background-color: ${booking.current_tariff_color};">${booking.current_tariff}</span></td>
-                    <td>${booking.discount}</td>
-                </tr>`;
-                    tableBody.insertAdjacentHTML('beforeend', row);
-                });
-            });
-    });
-</script>
 
 
 <script>

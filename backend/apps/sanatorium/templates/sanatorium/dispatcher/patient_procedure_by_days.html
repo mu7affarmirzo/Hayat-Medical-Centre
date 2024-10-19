@@ -29,7 +29,7 @@
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
     <!-- Navbar -->
-    {% include 'sanatorium/doctors/snippets/navbar.html' %}
+    {% include 'sanatorium/dispatcher/snippets/navbar.html' %}
     <!-- /.navbar -->
 
     <!-- Content Wrapper. Contains page content -->
@@ -96,15 +96,15 @@
                                                 {{ forloop.counter }}
                                             </td>
                                             <td>
-                                                {% if proc.state == 'created' %}
+                                                {% if proc.state == 'создано' %}
                                                     <span class="badge bg-warning">Не назначено</span>
-                                                {% elif proc.state == 'dispatched' %}
+                                                {% elif proc.state == 'диспетчеризирован' %}
                                                     <span class="badge bg-primary">Диспетчеризовано</span>
-                                                {% elif proc.state == 'cancelled' %}
+                                                {% elif proc.state == 'отменено' %}
                                                     <span class="badge bg-danger">Отменено</span>
-                                                {% elif proc.state == 'paused' %}
+                                                {% elif proc.state == 'приостановлено' %}
                                                     <span class="badge bg-warning">Остановлено</span>
-                                                {% elif proc.state == 'done' %}
+                                                {% elif proc.state == 'выполнено' %}
                                                     <span class="badge bg-success">Выполнена</span>
                                                 {% endif %}
                                             </td>
@@ -134,8 +134,7 @@
 
                                             {% with current_url=request.get_full_path %}
                                                 <td class="project-actions text-right">
-                                                    <a class="btn btn-info btn-sm"
-                                                       href="#">
+                                                    <a class="btn btn-info btn-sm" href="{% url 'sanatorium_dispatchers:update_procedure_days' proc.id %}?next={{ current_url }}" >
                                                         <i class="fas fa-edit">
                                                         </i>
                                                         Изменить
@@ -148,6 +147,7 @@
                                 </table>
                             </div>
                         </div>
+
 
                     </div>
                 </div>
