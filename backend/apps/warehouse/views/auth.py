@@ -7,12 +7,30 @@ from apps.warehouse.forms import AccountAuthenticationForm
 from apps.warehouse.models.store_point import StorePointStaffModel
 
 
+USER_ROLE_REDIRECTS = {
+    'warehouse': 'warehouse_v2:main_screen',
+    'logus.reception': 'logus_auth:main_screen',
+    'sanatorium.staff': 'sanatorium_staff:main_screen',
+    'sanatorium.nurse': 'sanatorium_nurse:main_screen',
+    'sanatorium.admin': 'sanatorium_admin:main_screen',
+    'sanatorium.doctor': 'sanatorium_doctors:main_screen',
+    'sanatorium.dispatcher': 'sanatorium_dispatchers:main_screen',
+    'sanatorium.procedure_specs': 'sanatorium_procedure_specs:main_screen',
+}
+
+
+def get_redirect_url_for_role(user):
+    target_role = AccountRolesModel.objects.filter(user=user).first()
+    if target_role:
+        role_name = target_role.role.name
+        return USER_ROLE_REDIRECTS.get(role_name)
+    return None
+
 def user_redirect(user):
     role_page = StorePointStaffModel.objects.filter(staff__in=[user]).first()
     if role_page:
         return redirect(role_page.role.name)
     else:
-        return redirect("warehouse_v2:main_screen")
         return redirect("warehouse_v2:main_screen")
 
 
@@ -20,23 +38,9 @@ def login_view(request):
     context = {}
     user = request.user
     if user.is_authenticated:
-        target_role = AccountRolesModel.objects.filter(user=request.user)
-        target_role = target_role.first()
-        if target_role:
-            target_role = target_role.role.name
-
-        user_role_based_redirect = {
-            'warehouse': 'warehouse_v2:main_screen',
-            'logus.reception': 'logus_auth:main_screen',
-            'sanatorium.staff': 'sanatorium_staff:main_screen',
-            'sanatorium.nurse': 'sanatorium_nurse:main_screen',
-            'sanatorium.admin': 'sanatorium_admin:main_screen',
-            'sanatorium.doctor': 'sanatorium_doctors:main_screen',
-            'sanatorium.dispatcher': 'sanatorium_dispatchers:main_screen',
-        }
-
-        if target_role in user_role_based_redirect:
-            return redirect(user_role_based_redirect[target_role])
+        redirect_url = get_redirect_url_for_role(user)
+        if redirect_url:
+            return redirect(redirect_url)
         return render(request, 'auth/login.html', context)
 
     if request.POST:
@@ -45,31 +49,16 @@ def login_view(request):
             email = request.POST['email']
             password = request.POST['password']
             user = authenticate(email=email, password=password)
-
             if user:
                 login(request, user)
-
-                target_role = AccountRolesModel.objects.filter(user=request.user)
-                target_role = target_role.first()
-                if target_role:
-                    target_role = target_role.role.name
-
-                user_role_based_redirect = {
-                    'warehouse': 'warehouse_v2:main_screen',
-                    'logus.reception': 'logus_auth:main_screen',
-                    'sanatorium.staff': 'sanatorium_staff:main_screen',
-                    'sanatorium.nurse': 'sanatorium_nurse:main_screen',
-                    'sanatorium.admin': 'sanatorium_admin:main_screen',
-                    'sanatorium.doctor': 'sanatorium_doctors:main_screen',
-                }
-
-                if target_role in user_role_based_redirect:
-                    return redirect(user_role_based_redirect[target_role])
+                redirect_url = get_redirect_url_for_role(user)
+                if redirect_url:
+                    return redirect(redirect_url)
                 return redirect('warehouse_v2:logout')
             else:
                 return redirect('login')
-
-    form = AccountAuthenticationForm()
+    else:
+        form = AccountAuthenticationForm()
 
     context['login_form'] = form
     return render(request, 'auth/login.html', context)

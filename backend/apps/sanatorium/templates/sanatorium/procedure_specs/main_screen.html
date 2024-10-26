@@ -36,7 +36,6 @@
     <div class="content-wrapper">
 
 
-
         {% if messages %}
             <div class="alert alert-danger">
                 {% for message in messages %}
@@ -64,7 +63,7 @@
                                     <label for="arrival-date-picker">Время</label>
                                     <div class="card-tools">
                                         <div class="input-group input-group-sm" style="width: 150px;">
-                                            <input type="date" id="arrival-date-picker" class="form-control" />
+                                            <input type="date" id="arrival-date-picker" class="form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -94,12 +93,12 @@
                                     <thead>
                                     <tr>
                                         <th>Процедура</th>
+                                        <th>Время</th>
                                         <th style="width: 10px">№ ИБ</th>
                                         <th>Имя гостя</th>
                                         <th>Пол</th>
                                         <th>Возраст</th>
                                         <th>Комната</th>
-                                        <th>Дата выезда</th>
                                         <th>Статус</th>
                                         <th>Конфликт</th>
                                         <th></th>
@@ -111,16 +110,22 @@
                                     {% for i in procedures %}
                                         <tr>
                                             <td>{{ i.procedure.medical_service }}</td>
+                                            <td>
+                                                {% if all_procedures %}
+                                                    {{ i.start_at }}
+                                                {% else %}
+                                                    {{ i.start_at|time }}
+                                                {% endif %}
+                                            </td>
                                             <td>{{ i.procedure.illness_history.series_number }}</td>
                                             <td>{{ i.procedure.illness_history.patient.full_name }}</td>
                                             <td>
                                                 {{ i.procedure.illness_history.patient.formatted_gender }}
                                             </td>
                                             <td>
-                                                {{  i.procedure.illness_history.patient.age }} год
+                                                {{ i.procedure.illness_history.patient.age }} год
                                             </td>
                                             <td>{{ i.procedure.illness_history.booking.current_room.room_number }}</td>
-                                            <td>{{ i.procedure.illness_history.booking.end_date }}</td>
                                             <td>
                                                 {% if i.state == 'создано' %}
                                                     <span class="badge bg-warning">Не назначено</span>
@@ -136,20 +141,32 @@
                                             </td>
                                             <td>
                                                 {% if i.is_out_of_graphic %}
-                                                    <span class="badge bg-danger">Конфликт с датой выезда</span>
+                                                    <span class="badge bg-danger">Конфликт с датой выезда: {{ i.procedure.illness_history.booking.end_date }}</span>
                                                 {% else %}
                                                     -
                                                 {% endif %}
                                             </td>
                                             {% with current_url=request.get_full_path %}
                                                 <td class="project-actions text-right">
-                                                    <a class="btn btn-info btn-sm" href="#?next={{ current_url }}" >
+                                                    <a class="btn btn-info btn-sm"
+                                                       href="{% url 'sanatorium_procedure_specs:update_procedure_state' pk=i.id %}?next={{ current_url }}"
+                                                    >
                                                         <i class="fas fa-edit">
                                                         </i>
-                                                        Изменить
+                                                        Обновить
+                                                    </a>
+                                                    <a class="btn btn-success btn-sm"
+                                                       href="{% url 'sanatorium_procedure_specs:make_it_done_procedure_state' pk=i.id %}?next={{ current_url }}"
+                                                       data-id="{{ i.id }}"
+                                                       data-state="{{ i.state }}"
+                                                       onclick="return confirm('Вы действительно хотите обновить?');"
+                                                    >
+                                                        <i class="fas fa-check">
+                                                        </i>
+                                                        Потвердить
                                                     </a>
                                                 </td>
-                                                </tr>
+
                                             {% endwith %}
                                         </tr>
                                     {% endfor %}
@@ -157,6 +174,61 @@
                                     </tbody>
                                 </table>
                             </div>
+
+                            <div class="modal fade" id="modal-default">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Обновить статус
+                                                процедуры</h4>
+                                            <button type="button" class="close"
+                                                    data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <form id="registerPatientForm" method="POST" action="{% url 'sanatorium_dispatchers:update_procedure_days' 0 %}">
+                                            {% csrf_token %}
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="item-state">State</label>
+                                                    <select name="state" id="item-state" class="form-control">
+                                                        <option value="active">Active</option>
+                                                        <option value="inactive">Inactive</option>
+                                                        <option value="pending">Pending</option>
+                                                    </select>
+                                                </div>
+{#                                                <div class="form-group">#}
+{#                                                    <label for="example_fname">Статус процедуры</label>#}
+{#                                                    <select class="form-control select2"#}
+{#                                                            style="width: 100%;"#}
+{#                                                            name="pills_injections">#}
+{#                                                        {% for pill in pills %}#}
+{#                                                            <option value="{{ pill.id }}"#}
+{#                                                                    {% if pills_form.instance.diagnosis.id == pill.id %}selected{% endif %}>{{ pill.for_doctors_naming }}</option>#}
+{#                                                        {% endfor %}#}
+{#                                                    </select>#}
+{#                                                </div>#}
+                                            </div>
+                                            <!-- /.card-body -->
+
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">
+                                                    Закрыть
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">
+                                                    Сохранить
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">
@@ -233,27 +305,45 @@
 <script>
     document.getElementById('arrival-date-picker').addEventListener('change', function () {
         var selectedDate = this.value;
-        fetch(`{% url 'sanatorium_staff:by-start-date' %}?start_date=${selectedDate}`)
+        fetch(`{% url 'sanatorium_procedure_specs:get-procedures-by-date' %}?start_date=${selectedDate}`)
             .then(response => response.json())
             .then(data => {
                 var tableBody = document.getElementById('booking-table-body');
                 tableBody.innerHTML = '';
-                data.bookings.forEach(function (booking) {
+                data.procedures.forEach(function (procedure) {
                     var row = `<tr>
-                    <td>${booking.id}</td>
-                    <td>${booking.series}</td>
-                    <td>${booking.patient_full_name}</td>
-                    <td>${booking.end_date}</td>
-                    <td><span class="badge" style="background-color: ${booking.current_room_type_color};">${booking.current_room_type}</span></td>
-                    <td>${booking.current_room_room_number}</td>
-                    <td>${booking.start_date}</td>
-                    <td>${booking.duration}</td>
-                    <td><span class="badge" style="background-color: ${booking.current_tariff_color};">${booking.current_tariff}</span></td>
-                    <td>${booking.discount}</td>
+                    <td>${procedure.id}</td>
+                    <td>${procedure.state}</td>
+                    <td>${procedure.patient_full_name}</td>
+                    <td>${procedure.procedure}</td>
                 </tr>`;
                     tableBody.insertAdjacentHTML('beforeend', row);
                 });
             });
+    });
+</script>
+
+<script>
+    $('#modal-default').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var iState = button.data('state');  // Extract the name from data-name attribute
+
+        // Update the modal's content
+        var modal = $(this);
+        modal.find('#i-state').val(iState);
+    });
+</script>
+
+<script>
+    $('#modal-default').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var itemId = button.data('id');
+        var formAction = "{% url 'sanatorium_dispatchers:update_procedure_days' 0 %}".replace('0', itemId);
+
+        // Update the form action with the item's ID
+        var modal = $(this);
+        modal.find('form').attr('action', formAction);
+        modal.find('#modal-item-id').val(itemId);
     });
 </script>
 
