@@ -79,33 +79,61 @@
 
                                                 {% for lab_result in lab_results %}
                                                     <div class="post clearfix">
-                                                        <div class="user-block">
-                                                            <img class="img-circle img-bordered-sm"
-                                                                 src="
-                                                                         {% if lab_result.created_by.profile_image %}{{ lab_result.created_by.profile_image.url }}{% else %}/static/default_user.png{% endif %}"
-                                                                 alt="User Image">
-                                                            <span class="username">
-                                                                <a href="#">{{ lab_result.created_by.get_full_name }}</a>
-                                                            </span>
-                                                            <span class="description">
-                                                                Выгружен: {{ lab_result.result_date|date:"M d, Y H:i" }}
-                                                            </span>
-                                                        </div>
+                                                        {% if lab_result.attached_file %}
+                                                            <div class="user-block">
+                                                                {% if lab_result.file_format == "png" or lab_result.file_format == "jpg" or lab_result.file_format == "jpeg" %}
+                                                                    <img class="img-circle img-bordered-sm"
+                                                                         src="{% static 'adminlte3_assets/files_icon/photo.png' %}"
+                                                                         alt="Attached file">
+                                                                {% elif lab_result.file_format == "doc" %}
+                                                                    <img class="img-circle img-bordered-sm"
+                                                                         src="{% static 'adminlte3_assets/files_icon/office.png' %}"
+                                                                         alt="Attached file">
+                                                                {% elif lab_result.file_format == "xls" or lab_result.file_format == "csv" %}
+                                                                    <img class="img-circle img-bordered-sm"
+                                                                         src="{% static 'adminlte3_assets/files_icon/xls.png' %}"
+                                                                         alt="Attached file">
+                                                                {% elif lab_result.file_format == "pdf" %}
+                                                                    <img class="img-circle img-bordered-sm"
+                                                                         src="{% static 'adminlte3_assets/files_icon/pdf.png' %}"
+                                                                         alt="Attached file">
+                                                                {% else %}
+                                                                    <img class="img-circle img-bordered-sm"
+                                                                         src="{% static 'adminlte3_assets/files_icon/folder.png' %}"
+                                                                         alt="Attached file">
+                                                                {% endif %}
+                                                                <span class="username">
+                                                                    <a href="#">{{ lab_result.created_by.get_full_name }}</a>
+                                                                </span>
+                                                                <span class="description">
+                                                                    Выгружен: {{ lab_result.result_date|date:"M d, Y H:i" }}
+                                                                </span>
+                                                            </div>
                                                         <!-- /.user-block -->
 
-                                                        <p>
-                                                            {{ lab_result.result|linebreaks }}
-                                                            <!-- Display the result text -->
-                                                        </p>
+                                                            <p>
+                                                                {{ lab_result.result|linebreaks }}
+                                                                <!-- Display the result text -->
+                                                            </p>
 
-                                                        {% if lab_result.attached_file %}
                                                             <p>
                                                                 <a href="{{ lab_result.attached_file.url }}"
                                                                    class="link-black text-sm" download>
-                                                                    <i class="fas fa-download mr-1"></i> Загрузить прикрепленный файл
+                                                                    <i class="fas fa-download mr-1"></i> Загрузить прикрепленный файл - {{ lab_result.file_format }}
                                                                 </a>
                                                             </p>
                                                         {% else %}
+                                                            <div class="user-block">
+                                                                <img class="img-circle img-bordered-sm"
+                                                                     src="{% static 'adminlte3_assets/files_icon/out-of-stock.png' %}"
+                                                                     alt="Attached file">
+                                                                <span class="username">
+                                                                    <a href="#">{{ lab_result.created_by.get_full_name }}</a>
+                                                                </span>
+                                                                <span class="description">
+                                                                    Выгружен: {{ lab_result.result_date|date:"M d, Y H:i" }}
+                                                                </span>
+                                                            </div>
                                                             <p class="text-muted">Файл не прикреплен.</p>
                                                         {% endif %}
                                                     </div>

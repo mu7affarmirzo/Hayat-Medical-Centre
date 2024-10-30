@@ -93,7 +93,6 @@ def update_procedure_state_view(request, pk):
             target_object.updated_by = request.user
             target_object.save()
             return redirect(next_url if next_url else 'sanatorium_procedure_specs:main_screen')
-        print(form.errors)
 
     form = ProcedureDaysStatusForm(instance=procedures)
 
