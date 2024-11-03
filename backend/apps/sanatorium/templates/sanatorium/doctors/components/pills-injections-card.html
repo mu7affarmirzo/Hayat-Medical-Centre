@@ -76,7 +76,7 @@
                                     </i>
                                     Изменить
                                 </a>
-                                <a class="btn btn-danger btn-sm" href="#">
+                                <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modal-delete{{ pill.pk }}">
                                     <i class="fas fa-trash">
                                     </i>
                                     Удалить
@@ -84,6 +84,37 @@
                             </td>
                         {% endwith %}
                         </tr>
+                        <div class="modal fade" id="modal-delete{{ pill.pk }}">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Вы точно хотите удалить этот медикамент?</h4>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <form method="post" action="{% url 'sanatorium_doctors:pills_injections_delete' pill.id %}?next={{ current_url }}">
+                                        {% csrf_token %}
+                                        <div class="card-body">
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">нет
+                                                </button>
+                                                <button name="pills_form" type="submit"
+                                                        class="btn btn-danger">
+                                                    удалить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
                     {% endfor %}
                     </tbody>
                 </table>

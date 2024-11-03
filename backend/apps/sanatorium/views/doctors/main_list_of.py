@@ -1,18 +1,16 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
 
-from apps.account.models import PatientModel, DoctorAccountModel, NurseAccountModel, MedicalService
+from apps.account.models import DoctorAccountModel, NurseAccountModel, MedicalService
 from apps.decorators import role_required
 from apps.lis.models import LabResearchModel, LabResearchCategoryModel
-from apps.logus.models import BookingModel, AvailableTariffModel, AvailableRoomModel, AvailableRoomsTypeModel
+from apps.logus.models import AvailableTariffModel, AvailableRoomModel, AvailableRoomsTypeModel
 from apps.sanatorium.forms.doctors import BasePillsInjectionsForm, BaseProcedureServiceForm, BaseLabResearchServiceForm, \
     LabResultForm
-from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
 from apps.sanatorium.models import IllnessHistory, BasePillsInjectionsModel, BaseProcedureServiceModel, \
     BaseLabResearchServiceModel, LabResult
 from apps.sanatorium.views.doctors.appointments import assemble_context, get_all_appointments
-from apps.warehouse.models import ItemsInStockModel
-from urllib.parse import urlencode
+from apps.warehouse.models import ItemsInStockModel, ChequeItemsModel
 
 BOOKINGS_PER_PAGE = 30
 
@@ -64,8 +62,8 @@ def main_list_of_procedures_view(request, pk):
         'nurses': NurseAccountModel.objects.all(),
 
         'pills': ItemsInStockModel.objects.filter(warehouse__is_main=True),
-        'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
-        'assigned_pills': BasePillsInjectionsModel.objects.filter(illness_history=ill_his),
+        'pill_frequency_types': ChequeItemsModel.frequency.field.choices,
+        'assigned_pills': ChequeItemsModel.objects.filter(cheque__illness_history=ill_his),
         'assigned_procedures': BaseProcedureServiceModel.objects.filter(illness_history=ill_his),
         'procedures': MedicalService.objects.filter(type='procedure'),
         'procedures_frequency_types': BaseProcedureServiceModel.frequency.field.choices,
@@ -93,7 +91,6 @@ def treatment_procedure_update(request, pk):
                 return redirect(next_url)
             return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
         else:
-            print(form.errors)
             # Return the user to the form with errors highlighted
             context = {
                 'form': form,
@@ -120,24 +117,24 @@ def treatment_procedure_update(request, pk):
 @role_required(role='sanatorium.doctor', login_url='logout')
 def pills_injections_update(request, pk):
 
-    item_update = get_object_or_404(BasePillsInjectionsModel, pk=pk)
+    item_update = get_object_or_404(ChequeItemsModel, pk=pk)
     next_url = request.GET.get('next', '')
 
     if request.method == "POST":
         form = BasePillsInjectionsForm(request.POST, instance=item_update)
         if form.is_valid():
-            item: BasePillsInjectionsModel = form.save(commit=False)
+            item: ChequeItemsModel = form.save(commit=False)
             item.modified_by = request.user
             item.save()
             if next_url:
                 return redirect(next_url)
-            return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
+            return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.cheque.illness_history.pk)
         else:
             context = {
                 'form': form,
-                'pills': ItemsInStockModel.objects.filter(warehouse__name='Госпиталь'),
-                'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
-                'ill_his': item_update.illness_history,
+                'pills': ItemsInStockModel.objects.filter(warehouse__is_main=True),
+                'pill_frequency_types': ChequeItemsModel.frequency.field.choices,
+                'ill_his': item_update.cheque.illness_history,
                 'next': next_url,
             }
             return render(request, "sanatorium/doctors/pills_injections_update.html", context)
@@ -146,12 +143,26 @@ def pills_injections_update(request, pk):
 
     context = {
         'form': form,
-        'pills': ItemsInStockModel.objects.filter(warehouse__name='Госпиталь'),
-        'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
-        'ill_his': item_update.illness_history,
+        'pills': ItemsInStockModel.objects.filter(warehouse__is_main=True),
+        'pill_frequency_types': ChequeItemsModel.frequency.field.choices,
+        'ill_his': item_update.cheque.illness_history,
         'next': next_url,
     }
     return render(request, "sanatorium/doctors/pills_injections_update.html", context)
+
+
+@role_required(role='sanatorium.doctor', login_url='logout')
+def pills_injections_delete(request, pk):
+
+    item_delete= get_object_or_404(ChequeItemsModel, pk=pk)
+    return_pk = item_delete.cheque.illness_history.pk
+    next_url = request.GET.get('next', '')
+
+    if request.method == "POST":
+        item_delete.delete()
+        if next_url:
+            return redirect(next_url)
+    return redirect("sanatorium_doctors:main_list_of_procedures", pk=return_pk)
 
 
 @role_required(role='sanatorium.doctor', login_url='logout')

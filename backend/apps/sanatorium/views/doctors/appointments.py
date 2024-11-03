@@ -158,7 +158,6 @@ def get_init_app_by_id_view(request, pk):
             pills_injections.cheque = ill_his.warehouse_cheque
             pills_injections.save()
             return redirect('sanatorium_doctors:init_app_page', pk=pk)
-        print(pills_form.errors)
         if 'procedures_form' in request.POST and procedures_form.is_valid():
             procedures: BaseProcedureServiceModel = procedures_form.save(commit=False)
             procedures.modified_by = request.user

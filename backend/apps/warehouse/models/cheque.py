@@ -62,7 +62,7 @@ class ChequeItemsModel(models.Model):
 
     price = models.IntegerField(default=0)  # ItemsInStock modeldan unit_price keladi
 
-    quantity = models.IntegerField(default=1)
+    quantity = models.IntegerField(default=0)
 
     state = models.CharField(choices=STATE_CHOICES, default='assigned', max_length=50)
     quantity_per_session = models.IntegerField(default=1, null=True, blank=True)
@@ -86,15 +86,6 @@ class ChequeItemsModel(models.Model):
         return self.price * self.quantity
 
     def save(self, *args, **kwargs):
-        frequency_map = {
-            "3 раза в день": 3,
-            "до еды": 1,
-            "после еды": 1,
-        }
-
-        # Get the integer value of the frequency
-        frequency_value = frequency_map.get(self.frequency, 1)  # Default to 1 if not found
-
 
         if self.pk:
             # The instance already exists, so it's an update
