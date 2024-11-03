@@ -40,6 +40,8 @@ urlpatterns = [
     path('main-point/cheque/create', cheque.ChequeCreate.as_view(), name='cheque-create'),
     path('main-point/cheque/update/<int:pk>', cheque.ChequeUpdate.as_view(), name='cheque-update'),
     path('main-point/cheque/detailed/<int:pk>', cheque.cheque_detailed_view, name='cheque-detailed'),
+    path('main-point/cheque/detailed/sanatorium/<int:pk>', cheque.cheque_sanatorium_detailed_view, name='cheque-sanatorium-detailed'),
+    path('main-point/cheque/update/sanatorium/<int:pk>', cheque.cheque_sanatorium_update_view, name='cheque-sanatorium-update'),
     path('main-point/cheque/add-new-patient', cheque.add_new_patient, name='add-new-patient'),
 
     path('main-point/cheque/invoice/<int:pk>', cheque.gen_invoice, name='invoice-gen'),

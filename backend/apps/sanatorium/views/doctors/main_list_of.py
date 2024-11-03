@@ -63,7 +63,7 @@ def main_list_of_procedures_view(request, pk):
         'doctors': DoctorAccountModel.objects.all(),
         'nurses': NurseAccountModel.objects.all(),
 
-        'pills': ItemsInStockModel.objects.filter(warehouse__name='Госпиталь'),
+        'pills': ItemsInStockModel.objects.filter(warehouse__is_main=True),
         'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
         'assigned_pills': BasePillsInjectionsModel.objects.filter(illness_history=ill_his),
         'assigned_procedures': BaseProcedureServiceModel.objects.filter(illness_history=ill_his),

@@ -6,6 +6,7 @@ from apps.sanatorium.models import IllnessHistory, InitialAppointmentWithDoctorM
     BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel, \
     ConsultingWithCardiologistModel, ConsultingWithNeurologistModel, AppointmentWithOnDutyDoctorOnArrivalModel, \
     RepeatedAppointmentWithDoctorModel, AppointmentWithOnDutyDoctorModel, EkgAppointmentModel, LabResult
+from apps.warehouse.models import ChequeItemsModel
 
 
 class PatientUpdateForm(forms.ModelForm):
@@ -213,10 +214,10 @@ class BasePillsInjectionsForm(forms.ModelForm):
     )
 
     class Meta:
-        model = BasePillsInjectionsModel
+        model = ChequeItemsModel
         fields = [
-            'pills_injections',
-            'quantity',
+            'item',
+            'quantity_per_session',
             'period_days',
             'start_date',
             'frequency',

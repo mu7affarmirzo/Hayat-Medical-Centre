@@ -18,7 +18,7 @@ from apps.sanatorium.models import IllnessHistory, DiagnosisTemplate, InitialApp
     BasePillsInjectionsModel, BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel, \
     ConsultingWithCardiologistModel, ConsultingWithNeurologistModel, AppointmentWithOnDutyDoctorOnArrivalModel, \
     RepeatedAppointmentWithDoctorModel, AppointmentWithOnDutyDoctorModel, EkgAppointmentModel
-from apps.warehouse.models import ItemsInStockModel
+from apps.warehouse.models import ItemsInStockModel, ChequeItemsModel
 
 BOOKINGS_PER_PAGE = 30
 
@@ -70,8 +70,8 @@ def assemble_context(ill_his, active_page='consulting_and_med_services_page'):
         'booking_form': BookingModelUpdateForm(instance=ill_his.booking),
 
         'pills': ItemsInStockModel.objects.filter(warehouse__name='Gospital'),
-        'pill_frequency_types': BasePillsInjectionsModel.frequency.field.choices,
-        'assigned_pills': BasePillsInjectionsModel.objects.filter(illness_history=ill_his),
+        'pill_frequency_types': ChequeItemsModel.frequency.field.choices,
+        'assigned_pills': ChequeItemsModel.objects.filter(cheque__illness_history=ill_his),
         'assigned_procedures': BaseProcedureServiceModel.objects.filter(illness_history=ill_his),
         'procedures': MedicalService.objects.filter(type='procedure'),
         'procedures_frequency_types': BaseProcedureServiceModel.frequency.field.choices,
@@ -152,12 +152,13 @@ def get_init_app_by_id_view(request, pk):
             init_app.save()
             return redirect('sanatorium_doctors:init_app_page', pk=pk)
         if 'pills_form' in request.POST and pills_form.is_valid():
-            pills_injections: BasePillsInjectionsModel = pills_form.save(commit=False)
+            pills_injections: ChequeItemsModel = pills_form.save(commit=False)
             pills_injections.modified_by = request.user
             pills_injections.created_by = request.user
-            pills_injections.illness_history = ill_his
+            pills_injections.cheque = ill_his.warehouse_cheque
             pills_injections.save()
             return redirect('sanatorium_doctors:init_app_page', pk=pk)
+        print(pills_form.errors)
         if 'procedures_form' in request.POST and procedures_form.is_valid():
             procedures: BaseProcedureServiceModel = procedures_form.save(commit=False)
             procedures.modified_by = request.user

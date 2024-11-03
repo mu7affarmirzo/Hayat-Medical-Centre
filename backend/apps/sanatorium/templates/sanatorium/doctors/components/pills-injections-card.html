@@ -21,7 +21,7 @@
                             Название медикамента
                         </th>
                         <th>
-                            Количество всего
+                            Кол-во на сеанс
                         </th>
                         <th>
                             Дата начала
@@ -53,12 +53,12 @@
                             </td>
                             <td>
                                 <a>
-                                    {{ pill.pills_injections.for_doctors_naming }}
+                                    {{ pill.item.for_doctors_naming }}
                                 </a>
 
                             </td>
                             <td>
-                                {{ pill.quantity }}
+                                {{ pill.quantity_per_session }}
                             </td>
                             <td>
                                 {{ pill.start_date }}
@@ -120,10 +120,10 @@
                                     медикамента</label>
                                 <select class="form-control select2"
                                         style="width: 100%;"
-                                        name="pills_injections">
+                                        name="item">
                                     {% for pill in pills %}
                                         <option value="{{ pill.id }}"
-                                                {% if pills_form.instance.diagnosis.id == pill.id %}selected{% endif %}>{{ pill.for_doctors_naming }}</option>
+                                                {% if pills_form.instance.item.id == pill.id %}selected{% endif %}>{{ pill.for_doctors_naming }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -164,7 +164,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="quantity">Количество всего</label>
-                                <input name="quantity" type="number"
+                                <input name="quantity_per_session" type="number"
                                        class="form-control"
                                        id="quantity"
                                        placeholder="1 таблетка">
