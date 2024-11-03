@@ -4,4 +4,5 @@ urlpatterns = [
     path('', include('apps.logus.routers.auth')),
     path('registration/', include('apps.logus.routers.registration')),
     path('booking/', include('apps.logus.routers.booking')),
+    path('payment/', include('apps.logus.routers.payment')),
 ]
