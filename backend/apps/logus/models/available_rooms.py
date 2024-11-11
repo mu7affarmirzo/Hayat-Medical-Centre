@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.account.models import Account
+from apps.account.models import Account, MedicalService
 
 VIEW_CHOICE = (
     ("residential", "residential"),
@@ -26,6 +26,9 @@ class AvailableTariffModel(models.Model):
     tag = models.CharField(null=True, blank=True, max_length=20)
     name = models.CharField(max_length=255)
     price = models.PositiveIntegerField(default=0)
+
+    medical_service = models.ManyToManyField(MedicalService)
+
     created_by = models.ForeignKey(Account, related_name="available_tariff", on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
