@@ -37,5 +37,5 @@ class PatientRegistrationForm(forms.ModelForm):
         model = PatientModel
         fields = [
             'f_name', 'mid_name', 'l_name', 'address',
-            'date_of_birth', 'mobile_phone_number', 'gender',
+            'date_of_birth', 'mobile_phone_number', 'gender', 'INN'
         ]
