@@ -201,7 +201,9 @@ def register_booking_view(request):
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
-            form.save()
+            booking = form.save()
+            illness_history = booking.illness_history.first()
+            is_sick_leave = form.cleaned_data.get('is_sick_leave', False)
             return redirect('logus_auth:main_screen')
     else:
         form = BookingForm()

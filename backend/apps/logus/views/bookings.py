@@ -17,30 +17,16 @@ BOOKINGS_PER_PAGE = 30
 
 @role_required(role='logus', login_url='logus_auth:logout')
 def get_upcoming_checkouts(request):
-    context = {}
 
-    tomorrow_date = timezone.now().date() + timedelta(days=1)
-
-    checkouts = BookingModel.objects.filter(end_date=tomorrow_date)
-    context['bookings'] = checkouts
-
-    query = request.GET.get('q', '')
     search_query = request.GET.get('table_search')
 
     if search_query:
         bookings = sorted(get_booking_queryset(search_query), key=attrgetter('end_date'), reverse=True)
     else:
-        bookings = sorted(get_booking_queryset(query), key=attrgetter('end_date'), reverse=True)
+        tomorrow_date = timezone.now().date() + timedelta(days=1)
+        bookings = BookingModel.objects.filter(end_date__gte=tomorrow_date)
 
-    page = request.GET.get('page', 1)
-    bookings_paginator = Paginator(bookings, BOOKINGS_PER_PAGE)
-
-    try:
-        bookings = bookings_paginator.page(page)
-    except PageNotAnInteger:
-        bookings = bookings_paginator.page(BOOKINGS_PER_PAGE)
-    except EmptyPage:
-        bookings = bookings_paginator.page(bookings_paginator.num_pages)
+    bookings = paginate_page(request, bookings)
 
     context = {
         "bookings": bookings
@@ -64,15 +50,7 @@ def get_living_guests(request):
     else:
         bookings = sorted(get_booking_queryset(query, 'settled'), key=attrgetter('end_date'), reverse=True)
 
-    page = request.GET.get('page', 1)
-    bookings_paginator = Paginator(bookings, BOOKINGS_PER_PAGE)
-
-    try:
-        bookings = bookings_paginator.page(page)
-    except PageNotAnInteger:
-        bookings = bookings_paginator.page(BOOKINGS_PER_PAGE)
-    except EmptyPage:
-        bookings = bookings_paginator.page(bookings_paginator.num_pages)
+    bookings = paginate_page(request, bookings)
 
     context = {
         "bookings": bookings
@@ -83,32 +61,16 @@ def get_living_guests(request):
 
 @role_required(role='logus', login_url='logus_auth:logout')
 def get_upcoming_check_ins_view(request):
-    context = {}
 
-    tomorrow_date = timezone.now().date() + timedelta(days=1)
-    check_ins = BookingModel.objects.filter(start_date=tomorrow_date)
-    context['bookings'] = check_ins
-
-    # ----------------------
-    user = request.user
-
-    query = request.GET.get('q', '')
     search_query = request.GET.get('table_search')
 
     if search_query:
-        bookings = sorted(get_booking_queryset(search_query), key=attrgetter('start_date'), reverse=True)
+        check_ins = sorted(get_booking_queryset(search_query), key=attrgetter('start_date'), reverse=True)
     else:
-        bookings = sorted(get_booking_queryset(query), key=attrgetter('start_date'), reverse=True)
+        today = timezone.now().date()
+        check_ins = BookingModel.objects.filter(start_date__gte=today)
 
-    page = request.GET.get('page', 1)
-    bookings_paginator = Paginator(bookings, BOOKINGS_PER_PAGE)
-
-    try:
-        bookings = bookings_paginator.page(page)
-    except PageNotAnInteger:
-        bookings = bookings_paginator.page(BOOKINGS_PER_PAGE)
-    except EmptyPage:
-        bookings = bookings_paginator.page(bookings_paginator.num_pages)
+    bookings = paginate_page(request, check_ins)
 
     context = {
         "bookings": bookings
@@ -128,9 +90,22 @@ def booking_search(request):
             'id': item.id, 'series': item.series, 'room': item.current_room.room_number,
             'patient': item.patient.full_name, 'tariff': item.current_tariff, 'room_type': item.current_room_type
         } for item in bookings]
-        print(results)
+
         return JsonResponse(results, safe=False)
     return JsonResponse({'error': 'No query provided'}, status=400)
+
+
+def paginate_page(request, queries):
+    page = request.GET.get('page', 1)
+    bookings_paginator = Paginator(queries, BOOKINGS_PER_PAGE)
+
+    try:
+        bookings = bookings_paginator.page(page)
+    except PageNotAnInteger:
+        bookings = bookings_paginator.page(BOOKINGS_PER_PAGE)
+    except EmptyPage:
+        bookings = bookings_paginator.page(bookings_paginator.num_pages)
+    return bookings
 
 
 def get_leaving_bookings_view(request):

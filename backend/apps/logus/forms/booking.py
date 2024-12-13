@@ -14,6 +14,11 @@ class BookingForm(forms.ModelForm):
         input_formats=['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y']
     )
 
+    is_sick_leave = forms.BooleanField(
+        required=True,
+        label="Больничный"
+    )
+
     class Meta:
         model = BookingModel
         fields = [
