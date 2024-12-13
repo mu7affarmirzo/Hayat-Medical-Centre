@@ -6,11 +6,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from apps.decorators import role_required
-from apps.logus.models import BookingModel
+from apps.logus.forms.booking import UpdateBookingForm
+from apps.logus.models import BookingModel, AvailableRoomModel, AvailableRoomsTypeModel, AvailableTariffModel
 
 BOOKINGS_PER_PAGE = 30
 
@@ -62,21 +63,51 @@ def get_living_guests(request):
 @role_required(role='logus', login_url='logus_auth:logout')
 def get_upcoming_check_ins_view(request):
 
+    today = timezone.now().date()
     search_query = request.GET.get('table_search')
 
     if search_query:
         check_ins = sorted(get_booking_queryset(search_query), key=attrgetter('start_date'), reverse=True)
     else:
-        today = timezone.now().date()
-        check_ins = BookingModel.objects.filter(start_date__gte=today)
+        check_ins = BookingModel.objects.filter(stage__in=['booked', 'arrived']).order_by('-start_date')
 
     bookings = paginate_page(request, check_ins)
 
     context = {
-        "bookings": bookings
+        "bookings": bookings,
+        "today": today
     }
 
     return render(request, 'logus/booking/checkins.html', context)
+
+
+@role_required(role='logus', login_url='logus_auth:logout')
+def update_check_in_view(request, pk):
+    today = timezone.now().date()
+
+    booking = get_object_or_404(BookingModel, pk=pk)
+
+    if request.method == "POST":
+        form = UpdateBookingForm(request.POST, instance=booking)
+        if form.is_valid():
+            form.save()
+            return redirect('logus_booking:check-in')
+        print(form.errors)
+    rooms = AvailableRoomModel.objects.all()
+    room_types = AvailableRoomsTypeModel.objects.all()
+    tariffs = AvailableTariffModel.objects.all()
+
+    context = {
+        "booking": booking,
+        "today": today,
+        'rooms': rooms,
+        'room_types': room_types,
+        'tariffs': tariffs,
+        "form": UpdateBookingForm(instance=booking),
+        "stages": BookingModel.stage.field.choices
+    }
+
+    return render(request, 'logus/booking/checkins_detailed.html', context)
 
 
 @login_required

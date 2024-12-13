@@ -84,13 +84,14 @@
                                         <th style="width: 10px">#</th>
                                         <th>Серия</th>
                                         <th>Имя гостя</th>
+                                        <th>Время заезда</th>
                                         <th>Дата выезда</th>
                                         <th>Тип комнаты</th>
                                         <th>Комната</th>
-                                        <th>Время заезда</th>
                                         <th>Дней</th>
                                         <th>Тариф</th>
                                         <th>Скидка</th>
+                                        <th style="width: 10%" class="text-center">Действие</th>
                                     </tr>
 
                                     </thead>
@@ -103,19 +104,44 @@
                                             <td>
                                                 {{ i.patient.full_name }}
                                             </td>
+                                            {% if i.start_date >= today %}
+                                            	<td>
+                                                    <span class="badge bg-primary">{{ i.start_date }}</span>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    <span class="badge bg-warning">{{ i.start_date }}</span>
+                                                </td>
+                                            {% endif %}
                                             <td>{{ i.end_date }}</td>
                                             <td>
                                                 <span class="badge"
                                                       style="background-color: {{ i.current_room_type.color }};">{{ i.current_room_type }}</span>
                                             </td>
                                             <td>{{ i.current_room.room_number }}</td>
-                                            <td>{{ i.start_date }}</td>
                                             <td>{{ i.duration }}</td>
                                             <td>
                                                 <span class="badge"
                                                       style="background-color: {{ i.current_tariff.color }};">{{ i.current_tariff }}</span>
                                             </td>
                                             <td>{{ i.discount }}</td>
+                                            <td class="text-center">
+{#                                                <a class="btn btn-primary btn-sm" href="#">#}
+{#                                                    <i class="fas fa-edit">#}
+{#                                                    </i>#}
+{#                                                    Изменить#}
+{#                                                </a>#}
+                                                <a class="btn btn-info btn-sm" href="{% url 'logus_booking:check-in-update' i.pk %}">
+                                                    <i class="fas fa-edit">
+                                                    </i>
+                                                    Изменить
+                                                </a>
+                                                <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modal-delete{{ pill.pk }}">
+                                                    <i class="fas fa-trash">
+                                                    </i>
+                                                    Удалить
+                                                </a>
+                                            </td>
                                         </tr>
                                     {% endfor %}
 

@@ -104,7 +104,7 @@
                                         <th>Комната</th>
                                         <th>Прогрес</th>
                                         <th>%</th>
-                                        <th>Действие</th>
+                                        <th style="width: 10%" class="text-center">Действие</th>
                                     </tr>
 
                                     </thead>
@@ -144,7 +144,7 @@
                                             <td><span class="badge bg-success">{{ i.progres_percentile }}%</span>
                                             </td>
                                             {% with current_url=request.get_full_path %}
-                                                <td class="project-actions text-right">
+                                                <td class="project-actions text-center">
                                                     <a class="btn btn-info btn-sm"
                                                        href="#">
                                                         <i class="fas fa-edit">

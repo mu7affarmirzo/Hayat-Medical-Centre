@@ -32,6 +32,27 @@ class BookingForm(forms.ModelForm):
         # }
 
 
+class UpdateBookingForm(forms.ModelForm):
+    start_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),
+        input_formats=['%Y-%m-%d', '%d/%m/%Y', '%d/%m/%y'],
+        required=False  # Make it optional in case it's empty or not filled
+    )
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),
+        input_formats=['%Y-%m-%d', '%d/%m/%Y', '%d/%m/%y'],
+        required=False  # Make it optional in case it's empty or not filled
+    )
+
+    class Meta:
+        model = BookingModel
+        fields = [
+            'current_tariff', 'current_room',
+            'current_room_type',
+            'start_date', 'end_date', 'stage'
+        ]
+
+
 class PatientRegistrationForm(forms.ModelForm):
     date_of_birth = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),
