@@ -57,7 +57,14 @@ def get_patients_list(request):
 
 @role_required(role='sanatorium.staff', login_url='logout')
 def get_patient_by_id_view(request, pk):
-    context = {}
+    context = {
+        'ill_his_types': IllnessHistory.type.field.choices,
+        'rooms': AvailableRoomModel.objects.all(),
+        'room_types': AvailableRoomsTypeModel.objects.all(),
+        'programs': AvailableTariffModel.objects.all(),
+        'doctors': DoctorAccountModel.objects.all(),
+        'nurses': NurseAccountModel.objects.all(),
+    }
 
     try:
         ill_his = IllnessHistory.objects.get(pk=pk)
@@ -87,17 +94,10 @@ def get_patient_by_id_view(request, pk):
             return redirect('sanatorium_staff:get_patient_by_id', pk=pk)
 
     context['ill_his'] = ill_his
-    context['ill_his_types'] = IllnessHistory.type.field.choices
     context['patient'] = ill_his.patient
 
     context['booking'] = ill_his.booking
     context['booking_history'] = ill_his.booking.booking_history.all()
-    context['rooms'] = AvailableRoomModel.objects.all()
-    context['room_types'] = AvailableRoomsTypeModel.objects.all()
-    context['programs'] = AvailableTariffModel.objects.all()
-
-    context['doctors'] = DoctorAccountModel.objects.all()
-    context['nurses'] = NurseAccountModel.objects.all()
 
     patient_form = PatientUpdateForm(instance=ill_his.patient)
     ih_form = IllnessHistoryUpdateForm(instance=ill_his)

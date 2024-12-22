@@ -37,6 +37,13 @@ class IllnessHistoryUpdateForm(forms.ModelForm):
             'doctor'
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['series_number'].required = False
+        self.fields['type'].required = False
+        self.fields['nurse'].required = False
+        self.fields['doctor'].required = False
+
 
 class BookingModelUpdateForm(forms.ModelForm):
     start_date = forms.DateField(

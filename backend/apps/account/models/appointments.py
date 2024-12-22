@@ -30,6 +30,9 @@ class MedicalServiceCategory(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     modified_by = models.ForeignKey(Account, related_name="modf_med_serv_category", on_delete=models.SET_NULL, null=True)
 
+    def __str__(self):
+        return str(self.name)
+
 
 class MedicalService(models.Model):
     TYPES = (
@@ -41,7 +44,7 @@ class MedicalService(models.Model):
     cost = models.BigIntegerField()
     doctor = models.ManyToManyField(DoctorAccountModel, blank=True)
     speciality = models.ForeignKey(SpecialityModel, on_delete=models.SET_NULL,
-                                   null=True, related_name='med_service_specialty')
+                                   null=True, blank=True, related_name='med_service_specialty')
     """
     look at sanatorium 
     https://www.figma.com/file/aeByA9WSTeHdobGPmKAxfR/Hayat-Medical-(Project)?type=design&node-id=3595-18579&mode=design&t=5d8fgNQjEiyO1W9h-0

@@ -83,6 +83,7 @@
                                     <tr>
                                         <th style="width: 10px">№</th>
                                         <th>Имя гостя</th>
+                                        <th>Доктор</th>
                                         <th>Пол</th>
                                         <th>Возраст</th>
                                         <th>Тип комнаты</th>
@@ -100,6 +101,7 @@
                                         <tr>
                                             <td>{{ i.series_number }}</td>
                                             <td><a href="{% url 'sanatorium_staff:get_patient_by_id' i.pk %}">{{ i.patient.full_name }}</a></td>
+                                            <td>{{ i.doctor.doctor.full_name }}</td>
                                             <td>
                                                 {{ i.patient.formatted_gender }}
                                             </td>

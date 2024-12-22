@@ -39,6 +39,12 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+
+                {% if ih_form.errors %}
+                  <div class="alert alert-danger">
+                    {{ ih_form.errors }}
+                  </div>
+                {% endif %}
                 <!-- SELECT2 EXAMPLE -->
                 <div class="card card-primary">
                     <div class="card-header">
