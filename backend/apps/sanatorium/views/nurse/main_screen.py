@@ -26,7 +26,7 @@ from apps.warehouse.models import ItemsInStockModel
 BOOKINGS_PER_PAGE = 30
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def main_screen_view(request):
     query = request.GET.get('q', '')
     search_query = request.GET.get('table_search')
@@ -50,22 +50,22 @@ def main_screen_view(request):
         "bookings": bookings
     }
 
-    return render(request, 'sanatorium/doctors/main_screen.html', context)
+    return render(request, 'sanatorium/nurse/main_screen.html', context)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def get_patients_list(request):
     query = request.GET.get('q', '')
     search_query = request.GET.get('table_search')
 
-    doctor = DoctorAccountModel.objects.filter(doctor=request.user).first()
-    if not doctor:
-        return render(request, 'sanatorium/doctors/main_screen.html', {})
+    nurse = NurseAccountModel.objects.filter(nurse=request.user).first()
+    if not nurse:
+        return render(request, 'sanatorium/nurse/assigned_patients.html', {})
 
     if search_query:
-        bookings = sorted(get_booking_queryset(search_query, doctor=doctor), key=attrgetter('booking.end_date'), reverse=True)
+        bookings = sorted(get_booking_queryset(search_query, nurse=nurse), key=attrgetter('booking.end_date'), reverse=True)
     else:
-        bookings = sorted(get_booking_queryset(query, doctor=doctor), key=attrgetter('booking.end_date'), reverse=True)
+        bookings = sorted(get_booking_queryset(query, nurse=nurse), key=attrgetter('booking.end_date'), reverse=True)
 
     page = request.GET.get('page', 1)
     bookings_paginator = Paginator(bookings, BOOKINGS_PER_PAGE)
@@ -81,39 +81,17 @@ def get_patients_list(request):
         "bookings": bookings
     }
 
-    return render(request, 'sanatorium/doctors/assigned_patients.html', context)
+    return render(request, 'sanatorium/nurse/assigned_patients.html', context)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def get_patient_by_id_view(request, pk):
     context = {}
 
     try:
         ill_his = IllnessHistory.objects.get(pk=pk)
     except:
-        return render(request, 'sanatorium/doctors/patient.html', context)
-
-    if request.method == "POST":
-        patient_form = PatientUpdateForm(request.POST, instance=ill_his.patient)
-        ih_form = IllnessHistoryUpdateForm(request.POST, instance=ill_his)
-        booking_form = BookingModelUpdateForm(request.POST, instance=ill_his.booking)
-
-        if 'patient_form' in request.POST and patient_form.is_valid():
-            patient: PatientModel = patient_form.save(commit=False)
-            patient.modified_by = request.user
-            patient.save()
-            return redirect('sanatorium_staff:get_patient_by_id', pk=pk)
-        if 'ih_form' in request.POST and ih_form.is_valid():
-            ih: IllnessHistory = ih_form.save(commit=False)
-            ih.modified_by = request.user
-            ih.save()
-            ih_form.save_m2m()
-            return redirect('sanatorium_staff:get_patient_by_id', pk=pk)
-        if 'booking_form' in request.POST and booking_form.is_valid():
-            booking: BookingModel = booking_form.save(commit=False)
-            booking.modified_by = request.user
-            booking.save()
-            return redirect('sanatorium_staff:get_patient_by_id', pk=pk)
+        return render(request, 'sanatorium/nurse/patient.html', context)
 
     context['ill_his'] = ill_his
     context['ill_his_types'] = IllnessHistory.type.field.choices
@@ -136,10 +114,10 @@ def get_patient_by_id_view(request, pk):
     context["ih_form"] = ih_form
     context["booking_form"] = booking_form
 
-    return render(request, 'sanatorium/doctors/patient.html', context)
+    return render(request, 'sanatorium/nurse/patient.html', context)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def get_bookings_by_start_date_view(request):
     start_date_str = request.GET.get('start_date')
     if start_date_str:
@@ -147,7 +125,7 @@ def get_bookings_by_start_date_view(request):
         return get_bookings_view(request, start_date)
 
 
-def get_booking_queryset(query=None, stage=None, doctor=None):
+def get_booking_queryset(query=None, stage=None, nurse=None):
     queryset = []
     queries = query.split(" ")
 
@@ -161,9 +139,9 @@ def get_booking_queryset(query=None, stage=None, doctor=None):
                 Q(patient__f_name__icontains=q) |
                 Q(patient__mid_name__icontains=q)
             ).distinct())
-        elif doctor:
-            print(doctor)
-            bookings = (IllnessHistory.objects.filter(doctor=doctor).
+        elif nurse:
+            print(nurse)
+            bookings = (IllnessHistory.objects.filter(nurse__id=nurse.id).
                         filter(
                 Q(series_number__icontains=q) |
                 Q(patient__f_name__icontains=q) |
@@ -184,7 +162,6 @@ def get_booking_queryset(query=None, stage=None, doctor=None):
 
 
 def get_labs_view(request, category_id):
-    print('hellooo\n\n\n\n\n')
     speciality = get_object_or_404(LabResearchCategoryModel, id=category_id)
     labs = LabResearchModel.objects.filter(category=speciality).values('id', 'name')
     return JsonResponse(list(labs), safe=False)

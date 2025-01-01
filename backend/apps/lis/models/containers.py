@@ -7,13 +7,22 @@ class UnsupportedFormat(Exception):
     pass
 
 
+def upload_lab_files_location(instance, filename):
+    ext = filename.split('.')[-1]
+    if ext.lower() in ['doc', 'docx', 'xls', 'png', 'pdf', 'xml', 'jpeg', 'mp4', 'jpg', 'mov', 'm4v', 'csv']:
+        file_path = f"files/labs/{uuid4().hex}.{ext}"
+        return file_path
+    else:
+        raise UnsupportedFormat(f"The file format '{ext}' is not supported. Supported formats are: doc, docx, png, pdf, xml, jpeg, mp4, jpg, mov, m4v.")
+
+
 def upload_location(instance, filename):
     ext = filename.split('.')[-1]
     if ext.lower() in ['doc', 'png', 'pdf', 'xml', 'jpeg', 'mp4', 'jpg', 'mov', 'm4v']:
         file_path = f"files/img/{uuid4().hex}.{ext}"
         return file_path
     else:
-        raise UnsupportedFormat
+        raise UnsupportedFormat(f"The file format '{ext}' is not supported. Supported formats are: doc, docx, png, pdf, xml, jpeg, mp4, jpg, mov, m4v.")
 
 
 class ContainerColorModel(models.Model):

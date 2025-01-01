@@ -10,7 +10,7 @@
             <div class="card-body p-0">
                 <table class="table table-striped projects">
                     <thead>
-                    <tr>
+                    <tr class="text-center">
                         <th style="width: 1%">
                             #
                         </th>
@@ -20,6 +20,9 @@
                         </th>
                         <th style="width: 30%">
                             Начало
+                        </th>
+                        <th class="project-actions center">
+                            Результаты
                         </th>
                         <th>
                             Особые указания
@@ -31,7 +34,7 @@
                         </th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-center">
                     {% for lab in assigned_labs %}
                         <tr>
                             <td>
@@ -54,6 +57,21 @@
                             <td>
                                 {{ lab.start_date }}
                             </td>
+                            {% if lab.lab_results.all  %}
+                                <td class="project-actions center">
+                                    <a class="btn btn-success btn-sm">
+                                        <i class="fas fa-check">
+                                        </i>
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td class="project-actions center">
+                                    <a class="btn btn-danger btn-sm">
+                                        <i class="fas fa-minus">
+                                        </i>
+                                    </a>
+                                </td>
+                            {% endif %}
                             <td>
                                 {{ lab.comments }}
                             </td>

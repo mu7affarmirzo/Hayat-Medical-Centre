@@ -41,25 +41,28 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="{% url 'sanatorium_doctors:assigned_patients' %}" class="nav-link">Пациенты</a>
+                <a href="{% url 'sanatorium_nurse:assigned_patients' %}" class="nav-link">Пациенты</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
-                  Создать <span class="caret"></span>
-                </a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:cardiologist_appointment_page' ill_his.id %}">Консультация кардиолога первичная</a>
-                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}">Консультация невролога первичная</a>
-                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:on_arrival_appointment_page' ill_his.id %}">Осмотр дежурного врача при поступлении</a>
-                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:repeated_appointments_page' ill_his.id %}">Повторный приём лечащего врача</a>
-                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:with_doc_on_duty_appointment_page' ill_his.id %}">Прием дежурного врача</a>
-                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:ekg_appointment_page' ill_his.id %}">ЭКГ (Электрокардиограмма)</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_doctors:final_appointment_page' ill_his.id %}">Заключительный прием лечащего врача</a>
-                </div>
-            </li>
+{#            <li class="nav-item dropdown">#}
+{#                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">#}
+{#                  Создать <span class="caret"></span>#}
+{#                </a>#}
+{#                <div class="dropdown-menu">#}
+{#                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_nurse:cardiologist_appointment_page' ill_his.id %}">Консультация кардиолога первичная</a>#}
+{#                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_nurse:neurologist_appointment_page' ill_his.id %}">Консультация невролога первичная</a>#}
+{#                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_nurse:on_arrival_appointment_page' ill_his.id %}">Осмотр дежурного врача при поступлении</a>#}
+{#                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_nurse:repeated_appointments_page' ill_his.id %}">Повторный приём лечащего врача</a>#}
+{#                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_nurse:with_doc_on_duty_appointment_page' ill_his.id %}">Прием дежурного врача</a>#}
+{#                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_nurse:ekg_appointment_page' ill_his.id %}">ЭКГ (Электрокардиограмма)</a>#}
+{#                  <div class="dropdown-divider"></div>#}
+{#                  <a class="dropdown-item" tabindex="-1" href="{% url 'sanatorium_nurse:final_appointment_page' ill_his.id %}">Заключительный прием лечащего врача</a>#}
+{#                </div>#}
+{#            </li>#}
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">События</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">Диспетчеризация</a>
             </li>
         </ul>
 
@@ -124,7 +127,7 @@
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    {% include 'sanatorium/doctors/snippets/sidebar.html' %}
+    {% include 'sanatorium/nurse/snippets/sidebar.html' %}
 
 
 
@@ -136,7 +139,9 @@
     <!-- Ends main Content Container -->
 
 
-    {% include 'sanatorium/doctors/snippets/footer.html' %}
+
+
+    {% include 'sanatorium/nurse/snippets/footer.html' %}
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -352,7 +357,7 @@
 
         if (specialityId) {
             // Use Django's URL template with a placeholder
-            const url = "{% url 'sanatorium_doctors:get_labs' 0 %}".replace('0', specialityId);
+            const url = "{% url 'sanatorium_nurse:get_labs' 0 %}".replace('0', specialityId);
 
             $.ajax({
                 url: url,

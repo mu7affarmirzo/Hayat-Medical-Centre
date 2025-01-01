@@ -1,0 +1,233 @@
+{% extends 'sanatorium/nurse/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>История болезни №: <b>{{ ill_his.series_number }}</b></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item active"><b>Консультация кардиолога первичная, {{ request.user.full_name }}</b></li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Default box -->
+                        <div class="card">
+                            <div class="tab-pane text-left fade show active" id="vert-tabs-title-page" role="tabpanel"
+                                 aria-labelledby="vert-tabs-title-page-tab">
+                                <div class="card-body">
+
+                                    <div class="tab-content" id="custom-content-below-tabContent">
+                                        <form enctype="multipart/form-data" method="post" id="cardiologist_app_form">
+                                            {% csrf_token %}
+                                            <div class="card card-primary">
+
+                                                <div class="card-header">
+                                                    <a href="#treatment-program"
+                                                       style="text-decoration: none; color: inherit;">
+                                                        <h2 class="card-title">Прием кардиолога</h2>
+                                                    </a>
+                                                </div>
+                                                <div class="card-body">
+
+                                                    <div class="form-group">
+                                                        <label for="frequency">Статус приема: </label>
+                                                        <select class="form-control select2"
+                                                                style="width: 100%;" name="state">
+                                                            {% for type in state_choices %}
+                                                                <option value="{{ type.0 }}"
+                                                                        {% if cardiologist_app_form.instance.state == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+                                                        <a href="#treatment-program"
+                                                           style="text-decoration: none; color: inherit;">
+                                                            <h2 class="card-title">Жалобы со стороны сердечно—сосудистой системы:</h2>
+                                                        </a>
+                                                        <br>
+                                                        <!-- radio -->
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='True' class="custom-control-input" type="radio"
+                                                                       id="customRadio1" name="has_cardio_complaints">
+                                                                <label for="customRadio1" class="custom-control-label">есть</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='False' class="custom-control-input" type="radio"
+                                                                       id="customRadio2" name="has_cardio_complaints" checked>
+                                                                <label for="customRadio2" class="custom-control-label">нет</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+                                                        <a href="#treatment-program"
+                                                           style="text-decoration: none; color: inherit;">
+                                                            <h2 class="card-title">Жалобы со стороны нервной системы:</h2>
+                                                        </a>
+                                                        <br>
+                                                        <!-- radio -->
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='True' class="custom-control-input" type="radio"
+                                                                       id="customRadio1" name="has_nerve_complaints">
+                                                                <label for="customRadio1" class="custom-control-label">есть</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='False' class="custom-control-input" type="radio"
+                                                                       id="customRadio2" name="has_nerve_complaints" checked>
+                                                                <label for="customRadio2" class="custom-control-label">нет</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Другие жалобы:</label>
+                                                                <textarea name="other_complaints" class="form-control" rows="3"
+                                                                          placeholder=" ...">{{ cardiologist_app_form.instance.other_complaints|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>История заболевания:</label>
+                                                                <textarea name="history_of_illness" class="form-control" rows="3"
+                                                                          placeholder=" ...">{{ cardiologist_app_form.instance.history_of_illness|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Наследственность:</label>
+                                                                <textarea name="inheritance" class="form-control" rows="3"
+                                                                          placeholder=" ...">{{ cardiologist_app_form.instance.inheritance|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-3">
+                                                            <label>Рост:</label>
+                                                            <input type="number" class="form-control"
+                                                                   placeholder="165 см"
+                                                                   name="height" value="{{ cardiologist_app_form.instance.height|default_if_none:'' }}">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>Вес: </label>
+                                                            <input type="number" class="form-control"
+                                                                   placeholder="65 кг" id="weight"
+                                                                   name="weight" value="{{ cardiologist_app_form.instance.weight }}">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>Пульс:</label>
+                                                            <input type="number" class="form-control"
+                                                                   placeholder="75 уд/м"
+                                                                   name="heart_beat">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>Давление</label>
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="85/130"
+                                                                   name="arterial_high_low">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-2">
+                                                            <label>ИМТ:</label>
+                                                            <input step="0.01" type="number" class="form-control"
+                                                                   placeholder="26.04"
+                                                                   name="imt">
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label>Интерпретация показателя ИМТ:</label>
+                                                            <input step="0.01" type="number" class="form-control"
+                                                                   placeholder=""
+                                                                   name="imt_interpretation">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Заключение:</label>
+                                                                <textarea name="summary" class="form-control"
+                                                                          rows="3"
+                                                                          placeholder="...">{{ cardiologist_app_form.instance.summary|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Рекомендации:</label>
+                                                                <textarea name="recommendation" class="form-control"
+                                                                          rows="3"
+                                                                          placeholder="...">{{ cardiologist_app_form.instance.recommendation|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-4">
+                                                            <label for="exampleInputFile">Файлы</label>
+                                                            <div class="input-group">
+                                                                <div class="custom-file">
+                                                                    <input name="file" type="file" class="custom-file-input"
+                                                                           id="exampleInputFile">
+                                                                    <label class="custom-file-label" for="exampleInputFile">Добавить
+                                                                        файл</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="text-center">
+                                                        <button type="submit" name="cardiologist_app_form"
+                                                                class="btn btn-primary">Сохранить
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <br>
+                                        {% include 'sanatorium/nurse/components/consulting-treatment-program-card.html' %}
+                                        {% include 'sanatorium/nurse/components/treatment-procedure-card.html' %}
+                                        {% include 'sanatorium/nurse/components/pills-injections-card.html' %}
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

@@ -110,7 +110,6 @@ def get_patient_by_id_view(request, pk):
     return render(request, 'sanatorium/staff/patient.html', context)
 
 
-@role_required(role='sanatorium.staff', login_url='logout')
 def get_bookings_by_start_date_view(request):
     start_date_str = request.GET.get('start_date')
     if start_date_str:

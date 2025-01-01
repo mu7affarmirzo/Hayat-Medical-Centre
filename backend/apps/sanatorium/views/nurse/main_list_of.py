@@ -15,38 +15,10 @@ from apps.warehouse.models import ItemsInStockModel, ChequeItemsModel
 BOOKINGS_PER_PAGE = 30
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def main_list_of_procedures_view(request, pk):
 
     ill_his = get_object_or_404(IllnessHistory.objects.select_related('patient', 'booking'), pk=pk)
-
-    if request.method == "POST":
-
-        pills_form = BasePillsInjectionsForm(request.POST)
-        procedures_form = BaseProcedureServiceForm(request.POST)
-        lab_research_form = BaseLabResearchServiceForm(request.POST)
-
-        if 'pills_form' in request.POST and pills_form.is_valid():
-            pills_injections: BasePillsInjectionsModel = pills_form.save(commit=False)
-            pills_injections.modified_by = request.user
-            pills_injections.created_by = request.user
-            pills_injections.illness_history = ill_his
-            pills_injections.save()
-            return redirect('sanatorium_doctors:main_list_of_procedures', pk=pk)
-        if 'procedures_form' in request.POST and procedures_form.is_valid():
-            procedures: BaseProcedureServiceModel = procedures_form.save(commit=False)
-            procedures.modified_by = request.user
-            procedures.created_by = request.user
-            procedures.illness_history = ill_his
-            procedures.save()
-            return redirect('sanatorium_doctors:main_list_of_procedures', pk=pk)
-        if 'lab_research_form' in request.POST and lab_research_form.is_valid():
-            lab_research: BaseLabResearchServiceModel = lab_research_form.save(commit=False)
-            lab_research.modified_by = request.user
-            lab_research.created_by = request.user
-            lab_research.illness_history = ill_his
-            lab_research.save()
-            return redirect('sanatorium_doctors:main_list_of_procedures', pk=pk)
 
     context = {
         "active_page": {'proc_main_list_page': 'active'},
@@ -72,10 +44,10 @@ def main_list_of_procedures_view(request, pk):
         'labs_types': LabResearchCategoryModel.objects.all(),
     }
 
-    return render(request, 'sanatorium/doctors/main_list_of_procedures.html', context)
+    return render(request, 'sanatorium/nurse/main_list_of_procedures.html', context)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def treatment_procedure_update(request, pk):
 
     item_update = get_object_or_404(BaseProcedureServiceModel, pk=pk)
@@ -89,7 +61,7 @@ def treatment_procedure_update(request, pk):
             item.save()
             if next_url:
                 return redirect(next_url)
-            return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
+            return redirect("sanatorium_nurse:main_list_of_procedures", pk=item_update.illness_history.pk)
         else:
             # Return the user to the form with errors highlighted
             context = {
@@ -99,7 +71,7 @@ def treatment_procedure_update(request, pk):
                 'ill_his': item_update.illness_history,
                 'next': next_url,
             }
-            return render(request, "sanatorium/doctors/treatment_procedures_update.html", context)
+            return render(request, "sanatorium/nurse/treatment_procedures_update.html", context)
     else:
         form = BaseProcedureServiceForm(instance=item_update)
 
@@ -111,10 +83,31 @@ def treatment_procedure_update(request, pk):
         'next': next_url,
     }
 
-    return render(request, "sanatorium/doctors/treatment_procedures_update.html", context)
+    return render(request, "sanatorium/nurse/treatment_procedures_update.html", context)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
+def get_patient_procedure_by_days_view(request, pk):
+    context = {}
+
+    try:
+        procedure = BaseProcedureServiceModel.objects.get(pk=pk)
+    except:
+        return render(request, 'sanatorium/nurse/main_screen.html', context)
+
+    ill_his = procedure.illness_history
+
+    context['ill_his'] = procedure.illness_history
+    context['procedure'] = procedure
+    context['days'] = procedure.days.all()
+    context['booking'] = ill_his.booking
+    context['booking_history'] = ill_his.booking.booking_history.all()
+    context['specialists'] = DoctorAccountModel.objects.filter(specialty_type__name='treatment')
+
+    return render(request, 'sanatorium/nurse/patient_procedure_by_days.html', context)
+
+
+@role_required(role='sanatorium.nurse', login_url='logout')
 def pills_injections_update(request, pk):
 
     item_update = get_object_or_404(ChequeItemsModel, pk=pk)
@@ -128,7 +121,7 @@ def pills_injections_update(request, pk):
             item.save()
             if next_url:
                 return redirect(next_url)
-            return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.cheque.illness_history.pk)
+            return redirect("sanatorium_nurse:main_list_of_procedures", pk=item_update.cheque.illness_history.pk)
         else:
             context = {
                 'form': form,
@@ -137,7 +130,7 @@ def pills_injections_update(request, pk):
                 'ill_his': item_update.cheque.illness_history,
                 'next': next_url,
             }
-            return render(request, "sanatorium/doctors/pills_injections_update.html", context)
+            return render(request, "sanatorium/nurse/pills_injections_update.html", context)
     else:
         form = BasePillsInjectionsForm(instance=item_update)
 
@@ -148,24 +141,10 @@ def pills_injections_update(request, pk):
         'ill_his': item_update.cheque.illness_history,
         'next': next_url,
     }
-    return render(request, "sanatorium/doctors/pills_injections_update.html", context)
+    return render(request, "sanatorium/nurse/pills_injections_update.html", context)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
-def pills_injections_delete(request, pk):
-
-    item_delete= get_object_or_404(ChequeItemsModel, pk=pk)
-    return_pk = item_delete.cheque.illness_history.pk
-    next_url = request.GET.get('next', '')
-
-    if request.method == "POST":
-        item_delete.delete()
-        if next_url:
-            return redirect(next_url)
-    return redirect("sanatorium_doctors:main_list_of_procedures", pk=return_pk)
-
-
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def consulting_update(request, pk):
 
     item_update = get_object_or_404(BaseLabResearchServiceModel, pk=pk)
@@ -177,21 +156,15 @@ def consulting_update(request, pk):
     })
 
     if request.method == "POST":
-        form = BaseLabResearchServiceForm(request.POST, instance=item_update)
+        form = BaseLabResearchServiceForm(instance=item_update)
         lab_result_form = LabResultForm(request.POST, request.FILES)
-        if form.is_valid():
-            item: BaseLabResearchServiceModel = form.save(commit=False)
-            item.modified_by = request.user
-            item.save()
-            if next_url:
-                return redirect(next_url)
-            return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.illness_history.pk)
+
         if 'lab_result_form' in request.POST and lab_result_form.is_valid():
             lab_result: LabResult = lab_result_form.save(commit=False)
             lab_result.created_by = request.user
             lab_result.base_lab_research = item_update
             lab_result.save()
-            return redirect("sanatorium_doctors:consulting_update", pk=pk)
+            return redirect("sanatorium_nurse:consulting_update", pk=pk)
         else:
             context.update({
                 'active_page': {'proc_main_list_page': 'active'},
@@ -201,7 +174,7 @@ def consulting_update(request, pk):
                 'ill_his': item_update.illness_history,
                 'next': next_url,
             })
-            return render(request, "sanatorium/doctors/consultings_update.html", context)
+            return render(request, "sanatorium/nurse/consultings_update.html", context)
     else:
         form = BaseLabResearchServiceForm(instance=item_update)
 
@@ -213,10 +186,10 @@ def consulting_update(request, pk):
         'ill_his': item_update.illness_history,
         'next': next_url,
     })
-    return render(request, "sanatorium/doctors/consultings_update.html", context)
+    return render(request, "sanatorium/nurse/consultings_update.html", context)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def consulting_result_update(request, pk):
 
     item_update = get_object_or_404(LabResult, pk=pk)
@@ -232,7 +205,7 @@ def consulting_result_update(request, pk):
             item.save()
             if next_url:
                 return redirect(next_url)
-            return redirect("sanatorium_doctors:main_list_of_procedures", pk=item_update.base_lab_research.illness_history.pk)
+            return redirect("sanatorium_nurse:main_list_of_procedures", pk=item_update.base_lab_research.illness_history.pk)
         else:
             context.update({
                 'active_page': {'proc_main_list_page': 'active'},
@@ -242,7 +215,7 @@ def consulting_result_update(request, pk):
                 'ill_his': item_update.base_lab_research.illness_history,
                 'next': next_url,
             })
-            return render(request, "sanatorium/doctors/consulting_result_update.html", context)
+            return render(request, "sanatorium/nurse/consulting_result_update.html", context)
     else:
         form = LabResultForm(instance=item_update)
 
@@ -253,10 +226,10 @@ def consulting_result_update(request, pk):
         'ill_his': item_update.base_lab_research.illness_history,
         'next': next_url,
     })
-    return render(request, "sanatorium/doctors/consulting_result_update.html", context)
+    return render(request, "sanatorium/nurse/consulting_result_update.html", context)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def consulting_result_delete(request, pk):
     next_url = request.GET.get('next', '')
 
@@ -265,10 +238,10 @@ def consulting_result_delete(request, pk):
     result.delete()
     if next_url:
         return redirect(next_url)
-    return redirect("sanatorium_doctors:consulting_update", pk=redirect_url_pk)
+    return redirect("sanatorium_nurse:consulting_update", pk=redirect_url_pk)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def get_patient_lab_research_view(request, pk):
 
     target_lab = get_object_or_404(BaseLabResearchServiceModel, pk=pk)
@@ -283,10 +256,10 @@ def get_patient_lab_research_view(request, pk):
         'lab_results': lab_results,
         'next': next_url,
     })
-    return render(request, "sanatorium/doctors/patient_lab_research_detail.html", context)
+    return render(request, "sanatorium/nurse/patient_lab_research_detail.html", context)
 
 
-@role_required(role='sanatorium.doctor', login_url='logout')
+@role_required(role='sanatorium.nurse', login_url='logout')
 def update_lab_research_result_view(request, pk):
 
     target_lab_result = get_object_or_404(LabResult, pk=pk)
@@ -299,4 +272,4 @@ def update_lab_research_result_view(request, pk):
         'lab_result': target_lab_result,
         'next': next_url,
     })
-    return render(request, "sanatorium/doctors/patient_lab_research_result_update.html", context)
+    return render(request, "sanatorium/nurse/patient_lab_research_result_update.html", context)
