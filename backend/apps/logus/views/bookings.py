@@ -9,9 +9,11 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
+from apps.account.models import PatientModel
 from apps.decorators import role_required
-from apps.logus.forms.booking import UpdateBookingForm
+from apps.logus.forms.booking import UpdateBookingForm, BookingForm, AddCompanionForm
 from apps.logus.models import BookingModel, AvailableRoomModel, AvailableRoomsTypeModel, AvailableTariffModel
+from apps.sanatorium.models import IllnessHistory
 
 BOOKINGS_PER_PAGE = 30
 
@@ -24,8 +26,8 @@ def get_upcoming_checkouts(request):
     if search_query:
         bookings = sorted(get_booking_queryset(search_query), key=attrgetter('end_date'), reverse=True)
     else:
-        tomorrow_date = timezone.now().date() + timedelta(days=1)
-        bookings = BookingModel.objects.filter(end_date__gte=tomorrow_date)
+        exit_date = timezone.now().date()
+        bookings = BookingModel.objects.filter(stage='settled', end_date__gte=exit_date)
 
     bookings = paginate_page(request, bookings)
 
@@ -86,19 +88,20 @@ def update_check_in_view(request, pk):
     today = timezone.now().date()
 
     booking = get_object_or_404(BookingModel, pk=pk)
+    illness_histories = booking.illness_history.all()
 
     if request.method == "POST":
         form = UpdateBookingForm(request.POST, instance=booking)
         if form.is_valid():
             form.save()
             return redirect('logus_booking:check-in')
-        print(form.errors)
     rooms = AvailableRoomModel.objects.all()
     room_types = AvailableRoomsTypeModel.objects.all()
     tariffs = AvailableTariffModel.objects.all()
 
     context = {
         "booking": booking,
+        "illness_histories": illness_histories,
         "today": today,
         'rooms': rooms,
         'room_types': room_types,
@@ -108,6 +111,37 @@ def update_check_in_view(request, pk):
     }
 
     return render(request, 'logus/booking/checkins_detailed.html', context)
+
+
+@role_required(role='logus', login_url='logus_auth:logout')
+def add_companion_to_check_in_view(request, pk):
+    booking = get_object_or_404(BookingModel, pk=pk)
+    next_url = request.GET.get('next', '')
+
+    if request.method == 'POST':
+        form = AddCompanionForm(request.POST)
+        if form.is_valid():
+            ill_his = form.save(commit=False)
+            ill_his.booking = booking
+
+            ill_his.save()
+
+            if next_url:
+                return redirect(next_url)
+            return redirect('logus_booking:check-in-update', pk=booking.pk)
+        print(form.errors)
+    else:
+        form = AddCompanionForm()
+
+    patients = PatientModel.objects.all()
+    return render(
+        request, 'logus/booking/add_companion.html',
+        {
+            'form': form,
+            'patients': patients,
+            'types': IllnessHistory.type.field.choices,
+        }
+    )
 
 
 @login_required

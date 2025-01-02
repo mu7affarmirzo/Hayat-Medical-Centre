@@ -2,6 +2,7 @@ from django import forms
 
 from apps.account.models import PatientModel
 from apps.logus.models import BookingModel
+from apps.sanatorium.models import IllnessHistory
 
 
 class BookingForm(forms.ModelForm):
@@ -15,7 +16,7 @@ class BookingForm(forms.ModelForm):
     )
 
     is_sick_leave = forms.BooleanField(
-        required=True,
+        required=False,
         label="Больничный"
     )
 
@@ -64,4 +65,15 @@ class PatientRegistrationForm(forms.ModelForm):
         fields = [
             'f_name', 'mid_name', 'l_name', 'address',
             'date_of_birth', 'mobile_phone_number', 'gender', 'INN'
+        ]
+
+
+class AddCompanionForm(forms.ModelForm):
+    class Meta:
+        model = IllnessHistory
+        fields = [
+            'type',
+            'is_sick_leave',
+            'patient',
+
         ]

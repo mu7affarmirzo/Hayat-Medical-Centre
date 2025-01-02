@@ -39,81 +39,21 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <!-- SELECT2 EXAMPLE -->
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Ожидаемый заезд</h3>
                     </div>
-
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <label for="arrival-date-picker">Серия: {{ booking.series }}</label>
                                 </div>
-
                             </div>
-
-                            <!-- /.card-header -->
                             <div class="card-body">
-
                                 <div class="tab-content" id="custom-content-below-tabContent">
-                                    {#                                    <form id="form" method="POST" action="?{% if next %}next={{ next }}{% endif %}">#}
-                                    {#                                        {% csrf_token %}#}
-                                    {#                                        <div class="card-body">#}
-                                    {#                                            <div class="form-group">#}
-                                    {#                                                <label for="lab">Имя гостя</label>#}
-                                    {#                                                <div class="form-group">#}
-                                    {#                                                    <select class="form-control select2"#}
-                                    {#                                                            style="width: 100%;" name="patient" disabled>#}
-                                    {#                                                            <option value="{{ form.instance.patient.id }}" selected>{{ form.instance.patient }}</option>#}
-                                    {#                                                    </select>#}
-                                    {#                                                </div>#}
-                                    {#                                            </div>#}
-                                    {#                                            {% with datetimepicker_id="lab_reservationdate" %}#}
-                                    {#                                                <div class="form-group">#}
-                                    {#                                                    <label>Дата начала: </label>#}
-                                    {#                                                    <div class="input-group date" id="lab_reservationdate"#}
-                                    {#                                                         data-target-input="nearest">#}
-                                    {#                                                        <input name="start_date" type="text"#}
-                                    {#                                                               class="form-control datetimepicker-input"#}
-                                    {#                                                               data-target="#lab_reservationdate"#}
-                                    {#                                                               value="{{ form.instance.start_date|date:"d/m/Y" }}"#}
-                                    {#                                                        />#}
-                                    {#                                                        <div class="input-group-append"#}
-                                    {#                                                             data-target="#lab_reservationdate"#}
-                                    {#                                                             data-toggle="datetimepicker">#}
-                                    {#                                                            <div class="input-group-text"><i#}
-                                    {#                                                                    class="fa fa-calendar"></i>#}
-                                    {#                                                            </div>#}
-                                    {#                                                        </div>#}
-                                    {#                                                    </div>#}
-                                    {#                                                </div>#}
-                                    {#                                            {% endwith %}#}
-                                    {#                                            <div class="form-group">#}
-                                    {#                                                <label for="comments">Особые указания</label>#}
-                                    {#                                                <textarea rows="3" name="comments" type="text"#}
-                                    {#                                                          class="form-control"#}
-                                    {#                                                          id="comments"#}
-                                    {#                                                          placeholder="">{{ form.comments.value }}</textarea>#}
-                                    {#                                            </div>#}
-                                    {##}
-                                    {#                                            <div class="modal-footer justify-content-between">#}
-                                    {#                                                <button type="button" class="btn btn-default"#}
-                                    {#                                                        data-dismiss="modal">Закрыть#}
-                                    {#                                                </button>#}
-                                    {#                                                <button name="form" type="submit"#}
-                                    {#                                                        class="btn btn-primary">#}
-                                    {#                                                    Сохранить#}
-                                    {#                                                </button>#}
-                                    {#                                            </div>#}
-                                    {#                                        </div>#}
-                                    {#                                    </form>#}
-
-
                                     <form method="post" action="#">
                                         {% csrf_token %}
-
                                         <div class="row">
                                             <div class="col-12 col-sm-6">
                                                 <div class="form-group">
@@ -234,22 +174,8 @@
                                                 </select>
                                             </div>
                                         </div>
-
-{#                                        <div class="row">#}
-{#                                            <div class="col-6">#}
-{#                                                <label>Этап</label>#}
-{#                                                <select class="form-control select2"#}
-{#                                                        style="width: 100%;" name="type">#}
-{##}
-{#                                                    {% for type in stages %}#}
-{#                                                        <option value="{{ type.0 }}"#}
-{#                                                                {% if form.instance.stage == type.0 %}selected{% endif %}>{{ type.0 }}</option>#}
-{#                                                    {% endfor %}#}
-{#                                                </select>#}
-{#                                            </div>#}
-{#                                        </div>#}
-
-                                        <button class="btn btn-primary" type="submit">Забронировать</button>
+                                        <br>
+                                        <button class="btn btn-primary" type="submit">Обновить</button>
                                     </form>
                                 </div>
                             </div>
@@ -257,13 +183,83 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <div class="container-fluid">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Детали бронирование</h3>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- /.card-header -->
+                            <div class="card-body">
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 15%">ИБ №</th>
+                                        <th>Имя гостя</th>
+                                        <th>Пол</th>
+                                        <th>Возраст</th>
+                                        <th>Доктор</th>
+                                        <th>Тариф</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody id="booking-table-body">
+                                    {% for i in illness_histories %}
+                                        <tr>
+                                            <td>{{ i.series_number }}</td>
+                                            <td>
+                                               {{ i.patient.full_name }}
+                                            </td>
+                                            <td>
+                                                {{ i.patient.formatted_gender }}
+                                            </td>
+                                            <td>
+                                                {{ i.patient.age }} год
+                                            </td>
+                                            <td>
+                                                {{ i.doctor }}
+                                            </td>
+
+                                            <td>
+                                                <span class="badge"
+                                                      style="background-color: {{ i.booking.current_tariff.color }};">{{ i.booking.current_tariff }}</span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        {% with current_url=request.get_full_path %}
+                            <div class="card-footer clearfix">
+                                <div class="row">
+                                    <div class="col-10">
+{#                                        <a class="btn btn-success btn-sm" href="{% url 'logus_booking:check-in-add-companion' booking.pk %}?next={{ current_url }}" >#}
+                                        <a class="btn btn-success btn-sm" href="#" >
+                                            <i class="fas fa-plus">
+                                            </i>
+                                            Добавить сопровождающего
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endwith %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </section>
     </div>
     <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
