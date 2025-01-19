@@ -54,6 +54,24 @@ class UpdateBookingForm(forms.ModelForm):
         ]
 
 
+class UpdateIllnessHistoryForm(forms.ModelForm):
+    class Meta:
+        model = IllnessHistory
+        fields = [
+            'series_number',
+            'type',
+            'nurse',
+            'doctor'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['series_number'].required = False
+        self.fields['type'].required = False
+        self.fields['nurse'].required = False
+        self.fields['doctor'].required = False
+
+
 class PatientRegistrationForm(forms.ModelForm):
     date_of_birth = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),

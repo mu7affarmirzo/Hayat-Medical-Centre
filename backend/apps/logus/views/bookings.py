@@ -9,9 +9,9 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from apps.account.models import PatientModel
+from apps.account.models import PatientModel, DoctorAccountModel, NurseAccountModel
 from apps.decorators import role_required
-from apps.logus.forms.booking import UpdateBookingForm, BookingForm, AddCompanionForm
+from apps.logus.forms.booking import UpdateBookingForm, BookingForm, AddCompanionForm, UpdateIllnessHistoryForm
 from apps.logus.models import BookingModel, AvailableRoomModel, AvailableRoomsTypeModel, AvailableTariffModel
 from apps.sanatorium.models import IllnessHistory
 
@@ -111,6 +111,33 @@ def update_check_in_view(request, pk):
     }
 
     return render(request, 'logus/booking/checkins_detailed.html', context)
+
+
+@role_required(role='logus', login_url='logus_auth:logout')
+def update_check_in_ill_history_view(request, pk):
+    today = timezone.now().date()
+    next_url = request.GET.get('next', '')
+
+    illness_history = get_object_or_404(IllnessHistory, pk=pk)
+
+    if request.method == "POST":
+        form = UpdateIllnessHistoryForm(request.POST, instance=illness_history)
+        ih: IllnessHistory = form.save(commit=False)
+        ih.modified_by = request.user
+        ih.save()
+        form.save_m2m()
+        if next_url:
+            return redirect(next_url)
+
+    context = {
+        "today": today,
+        'doctors': DoctorAccountModel.objects.all(),
+        'nurses': NurseAccountModel.objects.all(),
+        'ill_his_types': IllnessHistory.type.field.choices,
+        "form": UpdateIllnessHistoryForm(instance=illness_history),
+    }
+
+    return render(request, 'logus/booking/update_ill_history.html', context)
 
 
 @role_required(role='logus', login_url='logus_auth:logout')

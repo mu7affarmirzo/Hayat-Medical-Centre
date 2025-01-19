@@ -164,7 +164,7 @@
                                                         <option value="{{ type.0 }}"
                                                                 {% if form.instance.stage == type.0 %}selected{% endif %}>
                                                             {% if type.0 == 'booked' %} забронирован
-                                                            {% elif type.0 == 'settled' %} урегулирован
+                                                            {% elif type.0 == 'settled' %} поселить
                                                             {% elif type.0 == 'arrived' %} прибыл
                                                             {% elif type.0 == 'cancelled' %} отменен
                                                             {% elif type.0 == 'served' %} обслужен
@@ -193,64 +193,92 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <!-- /.card-header -->
                             <div class="card-body">
-
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 15%">ИБ №</th>
-                                        <th>Имя гостя</th>
-                                        <th>Пол</th>
-                                        <th>Возраст</th>
-                                        <th>Доктор</th>
-                                        <th>Тариф</th>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody id="booking-table-body">
-                                    {% for i in illness_histories %}
-                                        <tr>
-                                            <td>{{ i.series_number }}</td>
-                                            <td>
-                                               {{ i.patient.full_name }}
-                                            </td>
-                                            <td>
-                                                {{ i.patient.formatted_gender }}
-                                            </td>
-                                            <td>
-                                                {{ i.patient.age }} год
-                                            </td>
-                                            <td>
-                                                {{ i.doctor }}
-                                            </td>
-
-                                            <td>
-                                                <span class="badge"
-                                                      style="background-color: {{ i.booking.current_tariff.color }};">{{ i.booking.current_tariff }}</span>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-
-                                    </tbody>
-
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
-                        {% with current_url=request.get_full_path %}
-                            <div class="card-footer clearfix">
                                 <div class="row">
-                                    <div class="col-10">
-{#                                        <a class="btn btn-success btn-sm" href="{% url 'logus_booking:check-in-add-companion' booking.pk %}?next={{ current_url }}" >#}
-                                        <a class="btn btn-success btn-sm" href="#" >
-                                            <i class="fas fa-plus">
-                                            </i>
-                                            Добавить сопровождающего
-                                        </a>
+                                    <div class="card-body p-0">
+                                        <table class="table table-striped projects">
+                                            <thead>
+                                            <tr>
+                                                <th>
+                                                    ИБ №
+                                                </th>
+                                                <th>
+                                                    Имя гостя
+                                                </th>
+                                                <th>
+                                                    Пол
+                                                </th>
+                                                <th>
+                                                    Возраст
+                                                </th>
+                                                <th>
+                                                    Доктор
+                                                </th>
+                                                <th>
+                                                    Тариф
+                                                </th>
+                                                <th style="width: 20%">
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for i in illness_histories %}
+                                                <tr>
+                                                    <td>{{ i.series_number }}</td>
+                                                    <td>
+                                                        {{ i.patient.full_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ i.patient.formatted_gender }}
+                                                    </td>
+                                                    <td>
+                                                        {{ i.patient.age }} год
+                                                    </td>
+                                                    <td>
+                                                        {{ i.doctor }}
+                                                    </td>
+
+                                                    <td>
+                                                        <span class="badge"
+                                                              style="background-color: {{ i.booking.current_tariff.color }};">{{ i.booking.current_tariff }}</span>
+                                                    </td>
+                                                    {% with current_url=request.get_full_path %}
+                                                        <td class="project-actions text-right">
+                                                            <a class="btn btn-info btn-sm" href="{% url 'logus_booking:ill-history-update' i.id %}?next={{ current_url }}">
+                                                                <i class="fas fa-pencil-alt">
+                                                                </i>
+                                                                Изменить
+                                                            </a>
+                                                            <a class="btn btn-danger btn-sm"
+                                                               href="#">
+                                                                <i class="fas fa-trash">
+                                                                </i>
+                                                                Удалить
+                                                            </a>
+                                                        </td>
+                                                    {% endwith %}
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        {% endwith %}
+                            <!-- /.card-header -->
+                            {% with current_url=request.get_full_path %}
+                                <div class="card-footer clearfix">
+                                    <div class="row">
+                                        <div class="col-10">
+                                            {#                                        <a class="btn btn-success btn-sm" href="{% url 'logus_booking:check-in-add-companion' booking.pk %}?next={{ current_url }}" >#}
+                                            <a class="btn btn-success btn-sm" href="#">
+                                                <i class="fas fa-plus">
+                                                </i>
+                                                Добавить сопровождающего
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endwith %}
                         </div>
                     </div>
                 </div>

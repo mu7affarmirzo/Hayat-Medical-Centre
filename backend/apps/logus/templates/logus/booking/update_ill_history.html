@@ -39,156 +39,78 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <!-- SELECT2 EXAMPLE -->
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Ожидаемый заезд</h3>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <label for="arrival-date-picker">Время заезда</label>
-                                    <div class="card-tools">
-                                        <div class="input-group input-group-sm" style="width: 150px;">
-                                            <input type="date" id="arrival-date-picker" class="form-control" />
-                                        </div>
-                                    </div>
+                <form enctype="multipart/form-data" method="post" id="form">
+                    {% csrf_token %}
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Детали ИБ</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>История болезни №</label>
+                                    <input type="text" class="form-control"
+                                           placeholder="919/2024"
+                                           value="{{ form.instance.series_number|default_if_none:'' }}"
+                                           name="series_number">
                                 </div>
 
                             </div>
+                            <br>
+                            <div class="row">
 
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <div class="card-tools">
-                                    <form method="get" action="">
-                                        <div class="input-group input-group-sm" style="width: 150px;">
-                                            <input type="text" name="table_search" class="form-control float-right"
-                                                   placeholder="Search" value="{{ query }}">
-
-                                            <div class="input-group-append">
-                                                <button type="submit" class="btn btn-default">
-                                                    <i class="fas fa-search"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                <div class="col-6">
+                                    <label>Лечащий врач:</label>
+                                    <select class="form-control select2"
+                                            style="width: 100%;" name="doctor">
+                                        {% for doctor in doctors %}
+                                            <option value="{{ doctor.id }}"
+                                                    {% if form.instance.doctor.id == doctor.id %}selected{% endif %}>{{ doctor }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
+                                <div class="col-4">
+                                    <label>Тип</label>
+                                    <select class="form-control select2"
+                                            style="width: 100%;" name="type">
 
-                                <br>
-
-                                <table class="table table-striped projects">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Серия</th>
-                                        <th>Имя гостя</th>
-                                        <th>Время заезда</th>
-                                        <th>Дата выезда</th>
-                                        <th>Тип комнаты</th>
-                                        <th>Комната</th>
-                                        <th>Дней</th>
-                                        <th>Тариф</th>
-                                        <th>Скидка</th>
-                                        <th></th>
-                                    </tr>
-
-                                    </thead>
-
-                                    <tbody id="booking-table-body">
-                                    {% for i in bookings %}
-                                        <tr>
-                                            <td>{{ i.id }}</td>
-                                            <td>{{ i.series }}</td>
-                                            <td>
-                                                {{ i.patient.full_name }}
-                                            </td>
-                                            {% if i.start_date >= today %}
-                                            	<td>
-                                                    <span class="badge bg-primary">{{ i.start_date }}</span>
-                                                </td>
-                                            {% else %}
-                                                <td>
-                                                    <span class="badge bg-warning">{{ i.start_date }}</span>
-                                                </td>
-                                            {% endif %}
-                                            <td>{{ i.end_date }}</td>
-                                            <td>
-                                                <span class="badge"
-                                                      style="background-color: {{ i.current_room_type.color }};">{{ i.current_room_type }}</span>
-                                            </td>
-                                            <td>{{ i.current_room.room_number }}</td>
-                                            <td>{{ i.duration }}</td>
-                                            <td>
-                                                <span class="badge"
-                                                      style="background-color: {{ i.current_tariff.color }};">{{ i.current_tariff }}</span>
-                                            </td>
-                                            <td>{{ i.discount }}</td>
-                                            <td class="project-actions text-right">
-
-                                                <a class="btn btn-info btn-sm" href="{% url 'logus_booking:check-in-update' i.pk %}">
-                                                    <i class="fas fa-edit">
-                                                    </i>
-                                                    Изменить
-                                                </a>
-                                                <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#modal-delete{{ pill.pk }}">
-                                                    <i class="fas fa-trash">
-                                                    </i>
-                                                    Удалить
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-
-                                    </tbody>
-                                </table>
+                                        {% for type in ill_his_types %}
+                                            <option value="{{ type.0 }}"
+                                                    {% if form.instance.type == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer clearfix">
-                                <ul class="pagination pagination-sm m-0 float-right">
 
-                                    {% if bookings.has_previous %}
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.previous_page_number }}">&laquo;</a>
-                                        </li>
-                                    {% endif %}
+                            <br>
+                            <div class="row">
+                                <div class="col-10">
+                                    <label>Медсестра:</label>
+                                    <select class="select2" multiple="multiple" data-placeholder="Медсестры"
+                                            style="width: 100%;" name="nurse">
+                                        {% for nurse in nurses %}
+                                            <option value="{{ nurse.pk }}"
+                                                    {% if nurse in form.instance.nurse.all %}selected{% endif %}>{{ nurse.nurse.full_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
 
-                                    {% for i in bookings.paginator.page_range %}
-                                        {% if bookings.number == i %}
-                                            <li class="page-item active"><a class="page-link">{{ i }}</a></li>
-                                        {% else %}
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="?{% if query %}q={{ query }}&{% endif %}page={{ i }}">{{ i }}</a>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-
-                                    {% if bookings.has_next %}
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.next_page_number }}">Next</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="?{% if query %}q={{ query }}&{% endif %}page={{ bookings.paginator.num_pages }}">Last
-                                                &raquo;</a>
-                                        </li>
-                                    {% endif %}
-
-                                </ul>
+                            <br>
+                            <div class="row">
+                                <div class="col-10">
+                                    <button type="submit" name="form"
+                                            class="btn btn-primary">Сохранить
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
+                </form>
             </div>
         </section>
     </div>
     <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
@@ -383,11 +305,5 @@
     }
     // DropzoneJS Demo Code End
 </script>
-</body>
-</html>
-</title>
-</head>
-<body>
-
 </body>
 </html>
