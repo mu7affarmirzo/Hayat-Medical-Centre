@@ -77,6 +77,133 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Эпиданамнез</label>
+                                                                <br>
+                                                                <a>Контакт с инфекционными больными</a>
+                                                                <input name="contact_with_infectious" class="form-control"
+                                                                          placeholder="на протяжении максимального срока инкубации: не было"
+                                                                    value={{ init_app_form.instance.contact_with_infectious|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <a href="#treatment-program"
+                                                           style="text-decoration: none; color: inherit;">
+                                                            <h2 class="card-title">Контакт с больными гриппом, ОРВИ:</h2>
+                                                        </a>
+                                                        <br>
+                                                        <!-- radio -->
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='True' class="custom-control-input" type="radio"
+                                                                       id="customRadio1" name="contact_with_orvi">
+                                                                <label for="customRadio1" class="custom-control-label">есть</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='False' class="custom-control-input" type="radio"
+                                                                       id="customRadio2" name="contact_with_orvi" checked>
+                                                                <label for="customRadio2" class="custom-control-label">нет</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <a href="#treatment-program"
+                                                           style="text-decoration: none; color: inherit;">
+                                                            <h2 class="card-title">Выезд за пределы населенного пункта за 2 месяца ДО настоящего заболевания:</h2>
+                                                        </a>
+                                                        <br>
+                                                        <!-- radio -->
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='True' class="custom-control-input" type="radio"
+                                                                       id="customRadio1" name="is_away_two_month">
+                                                                <label for="customRadio1" class="custom-control-label">есть</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='False' class="custom-control-input" type="radio"
+                                                                       id="customRadio2" name="is_away_two_month" checked>
+                                                                <label for="customRadio2" class="custom-control-label">нет</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Перенесенные инфекционные заболевания:</label>
+                                                                <input name="transferred_infectious" class="form-control"
+                                                                          placeholder="нет"
+                                                                    value={{ init_app_form.instance.transferred_infectious|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Нахождение на стационарном лечении::</label>
+                                                                <input name="staying_hospital"
+                                                                       class="form-control"
+                                                                       placeholder="нет"
+                                                                       value={{ init_app_form.instance.staying_hospital|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Получение гемотрансфузий (крови и ее компонентов):</label>
+                                                                <input name="receiving_blood_transfusions"
+                                                                       class="form-control"
+                                                                       placeholder="нет"
+                                                                       value={{ init_app_form.instance.receiving_blood_transfusions|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Оперативные и массивные вмешательства за последние 6 месяцев:</label>
+                                                                <input name="surgical_massive_interventions_six_months"
+                                                                       class="form-control"
+                                                                       placeholder="нет"
+                                                                       value={{ init_app_form.instance.surgical_massive_interventions_six_months|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Посещение стоматолога за последние 6 месяцев:</label>
+                                                                <input name="dentist_visits_last_six_months"
+                                                                       class="form-control"
+                                                                       placeholder="нет"
+                                                                       value={{ init_app_form.instance.dentist_visits_last_six_months|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Профессия с подробным указанием профессиональных вредностей и др. особенностей (например, контакт с животными):</label>
+                                                                <input name="profession_toxics"
+                                                                       class="form-control"
+                                                                       value={{ init_app_form.instance.profession_toxics|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+
                                                     <div class="col-12">
                                                         <label>Диагноз:</label>
                                                         <select class="form-control select2"
