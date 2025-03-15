@@ -9,7 +9,11 @@ from apps.warehouse.models.store_point import StorePointStaffModel
 
 USER_ROLE_REDIRECTS = {
     'warehouse': 'warehouse_v2:main_screen',
+
     'logus.reception': 'logus_auth:main_screen',
+
+    'massage.reception': 'massage_reception:main_screen',
+
     'sanatorium.staff': 'sanatorium_staff:main_screen',
     'sanatorium.nurse': 'sanatorium_nurse:main_screen',
     'sanatorium.admin': 'sanatorium_admin:main_screen',
