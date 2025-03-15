@@ -58,9 +58,14 @@ class PatientModel(models.Model):
     organization = models.ForeignKey(OrganizationModel, on_delete=models.SET_NULL, null=True, blank=True)
     gender = models.BooleanField()
     gestational_age = models.IntegerField(null=True, blank=True)
+
     @property
     def age(self):
         return datetime.date.today().year - self.date_of_birth.year
+
+    @property
+    def formatted_gender(self):
+        return 'Мужской' if self.gender is True else 'Женскый'
 
     def to_result(self):
         return {

@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 {% block content %}
     <!DOCTYPE html>
     <!--
@@ -73,6 +74,7 @@
                                             <th>Находиться в</th>
                                             <th>УП</th>
                                             <th>Цена</th>
+                                            <th>Цена щтука</th>
                                             <th>Остаток</th>
                                             <th>Остаток в щтуках</th>
                                             <th>Серия лекарств</th>
@@ -94,7 +96,8 @@
                                                 <td>{{ i.income_seria }}</td>
                                                 <td>{{ i.warehouse.name }}</td>
                                                 <td>{{ i.item.unit }}</td>
-                                                <td>{{ i.price }}</td>
+                                                <td>{{ i.price|intcomma }}</td>
+                                                <td>{{ i.unit_price|intcomma }}</td>
                                                 <td>{{ i.quantity }}</td>
                                                 <td>{{ i.unit_quantity }} / {{ i.item.in_pack }}</td>
                                                 <td>{{ i.item.seria }}</td>

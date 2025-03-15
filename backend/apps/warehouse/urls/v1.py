@@ -1,4 +1,4 @@
-# from django.urls import path
+# from django.routers import path
 # from apps.warehouse.views import *
 # from apps.warehouse.views.old import main
 #

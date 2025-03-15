@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.hospital',
     'apps.sanatorium',
     'apps.lis',
+    'apps.massage',
 
     'rest_framework',
     'rest_framework_simplejwt',

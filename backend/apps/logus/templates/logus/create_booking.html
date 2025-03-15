@@ -64,7 +64,9 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
 
-                                                <select class="form-control select2 select2-primary" id="patient-select" name="patient" data-dropdown-css-class="select2-primary" style="width: 100%;">
+                                                <select class="form-control select2 select2-primary" id="patient-select"
+                                                        name="patient" data-dropdown-css-class="select2-primary"
+                                                        style="width: 100%;">
                                                     {% for patient in patients %}
                                                         <option value="{{ patient.id }}">{{ patient.full_name }}</option>
                                                     {% endfor %}
@@ -76,10 +78,11 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <div class="select2-primary">
-{#                                                    <button class="btn btn-warning">Добавить новый пациент</button>#}
-{#                                                    <button type="button" class="btn btn-warning" onclick="openNewPatientPopup()">Добавить новый пациент</button>#}
-                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-default">
-                                                      Добавить новый пациент
+                                                    {#                                                    <button class="btn btn-warning">Добавить новый пациент</button>#}
+                                                    {#                                                    <button type="button" class="btn btn-warning" onclick="openNewPatientPopup()">Добавить новый пациент</button>#}
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal"
+                                                            data-target="#modal-default">
+                                                        Добавить новый пациент
                                                     </button>
                                                 </div>
                                             </div>
@@ -92,15 +95,16 @@
                                     <div class="row">
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                              <select name="current_room" class="form-control select2 select2-primary" data-dropdown-css-class="select2-primary" style="width: 100%;">
-                                                {% for room in rooms %}
-                                                    <option value="{{ room.id }}">{{ room.room_number }}</option>
-                                                {% endfor %}
-                                              </select>
+                                                <select name="current_room" class="form-control select2 select2-primary"
+                                                        data-dropdown-css-class="select2-primary" style="width: 100%;">
+                                                    {% for room in rooms %}
+                                                        <option value="{{ room.id }}">{{ room.room_number }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                             <!-- /.form-group -->
-                                          </div>
-                                          <!-- /.col -->
+                                        </div>
+                                        <!-- /.col -->
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <div class="input-group">
@@ -109,13 +113,14 @@
                                                         <i class="far fa-calendar-alt"></i>
                                                       </span>
                                                     </div>
-                                                    <input name="booking_period" type="text" class="form-control float-right" id="reservation">
-                                                  </div>
+                                                    <input name="booking_period" type="text"
+                                                           class="form-control float-right" id="reservation">
+                                                </div>
                                             </div>
                                         </div>
 
-                                    <input type="hidden" name="start_date" id="start_date">
-                                    <input type="hidden" name="end_date" id="end_date">
+                                        <input type="hidden" name="start_date" id="start_date">
+                                        <input type="hidden" name="end_date" id="end_date">
                                         <!-- /.col -->
                                     </div>
                                     <!-- /.row -->
@@ -124,7 +129,8 @@
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
                                                 <label>Тип комнаты</label>
-                                                <select class="form-control select2 select2-primary" name="current_room_type"
+                                                <select class="form-control select2 select2-primary"
+                                                        name="current_room_type"
                                                         data-dropdown-css-class="select2-primary" style="width: 100%;">
                                                     {% for room in room_types %}
                                                         <option value="{{ room.id }}">{{ room.name }}</option>
@@ -139,11 +145,35 @@
                                                 <label>Тариф</label>
                                                 <div class="select2-primary">
                                                     <select class="select2" name="current_tariff"
-                                                            data-dropdown-css-class="select2-primary" style="width: 100%;">
+                                                            data-dropdown-css-class="select2-primary"
+                                                            style="width: 100%;">
                                                         {% for tariff in tariffs %}
                                                             <option value="{{ tariff.id }}">{{ tariff.name }}</option>
                                                         {% endfor %}
                                                     </select>
+                                                </div>
+                                            </div>
+                                            <!-- /.form-group -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                  <input
+                                                    name="is_sick_leave"
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    id="flexCheckDefault"
+                                                  />
+                                                  <label
+                                                    class="form-check-label"
+                                                    for="flexCheckDefault"
+                                                  >
+                                                    Больниычный
+                                                  </label>
                                                 </div>
                                             </div>
                                             <!-- /.form-group -->
@@ -163,75 +193,94 @@
                 </section>
 
 
+                <div class="modal fade" id="modal-default">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Добавить пациент</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
 
-            <div class="modal fade" id="modal-default">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title">Добавить пациент</h4>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-
-                      <form id="registerPatientForm" method="POST" action="{% url 'logus_registration:add-new-patient' %}">
-                            {% csrf_token %}
-                            <div class="card-body">
-                              <div class="form-group">
-                                <label for="example_fname">Имя</label>
-                                <input name="f_name" type="text" class="form-control" id="example_fname" placeholder="Отабек">
-                              </div>
-                                <div class="form-group">
-                                <label for="example_fname">Фамилия</label>
-                                <input name="mid_name" type="text" class="form-control" id="example_fname" placeholder="Равшанов">
-                              </div>
-                              <div class="form-group">
-                                <label for="example_last_name">Отчества</label>
-                                <input name="l_name" type="text" class="form-control" id="example_last_name" placeholder="Ботирович">
-                              </div>
-                              <div class="form-group">
-                                <label for="example_phone_nm">Телефон</label>
-                                <input name="mobile_phone_number" type="text" class="form-control" id="example_phone_nm" placeholder="+998901002030">
-                              </div>
-
-
-                                <div class="col-sm-6">
-                                  <!-- radio -->
-                                  <div class="form-group">
-                                    <div class="custom-control custom-radio">
-                                      <input value='False' class="custom-control-input" type="radio" id="customRadio1" name="gender">
-                                      <label for="customRadio1" class="custom-control-label">Женщина</label>
+                            <form id="registerPatientForm" method="POST"
+                                  action="{% url 'logus_registration:add-new-patient' %}">
+                                {% csrf_token %}
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="example_fname">Имя</label>
+                                        <input name="f_name" type="text" class="form-control" id="example_fname"
+                                               placeholder="Отабек">
                                     </div>
-                                    <div class="custom-control custom-radio">
-                                      <input value='True' class="custom-control-input" type="radio" id="customRadio2" name="gender" checked>
-                                      <label for="customRadio2" class="custom-control-label">Мужчина</label>
+                                    <div class="form-group">
+                                        <label for="example_fname">Фамилия</label>
+                                        <input name="mid_name" type="text" class="form-control" id="example_fname"
+                                               placeholder="Равшанов">
                                     </div>
-                                  </div>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="example_last_name">Отчества</label>
+                                        <input name="l_name" type="text" class="form-control" id="example_last_name"
+                                               placeholder="Ботирович">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="example_phone_nm">Телефон</label>
+                                        <input name="mobile_phone_number" type="text" class="form-control"
+                                               id="example_phone_nm" placeholder="+998901002030">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="example_fname">ПИНФЛ</label>
+                                        <input name="INN" type="text" class="form-control" id="example_inn"
+                                               placeholder="123456789">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="example_phone_nm">Адрес</label>
+                                        <input name="address" type="text" class="form-control " id="example_address"
+                                               placeholder="Ташкентская область, Кибрайский район, городской посёлок Салар, улица Гулимамур, 5/1">
+                                    </div>
 
-                                <div class="form-group">
-                                  <label>Дата рождения:</label>
-                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                        <input name="date_of_birth" type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+
+                                    <div class="col-sm-6">
+                                        <!-- radio -->
+                                        <div class="form-group">
+                                            <div class="custom-control custom-radio">
+                                                <input value='False' class="custom-control-input" type="radio"
+                                                       id="customRadio1" name="gender">
+                                                <label for="customRadio1" class="custom-control-label">Женщина</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input value='True' class="custom-control-input" type="radio"
+                                                       id="customRadio2" name="gender" checked>
+                                                <label for="customRadio2" class="custom-control-label">Мужчина</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Дата рождения:</label>
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                            <input name="date_of_birth" type="text"
+                                                   class="form-control datetimepicker-input"
+                                                   data-target="#reservationdate"/>
+                                            <div class="input-group-append" data-target="#reservationdate"
+                                                 data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /.card-body -->
+                                <!-- /.card-body -->
 
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                              <button type="submit" class="btn btn-primary">Сохранить</button>
-                            </div>
-                        </form>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                </div>
+                            </form>
 
-                  </div>
-                  <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
                 </div>
-                <!-- /.modal-dialog -->
-              </div>
 
 
                 <!-- /.row -->
@@ -336,19 +385,19 @@
 
 <script>
 
-$(function() {
+    $(function () {
 
-    // When the form is submitted
-    $('form').on('submit', function(e) {
-        // Get the date range value
-        var dateRange = $('#reservation').val();
-        // Split the date range into start and end dates
-        var dates = dateRange.split(' - ');
-        // Set the values of the hidden inputs
-        $('#start_date').val(dates[0]);
-        $('#end_date').val(dates[1]);
+        // When the form is submitted
+        $('form').on('submit', function (e) {
+            // Get the date range value
+            var dateRange = $('#reservation').val();
+            // Split the date range into start and end dates
+            var dates = dateRange.split(' - ');
+            // Set the values of the hidden inputs
+            $('#start_date').val(dates[0]);
+            $('#end_date').val(dates[1]);
+        });
     });
-});
 
     $(function () {
         //Initialize Select2 Elements

@@ -1,0 +1,210 @@
+<div class="card card-primary" id="consulting-treatment-programs">
+    <div class="card-header">
+        <a href="#consulting-treatment-programs"
+           style="text-decoration: none; color: inherit;">
+            <h2 class="card-title">Консультации и исследования</h2>
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="card-body p-0">
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr class="text-center">
+                        <th style="width: 1%">
+                            #
+                        </th>
+                        <th>Статус</th>
+                        <th style="width: 20%">
+                            Название исследовании
+                        </th>
+                        <th style="width: 30%">
+                            Начало
+                        </th>
+                        <th class="project-actions center">
+                            Результаты
+                        </th>
+                        <th>
+                            Особые указания
+                        </th>
+                        <th>
+                            Назначил
+                        </th>
+                        <th style="width: 20%">
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-center">
+                    {% for lab in assigned_labs %}
+                        <tr>
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+                            <td>
+                                {% if lab.state == 'assigned' %}
+                                    <span class="badge bg-warning">Назначено</span>
+                                {% elif lab.state == 'dispatched' %}
+                                    <span class="badge bg-success">Диспетчеризовано</span>
+                                {% elif lab.state == 'cancelled' %}
+                                    <span class="badge bg-danger">Отменено</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'sanatorium_doctors:get_patient_lab_research' lab.id %}">
+                                    {{ lab.lab }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ lab.start_date }}
+                            </td>
+                            {% if lab.lab_results.all  %}
+                                <td class="project-actions center">
+                                    <a class="btn btn-success btn-sm">
+                                        <i class="fas fa-check">
+                                        </i>
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td class="project-actions center">
+                                    <a class="btn btn-danger btn-sm">
+                                        <i class="fas fa-minus">
+                                        </i>
+                                    </a>
+                                </td>
+                            {% endif %}
+                            <td>
+                                {{ lab.comments }}
+                            </td>
+                            <td>
+                                {{ lab.created_by.full_name }}
+                            </td>
+                        {% with current_url=request.get_full_path %}
+                            <td class="project-actions text-right">
+                                <a class="btn btn-info btn-sm" href="{% url 'sanatorium_doctors:consulting_update' lab.id %}?next={{ current_url }}">
+                                    <i class="fas fa-edit">
+                                    </i>
+                                    Изменить
+                                </a>
+                                <a class="btn btn-danger btn-sm" href="#">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                    Удалить
+                                </a>
+                            </td>
+                        {% endwith %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-10">
+                <a class="btn btn-success btn-sm" href="#"
+                   data-toggle="modal" data-target="#modal-consulting-treatment">
+                    <i class="fas fa-plus">
+                    </i>
+                    Добавить
+                </a>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-consulting-treatment">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="card card-primary card-tabs">
+                        <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="lab"
+                                       href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home"
+                                       aria-selected="true">Исследования</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="lab"
+                                       href="#custom-tabs-one-profile" role="tab"
+                                       aria-controls="custom-tabs-one-profile" aria-selected="false">Консультация</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                                <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel"
+                                     aria-labelledby="custom-tabs-one-home-tab">
+                                    <form id="lab_research_form" method="POST">
+                                        {% csrf_token %}
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="lab">Исследования</label>
+                                                <select id="lab" class="form-control select2"
+                                                        style="width: 100%;"
+                                                        name="lab">
+                                                    {% for lab in labs %}
+                                                        <option value="{{ lab.id }}" >{{ lab }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Дата начала:</label>
+                                                <div class="input-group date" id="lab_reservationdate"
+                                                     data-target-input="nearest">
+                                                    <input name="start_date" type="text"
+                                                           class="form-control datetimepicker-input"
+                                                           data-target="#lab_reservationdate"/>
+                                                    <div class="input-group-append"
+                                                         data-target="#lab_reservationdate"
+                                                         data-toggle="datetimepicker">
+                                                        <div class="input-group-text"><i
+                                                                class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="comments">Особые указания</label>
+                                                <textarea rows="3" name="comments" type="text"
+                                                          class="form-control"
+                                                          id="comments"
+                                                          placeholder=""></textarea>
+                                            </div>
+
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">Закрыть
+                                                </button>
+                                                <button name="lab_research_form" type="submit"
+                                                        class="btn btn-primary">
+                                                    Сохранить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel"
+                                     aria-labelledby="custom-tabs-one-profile-tab">
+                                    Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris
+                                    pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor
+                                    sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus
+                                    orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a
+                                    luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus.
+                                    Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc
+                                    euismod pellentesque diam.
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+    </div>
+</div>

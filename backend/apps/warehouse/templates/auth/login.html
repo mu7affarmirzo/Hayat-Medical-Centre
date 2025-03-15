@@ -19,7 +19,7 @@
         <div class="login-form">
             <h1>Вход в систему Склад</h1>
             <h2>Hayat Medical Center</h2>
-            <form method="POST" action="{% url 'warehouse_v2:login' %}" class="mt-3">
+            <form method="POST" action="{% url 'login' %}" class="mt-3">
                 {% csrf_token %}
 
                 <div class="form-floating mb-3 w-100">

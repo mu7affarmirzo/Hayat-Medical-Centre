@@ -1,12 +1,15 @@
 import json
 import datetime
+import os
 from operator import attrgetter
 
+from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -177,9 +180,40 @@ def cheque_detailed_view(request, pk):
     cheque = get_object_or_404(WarehouseChequeModel, pk=pk)
     context = {
         "cheque": cheque,
-        "details": cheque.cheque_items.all()
+        "details": cheque.cheque_items.all(),
     }
     return render(request, 'cheque/cheque_details.html', context)
+
+
+def cheque_sanatorium_detailed_view(request, pk):
+    cheque = get_object_or_404(WarehouseChequeModel, pk=pk)
+    context = {
+        "cheque": cheque,
+        "details": cheque.cheque_items.all(),
+        "item_state_choices": ChequeItemsModel.state.field.choices,
+    }
+    return render(request, 'cheque/cheque_sanatorium_details.html', context)
+
+
+def cheque_sanatorium_update_view(request, pk):
+    item = get_object_or_404(ChequeItemsModel, pk=pk)
+
+    if request.method == 'POST':
+        quantity = request.POST.get('quantity')
+        state = request.POST.get('state')
+
+        # Update the item with new values
+        item.quantity = int(quantity) if quantity else item.quantity
+        item.state = str(state) if state else item.state
+        # Add more updates as needed
+
+        # Save changes to the database
+        item.save()
+        messages.success(request, 'Item updated successfully!')
+        return redirect('warehouse_v2:cheque-sanatorium-detailed', pk=item.cheque.pk)
+
+    messages.error(request, 'Item not updated successfully!')
+    return redirect('warehouse_v2:cheque-sanatorium-detailed', pk=item.cheque.pk)
 
 
 @login_required
@@ -239,6 +273,16 @@ def add_new_patient(request):
     else:
         return redirect('warehouse_v2:cheque-create')
     return render(request, 'cheque/cheque_create.html', {'form': form})
+
+
+def gen_invoice(request, pk):
+    cheque = get_object_or_404(WarehouseChequeModel, pk=pk)
+    context = {
+        "cheque": cheque,
+        "details": cheque.cheque_items.all(),
+        "date": datetime.date.today()
+    }
+    return render(request, 'cheque/invoice.html', context)
 
 
 def get_cheques_queryset(query=None):

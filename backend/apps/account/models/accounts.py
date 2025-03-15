@@ -37,6 +37,7 @@ class Account(AbstractBaseUser):
     l_name = models.CharField(max_length=50, null=True)
     m_name = models.CharField(max_length=50, null=True)
     phone_number = models.CharField(max_length=30, null=True)
+    tg_username = models.CharField(max_length=255, null=True, blank=True)
     sex = models.BooleanField(default=True)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
@@ -44,6 +45,7 @@ class Account(AbstractBaseUser):
     branch_id = models.IntegerField(null=True)
     color = models.CharField(max_length=255, null=True)
     is_admin = models.BooleanField(default=False)
+    is_therapist = models.BooleanField(default=False, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -78,13 +80,29 @@ class Account(AbstractBaseUser):
         return self.notifications.filter(state=False)
 
 
+class DoctorSpecialtyTypeModel(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+
 class DoctorAccountModel(models.Model):
+    specialty_type = models.ForeignKey('DoctorSpecialtyTypeModel', on_delete=models.SET_NULL, null=True)
     doctor = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='doctor_model')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.doctor.email)
+        return str(self.doctor.full_name)
+
+
+class NurseAccountModel(models.Model):
+    nurse = models.OneToOneField(Account, on_delete=models.CASCADE, related_name='nurse_model')
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.nurse.full_name)
 
 
 class ReferringDoctorModel(models.Model):

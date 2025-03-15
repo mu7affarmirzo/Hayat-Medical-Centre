@@ -1,6 +1,7 @@
 from django.db import models
 
 from apps.account.models import Account
+from apps.lis.models import upload_location
 from apps.sanatorium.models import (DiagnosisTemplate, IllnessHistory)
 
 
@@ -18,7 +19,7 @@ class FinalAppointmentWithDoctorModel(models.Model):
         ('Без изменения', 'Без изменения'),
         ('Ухудшение', 'Ухудшение'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='fawd_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -32,14 +33,16 @@ class FinalAppointmentWithDoctorModel(models.Model):
     )
 
     objective_status = models.TextField(null=True, blank=True)
+    file = models.FileField(upload_to=upload_location, null=True, blank=True)
 
-    height = models.FloatField()
-    weight = models.FloatField()
-    heart_beat = models.IntegerField()
-    arterial_high = models.IntegerField()
-    arterial_low = models.IntegerField()
-    imt = models.FloatField()
-    imt_interpretation = models.FloatField()
+    height = models.FloatField(null=True, blank=True)
+    weight = models.FloatField(null=True, blank=True)
+    heart_beat = models.IntegerField(null=True, blank=True)
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
+    arterial_high = models.IntegerField(null=True, blank=True)
+    arterial_low = models.IntegerField(null=True, blank=True)
+    imt = models.FloatField(null=True, blank=True)
+    imt_interpretation = models.FloatField(null=True, blank=True)
 
     diagnosis = models.ManyToManyField(DiagnosisTemplate)
     summary = models.TextField(blank=True, null=True)
@@ -56,7 +59,7 @@ class ConsultingWithNeurologistModel(models.Model):
         ('Не показан', 'Не показан'),
         ('Противопоказан', 'Противопоказан'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='cwn_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -236,7 +239,7 @@ class ConsultingWithCardiologistModel(models.Model):
     PLEURAL_FRICTION_RUB_CHOICES = (
         ('шум трения плевры', 'шум трения плевры'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='cw_cardio_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -254,13 +257,14 @@ class ConsultingWithCardiologistModel(models.Model):
     history_of_illness = models.TextField(null=True, blank=True)
     inheritance = models.TextField(null=True, blank=True)
 
-    height = models.FloatField()
-    weight = models.FloatField()
+    height = models.FloatField(null=True, blank=True)
+    weight = models.FloatField(null=True, blank=True)
     pulse_general = models.IntegerField(null=True, blank=True)
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
     arterial_high = models.IntegerField(null=True, blank=True)
     arterial_low = models.IntegerField(null=True, blank=True)
-    imt = models.FloatField()
-    imt_interpretation = models.FloatField()
+    imt = models.FloatField(null=True, blank=True)
+    imt_interpretation = models.FloatField(null=True, blank=True)
 
     body_figure = models.CharField(max_length=255, choices=BODY_CHOICES, default='правильное, нормастеник')
     skin = models.CharField(max_length=255, choices=SKIN_CHOICES, default='нормальной окраски')
@@ -273,8 +277,8 @@ class ConsultingWithCardiologistModel(models.Model):
     pulse_per_min = models.IntegerField(null=True, blank=True)
     pulse = models.CharField(max_length=255, choices=PULSE_CHOICES, default='ритмичный')
     fault_of_pulse = models.CharField(max_length=255, default='отсутствует')
-    heart_arterial_high = models.IntegerField()
-    heart_arterial_low = models.IntegerField()
+    heart_arterial_high = models.IntegerField(null=True, blank=True)
+    heart_arterial_low = models.IntegerField(null=True, blank=True)
     left_heart_edges = models.CharField(max_length=255, default='в норме')
     right_heart_edges = models.CharField(max_length=255, default='в норме')
     upper_heart_edges = models.CharField(max_length=255, default='в норме')
@@ -308,6 +312,7 @@ class ConsultingWithCardiologistModel(models.Model):
     )
 
     cito = models.BooleanField(default=False)
+    file = models.FileField(upload_to=upload_location, null=True, blank=True)
     for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=250, null=True, blank=True)
     summary = models.TextField(blank=True, null=True)
     recommendation = models.TextField(blank=True, null=True)
@@ -332,7 +337,7 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
         ('Тонизирующий', 'Тонизирующий'),
         ('Тренирующий', 'Тренирующий'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='aw_on_duty_on_arr_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -368,8 +373,9 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
 
     objective_data = models.TextField(null=True, blank=True)
 
-    temperature = models.FloatField(null=True, blank=True)
+    temperature = models.CharField(null=True, blank=True, max_length=255)
 
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
     arterial_high = models.IntegerField(null=True)
     arterial_low = models.IntegerField(null=True)
     imt = models.IntegerField(null=True)
@@ -384,7 +390,7 @@ class AppointmentWithOnDutyDoctorOnArrivalModel(models.Model):
 
 class RepeatedAppointmentWithDoctorModel(models.Model):
 
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='rawd_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -400,9 +406,10 @@ class RepeatedAppointmentWithDoctorModel(models.Model):
     complaint = models.TextField(null=True, blank=True)
     objective_data = models.TextField(null=True, blank=True)
 
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
     arterial_high = models.IntegerField(null=True)
     arterial_low = models.IntegerField(null=True)
-    imt = models.FloatField(null=True)
+    imt = models.CharField(max_length=255, null=True, blank=True)
 
     diagnosis = models.ForeignKey(DiagnosisTemplate, null=True, on_delete=models.SET_NULL)
     cito = models.BooleanField(default=False)
@@ -418,7 +425,7 @@ class AppointmentWithOnDutyDoctorModel(models.Model):
         ('Не показан', 'Не показан'),
         ('Противопоказан', 'Противопоказан'),
     )
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='aw_on_duty_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -433,9 +440,12 @@ class AppointmentWithOnDutyDoctorModel(models.Model):
     complaints = models.TextField(null=True, blank=True)
     objective_data = models.TextField(null=True, blank=True)
 
+    arterial_high_low = models.CharField(max_length=255, null=True, blank=True)
     arterial_high = models.IntegerField(null=True)
     arterial_low = models.IntegerField(null=True)
-    imt = models.FloatField(null=True)
+    imt = models.CharField(max_length=255, null=True, blank=True)
+
+    diagnosis = models.ForeignKey(DiagnosisTemplate, null=True, on_delete=models.SET_NULL)
 
     cito = models.BooleanField(default=False)
     for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=250, null=True, blank=True)
@@ -461,7 +471,7 @@ class EkgAppointmentModel(models.Model):
         ('Противопоказан', 'Противопоказан'),
     )
 
-    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Не завершено')
+    state = models.CharField(choices=STATE_CHOICES, max_length=250, default='Приём завершён')
 
     created_by = models.ForeignKey(Account, related_name='ekg_app_created', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -493,6 +503,9 @@ class EkgAppointmentModel(models.Model):
     cito = models.BooleanField(default=False)
     diagnosis = models.ForeignKey(DiagnosisTemplate, null=True, on_delete=models.SET_NULL)
     for_sanatorium_treatment = models.CharField(choices=ST_CHOICES, max_length=250, null=True, blank=True)
+    objective_data = models.TextField(null=True, blank=True)
+
+    summary = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.id}"

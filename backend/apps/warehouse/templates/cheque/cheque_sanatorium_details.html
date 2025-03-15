@@ -1,0 +1,392 @@
+{% load static %}
+{% load humanize %}
+{% block content %}
+    <!DOCTYPE html>
+    <!--
+    This is a starter template page. Use this page to start your new project from
+    scratch. This page gets rid of all links and provides the needed markup only.
+    -->
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Hayat Medical Centre</title>
+
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/fontawesome-free/css/all.min.css' %}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{% static 'adminlte3_assets/dist/css/adminlte.min.css' %}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body class="hold-transition sidebar-collapse layout-top-nav">
+
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        {% include 'snippets/navbar.html' %}
+        <!-- /.navbar -->
+
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title"><b>Серия:</b> {{ cheque.cheque_number }}</h3>
+                                    <br>
+                                    <h2 class="card-title"><b>Пациент:</b> {{ cheque.patient.full_name }}</h2>
+                                    <br>
+                                    <h2 class="card-title"><b>Дата пождения пациента:</b> {{ cheque.patient.date_of_birth }}</h2>
+                                    <br>
+                                    <h2 class="card-title"><b>Контакт пациента:</b> {{ cheque.patient.mobile_phone_number }}</h2>
+                                    <br>
+                                    <h2 class="card-title"><b>Дата:</b> {{ cheque.created_at }}</h2>
+                                    <br>
+                                    <h2 class="card-title">
+                                        <b>Статус оплаты:</b>
+                                        {% if cheque.state == 'не оплачено' %}
+                                            <span class="badge bg-warning">{{ cheque.state }}</span>
+                                        {% elif cheque.state == 'оплачено' %}
+                                            <span class="badge bg-success">{{ cheque.state }}</span>
+                                        {% elif cheque.state == 'отказоно' %}
+                                            <span class="badge bg-black">{{ cheque.state }}</span>
+                                        {% endif %}
+                                    </h2>
+                                    <br>
+                                    <h2 class="card-title"><b>Создатель: </b> {{ cheque.created_by.full_name }}</h2>
+                                    <br>
+                                    <h2 class="card-title"><b>Общая сумма: </b> {{ cheque.total_price|intcomma }}</h2>
+                                    <br>
+                                    <div class="row no-print">
+                                        <div class="col-12">
+                                            <a href="{% url 'warehouse_v2:invoice-gen' cheque.pk %}" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                                <i class="fas fa-download"></i> Скачать PDF
+                                            </a>
+{#                                            <button type="button" class="btn btn-default float-right" onclick="window.print();">#}
+{#                                                <i class="fas fa-print"></i> Распечатать#}
+{#                                            </button>#}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>Полное наименование</th>
+                                            <th>Срок год.</th>
+                                            <th>Количество</th>
+                                            <th>Цена</th>
+                                            <th>Сумма</th>
+                                            <th>Добавлено</th>
+                                            <th>Кол-во на сеанс</th>
+                                            <th>Частота</th>
+                                            <th>Кол-во дней</th>
+                                            <th>Назначил</th>
+                                            <th>Статус</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {% for i in details %}
+                                            <tr>
+                                                <td>{{ i.item.item.name }}</td>
+                                                <td>{{ i.item.expire_date }}</td>
+                                                <td>{{ i.quantity }}</td>
+                                                <td>{{ i.price|intcomma }}</td>
+                                                <td>{{ i.overall_price|intcomma }}</td>
+                                                <td>{{ i.created_at }}</td>
+                                                <td>{{ i.quantity_per_session }}</td>
+                                                <td>{{ i.frequency }}</td>
+                                                <td>{{ i.period_days }}</td>
+                                                <td>{{ i.created_by.full_name }}</td>
+                                                <td>
+                                                    {% if i.state == 'dispatched' %}
+                                                    <span class="badge bg-success">{{ i.state }}</span>
+                                                    {% elif i.state == 'assigned' %}
+                                                        <span class="badge bg-warning">{{ i.state }}</span>
+                                                    {% elif i.state == 'cancelled' or i.state == 'stopped' %}
+                                                        <span class="badge bg-black">{{ i.state }}</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+{#                                                    <a class="badge-pill" href="{% url 'warehouse_v2:cheque-sanatorium-detailed' i.pk %}">#}
+{#                                                        <i class="fas fa-edit"></i>#}
+{#                                                    </a>#}
+{#                                                    <a href="#" class="badge-pill" data-bs-toggle="modal" data-bs-target="editModal{{ i.pk }}">#}
+{#                                                        <i class="fas fa-edit"></i>#}
+{#                                                    </a>#}
+                                                    <a class="badge-pill" href="#"
+                                                       data-toggle="modal" data-target="#editModal{{ i.pk }}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                            <div class="modal fade" id="editModal{{ i.pk }}" tabindex="-1" aria-labelledby="editModalLabel{{ i.pk }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Обновить медикамент</h4>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <form id="pills_form" method="POST" action="{% url 'warehouse_v2:cheque-sanatorium-update' i.pk %}">
+                                                            {% csrf_token %}
+                                                            <div class="card-body">
+
+                                                                <div class="form-group">
+                                                                    <label for="period_days">Количество</label>
+                                                                    <input name="quantity" type="number"
+                                                                           class="form-control"
+                                                                           id="period_days"
+                                                                           value="{{ i.quantity|default_if_none:0 }}">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="frequency">По, дн:</label>
+                                                                    <select class="form-control select2"
+                                                                            style="width: 100%;" name="state">
+                                                                        {% for type in item_state_choices %}
+                                                                            <option value="{{ type.0 }}"
+                                                                                    {% if i.state == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                <div class="modal-footer justify-content-between">
+                                                                    <button type="button" class="btn btn-default"
+                                                                            data-dismiss="modal">Закрыть
+                                                                    </button>
+                                                                    <button name="pills_form" type="submit"
+                                                                            class="btn btn-primary">
+                                                                        Сохранить
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+            <!-- /.content -->
+        </div>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+
+        <!-- Main Footer -->
+        {% include 'snippets/footer.html' %}
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+
+    <!-- jQuery -->
+    <script src="{% static 'adminlte3_assets/plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'adminlte3_assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'adminlte3_assets/dist/js/adminlte.min.js' %}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <div class="modal fade" id="modal-danger" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Log Out</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ketyapsizmi muncha tez?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Oтмена</button>
+                    <button type="button" class="btn btn-outline-light"><a href="{% url 'warehouse_v2:logout' %}"
+                                                                           class="dropdown-item">ВЫХОД</a></button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- jQuery -->
+    <!-- DataTables  & Plugins -->
+    <script src="{% static "adminlte3_assets/plugins/datatables/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/dataTables.responsive.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/dataTables.buttons.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/jszip/jszip.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/pdfmake/pdfmake.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/pdfmake/vfs_fonts.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.html5.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.print.min.js" %}"></script>
+    <script src="{% static "adminlte3_assets/plugins/datatables-buttons/js/buttons.colVis.min.js" %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static "adminlte3_assets/dist/js/adminlte.min.js" %}"></script>
+{#    <script>#}
+{#        function updateLink(id) {#}
+{#            const quantity = document.getElementById(`quantity-${id}`).value;#}
+{#            const link = document.getElementById(`link-${id}`);#}
+{#            const baseUrl = `/render/warehouse/main-point/cheque/item-update/pk/link`.replace('pk', `${id}`).replace(`link`, `${quantity}`);#}
+{#            link.href = baseUrl;#}
+{#        }#}
+{#    </script>#}
+
+    <!-- Page specific script -->
+{#    <script>#}
+{#        $(function () {#}
+{#            $("#example1").DataTable({#}
+{#                "responsive": true, "lengthChange": false, "autoWidth": false,#}
+{#                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]#}
+{#            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');#}
+{#            $('#example2').DataTable({#}
+{#                "paging": true,#}
+{#                "lengthChange": false,#}
+{#                "searching": false,#}
+{#                "ordering": true,#}
+{#                "info": true,#}
+{#                "autoWidth": false,#}
+{#                "responsive": true,#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+    <script>
+        $(document).ready(function () {
+            $('#search-product').on('input', function () {
+                var searchQuery = $(this).val();
+                if (searchQuery.length > 2) {
+                    $.ajax({
+                        url: '{% url 'warehouse_v2:in-stock-search' %}',
+                        data: {'q': searchQuery},
+                        success: function (data) {
+                            $('#search-result').empty();
+                            data.forEach(function (item) {
+                                var daysUntilExpireContent;
+                                if (item.days_until_expire > 180) {
+                                    daysUntilExpireContent = `<span class="badge bg-success">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-success">${item.expire_date}</span>`;
+                                } else if (item.days_until_expire > 90) {
+                                    daysUntilExpireContent = `<span class="badge bg-warning">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-warning">${item.expire_date}</span>`;
+                                } else {
+                                    daysUntilExpireContent = `<span class="badge bg-balck">${item.days_until_expire} дней</span>`;
+                                    expireDateContent = `<span class="badge bg-balck">${item.expire_date}</span>`;
+                                }
+                                $('#search-result').append(
+                                    `<tr class="result-item" data-item="${item.name}" data-id="${item.id}" data-company="${item.company}"
+                  data-price="${item.price}" data-seria="${item.seria}" data-inpack="${item.in_pack}"
+                  data-unit="${item.unit}">
+                <td>${item.name}</td>
+                <td><input type="number" class="form-control value-input" value="1" data-id="${item.id}"></td>
+                <td>${item.company}</td>
+                <td>${item.price}</td>
+                <td>${item.seria}</td>
+                <td>${item.in_pack}</td>
+                <td>${item.unit}</td>
+                <td>${daysUntilExpireContent}</td>
+                <td><button class="btn btn-primary send-data-item" data-id="${item.id}">dobavit</button></td>
+              </tr>`
+                                );
+                            });
+                        }
+                    });
+                }
+            });
+
+
+            // when user clicks add more btn of variants
+            {#$('.add-variants').click(function (ev) {#}
+            {#    console.log(ev)#}
+            {#    ev.preventDefault();#}
+            {#    var count = $('#item-variants').children().length;#}
+            {#    var tmplMarkup = $('#variants-template').html();#}
+            {#    var compiledTmpl = "";#}
+            {#    $('#item-variants').append(compiledTmpl);#}
+            {##}
+            {#    // update form count#}
+            {#    $('#id_variants-TOTAL_FORMS').attr('value', count + 1);});#}
+
+
+            {#$(document).on('dblclick', '.result-item', function (e) {#}
+            {#    let thisID = $(this).data('id')#}
+            {#    console.log(e)#}
+            {#    var count = $('#item-variants').children().length;#}
+            {#    var tmplMarkup = $('#variants-template').html();#}
+            {#    var compiledTmpl = "";#}
+            {##}
+            {#    $('#item-variants').append(compiledTmpl);#}
+            {#    // update form count#}
+            {#    $('#id_variants-TOTAL_FORMS').attr('value', count + 1);#}
+            {#    console.log(thisID)#}
+            {#    $('#item-variants tr:last-child select option[value="' + thisID + '"]').prop('selected', 'selected')});#}
+
+        });
+    </script>
+    <script>
+        (function($) {
+            $(document).ready(function() {
+
+                // Делегирование события клика на документ
+                $(document).on('click', '.send-data-item', function() {
+
+                    // Получение данных строки из атрибутов кнопки
+                    const rowId = $(this).data('id');
+                    const inputValue = $(`input.value-input[data-id="${rowId}"]`).val();
+
+
+                    // Формирование данных для отправки
+                    const data = {
+                        id: rowId,
+                        quantity: inputValue,
+                        cheque: {{ cheque.id }}
+                    };
+
+                    // Отправка данных на сервер
+                    $.ajax({
+                        url: '{% url "warehouse_v2:add-item-cheque" %}',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                        },
+                        error: function(xhr, status, error) {
+                        }
+                    });
+                });
+            });
+        })(jQuery);
+    </script>
+    </body>
+    </html>
+
+{% endblock %}

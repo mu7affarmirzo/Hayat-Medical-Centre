@@ -1,0 +1,244 @@
+{% extends 'sanatorium/doctors/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>История болезни №: <b>{{ ill_his.series_number }}</b></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item active"><b>Первичный прием лечащего врача, {{ request.user.full_name }}</b></li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Default box -->
+                        <div class="card">
+                            <div class="tab-pane text-left fade show active" id="vert-tabs-title-page" role="tabpanel"
+                                 aria-labelledby="vert-tabs-title-page-tab">
+                                <div class="card-body">
+
+                                    <div class="tab-content" id="custom-content-below-tabContent">
+                                        <form enctype="multipart/form-data" method="post" id="init_app_form">
+                                            {% csrf_token %}
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <a href="#treatment-program"
+                                                       style="text-decoration: none; color: inherit;">
+                                                        <h2 class="card-title">Первичный прием лечащего врача</h2>
+                                                    </a>
+                                                </div>
+                                                <div class="card-body">
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Жалобы/анамнез</label>
+                                                                <textarea name="complaint" class="form-control" rows="3"
+                                                                          placeholder=" ...">{{ init_app_form.instance.complaint|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Anamnesis morbi</label>
+                                                                <textarea name="anamnesis_morbi" class="form-control"
+                                                                          rows="3"
+                                                                          placeholder="...">{{ init_app_form.instance.anamnesis_morbi|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Anamnesis vitae</label>
+                                                                <textarea name="anamnesis_vitae" class="form-control"
+                                                                          rows="3"
+                                                                          placeholder="...">{{ init_app_form.instance.anamnesis_vitae|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Эпиданамнез</label>
+                                                                <br>
+                                                                <a>Контакт с инфекционными больными</a>
+                                                                <input name="contact_with_infectious" class="form-control"
+                                                                          placeholder="на протяжении максимального срока инкубации: не было"
+                                                                    value={{ init_app_form.instance.contact_with_infectious|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <a href="#treatment-program"
+                                                           style="text-decoration: none; color: inherit;">
+                                                            <h2 class="card-title">Контакт с больными гриппом, ОРВИ:</h2>
+                                                        </a>
+                                                        <br>
+                                                        <!-- radio -->
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='True' class="custom-control-input" type="radio"
+                                                                       id="customRadio1" name="contact_with_orvi">
+                                                                <label for="customRadio1" class="custom-control-label">есть</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='False' class="custom-control-input" type="radio"
+                                                                       id="customRadio2" name="contact_with_orvi" checked>
+                                                                <label for="customRadio2" class="custom-control-label">нет</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <a href="#treatment-program"
+                                                           style="text-decoration: none; color: inherit;">
+                                                            <h2 class="card-title">Выезд за пределы населенного пункта за 2 месяца ДО настоящего заболевания:</h2>
+                                                        </a>
+                                                        <br>
+                                                        <!-- radio -->
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='True' class="custom-control-input" type="radio"
+                                                                       id="customRadio1" name="is_away_two_month">
+                                                                <label for="customRadio1" class="custom-control-label">есть</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='False' class="custom-control-input" type="radio"
+                                                                       id="customRadio2" name="is_away_two_month" checked>
+                                                                <label for="customRadio2" class="custom-control-label">нет</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Перенесенные инфекционные заболевания:</label>
+                                                                <input name="transferred_infectious" class="form-control"
+                                                                          placeholder="нет"
+                                                                    value={{ init_app_form.instance.transferred_infectious|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Нахождение на стационарном лечении::</label>
+                                                                <input name="staying_hospital"
+                                                                       class="form-control"
+                                                                       placeholder="нет"
+                                                                       value={{ init_app_form.instance.staying_hospital|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Получение гемотрансфузий (крови и ее компонентов):</label>
+                                                                <input name="receiving_blood_transfusions"
+                                                                       class="form-control"
+                                                                       placeholder="нет"
+                                                                       value={{ init_app_form.instance.receiving_blood_transfusions|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Оперативные и массивные вмешательства за последние 6 месяцев:</label>
+                                                                <input name="surgical_massive_interventions_six_months"
+                                                                       class="form-control"
+                                                                       placeholder="нет"
+                                                                       value={{ init_app_form.instance.surgical_massive_interventions_six_months|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Посещение стоматолога за последние 6 месяцев:</label>
+                                                                <input name="dentist_visits_last_six_months"
+                                                                       class="form-control"
+                                                                       placeholder="нет"
+                                                                       value={{ init_app_form.instance.dentist_visits_last_six_months|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Профессия с подробным указанием профессиональных вредностей и др. особенностей (например, контакт с животными):</label>
+                                                                <input name="profession_toxics"
+                                                                       class="form-control"
+                                                                       value={{ init_app_form.instance.profession_toxics|default_if_none:'' }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <div class="col-12">
+                                                        <label>Диагноз:</label>
+                                                        <select class="form-control select2"
+                                                                style="width: 100%;" name="diagnosis">
+                                                            {% for diagnos in diagnosis %}
+                                                                <option value="{{ diagnos.id }}"
+                                                                        {% if init_app_form.instance.diagnosis.id == diagnos.id %}selected{% endif %}>{{ diagnos }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <br>
+                                                    <div class="text-center">
+                                                        <button type="submit" name="init_app_form"
+                                                                class="btn btn-primary">Сохранить
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <br>
+                                        {% include 'sanatorium/doctors/components/consulting-treatment-program-card.html' %}
+                                        {% include 'sanatorium/doctors/components/treatment-procedure-card.html' %}
+                                        {% include 'sanatorium/doctors/components/pills-injections-card.html' %}
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+{% endblock content %}

@@ -19,7 +19,7 @@ class ItemsModel(models.Model):
     modified_by = models.ForeignKey(Account, related_name="modf_item", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"{self.name}({self.in_pack}) - {self.company}"
+        return f"{self.name}-({self.in_pack}) --|by: {self.company}|--"
 
     @property
     def validity_color(self):
@@ -57,6 +57,10 @@ class ItemsInStockModel(models.Model):
 
     def __str__(self):
         return f"{self.item}-{self.income_seria}"
+
+    @property
+    def for_doctors_naming(self):
+        return f"{self.item}"
 
     @property
     def days_until_expire(self):

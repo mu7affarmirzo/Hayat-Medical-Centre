@@ -2,7 +2,7 @@ from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 from apps.account.models import (
     accounts, organizations, roles_permissions, patients, specialities, appointments, attandance,
-notifications
+    notifications, MedicalServiceCategory
 )
 
 
@@ -14,6 +14,16 @@ class NotificationModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 @admin.register(accounts.Account)
 class AccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in accounts.Account._meta.fields]
+
+
+@admin.register(accounts.DoctorSpecialtyTypeModel)
+class DoctorSpecialtyTypeModelAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in accounts.DoctorSpecialtyTypeModel._meta.fields]
+
+
+@admin.register(accounts.NurseAccountModel)
+class NurseAccountAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in accounts.NurseAccountModel._meta.fields]
 
 
 @admin.register(accounts.DoctorAccountModel)
@@ -103,4 +113,9 @@ class DoctorSpecialityAdmin(ImportExportModelAdmin,admin.ModelAdmin):
 @admin.register(attandance.AttendanceModel)
 class AttendanceAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = [field.name for field in attandance.AttendanceModel._meta.fields]
+
+
+@admin.register(MedicalServiceCategory)
+class MedicalServiceCategoryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [field.name for field in MedicalServiceCategory._meta.fields]
 

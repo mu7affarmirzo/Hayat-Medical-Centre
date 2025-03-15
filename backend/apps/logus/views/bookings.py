@@ -6,41 +6,30 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
+from apps.account.models import PatientModel, DoctorAccountModel, NurseAccountModel
 from apps.decorators import role_required
-from apps.logus.models import BookingModel
+from apps.logus.forms.booking import UpdateBookingForm, BookingForm, AddCompanionForm, UpdateIllnessHistoryForm
+from apps.logus.models import BookingModel, AvailableRoomModel, AvailableRoomsTypeModel, AvailableTariffModel
+from apps.sanatorium.models import IllnessHistory
 
 BOOKINGS_PER_PAGE = 30
 
 
 @role_required(role='logus', login_url='logus_auth:logout')
 def get_upcoming_checkouts(request):
-    context = {}
 
-    tomorrow_date = timezone.now().date() + timedelta(days=1)
-
-    checkouts = BookingModel.objects.filter(end_date=tomorrow_date)
-    context['bookings'] = checkouts
-
-    query = request.GET.get('q', '')
     search_query = request.GET.get('table_search')
 
     if search_query:
         bookings = sorted(get_booking_queryset(search_query), key=attrgetter('end_date'), reverse=True)
     else:
-        bookings = sorted(get_booking_queryset(query), key=attrgetter('end_date'), reverse=True)
+        exit_date = timezone.now().date()
+        bookings = BookingModel.objects.filter(stage='settled', end_date__gte=exit_date)
 
-    page = request.GET.get('page', 1)
-    bookings_paginator = Paginator(bookings, BOOKINGS_PER_PAGE)
-
-    try:
-        bookings = bookings_paginator.page(page)
-    except PageNotAnInteger:
-        bookings = bookings_paginator.page(BOOKINGS_PER_PAGE)
-    except EmptyPage:
-        bookings = bookings_paginator.page(bookings_paginator.num_pages)
+    bookings = paginate_page(request, bookings)
 
     context = {
         "bookings": bookings
@@ -64,15 +53,7 @@ def get_living_guests(request):
     else:
         bookings = sorted(get_booking_queryset(query, 'settled'), key=attrgetter('end_date'), reverse=True)
 
-    page = request.GET.get('page', 1)
-    bookings_paginator = Paginator(bookings, BOOKINGS_PER_PAGE)
-
-    try:
-        bookings = bookings_paginator.page(page)
-    except PageNotAnInteger:
-        bookings = bookings_paginator.page(BOOKINGS_PER_PAGE)
-    except EmptyPage:
-        bookings = bookings_paginator.page(bookings_paginator.num_pages)
+    bookings = paginate_page(request, bookings)
 
     context = {
         "bookings": bookings
@@ -83,38 +64,111 @@ def get_living_guests(request):
 
 @role_required(role='logus', login_url='logus_auth:logout')
 def get_upcoming_check_ins_view(request):
-    context = {}
 
-    tomorrow_date = timezone.now().date() + timedelta(days=1)
-    check_ins = BookingModel.objects.filter(start_date=tomorrow_date)
-    context['bookings'] = check_ins
-
-    # ----------------------
-    user = request.user
-
-    query = request.GET.get('q', '')
+    today = timezone.now().date()
     search_query = request.GET.get('table_search')
 
     if search_query:
-        bookings = sorted(get_booking_queryset(search_query), key=attrgetter('start_date'), reverse=True)
+        check_ins = sorted(get_booking_queryset(search_query), key=attrgetter('start_date'), reverse=True)
     else:
-        bookings = sorted(get_booking_queryset(query), key=attrgetter('start_date'), reverse=True)
+        check_ins = BookingModel.objects.filter(stage__in=['booked', 'arrived']).order_by('-start_date')
 
-    page = request.GET.get('page', 1)
-    bookings_paginator = Paginator(bookings, BOOKINGS_PER_PAGE)
-
-    try:
-        bookings = bookings_paginator.page(page)
-    except PageNotAnInteger:
-        bookings = bookings_paginator.page(BOOKINGS_PER_PAGE)
-    except EmptyPage:
-        bookings = bookings_paginator.page(bookings_paginator.num_pages)
+    bookings = paginate_page(request, check_ins)
 
     context = {
-        "bookings": bookings
+        "bookings": bookings,
+        "today": today
     }
 
     return render(request, 'logus/booking/checkins.html', context)
+
+
+@role_required(role='logus', login_url='logus_auth:logout')
+def update_check_in_view(request, pk):
+    today = timezone.now().date()
+
+    booking = get_object_or_404(BookingModel, pk=pk)
+    illness_histories = booking.illness_history.all()
+
+    if request.method == "POST":
+        form = UpdateBookingForm(request.POST, instance=booking)
+        if form.is_valid():
+            form.save()
+            return redirect('logus_booking:check-in')
+    rooms = AvailableRoomModel.objects.all()
+    room_types = AvailableRoomsTypeModel.objects.all()
+    tariffs = AvailableTariffModel.objects.all()
+
+    context = {
+        "booking": booking,
+        "illness_histories": illness_histories,
+        "today": today,
+        'rooms': rooms,
+        'room_types': room_types,
+        'tariffs': tariffs,
+        "form": UpdateBookingForm(instance=booking),
+        "stages": BookingModel.stage.field.choices
+    }
+
+    return render(request, 'logus/booking/checkins_detailed.html', context)
+
+
+@role_required(role='logus', login_url='logus_auth:logout')
+def update_check_in_ill_history_view(request, pk):
+    today = timezone.now().date()
+    next_url = request.GET.get('next', '')
+
+    illness_history = get_object_or_404(IllnessHistory, pk=pk)
+
+    if request.method == "POST":
+        form = UpdateIllnessHistoryForm(request.POST, instance=illness_history)
+        ih: IllnessHistory = form.save(commit=False)
+        ih.modified_by = request.user
+        ih.save()
+        form.save_m2m()
+        if next_url:
+            return redirect(next_url)
+
+    context = {
+        "today": today,
+        'doctors': DoctorAccountModel.objects.all(),
+        'nurses': NurseAccountModel.objects.all(),
+        'ill_his_types': IllnessHistory.type.field.choices,
+        "form": UpdateIllnessHistoryForm(instance=illness_history),
+    }
+
+    return render(request, 'logus/booking/update_ill_history.html', context)
+
+
+@role_required(role='logus', login_url='logus_auth:logout')
+def add_companion_to_check_in_view(request, pk):
+    booking = get_object_or_404(BookingModel, pk=pk)
+    next_url = request.GET.get('next', '')
+
+    if request.method == 'POST':
+        form = AddCompanionForm(request.POST)
+        if form.is_valid():
+            ill_his = form.save(commit=False)
+            ill_his.booking = booking
+
+            ill_his.save()
+
+            if next_url:
+                return redirect(next_url)
+            return redirect('logus_booking:check-in-update', pk=booking.pk)
+        print(form.errors)
+    else:
+        form = AddCompanionForm()
+
+    patients = PatientModel.objects.all()
+    return render(
+        request, 'logus/booking/add_companion.html',
+        {
+            'form': form,
+            'patients': patients,
+            'types': IllnessHistory.type.field.choices,
+        }
+    )
 
 
 @login_required
@@ -128,9 +182,22 @@ def booking_search(request):
             'id': item.id, 'series': item.series, 'room': item.current_room.room_number,
             'patient': item.patient.full_name, 'tariff': item.current_tariff, 'room_type': item.current_room_type
         } for item in bookings]
-        print(results)
+
         return JsonResponse(results, safe=False)
     return JsonResponse({'error': 'No query provided'}, status=400)
+
+
+def paginate_page(request, queries):
+    page = request.GET.get('page', 1)
+    bookings_paginator = Paginator(queries, BOOKINGS_PER_PAGE)
+
+    try:
+        bookings = bookings_paginator.page(page)
+    except PageNotAnInteger:
+        bookings = bookings_paginator.page(BOOKINGS_PER_PAGE)
+    except EmptyPage:
+        bookings = bookings_paginator.page(bookings_paginator.num_pages)
+    return bookings
 
 
 def get_leaving_bookings_view(request):

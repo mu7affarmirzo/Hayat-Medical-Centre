@@ -73,6 +73,7 @@
                                             <th>Номер чека</th>
                                             <th>Пациент</th>
                                             <th>Сумма</th>
+                                            <th class="text-center">Госпиталь</th>
                                             <th>Персонал</th>
                                             <th>Дата</th>
                                             <th>Статус</th>
@@ -84,20 +85,38 @@
                                             <tr>
                                                 <td>*</td>
                                                 <td>
-                                                    <a href="{% url 'warehouse_v2:cheque-detailed' i.pk %}">{{ i.cheque_number }}</a>
+                                                    {% if i.is_sanatorium_based %}
+                                                        <a href="{% url 'warehouse_v2:cheque-sanatorium-detailed' i.pk %}">{{ i.cheque_number }}</a>
+                                                    {% else %}
+                                                        <a href="{% url 'warehouse_v2:cheque-detailed' i.pk %}">{{ i.cheque_number }}</a>
+                                                    {% endif %}
                                                 </td>
                                                 <td>{{ i.patient.full_name }}</td>
                                                 <td>{{ i.total_price|intcomma }}</td>
+                                                <td class="text-center">
+                                                    {% if i.is_sanatorium_based %}
+                                                        <span class="badge bg-success">{{ i.illness_history }}</span>
+                                                    {% else %}
+                                                        <span class="badge bg-info">-</span>
+                                                    {% endif %}
+                                                </td>
                                                 <td>{{ i.created_by.full_name }}</td>
                                                 <td>{{ i.created_at }}</td>
                                                 {% if i.state == 'не оплачено' %}
                                                     <td><span class="badge bg-warning">{{ i.state }}</span></td>
-                                                    <td>
-                                                    <a class="badge-pill"
-                                                       href="{% url 'warehouse_v2:cheque-update' i.pk %}">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                </td>
+                                                    <td class="text-center">
+                                                        {% if i.is_sanatorium_based %}
+                                                            <a class="badge-pill"
+                                                               href="{% url 'warehouse_v2:cheque-sanatorium-detailed' i.pk %}">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                        {% else %}
+                                                            <a class="badge-pill"
+                                                               href="{% url 'warehouse_v2:cheque-update' i.pk %}">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                        {% endif %}
+                                                    </td>
                                                 {% elif i.state == 'оплачено' %}
                                                     <td><span class="badge bg-success">{{ i.state }}</span></td>
                                                 {% elif i.state == 'отказоно' %}

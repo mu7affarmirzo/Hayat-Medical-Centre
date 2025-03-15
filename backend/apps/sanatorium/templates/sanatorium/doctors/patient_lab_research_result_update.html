@@ -1,0 +1,133 @@
+{% extends 'sanatorium/doctors/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>История болезни №: <b>{{ ill_his.series_number }}</b></h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Default box -->
+                        <div class="card">
+                            <div class="tab-pane text-left fade show active" id="vert-tabs-title-page" role="tabpanel"
+                                 aria-labelledby="vert-tabs-title-page-tab">
+                                <div class="card-body">
+
+                                    <div class="tab-content" id="custom-content-below-tabContent">
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h2>{{ assigned_lab.lab }} </h2>
+                                                <br>
+                                                <div class="post">
+                                                    <div>
+                                                        <span class="username">
+                                                          <a><b>Дата начала: </b></a>
+                                                        </span>
+                                                        <span class="description">{{ assigned_lab.start_date }}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="username">
+                                                          <a><b>Статус: </b></a>
+                                                        </span>
+                                                        {% if assigned_lab.state == 'assigned' %}
+                                                            <span class="badge bg-warning">Назначено</span>
+                                                        {% elif assigned_lab.state == 'dispatched' %}
+                                                            <span class="badge bg-success">Диспетчеризовано</span>
+                                                        {% elif assigned_lab.state == 'cancelled' %}
+                                                            <span class="badge bg-danger">Отменено</span>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div>
+                                                        <span class="username">
+                                                          <a><b>Особые указания: </b></a>
+                                                        </span>
+                                                        <span class="description">{{ assigned_lab.comments }}</span>
+                                                    </div>
+
+                                                    <div>
+                                                        <span class="username">
+                                                          <a><b>Назначил: </b></a>
+                                                        </span>
+                                                        <span class="description">{{ assigned_lab.created_by.full_name }}</span>
+                                                    </div>
+                                                </div>
+
+                                                {% if not lab_results %}
+                                                    <div class="post clearfix">
+
+                                                        <p>
+                                                            Пока нет никаких прикрепленных файлов!
+                                                        </p>
+                                                    </div>
+                                                {% endif %}
+
+                                                {% for lab_result in lab_results %}
+                                                    <div class="post clearfix">
+                                                        <div class="user-block">
+                                                            <img class="img-circle img-bordered-sm"
+                                                                 src="
+                                                                         {% if lab_result.created_by.profile_image %}{{ lab_result.created_by.profile_image.url }}{% else %}/static/default_user.png{% endif %}"
+                                                                 alt="User Image">
+                                                            <span class="username">
+                                                                <a href="#">{{ lab_result.created_by.get_full_name }}</a>
+                                                            </span>
+                                                            <span class="description">
+                                                                Выгружен: {{ lab_result.result_date|date:"M d, Y H:i" }}
+                                                            </span>
+                                                        </div>
+                                                        <!-- /.user-block -->
+
+                                                        <p>
+                                                            {{ lab_result.result|linebreaks }}
+                                                            <!-- Display the result text -->
+                                                        </p>
+
+                                                        {% if lab_result.attached_file %}
+                                                            <p>
+                                                                <a href="{{ lab_result.attached_file.url }}"
+                                                                   class="link-black text-sm" download>
+                                                                    <i class="fas fa-download mr-1"></i> Загрузить прикрепленный файл
+                                                                </a>
+                                                            </p>
+                                                        {% else %}
+                                                            <p class="text-muted">Файл не прикреплен.</p>
+                                                        {% endif %}
+                                                    </div>
+                                                    <hr>
+                                                {% empty %}
+                                                    <p>Результаты лабораторных исследований не найдены.</p>
+                                                {% endfor %}
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+{% endblock content %}
