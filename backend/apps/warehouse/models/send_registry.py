@@ -4,7 +4,6 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
 
-from api.v1.account.services.email import send_email
 from apps.account.models import NotificationModel
 from apps.account.models.accounts import Account
 from apps.warehouse.models import ItemsModel, ItemsInStockModel

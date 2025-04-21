@@ -1,5 +1,5 @@
 Django
-psycopg2-binary
+psycopg2
 python-decouple
 djangorestframework
 djangorestframework-simplejwt
@@ -11,3 +11,6 @@ django-import-export
 django-filter
 passlib
 cryptography
+xhtml2pdf
+crispy-bootstrap5
+reportlab
