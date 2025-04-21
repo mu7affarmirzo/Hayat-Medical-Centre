@@ -1,1 +1,0 @@
-from .diagnosis_template_category import *from .illness_history import *from .procedure import *from .schedule import *from .doctors import *

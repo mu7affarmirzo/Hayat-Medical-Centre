@@ -1,1 +1,0 @@
-from .diagnosis import *from .illness_history import *from .procedure import *from .schedule import ScheduleModelSerializer
