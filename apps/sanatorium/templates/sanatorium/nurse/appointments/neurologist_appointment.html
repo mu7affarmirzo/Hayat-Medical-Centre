@@ -1,0 +1,173 @@
+{% extends 'sanatorium/nurse/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>История болезни №: <b>{{ ill_his.series_number }}</b></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item active"><b>Консультация невролога первичная, {{ request.user.full_name }}</b></li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Default box -->
+                        <div class="card">
+                            <div class="tab-pane text-left fade show active" id="vert-tabs-title-page" role="tabpanel"
+                                 aria-labelledby="vert-tabs-title-page-tab">
+                                <div class="card-body">
+
+                                    <div class="tab-content" id="custom-content-below-tabContent">
+                                        <form enctype="multipart/form-data" method="post" id="neurologist_app_form">
+                                            {% csrf_token %}
+                                            <div class="card card-primary">
+
+                                                <div class="card-header">
+                                                    <a href="#treatment-program"
+                                                       style="text-decoration: none; color: inherit;">
+                                                        <h2 class="card-title">Прием невролога</h2>
+                                                    </a>
+                                                </div>
+                                                <div class="card-body">
+
+                                                    <div class="form-group">
+                                                        <label for="frequency">Статус приема: </label>
+                                                        <select class="form-control select2"
+                                                                style="width: 100%;" name="state">
+                                                            {% for type in state_choices %}
+                                                                <option value="{{ type.0 }}"
+                                                                        {% if neurologist_app_form.instance.state == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+                                                        <a href="#treatment-program"
+                                                           style="text-decoration: none; color: inherit;">
+                                                            <h2 class="card-title">С жалобами, анамнезом, неврологическим статусом ознакомлен.</h2>
+                                                        </a>
+                                                        <br>
+                                                        <!-- radio -->
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='True' class="custom-control-input" type="radio"
+                                                                       id="customRadio1" name="is_familiar_with_anamnesis">
+                                                                <label for="customRadio1" class="custom-control-label">есть</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='False' class="custom-control-input" type="radio"
+                                                                       id="customRadio2" name="is_familiar_with_anamnesis" checked>
+                                                                <label for="customRadio2" class="custom-control-label">нет</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Жалобы:</label>
+                                                                <textarea name="complaint" class="form-control" rows="3"
+                                                                          placeholder=" ...">{{ neurologist_app_form.instance.complaint|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Анамнез заболевания:</label>
+                                                                <textarea name="anamnesis" class="form-control" rows="3"
+                                                                          placeholder=" ...">{{ neurologist_app_form.instance.anamnesis|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Заключение:</label>
+                                                                <textarea name="summary" class="form-control"
+                                                                          rows="3"
+                                                                          placeholder="...">{{ neurologist_app_form.instance.summary|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Рекомендации:</label>
+                                                                <textarea name="recommendation" class="form-control"
+                                                                          rows="3"
+                                                                          placeholder="...">{{ neurologist_app_form.instance.recommendation|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="cito" {% if neurologist_app_form.instance.cito %} checked {% endif %}>
+                                                                <label class="form-check-label">Cito!</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-4">
+                                                            <label for="exampleInputFile">Файлы</label>
+                                                            <div class="input-group">
+                                                                <div class="custom-file">
+                                                                    <input name="file" type="file" class="custom-file-input"
+                                                                           id="exampleInputFile">
+                                                                    <label class="custom-file-label" for="exampleInputFile">Добавить
+                                                                        файл</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="text-center">
+                                                        <button type="submit" name="neurologist_app_form"
+                                                                class="btn btn-primary">Сохранить
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <br>
+                                        {% include 'sanatorium/nurse/components/consulting-treatment-program-card.html' %}
+                                        {% include 'sanatorium/nurse/components/treatment-procedure-card.html' %}
+                                        {% include 'sanatorium/nurse/components/pills-injections-card.html' %}
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

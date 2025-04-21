@@ -1,0 +1,99 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hayat Medical Centre | Invoice Print</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'adminlte3_assets/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'adminlte3_assets/dist/css/adminlte.min.css' %}">
+</head>
+<body>
+<div class="wrapper">
+  <!-- Main content -->
+  <section class="invoice">
+    <!-- title row -->
+    <div class="row">
+      <div class="col-12">
+        <h2 class="page-header">
+            <img src="{% static 'adminlte3_assets/dist/img/hayat_logo.png' %}" alt="AdminLTE Logo"
+                 class="brand-image img" style="opacity: .8">
+          <small class="float-right">Дата Распечатки: {{ date }}</small>
+        </h2>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- info row -->
+    <!-- /.row -->
+
+    <!-- Table row -->
+            <!-- Main content -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>Серия:</b> {{ cheque.cheque_number }}</h3>
+                        <br>
+                        <h2 class="card-title"><b>Пациент:</b> {{ cheque.patient.full_name }}</h2>
+                        <br>
+                        <h2 class="card-title"><b>Дата пождения пациента:</b> {{ cheque.patient.date_of_birth }}</h2>
+                        <br>
+                        <h2 class="card-title"><b>Контакт пациента:</b> {{ cheque.patient.mobile_phone_number }}</h2>
+                        <br>
+                        <h2 class="card-title"><b>Дата:</b> {{ cheque.created_at }}</h2>
+                        <br>
+                        <h2 class="card-title"><b>Создатель: </b> {{ cheque.created_by.full_name }}</h2>
+                        <br>
+                        <h2 class="card-title"><b>Общая сумма: </b> {{ cheque.total_price|intcomma }}</h2>
+                        <br>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Полное наименование</th>
+                                <th>Срок год.</th>
+                                <th>Количество</th>
+                                <th>Цена</th>
+                                <th>Сумма</th>
+                                <th>Добавлено</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for i in details %}
+                                <tr>
+                                    <td>{{ i.item.item.name }}</td>
+                                    <td>{{ i.item.expire_date }}</td>
+                                    <td>{{ i.quantity }}</td>
+                                    <td>{{ i.price|intcomma }}</td>
+                                    <td>{{ i.overall_price|intcomma }}</td>
+                                    <td>{{ i.created_at }}</td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- ./wrapper -->
+<!-- Page specific script -->
+<script>
+  window.addEventListener("load", window.print());
+</script>
+</body>
+</html>

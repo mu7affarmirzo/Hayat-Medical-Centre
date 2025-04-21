@@ -1,0 +1,302 @@
+{% load static %}
+{% load humanize %}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+        <img src="{% static 'adminlte3_assets/dist/img/hayat_logo.png' %}" alt="Hayat Medical Center"
+             style="height: 40px; max-height: none; opacity: 0.9;">
+        <span class="brand-text font-weight-light"></span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{% static 'adminlte3_assets/dist/img/avatar.png' %}" class="img-circle elevation-2"
+                     alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">{{ request.user.full_name }}</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ active_page.title_page }}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>
+                            Титульная страница
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'sanatorium_doctors:title_page' ill_his.id %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Пациент</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'sanatorium_doctors:title_page' ill_his.id %}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Особые отметки</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'sanatorium_doctors:init_app_page' ill_his.id %}"
+                       class="nav-link {{ active_page.init_app_page }}">
+                        <i class="nav-icon far fa-plus-square"></i>
+                        <p class="text">Первичный прием лечащего врача</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ active_page.consulting_and_med_services_page }}">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            Консультации и повторные приемы
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Консультация кардиолога
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {% for consulting in cardiologist_appointments %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'sanatorium_doctors:cardiologist_appointment_page' ill_his.id %}"
+                                           class="nav-link">
+                                            <i class="far"></i>
+                                            <p>Консультация кардиолога | {{ consulting.created_at }}</p>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Консультация невролога
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {% if neurologist_appointments %}
+                                    <div class="dropdown-divider"></div>
+                                    {% for consulting in neurologist_appointments %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'sanatorium_doctors:neurologist_appointment_page' ill_his.id %}"
+                                               class="nav-link">
+                                                <i class="far"></i>
+                                                <p>Консультация невролога | {{ consulting.created_at }}</p>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Осмотр дежурного врача при поступлении
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {% if on_arrival_appointments %}
+                                    <div class="dropdown-divider"></div>
+                                    {% for consulting in on_arrival_appointments %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'sanatorium_doctors:on_arrival_appointment_page' ill_his.id %}"
+                                               class="nav-link">
+                                                <i class="far"></i>
+                                                <p>Осмотр дежурного врача при поступлении
+                                                    | {{ consulting.created_at }}</p>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Повторный приём лечащего врача
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {% if repeated_appointments %}
+                                    <div class="dropdown-divider"></div>
+                                    {% for consulting in repeated_appointments %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'sanatorium_doctors:update_repeated_appointments_page' consulting.id %}"
+                                               class="nav-link">
+                                                <i class="far"></i>
+                                                <p>Повторный приём лечащего врача | {{ consulting.created_at }}</p>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Прием дежурного врача
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {% if with_doc_on_duty_appointments %}
+                                    <div class="dropdown-divider"></div>
+                                    {% for consulting in with_doc_on_duty_appointments %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'sanatorium_doctors:update_with_doc_on_duty_appointment_page' consulting.id %}"
+                                               class="nav-link">
+                                                <i class="far"></i>
+                                                <p>Прием дежурного врача | {{ consulting.created_at }}</p>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    ЭКГ (Электрокардиограмма)
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {% if ekg_appointments %}
+                                    <div class="dropdown-divider"></div>
+                                    {% for consulting in ekg_appointments %}
+                                        <li class="nav-item">
+                                            <a href="{% url 'sanatorium_doctors:update_ekg_appointment_page' consulting.id %}"
+                                               class="nav-link">
+                                                <i class="far"></i>
+                                                <p>ЭКГ (Электрокардиограмма) | {{ consulting.created_at }}</p>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </li>
+
+                        <div class="dropdown-divider"></div>
+                        <li class="nav-item">
+                            <a href="{% url 'sanatorium_doctors:final_appointment_page' ill_his.id %}" class="nav-link">
+                                <i class="far"></i>
+                                <p>Заключительный прием | {{ final_appointment.created_at }}</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}"
+                       class="nav-link {{ active_page.proc_main_list_page }}">
+                        <i class="nav-icon fas fa-columns"></i>
+                        <p>
+                            Основной лист назначений
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#consulting"
+                               class="nav-link">
+                                <i class="far"></i>
+                                <p>Консультации и исследования</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#procedures"
+                               class="nav-link">
+                                <i class="far"></i>
+                                <p>Лечебные процедуры</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#medicine"
+                               class="nav-link">
+                                <i class="far"></i>
+                                <p>Медикаменты</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ active_page.documents_page }}">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>
+                            Документы
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    {#                    <ul class="nav nav-treeview">#}
+                    {#                        <li class="nav-item">#}
+                    {#                            <a href="../examples/invoice.html" class="nav-link">#}
+                    {#                                <i class="far fa-circle nav-icon"></i>#}
+                    {#                                <p>Invoice</p>#}
+                    {#                            </a>#}
+                    {#                        </li>#}
+                    {#                        <li class="nav-item">#}
+                    {#                            <a href="../examples/profile.html" class="nav-link">#}
+                    {#                                <i class="far fa-circle nav-icon"></i>#}
+                    {#                                <p>Profile</p>#}
+                    {#                            </a>#}
+                    {#                        </li>#}
+                    {#                        <li class="nav-item">#}
+                    {#                            <a href="../examples/e-commerce.html" class="nav-link">#}
+                    {#                                <i class="far fa-circle nav-icon"></i>#}
+                    {#                                <p>E-commerce</p>#}
+                    {#                            </a>#}
+                    {#                        </li>#}
+                    {#                    </ul>#}
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ active_page.diet_page }}">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Питание
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link {{ active_page.timetable_page }}">
+                        <i class="nav-icon far fa-calendar-alt"></i>
+                        <p>
+                            Расписание лечения
+                            <span class="badge badge-info right">2</span>
+                        </p>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

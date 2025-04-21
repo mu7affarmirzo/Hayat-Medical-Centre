@@ -1,0 +1,1181 @@
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+
+<div class="tab-pane fade" id="vert-tabs-init-app" role="tabpanel"
+     aria-labelledby="vert-tabs-init-app-tab">
+
+    <div class="card-body">
+        <form enctype="multipart/form-data" method="post" id="init_app_form">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Жалобы/анамнез</label>
+                        <textarea name="complaint" class="form-control" rows="3" placeholder=" ..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Anamnesis morbi</label>
+                        <textarea name="anamnesis_morbi" class="form-control" rows="3" placeholder="..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Anamnesis vitae</label>
+                        <textarea name="anamnesis_vitae" class="form-control" rows="3" placeholder="..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Контакт с инфекционными больными</label>
+                        <input value="на протяжении максимального срока инкубации: нет"
+                               name="contact_with_infectious" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="custom-control custom-checkbox">
+                        <input name="contact_with_orvi" class="custom-control-input" type="checkbox"
+                               id="customCheckbox2">
+                        <label for="customCheckbox2" class="custom-control-label">Контакт с больными гриппом,
+                            ОРВИ:</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Выезд за пределы населенного пункта за 2 месяца ДО настоящего заболевания:</label>
+                        <input value="нет"
+                               name="is_away_two_month" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Получение гемотрансфузий (крови и ее компонентов):</label>
+                        <input value="нет"
+                               name="receiving_blood_transfusions" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Оперативные и массивные вмешательства за последние 6 месяцев:</label>
+                        <input value="нет"
+                               name="surgical_massive_interventions_six_months" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Посещение стоматолога за последние 6 месяцев:</label>
+                        <input value="нет"
+                               name="dentist_visits_last_six_months" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Профессия с подробным указанием профессиональных вредностей и др. особенностей (например,
+                            контакт с животными):</label>
+                        <input value="нет"
+                               name="profession_toxics" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Дополнительная информация:</label>
+                        <input value=""
+                               name="additional_data" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Общее состояние:</label>
+
+                        <!-- Render checkboxes -->
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">удовлетворительное</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">относительное удовлетворительное,</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">средней тяжести</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">тяжёлое</label>
+                        </div>
+
+                        <input value=""
+                               name="general_state" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Сознание:</label>
+
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">ясное</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">ступор</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">сопор</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">кома</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Положение:</label>
+
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">активное</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">пассивное</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">вынужденное</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Конституция:</label>
+
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">нормасетик</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">аснетик</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">гиперстеник</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Кожные покровы:</label>
+
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">нормальной окраски</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">бледные</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">гиперемия</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">иктеричные</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">субиктеричные</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">акроцианоз</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="general_state" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">земелистого цвета</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Пигментация:</label>
+                        <input value="нет"
+                               name="pigmentation" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Депигментация:</label>
+                        <input value="нет"
+                               name="depigmentation" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Высыпания:</label>
+                        <input value="нет"
+                               name="rashes" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Сосудистые изменения:</label>
+                        <input value="нет"
+                               name="vascular_changes" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Кровоизлияния:</label>
+                        <input value="нет"
+                               name="hemorrhages" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Рубцы:</label>
+                        <input value="нет"
+                               name="scarring" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Трофические изменения:</label>
+                        <input value="нет"
+                               name="trophic_changes" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Видимые опухоли:</label>
+                        <input value="нет"
+                               name="visible_tumors" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Влажность кожи:</label>
+
+                        <!-- Render checkboxes -->
+                        <div class="form-check">
+                            <input name="skin_moisture" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">обычная</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="skin_moisture" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">влажная</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="skin_moisture" class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">сухая</label>
+                        </div>
+
+                        <input value=""
+                               name="skin_moisture" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Тургор кожи:</label>
+
+                        <!-- Render checkboxes -->
+                        <div class="form-check">
+                            <input name="skin_turgor" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">в норме</label>
+                        </div>
+                        <div class="form-check">
+                            <input name="skin_turgor" class="form-check-input" type="checkbox">
+                            <label class="form-check-label">снижет</label>
+                        </div>
+
+                        <input value=""
+                               name="skin_turgor" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label>Подкожно-жировая клетчатка:</label>
+                </div>
+                <div class="col-3">
+                    <input name="subcutaneous_fat" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">развита умеренно</label>
+                </div>
+                <div class="col-3">
+                    <input name="subcutaneous_fat" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">развита слабо</label>
+                </div>
+                <div class="col-3">
+                    <input name="subcutaneous_fat" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">развита чрезмерно</label>
+                </div>
+                <div class="col-12">
+                    <input value=""
+                           name="subcutaneous_fat" type="text" class="form-control"
+                           placeholder="...">
+                </div>
+            </div>
+            <br>
+
+            <div class="row">
+
+                <div class="col-2">
+                    <label>Рост:</label>
+                    <input type="number" class="form-control"
+                           placeholder="165 см"
+                           name="height">
+                </div>
+                <div class="col-2">
+                    <label>Вес:</label>
+                    <input type="number" class="form-control"
+                           placeholder="65 кг"
+                           name="weight">
+                </div>
+                <div class="col-2">
+                    <label>Пульс:</label>
+                    <input type="number" class="form-control"
+                           placeholder="75 уд/м"
+                           name="heart_beat">
+                </div>
+                <div class="col-2">
+                    <label>Давление\В:</label>
+                    <input type="number" class="form-control"
+                           placeholder="130"
+                           name="arterial_high">
+                </div>
+                <div class="col-2">
+                    <label>Давление\Н:</label>
+                    <input type="number" class="form-control"
+                           placeholder="80"
+                           name="arterial_low">
+                </div>
+                <div class="col-2">
+                    <label>ИМТ:</label>
+                    <input step="0.01" type="number" class="form-control"
+                           placeholder="26.04"
+                           name="imt">
+                </div>
+
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Отеки, пастозность:</label>
+                        <input value="нет"
+                               name="swelling_pastiness" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <label>Лимфатические узлы:</label>
+                </div>
+                <div class="col-3">
+                    <input name="swelling_pastiness" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">не увеличены</label>
+                </div>
+                <div class="col-3">
+                    <input name="swelling_pastiness" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">мягкие</label>
+                </div>
+                <div class="col-3">
+                    <input name="swelling_pastiness" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">плотные</label>
+                </div>
+                <div class="col-3">
+                    <input name="swelling_pastiness" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">эластичные</label>
+                </div>
+                <div class="col-12">
+                    <input value=""
+                           name="swelling_pastiness" type="text" class="form-control"
+                           placeholder="...">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Деформации:</label>
+                        <input value="нет"
+                               name="deformations" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Контрактуры:</label>
+                        <input value="нет"
+                               name="contractures" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Ограничения движений:</label>
+                        <input value="нет"
+                               name="movement_restrictions" type="text" class="form-control"
+                               placeholder="...">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>ЧДД</label>
+                        <input name="respiratory_frequency" type="number" class="form-control"
+                               placeholder="1 в 1 минуту">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <label>Тип дыхания:</label>
+                </div>
+                <div class="col-3">
+                    <input name="breathing_type" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">нет</label>
+                </div>
+                <div class="col-3">
+                    <input name="breathing_type" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">брюшной</label>
+                </div>
+                <div class="col-3">
+                    <input name="breathing_type" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">смешанный</label>
+                </div>
+                <div class="col-12">
+                    <input value=""
+                           name="breathing_type" type="text" class="form-control">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-3">
+                    <label>В легких аускультативно дыхание:</label>
+                </div>
+                <div class="col-3">
+                    <input name="auscultative_breathing" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">везикулярное</label>
+                </div>
+                <div class="col-3">
+                    <input name="auscultative_breathing" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">жесткое</label>
+                </div>
+                <div class="col-3">
+                    <input name="auscultative_breathing" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">ослабленное,</label>
+                </div>
+                <div class="col-12">
+                    <input name="auscultative_breathing" type="text" class="form-control">
+                </div>
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="col-3">
+                    <label>Хрипы:</label>
+                </div>
+                <div class="col-3">
+                    <input name="wheezing" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">сухие</label>
+                </div>
+                <div class="col-3">
+                    <input name="wheezing" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">влажные</label>
+                </div>
+
+                <div class="col-12">
+                    <input name="wheezing" type="text" class="form-control">
+                </div>
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="col-3">
+                    <label>В легких аускультативно дыхание:</label>
+                </div>
+                <div class="col-3">
+                    <input name="coughing" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">сухой</label>
+                </div>
+                <div class="col-3">
+                    <input name="coughing" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">мокрый</label>
+                </div>
+                <div class="col-12">
+                    <input name="coughing" type="text" class="form-control">
+                </div>
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Мокрота:</label>
+                        <input value="нет"
+                               name="high_humidity" type="text" class="form-control"
+                               placeholder="">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <label>Крепитация:</label>
+                </div>
+                <div class="col-2">
+                    <input name="crepitus" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">верхняя часть</label>
+                </div>
+                <div class="col-2">
+                    <input name="crepitus" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">средняя часть</label>
+                </div>
+                <div class="col-2">
+                    <input name="crepitus" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">нижняя часть</label>
+                </div>
+                <div class="col-2">
+                    <input name="crepitus" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">слева</label>
+                </div>
+                <div class="col-2">
+                    <input name="crepitus" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">справа</label>
+                </div>
+                <div class="col-12">
+                    <input name="crepitus" type="text" class="form-control">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-3">
+                    <label>Перкуторно в легких звук:</label>
+                </div>
+                <div class="col-2">
+                    <input name="lungs_percussion" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">ясный</label>
+                </div>
+                <div class="col-2">
+                    <input name="lungs_percussion" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">легочный</label>
+                </div>
+                <div class="col-2">
+                    <input name="lungs_percussion" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">притупленный,</label>
+                </div>
+                <div class="col-2">
+                    <input name="lungs_percussion" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">тупой,</label>
+                </div>
+                <div class="col-2">
+                    <input name="lungs_percussion" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">коробочный,</label>
+                </div>
+                <div class="col-2">
+                    <input name="lungs_percussion" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">тимпанический,</label>
+                </div>
+                <div class="col-2">
+                    <input name="lungs_percussion" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">притупленно-тимпанический,</label>
+                </div>
+                <div class="col-2">
+                    <input name="lungs_percussion" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">слева</label>
+                </div>
+                <div class="col-2">
+                    <input name="lungs_percussion" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">справа</label>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-2">
+                    <label>Границы сердца:</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_edge" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">в норме</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_edge" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">расширены,</label>
+                </div>
+
+                <div class="col-12">
+                    <input name="heart_edge" type="text" class="form-control" value="в лево">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-2">
+                    <label>Тоны сердца:</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_tones" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">звучанные</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_tones" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">приглушенные</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_tones" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">глухие,</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_tones" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">ритмичные,</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_tones" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">аритмичные,</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_tones" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">мерцательная аритмия,</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_tones" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">тахикардия</label>
+                </div>
+                <div class="col-2">
+                    <input name="heart_tones" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">брадикардия</label>
+                </div>
+
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="col-2">
+                    <label>Aкцент 2 тона на аорте:</label>
+                </div>
+                <div class="col-2">
+                    <input name="accent_in_aorta" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">есть</label>
+                </div>
+                <div class="col-2">
+                    <input name="accent_in_aorta" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">нет</label>
+                </div>
+                <div class="col-2">
+                    <input name="accent_in_aorta" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">патологические шумы</label>
+                </div>
+
+                <div class="col-12">
+                    <input name="accent_in_aorta" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <label>Изменение шума в зависимости ОТ положения тела, задержки дыхания на вдохе И выдохе и после физической нагрузки:</label>
+                </div>
+                <div class="col-2">
+                    <input name="accent_in_aorta" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">усиливается</label>
+                </div>
+                <div class="col-2">
+                    <input name="accent_in_aorta" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">неизменяется</label>
+                </div>
+
+                <div class="col-12">
+                    <input name="accent_in_aorta" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+
+                <div class="col-2">
+                    <label>АД слева:</label>
+                    <input type="text" class="form-control"
+                           placeholder="130/80"
+                           name="ad_left">
+                </div>
+                <div class="col-2">
+                    <label>АД справа:</label>
+                    <input type="text" class="form-control"
+                           placeholder="130/80"
+                           name="ad_right">
+                </div>
+                <div class="col-2">
+                    <label>PS слева:</label>
+                    <input type="text" class="form-control"
+                           placeholder="75"
+                           name="ps_left">
+                </div>
+                <div class="col-2">
+                    <label>PS справа:</label>
+                    <input type="text" class="form-control"
+                           placeholder="75"
+                           name="ps_right">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Пульсация, шум над артериями:</label>
+                </div>
+                <div class="col-2">
+                    <input name="pulse_noise_on_arteria" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">нет</label>
+                </div>
+                <div class="col-2">
+                    <input name="pulse_noise_on_arteria" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">сонная</label>
+                </div>
+                <div class="col-2">
+                    <input name="pulse_noise_on_arteria" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">подключичная</label>
+                </div>
+                <div class="col-2">
+                    <input name="pulse_noise_on_arteria" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">яремная</label>
+                </div>
+                <div class="col-2">
+                    <input name="pulse_noise_on_arteria" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">тыльная</label>
+                </div>
+                <div class="col-2">
+                    <input name="pulse_noise_on_arteria" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">слева</label>
+                </div>
+                <div class="col-2">
+                    <input name="pulse_noise_on_arteria" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">справа</label>
+                </div>
+
+                <div class="col-12">
+                    <input name="pulse_noise_on_arteria" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Аппетит:</label>
+                </div>
+                <div class="col-2">
+                    <input name="appetit" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">удовлетворительный</label>
+                </div>
+                <div class="col-2">
+                    <input name="appetit" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">снижен</label>
+                </div>
+                <div class="col-2">
+                    <input name="appetit" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">повышен</label>
+                </div>
+                <div class="col-2">
+                    <input name="appetit" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">анорексия</label>
+                </div>
+                <div class="col-12">
+                    <input name="appetit" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Язык:</label>
+                </div>
+                <div class="col-2">
+                    <input name="tongue" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">чистый</label>
+                </div>
+                <div class="col-2">
+                    <input name="tongue" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">влажный</label>
+                </div>
+                <div class="col-2">
+                    <input name="tongue" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">географический</label>
+                </div>
+                <div class="col-2">
+                    <input name="tongue" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">облажен налетом</label>
+                </div>
+                <div class="col-12">
+                    <input name="tongue" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Трещины, язвы в полости рта:</label>
+                </div>
+                <div class="col-2">
+                    <input name="cracks_ulcers_in_mouth" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">есть</label>
+                </div>
+                <div class="col-2">
+                    <input name="cracks_ulcers_in_mouth" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">нет</label>
+                </div>
+                <div class="col-12">
+                    <input name="cracks_ulcers_in_mouth" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-3">
+                    <label>Живот болезненный:</label>
+                </div>
+                <div class="col-2">
+                    <input name="stomach" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">мягкий</label>
+                </div>
+                <div class="col-2">
+                    <input name="stomach" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">вздутый</label>
+                </div>
+                <div class="col-2">
+                    <input name="stomach" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">впавшый</label>
+                </div>
+                <div class="col-2">
+                    <input name="stomach" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">в правом подреберье</label>
+                </div>
+                <div class="col-2">
+                    <input name="stomach" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">в гипогастрии</label>
+                </div>
+                <div class="col-2">
+                    <input name="stomach" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">по ходу толстого кишечника</label>
+                </div>
+                <div class="col-2">
+                    <input name="stomach" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">по ходу тонкого кишечника</label>
+                </div>
+                <div class="col-2">
+                    <input name="stomach" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">вокруг пупка</label>
+                </div>
+                <div class="col-12">
+                    <input name="stomach" type="text" class="form-control" value="">
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Печень:</label>
+                </div>
+                <div class="col-2">
+                    <input name="liver" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">не увеличена</label>
+                </div>
+
+                <div class="col-12">
+                    <input name="liver" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Край печени:</label>
+                </div>
+                <div class="col-2">
+                    <input name="liver_edge" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">острый</label>
+                </div>
+                <div class="col-2">
+                    <input name="liver_edge" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">закругленный</label>
+                </div>
+                <div class="col-2">
+                    <input name="liver_edge" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">мягкий</label>
+                </div>
+                <div class="col-2">
+                    <input name="liver_edge" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">плотный</label>
+                </div>
+                <div class="col-12">
+                    <input name="liver_edge" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Селезенка:</label>
+                </div>
+                <div class="col-2">
+                    <input name="spleen" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">не увеличена</label>
+                </div>
+
+                <div class="col-12">
+                    <input name="spleen" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Край селезенки:</label>
+                </div>
+                <div class="col-2">
+                    <input name="spleen_edge" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">острый</label>
+                </div>
+                <div class="col-2">
+                    <input name="spleen_edge" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">закругленный</label>
+                </div>
+                <div class="col-2">
+                    <input name="spleen_edge" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">мягкий</label>
+                </div>
+                <div class="col-2">
+                    <input name="spleen_edge" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">плотный</label>
+                </div>
+                <div class="col-12">
+                    <input name="spleen_edge" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Стул:</label>
+                </div>
+                <div class="col-2">
+                    <input name="stool" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">жидкий</label>
+                </div>
+                <div class="col-2">
+                    <input name="stool" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">кашицеобразный</label>
+                </div>
+                <div class="col-2">
+                    <input name="stool" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">оформленный</label>
+                </div>
+                <div class="col-2">
+                    <input name="stool" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">запоры</label>
+                </div>
+                <div class="col-2">
+                    <input name="stool" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">диарея</label>
+                </div>
+                <div class="col-12">
+                    <input name="stool" type="text" class="form-control" value="">
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Частота стула:</label>
+                        <input value="1 раз в день"
+                               name="stool_frequency" type="text" class="form-control"
+                               placeholder="1 раз в день">
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Мочевыделительная систем:</label>
+                </div>
+                <div class="col-2">
+                    <input name="urinary_system" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">отрицательный</label>
+                </div>
+                <div class="col-2">
+                    <input name="urinary_system" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">положительный,</label>
+                </div>
+                <div class="col-2">
+                    <input name="urinary_system" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">справа</label>
+                </div>
+                <div class="col-2">
+                    <input name="urinary_system" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">слева,</label>
+                </div>
+
+                <div class="col-12">
+                    <input name="urinary_system" type="text" class="form-control" value="">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <label>Эндокринная система:</label>
+                </div>
+                <div class="col-2">
+                    <input name="effleurage_symptoms" class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">без изменений</label>
+                </div>
+                <div class="col-2">
+                    <input name="effleurage_symptoms" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">увеличена,</label>
+                </div>
+                <div class="col-2">
+                    <input name="effleurage_symptoms" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">болезненна,</label>
+                </div>
+                <div class="col-2">
+                    <input name="effleurage_symptoms" class="form-check-input" type="checkbox">
+                    <label class="form-check-label">консистенция</label>
+                </div>
+
+                <div class="col-12">
+                    <input name="effleurage_symptoms" type="text" class="form-control" value="СД">
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- textarea -->
+                    <div class="form-group">
+                        <label>Нервная система</label>
+                        <input name="nerve_system" type="text" class="form-control"
+                               placeholder="">
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="text-center">
+                <button type="submit" name="patient_form"
+                        class="btn btn-primary">Сохранить
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>

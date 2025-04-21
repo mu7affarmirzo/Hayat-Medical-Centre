@@ -1,0 +1,10 @@
+<div class="form-group">
+    <label for="lab">Исследования</label>
+    <select class="form-control select2"
+            style="width: 100%;"
+            name="lab">
+        {% for lab in labs %}
+            <option value="{{ lab.id }}">{{ lab }}</option>
+        {% endfor %}
+    </select>
+</div>

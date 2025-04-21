@@ -1,0 +1,151 @@
+{% extends 'sanatorium/nurse/base.html' %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>История болезни №: <b>{{ ill_his.series_number }}</b></h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item active"><b>Осмотр дежурного врача при поступлении, {{ request.user.full_name }}</b></li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Default box -->
+                        <div class="card">
+                            <div class="tab-pane text-left fade show active" id="vert-tabs-title-page" role="tabpanel"
+                                 aria-labelledby="vert-tabs-title-page-tab">
+                                <div class="card-body">
+
+                                    <div class="tab-content" id="custom-content-below-tabContent">
+                                        <form enctype="multipart/form-data" method="post" id="on_arrival_app_form">
+                                            {% csrf_token %}
+                                            <div class="card card-primary">
+
+                                                <div class="card-header">
+                                                    <a href="#treatment-program"
+                                                       style="text-decoration: none; color: inherit;">
+                                                        <h2 class="card-title">Осмотр дежурного врача</h2>
+                                                    </a>
+                                                </div>
+                                                <div class="card-body">
+
+                                                    <div class="form-group">
+                                                        <label for="frequency">Статус приема: </label>
+                                                        <select class="form-control select2"
+                                                                style="width: 100%;" name="state">
+                                                            {% for type in state_choices %}
+                                                                <option value="{{ type.0 }}"
+                                                                        {% if on_arrival_app_form.instance.state == type.0 %}selected{% endif %}>{{ type.0 }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Жалобы:</label>
+                                                                <textarea name="complaints" class="form-control" rows="3"
+                                                                          placeholder=" ...">{{ on_arrival_app_form.instance.complaints|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+
+                                                        <div class="col-3">
+                                                            <label>Температура: </label>
+                                                            <input type="text" step="0.1" class="form-control"
+                                                                   placeholder="36.6 С" id="temperature"
+                                                                   name="temperature" value="{{ on_arrival_app_form.instance.temperature }}">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>Давление</label>
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="85/130"
+                                                                   name="arterial_high_low" value="{{ on_arrival_app_form.instance.arterial_high_low }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <a href="#treatment-program"
+                                                           style="text-decoration: none; color: inherit;">
+                                                            <h2 class="card-title">Пульс</h2>
+                                                        </a>
+                                                        <br>
+                                                        <!-- radio -->
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='ритмичный' class="custom-control-input"
+                                                                       type="radio"
+                                                                       id="customRadio1" name="pulse">
+                                                                <label for="customRadio1" class="custom-control-label">ритмичный</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input value='аритмичный' class="custom-control-input"
+                                                                       type="radio"
+                                                                       id="customRadio2" name="pulse" checked>
+                                                                <label for="customRadio2" class="custom-control-label">аритмичный</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Диета:</label>
+                                                                <textarea name="diet" class="form-control" rows="3"
+                                                                          placeholder=" ...">{{ on_arrival_app_form.instance.diet|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <!-- textarea -->
+                                                            <div class="form-group">
+                                                                <label>Объективные данные:</label>
+                                                                <textarea name="objective_data" class="form-control"
+                                                                          rows="3"
+                                                                          placeholder="...">{{ on_arrival_app_form.instance.objective_data|default_if_none:'' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <br>
+                                                    <div class="text-center">
+                                                        <button type="submit" name="on_arrival_app_form"
+                                                                class="btn btn-primary">Сохранить
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}
