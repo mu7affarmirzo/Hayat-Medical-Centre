@@ -12,7 +12,7 @@ from apps.sanatorium.forms.doctors import InitialAppointmentShortForm, BasePills
     BaseProcedureServiceForm, BaseLabResearchServiceForm, FinalAppointmentShortForm, \
     ConsultingWithCardiologistShortForm, ConsultingWithNeurologistShortForm, \
     AppointmentWithOnDutyDoctorOnArrivalShortForm, RepeatedAppointmentWithDoctorShortForm, \
-    AppointmentWithOnDutyDoctorForm, EkgAppointmentShortForm
+    AppointmentWithOnDutyDoctorForm, EkgAppointmentShortForm, InitialAppointmentWithDoctorForm
 from apps.sanatorium.forms.patient import PatientUpdateForm, BookingModelUpdateForm, IllnessHistoryUpdateForm
 from apps.sanatorium.models import IllnessHistory, DiagnosisTemplate, InitialAppointmentWithDoctorModel, \
     BasePillsInjectionsModel, BaseProcedureServiceModel, BaseLabResearchServiceModel, FinalAppointmentWithDoctorModel, \
@@ -107,9 +107,9 @@ def get_init_app_by_id_view(request, pk):
     init_app_instance = InitialAppointmentWithDoctorModel.objects.filter(illness_history=ill_his)
 
     if init_app_instance:
-        init_app_form = InitialAppointmentShortForm(instance=ill_his.init_appointment)
+        init_app_form = InitialAppointmentWithDoctorForm(instance=ill_his.init_appointment)
     else:
-        init_app_form = InitialAppointmentShortForm()
+        init_app_form = InitialAppointmentWithDoctorForm()
 
     context = assemble_context(ill_his)
     context.update({

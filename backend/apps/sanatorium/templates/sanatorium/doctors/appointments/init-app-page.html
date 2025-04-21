@@ -15,7 +15,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item active"><b>Первичный прием лечащего врача, {{ request.user.full_name }}</b></li>
+                            <li class="breadcrumb-item active"><b>Первичный прием лечащего
+                                врача, {{ request.user.full_name }}</b></li>
                         </ol>
                     </div>
                 </div>
@@ -77,144 +78,920 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <!-- textarea -->
-                                                            <div class="form-group">
-                                                                <label>Эпиданамнез</label>
-                                                                <br>
-                                                                <a>Контакт с инфекционными больными</a>
-                                                                <input name="contact_with_infectious" class="form-control"
-                                                                          placeholder="на протяжении максимального срока инкубации: не было"
-                                                                    value={{ init_app_form.instance.contact_with_infectious|default_if_none:'' }}>
-                                                            </div>
+
+                                                    <!-- ЭПИДАНАМНЕЗ -->
+                                                    <div class="card card-info">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Эпиданамнез</h3>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <a href="#treatment-program"
-                                                           style="text-decoration: none; color: inherit;">
-                                                            <h2 class="card-title">Контакт с больными гриппом, ОРВИ:</h2>
-                                                        </a>
-                                                        <br>
-                                                        <!-- radio -->
-                                                        <div class="form-group">
-                                                            <div class="custom-control custom-radio">
-                                                                <input value='True' class="custom-control-input" type="radio"
-                                                                       id="customRadio1" name="contact_with_orvi">
-                                                                <label for="customRadio1" class="custom-control-label">есть</label>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Контакт с инфекционными больными</label>
+                                                                        <input name="contact_with_infectious"
+                                                                               class="form-control"
+                                                                               placeholder="на протяжении максимального срока инкубации: не было"
+                                                                               value="{{ init_app_form.instance.contact_with_infectious|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="custom-control custom-radio">
-                                                                <input value='False' class="custom-control-input" type="radio"
-                                                                       id="customRadio2" name="contact_with_orvi" checked>
-                                                                <label for="customRadio2" class="custom-control-label">нет</label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Контакт с больными гриппом, ОРВИ:</label>
+                                                                        <br>
+                                                                        <div class="custom-control custom-radio">
+                                                                            <input value='True'
+                                                                                   class="custom-control-input"
+                                                                                   type="radio"
+                                                                                   id="contact_with_orvi_yes"
+                                                                                   name="contact_with_orvi"
+                                                                                   {% if init_app_form.instance.contact_with_orvi %}checked{% endif %}>
+                                                                            <label for="contact_with_orvi_yes"
+                                                                                   class="custom-control-label">есть</label>
+                                                                        </div>
+                                                                        <div class="custom-control custom-radio">
+                                                                            <input value='False'
+                                                                                   class="custom-control-input"
+                                                                                   type="radio"
+                                                                                   id="contact_with_orvi_no"
+                                                                                   name="contact_with_orvi"
+                                                                                   {% if not init_app_form.instance.contact_with_orvi %}checked{% endif %}>
+                                                                            <label for="contact_with_orvi_no"
+                                                                                   class="custom-control-label">нет</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Выезд за пределы населенного пункта за 2
+                                                                            месяца ДО настоящего заболевания:</label>
+                                                                        <br>
+                                                                        <div class="custom-control custom-radio">
+                                                                            <input value='True'
+                                                                                   class="custom-control-input"
+                                                                                   type="radio"
+                                                                                   id="is_away_two_month_yes"
+                                                                                   name="is_away_two_month"
+                                                                                   {% if init_app_form.instance.is_away_two_month %}checked{% endif %}>
+                                                                            <label for="is_away_two_month_yes"
+                                                                                   class="custom-control-label">есть</label>
+                                                                        </div>
+                                                                        <div class="custom-control custom-radio">
+                                                                            <input value='False'
+                                                                                   class="custom-control-input"
+                                                                                   type="radio"
+                                                                                   id="is_away_two_month_no"
+                                                                                   name="is_away_two_month"
+                                                                                   {% if not init_app_form.instance.is_away_two_month %}checked{% endif %}>
+                                                                            <label for="is_away_two_month_no"
+                                                                                   class="custom-control-label">нет</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <a href="#treatment-program"
-                                                           style="text-decoration: none; color: inherit;">
-                                                            <h2 class="card-title">Выезд за пределы населенного пункта за 2 месяца ДО настоящего заболевания:</h2>
-                                                        </a>
-                                                        <br>
-                                                        <!-- radio -->
-                                                        <div class="form-group">
-                                                            <div class="custom-control custom-radio">
-                                                                <input value='True' class="custom-control-input" type="radio"
-                                                                       id="customRadio1" name="is_away_two_month">
-                                                                <label for="customRadio1" class="custom-control-label">есть</label>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Перенесенные инфекционные
+                                                                            заболевания:</label>
+                                                                        <input name="transferred_infectious"
+                                                                               class="form-control"
+                                                                               placeholder="нет"
+                                                                               value="{{ init_app_form.instance.transferred_infectious|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="custom-control custom-radio">
-                                                                <input value='False' class="custom-control-input" type="radio"
-                                                                       id="customRadio2" name="is_away_two_month" checked>
-                                                                <label for="customRadio2" class="custom-control-label">нет</label>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Нахождение на стационарном
+                                                                            лечении:</label>
+                                                                        <input name="staying_hospital"
+                                                                               class="form-control"
+                                                                               placeholder="нет"
+                                                                               value="{{ init_app_form.instance.staying_hospital|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <!-- textarea -->
-                                                            <div class="form-group">
-                                                                <label>Перенесенные инфекционные заболевания:</label>
-                                                                <input name="transferred_infectious" class="form-control"
-                                                                          placeholder="нет"
-                                                                    value={{ init_app_form.instance.transferred_infectious|default_if_none:'' }}>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Получение гемотрансфузий (крови и ее
+                                                                            компонентов):</label>
+                                                                        <input name="receiving_blood_transfusions"
+                                                                               class="form-control"
+                                                                               placeholder="нет"
+                                                                               value="{{ init_app_form.instance.receiving_blood_transfusions|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <!-- textarea -->
-                                                            <div class="form-group">
-                                                                <label>Нахождение на стационарном лечении::</label>
-                                                                <input name="staying_hospital"
-                                                                       class="form-control"
-                                                                       placeholder="нет"
-                                                                       value={{ init_app_form.instance.staying_hospital|default_if_none:'' }}>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Оперативные и массивные вмешательства за
+                                                                            последние 6 месяцев:</label>
+                                                                        <input name="surgical_massive_interventions_six_months"
+                                                                               class="form-control"
+                                                                               placeholder="нет"
+                                                                               value="{{ init_app_form.instance.surgical_massive_interventions_six_months|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <!-- textarea -->
-                                                            <div class="form-group">
-                                                                <label>Получение гемотрансфузий (крови и ее компонентов):</label>
-                                                                <input name="receiving_blood_transfusions"
-                                                                       class="form-control"
-                                                                       placeholder="нет"
-                                                                       value={{ init_app_form.instance.receiving_blood_transfusions|default_if_none:'' }}>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Посещение стоматолога за последние 6
+                                                                            месяцев:</label>
+                                                                        <input name="dentist_visits_last_six_months"
+                                                                               class="form-control"
+                                                                               placeholder="нет"
+                                                                               value="{{ init_app_form.instance.dentist_visits_last_six_months|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <!-- textarea -->
-                                                            <div class="form-group">
-                                                                <label>Оперативные и массивные вмешательства за последние 6 месяцев:</label>
-                                                                <input name="surgical_massive_interventions_six_months"
-                                                                       class="form-control"
-                                                                       placeholder="нет"
-                                                                       value={{ init_app_form.instance.surgical_massive_interventions_six_months|default_if_none:'' }}>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Профессия с подробным указанием
+                                                                            профессиональных вредностей и др.
+                                                                            особенностей (например, контакт с
+                                                                            животными):</label>
+                                                                        <input name="profession_toxics"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.profession_toxics|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <!-- textarea -->
-                                                            <div class="form-group">
-                                                                <label>Посещение стоматолога за последние 6 месяцев:</label>
-                                                                <input name="dentist_visits_last_six_months"
-                                                                       class="form-control"
-                                                                       placeholder="нет"
-                                                                       value={{ init_app_form.instance.dentist_visits_last_six_months|default_if_none:'' }}>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <!-- textarea -->
-                                                            <div class="form-group">
-                                                                <label>Профессия с подробным указанием профессиональных вредностей и др. особенностей (например, контакт с животными):</label>
-                                                                <input name="profession_toxics"
-                                                                       class="form-control"
-                                                                       value={{ init_app_form.instance.profession_toxics|default_if_none:'' }}>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Дополнительные данные:</label>
+                                                                        <input name="additional_data"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.additional_data|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
+                                                    <!-- STATUS PRAESENS OBJECTIVUS -->
+                                                    <div class="card card-info">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Status praesens objectivus</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Общее состояние:</label>
+                                                                        <input name="general_state" class="form-control"
+                                                                               value="{{ init_app_form.instance.general_state|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Сознание:</label>
+                                                                        <select name="consciousness"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.CONSCIOUSNESS_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.consciousness == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Состояние сознания:</label>
+                                                                        <select name="consciousness_state"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.CONSCIOUSNESS_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.consciousness_state == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Конституция:</label>
+                                                                        <select name="constitution"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.CONSTITUTION_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.constitution == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
+                                                            <!-- Кожные покровы -->
+                                                            <div class="row">
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Кожные покровы:</label>
+                                                                        <select name="skin" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.SKIN_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.skin == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Влажность кожи:</label>
+                                                                        <select name="skin_moisture"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.SKIN_MOISTURE_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.skin_moisture == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Тургор кожи:</label>
+                                                                        <select name="skin_turgor" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.SKIN_TURGOR_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.skin_turgor == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Пигментация:</label>
+                                                                        <input name="pigmentation" class="form-control"
+                                                                               value="{{ init_app_form.instance.pigmentation|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Депигментация:</label>
+                                                                        <input name="depigmentation"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.depigmentation|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
-                                                    <div class="col-12">
-                                                        <label>Диагноз:</label>
-                                                        <select class="form-control select2"
-                                                                style="width: 100%;" name="diagnosis">
-                                                            {% for diagnos in diagnosis %}
-                                                                <option value="{{ diagnos.id }}"
-                                                                        {% if init_app_form.instance.diagnosis.id == diagnos.id %}selected{% endif %}>{{ diagnos }}</option>
-                                                            {% endfor %}
-                                                        </select>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Высыпания:</label>
+                                                                        <input name="rashes" class="form-control"
+                                                                               value="{{ init_app_form.instance.rashes|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Сосудистые изменения:</label>
+                                                                        <input name="vascular_changes"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.vascular_changes|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Кровоизлияния:</label>
+                                                                        <input name="hemorrhages" class="form-control"
+                                                                               value="{{ init_app_form.instance.hemorrhages|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Рубцы:</label>
+                                                                        <input name="scarring" class="form-control"
+                                                                               value="{{ init_app_form.instance.scarring|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Трофические изменения:</label>
+                                                                        <input name="trophic_changes"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.trophic_changes|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Видимые опухоли:</label>
+                                                                        <input name="visible_tumors"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.visible_tumors|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Подкожная клетчатка:</label>
+                                                                        <select name="subcutaneous_fat"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.SUBCUTANEOUS_FAT_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.subcutaneous_fat == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Лимфатические узлы:</label>
+                                                                        <select name="lymph_nodes" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.LYMPH_NODES_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.lymph_nodes == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Физические параметры -->
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>Температура (°C):</label>
+                                                                        <input type="number" step="0.1"
+                                                                               name="temperature" class="form-control"
+                                                                               value="{{ init_app_form.instance.temperature|default:'36.6' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>Рост (см):</label>
+                                                                        <input type="number" step="0.1" name="height"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.height|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>Вес (кг):</label>
+                                                                        <input type="number" step="0.1" name="weight"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.weight|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>ЧСС (уд/мин):</label>
+                                                                        <input type="number" name="heart_beat"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.heart_beat|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>АД верхнее (мм рт.ст.):</label>
+                                                                        <input type="number" name="arterial_high"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.arterial_high|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>АД нижнее (мм рт.ст.):</label>
+                                                                        <input type="number" name="arterial_low"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.arterial_low|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>ИМТ:</label>
+                                                                        <input type="number" step="0.01" name="imt"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.imt|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>Избыточный вес (кг):</label>
+                                                                        <input type="number" step="0.1"
+                                                                               name="extra_weight" class="form-control"
+                                                                               value="{{ init_app_form.instance.extra_weight|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Отеки/пастозность:</label>
+                                                                        <input name="swelling_pastiness"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.swelling_pastiness|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <br>
+
+                                                    <!-- КОСТНО-МЫШЕЧНАЯ СИСТЕМА -->
+                                                    <div class="card card-info">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Костно-мышечная система</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Деформации:</label>
+                                                                        <input name="deformations" class="form-control"
+                                                                               value="{{ init_app_form.instance.deformations|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Контрактуры:</label>
+                                                                        <input name="contractures" class="form-control"
+                                                                               value="{{ init_app_form.instance.contractures|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Ограничения движений:</label>
+                                                                        <input name="movement_restrictions"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.movement_restrictions|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- ДЫХАТЕЛЬНАЯ СИСТЕМА -->
+                                                    <div class="card card-info">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Дыхательная система</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Частота дыхания (в минуту):</label>
+                                                                        <input type="number"
+                                                                               name="respiratory_frequency"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.respiratory_frequency|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Тип дыхания:</label>
+                                                                        <select name="breathing_type"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.BREATHING_TYPE_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.breathing_type == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Аускультативное дыхание:</label>
+                                                                        <select name="auscultative_breathing"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.AUSCULTATIVE_BREATHING_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.auscultative_breathing == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Хрипы:</label>
+                                                                        <select name="wheezing" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.WHEEZING_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.wheezing == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Кашель:</label>
+                                                                        <select name="coughing" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.COUGHING_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.coughing == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Влажность:</label>
+                                                                        <input name="high_humidity" class="form-control"
+                                                                               value="{{ init_app_form.instance.high_humidity|default_if_none:'' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Крепитация:</label>
+                                                                        <select name="crepitus" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.CREPITUS_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.crepitus == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Перкуссия легких:</label>
+                                                                        <select name="lungs_percussion"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.LUNGS_PERCUSSION_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.lungs_percussion == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- СЕРДЕЧНО-СОСУДИСТАЯ СИСТЕМА -->
+                                                    <div class="card card-info">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Сердечно-сосудистая система</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Границы сердца:</label>
+                                                                        <select name="heart_edge" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.HEAR_EDGE_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.heart_edge == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Тоны сердца:</label>
+                                                                        <select name="heart_tones" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.HEART_TONES_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.heart_tones == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Акцент в аорте:</label>
+                                                                        <select name="accent_in_aorta"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.ACCENT_IN_AORTA_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.accent_in_aorta == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Изменение шума при нагрузке:</label>
+                                                                        <select name="noise_change_on_ot"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.N_C_ON_OT_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.noise_change_on_ot == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Шум на артерии:</label>
+                                                                        <select name="pulse_noise_on_arteria"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.NOISE_ON_ARTERIA %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.pulse_noise_on_arteria == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>АД левое:</label>
+                                                                        <input name="ad_left" class="form-control"
+                                                                               value="{{ init_app_form.instance.ad_left|default:'130/80' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>АД правое:</label>
+                                                                        <input name="ad_right" class="form-control"
+                                                                               value="{{ init_app_form.instance.ad_right|default:'130/80' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>Пульс левый:</label>
+                                                                        <input name="ps_left" class="form-control"
+                                                                               value="{{ init_app_form.instance.ps_left|default:'75' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group">
+                                                                        <label>Пульс правый:</label>
+                                                                        <input name="ps_right" class="form-control"
+                                                                               value="{{ init_app_form.instance.ps_right|default:'75' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- ОРГАНЫ ПИЩЕВАРЕНИЯ -->
+                                                    <div class="card card-info">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Органы пищеварения</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Аппетит:</label>
+                                                                        <select name="appetit" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.APPETIT_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.appetit == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Язык:</label>
+                                                                        <select name="tongue" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.TONGUE_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.tongue == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group">
+                                                                        <label>Трещины/язвы в полости рта:</label>
+                                                                        <select name="cracks_ulcers_in_mouth"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.CUIM_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.cracks_ulcers_in_mouth == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Живот:</label>
+                                                                        <select name="stomach" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.STOMACH_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.stomach == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Печень:</label>
+                                                                        <select name="liver" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.LIVER_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.liver == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Край печени:</label>
+                                                                        <select name="liver_edge" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.LIVER_EDGE_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.liver_edge == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Селезенка:</label>
+                                                                        <select name="spleen" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.SPLEEN_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.spleen == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Край селезенки:</label>
+                                                                        <select name="spleen_edge" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.SPLEEN_EDGE_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.spleen_edge == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Стул:</label>
+                                                                        <select name="stool" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.STOOL_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.stool == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Частота стула:</label>
+                                                                        <input name="stool_frequency"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.stool_frequency|default:'1' }}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- МОЧЕВЫДЕЛИТЕЛЬНАЯ СИСТЕМА -->
+                                                    <div class="card card-info">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Мочевыделительная система</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Мочевыделительная система:</label>
+                                                                        <input name="urinary_system"
+                                                                               class="form-control"
+                                                                               value="{{ init_app_form.instance.urinary_system|default:'1' }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Симптомы поколачивания:</label>
+                                                                        <select name="effleurage_symptoms"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.EFFLEURAGE_SYMPTOMS_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.effleurage_symptoms == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- ДРУГИЕ СИСТЕМЫ -->
+                                                    <div class="card card-info">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Другие системы</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Щитовидная железа:</label>
+                                                                        <select name="thyroid" class="form-control">
+                                                                            {% for value, text in init_app_form.instance.THYROID_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.thyroid == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label>Нервная система:</label>
+                                                                        <select name="nerve_system"
+                                                                                class="form-control">
+                                                                            {% for value, text in init_app_form.instance.THYROID_CHOICES %}
+                                                                                <option value="{{ value }}"
+                                                                                        {% if init_app_form.instance.nerve_system == value %}selected{% endif %}>{{ text }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- ДИАГНОЗ И РЕЗЮМЕ -->
+                                                    <div class="card card-info">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Диагноз и резюме</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="form-group">
+                                                                        <label>Диагноз:</label>
+                                                                        <select class="form-control select2"
+                                                                                style="width: 100%;" name="diagnosis">
+                                                                            {% for diagnos in diagnosis %}
+                                                                                <option value="{{ diagnos.id }}"
+                                                                                        {% if init_app_form.instance.diagnosis.id == diagnos.id %}selected{% endif %}>{{ diagnos }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input class="custom-control-input"
+                                                                                   type="checkbox"
+                                                                                   id="cito" name="cito"
+                                                                                   {% if init_app_form.instance.cito %}checked{% endif %}>
+                                                                            <label for="cito"
+                                                                                   class="custom-control-label">CITO</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label>Резюме:</label>
+                                                                        <textarea name="summary" class="form-control"
+                                                                                  rows="3"
+                                                                                  placeholder="Резюме...">{{ init_app_form.instance.summary|default_if_none:'' }}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="text-center">
                                                         <button type="submit" name="init_app_form"
                                                                 class="btn btn-primary">Сохранить
