@@ -1,24 +1,33 @@
 {% load static %}
 {% load humanize %}
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-light-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-        <img src="{% static 'adminlte3_assets/dist/img/hayat_logo.png' %}" alt="Hayat Medical Center"
-             style="height: 40px; max-height: none; opacity: 0.9;">
-        <span class="brand-text font-weight-light"></span>
+    <a href="{% url 'sanatorium_doctors:main_screen' %}" class="brand-link">
+        <img src="{% static 'adminlte3_assets/dist/img/hayat_logo.png' %}" alt="AdminLTE Logo" class="brand-image"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">Management</span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
+        <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{% static 'adminlte3_assets/dist/img/avatar.png' %}" class="img-circle elevation-2"
+                <img src="{% static 'adminlte3_assets/dist/img/user1-128x128.jpg' %}" class="img-circle elevation-2"
                      alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ request.user.full_name }}</a>
+                <a href="#" class="d-block">{{ patient.mid_name }} {{ patient.f_name}}</a>
+            </div>
+        </div>
+
+        <!-- SidebarSearch Form -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+            </div>
+            <div class="info">
+                <a class="d-block"><b>Титуль:</b> {{ ill_his.series_number}}</a>
             </div>
         </div>
 
@@ -53,8 +62,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{% url 'sanatorium_doctors:init_app_page' ill_his.id %}"
-                       class="nav-link {{ active_page.init_app_page }}">
+                    <a href="{% url 'sanatorium_doctors:init_app_page' ill_his.id %}" class="nav-link {{ active_page.init_app_page }}">
                         <i class="nav-icon far fa-plus-square"></i>
                         <p class="text">Первичный прием лечащего врача</p>
                     </a>
@@ -127,8 +135,7 @@
                                             <a href="{% url 'sanatorium_doctors:on_arrival_appointment_page' ill_his.id %}"
                                                class="nav-link">
                                                 <i class="far"></i>
-                                                <p>Осмотр дежурного врача при поступлении
-                                                    | {{ consulting.created_at }}</p>
+                                                <p>Осмотр дежурного врача при поступлении | {{ consulting.created_at }}</p>
                                             </a>
                                         </li>
                                     {% endfor %}
@@ -215,8 +222,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}"
-                       class="nav-link {{ active_page.proc_main_list_page }}">
+                    <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}" class="nav-link {{ active_page.proc_main_list_page }}">
                         <i class="nav-icon fas fa-columns"></i>
                         <p>
                             Основной лист назначений
@@ -225,22 +231,19 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#consulting"
-                               class="nav-link">
+                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#consulting" class="nav-link">
                                 <i class="far"></i>
                                 <p>Консультации и исследования</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#procedures"
-                               class="nav-link">
+                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#procedures" class="nav-link">
                                 <i class="far"></i>
                                 <p>Лечебные процедуры</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#medicine"
-                               class="nav-link">
+                            <a href="{% url 'sanatorium_doctors:main_list_of_procedures' ill_his.id %}#medicine" class="nav-link">
                                 <i class="far"></i>
                                 <p>Медикаменты</p>
                             </a>
@@ -255,26 +258,26 @@
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    {#                    <ul class="nav nav-treeview">#}
-                    {#                        <li class="nav-item">#}
-                    {#                            <a href="../examples/invoice.html" class="nav-link">#}
-                    {#                                <i class="far fa-circle nav-icon"></i>#}
-                    {#                                <p>Invoice</p>#}
-                    {#                            </a>#}
-                    {#                        </li>#}
-                    {#                        <li class="nav-item">#}
-                    {#                            <a href="../examples/profile.html" class="nav-link">#}
-                    {#                                <i class="far fa-circle nav-icon"></i>#}
-                    {#                                <p>Profile</p>#}
-                    {#                            </a>#}
-                    {#                        </li>#}
-                    {#                        <li class="nav-item">#}
-                    {#                            <a href="../examples/e-commerce.html" class="nav-link">#}
-                    {#                                <i class="far fa-circle nav-icon"></i>#}
-                    {#                                <p>E-commerce</p>#}
-                    {#                            </a>#}
-                    {#                        </li>#}
-                    {#                    </ul>#}
+{#                    <ul class="nav nav-treeview">#}
+{#                        <li class="nav-item">#}
+{#                            <a href="../examples/invoice.html" class="nav-link">#}
+{#                                <i class="far fa-circle nav-icon"></i>#}
+{#                                <p>Invoice</p>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a href="../examples/profile.html" class="nav-link">#}
+{#                                <i class="far fa-circle nav-icon"></i>#}
+{#                                <p>Profile</p>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a href="../examples/e-commerce.html" class="nav-link">#}
+{#                                <i class="far fa-circle nav-icon"></i>#}
+{#                                <p>E-commerce</p>#}
+{#                            </a>#}
+{#                        </li>#}
+{#                    </ul>#}
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link {{ active_page.diet_page }}">
