@@ -1,1 +1,0 @@
-from django import formsfrom apps.warehouse.models import CompanyModelclass CompanyModelCreateForm(forms.ModelForm):    class Meta:        model = CompanyModel        fields = ["name", ]

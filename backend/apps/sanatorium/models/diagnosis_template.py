@@ -1,1 +1,0 @@
-from django.db import modelsclass DiagnosisTemplate(models.Model):    name = models.CharField(max_length=255)    code = models.CharField(max_length=15, default='1001')    def __str__(self):        return f"{self.code}: {self.name}"

@@ -1,1 +1,0 @@
-from django.db import modelsfrom apps.account.models import Accountclass ShiftModel(models.Model):    user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="shifts")    start_time = models.DateTimeField()    end_time = models.DateTimeField()    def __str__(self):        return f"{self.user} - {self.start_time} - {self.end_time}"

@@ -1,1 +1,0 @@
-from django import formsfrom apps.warehouse.models import StorePointModelclass StorePointCreateForm(forms.ModelForm):    class Meta:        model = StorePointModel        fields = ["name", "address", "email"]
