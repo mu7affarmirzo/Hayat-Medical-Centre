@@ -5,12 +5,6 @@ __pycache__/
 *$py.class
 
 
-# Migrations
-apps/account/migrations
-migrations/
-*/migrations/
-/migrations/
-
 # C extensions
 *.so
 
@@ -66,8 +60,6 @@ cover/
 # Django stuff:
 *.log
 local_settings.py
-db.sqlite3
-db.sqlite3-journal
 
 # Flask stuff:
 instance/
